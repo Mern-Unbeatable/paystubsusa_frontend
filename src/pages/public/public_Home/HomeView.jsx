@@ -5,6 +5,8 @@ import DocumentsSection from '../../../Components/Home/DocumentsSection';
 import HowItWorksSection from '../../../Components/Home/HowItWorksSection';
 import SpecialOfferSection from '../../../Components/Home/SpecialOfferSection';
 import PricingSection from '../../../Components/Home/PricingSection';
+import WhyUsSection from '../../../Components/Home/WhyUsSection';
+import TestimonialsSection from '../../../Components/Home/TestimonialsSection';
 
 const HomeView = () => {
   return (
@@ -26,6 +28,12 @@ const HomeView = () => {
 
       {/* 6. Simple Pricing Section */}
       <PricingSection />
+
+      {/* 7. Why Us Section (#EBF1F8 background) */}
+      <WhyUsSection />
+
+      {/* 8. What Our Clients Say Section */}
+      <TestimonialsSection />
     </div>
   );
 };
