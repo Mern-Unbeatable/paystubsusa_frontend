@@ -15,7 +15,7 @@ const NavbarLayout = () => {
   ];
 
   return (
-    <header className="w-full">
+    <>
       {/* Top Special Offer Announcement Bar */}
       <div className="w-full bg-secondary text-white text-xs sm:text-sm py-2.5 px-4 text-center font-medium tracking-wide shadow-inner">
         <span>
@@ -23,110 +23,112 @@ const NavbarLayout = () => {
         </span>
       </div>
 
-      {/* Main Navbar */}
-      <nav className="w-full bg-white border-b border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-          <div className="flex items-center justify-between h-20 sm:h-24">
-            {/* Logo - Sized prominently */}
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="flex items-center group transition-transform active:scale-98">
-                <img
-                  src={logoImg}
-                  alt="Payday Stubs"
-                  className="h-10 sm:h-12 md:h-14 lg:h-[58px] w-auto object-contain transition-all duration-200"
-                />
-              </Link>
-            </div>
+      {/* Main Navbar - Sticky pinned to top */}
+      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all">
+        <nav className="w-full">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+            <div className="flex items-center justify-between h-20 sm:h-24">
+              {/* Logo */}
+              <div className="flex-shrink-0 flex items-center">
+                <Link to="/" className="flex items-center group transition-transform active:scale-98">
+                  <img
+                    src={logoImg}
+                    alt="Payday Stubs"
+                    className="h-10 sm:h-12 md:h-14 lg:h-[58px] w-auto object-contain transition-all duration-200"
+                  />
+                </Link>
+              </div>
 
-            {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center space-x-7 xl:space-x-9">
-              {navLinks.map((link) => (
+              {/* Desktop Navigation Links */}
+              <div className="hidden lg:flex items-center space-x-7 xl:space-x-9">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-[15px] xl:text-[16px] font-medium text-slate-700 hover:text-secondary transition-colors duration-200"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+
+              {/* Desktop Actions */}
+              <div className="hidden md:flex items-center space-x-4 lg:space-x-5">
                 <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-[15px] xl:text-[16px] font-medium text-slate-700 hover:text-secondary transition-colors duration-200"
+                  href="#find-paystubs"
+                  className="text-[15px] font-medium text-secondary hover:text-[#0080d0] hover:underline underline-offset-4 transition-colors"
                 >
-                  {link.name}
+                  Find your Paystubs
                 </a>
-              ))}
-            </div>
+                <button
+                  type="button"
+                  className="text-[14px] font-medium text-secondary hover:text-white border border-secondary hover:bg-secondary px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-xs"
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  className="text-[14px] font-semibold text-white bg-secondary hover:bg-[#0089e0] px-5 py-2.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  Create Paystub
+                </button>
+              </div>
 
-            {/* Desktop Actions */}
-            <div className="hidden md:flex items-center space-x-4 lg:space-x-5">
-              <a
-                href="#find-paystubs"
-                className="text-[15px] font-medium text-secondary hover:text-[#0080d0] hover:underline underline-offset-4 transition-colors"
-              >
-                Find your Paystubs
-              </a>
-              <button
-                type="button"
-                className="text-[14px] font-medium text-secondary hover:text-white border border-secondary hover:bg-secondary px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-xs"
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                className="text-[14px] font-semibold text-white bg-secondary hover:bg-[#0089e0] px-5 py-2.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Create Paystub
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="flex md:hidden items-center">
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-md text-slate-600 hover:text-secondary hover:bg-slate-50 focus:outline-hidden"
-                aria-label="Toggle navigation menu"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
+              {/* Mobile Menu Button */}
+              <div className="flex md:hidden items-center">
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2 rounded-md text-slate-600 hover:text-secondary hover:bg-slate-50 focus:outline-hidden"
+                  aria-label="Toggle navigation menu"
+                >
+                  {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Mobile Dropdown Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 space-y-3 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="flex flex-col space-y-2.5">
-              {navLinks.map((link) => (
+          {/* Mobile Dropdown Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 space-y-3 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="flex flex-col space-y-2.5">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-base font-medium text-slate-700 hover:text-secondary py-1.5 px-2 rounded-md hover:bg-slate-50 transition"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+              <div className="pt-3 border-t border-slate-100 flex flex-col space-y-3">
                 <a
-                  key={link.name}
-                  href={link.href}
+                  href="#find-paystubs"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-medium text-slate-700 hover:text-secondary py-1.5 px-2 rounded-md hover:bg-slate-50 transition"
+                  className="text-center font-medium text-secondary py-2"
                 >
-                  {link.name}
+                  Find your Paystubs
                 </a>
-              ))}
+                <button
+                  type="button"
+                  className="w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition"
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  className="w-full text-center font-semibold text-white bg-secondary py-2.5 rounded-lg shadow-sm hover:bg-[#0089e0] transition"
+                >
+                  Create Paystub
+                </button>
+              </div>
             </div>
-            <div className="pt-3 border-t border-slate-100 flex flex-col space-y-3">
-              <a
-                href="#find-paystubs"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-center font-medium text-secondary py-2"
-              >
-                Find your Paystubs
-              </a>
-              <button
-                type="button"
-                className="w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition"
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                className="w-full text-center font-semibold text-white bg-secondary py-2.5 rounded-lg shadow-sm hover:bg-[#0089e0] transition"
-              >
-                Create Paystub
-              </button>
-            </div>
-          </div>
-        )}
-      </nav>
-    </header>
+          )}
+        </nav>
+      </header>
+    </>
   );
 };
 

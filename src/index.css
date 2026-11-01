@@ -20,5 +20,5 @@ body {
   color: #1e293b;
   background-color: #ffffff;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
