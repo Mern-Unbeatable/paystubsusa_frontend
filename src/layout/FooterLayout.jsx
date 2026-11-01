@@ -13,15 +13,15 @@ const FooterLayout = () => {
           
           {/* Column 1: Logo, Tagline & Social Icons */}
           <div className="lg:col-span-5 flex flex-col items-start pr-0 lg:pr-8">
-            <Link to="/" className="inline-block mb-3">
+            <Link to="/" className="inline-block mb-4">
               <img
                 src={logoImg}
-                alt="Logoipsum"
-                className="h-8 sm:h-9 w-auto object-contain"
+                alt="Logo"
+                className="h-10 sm:h-12 w-auto object-contain transition-all duration-200"
               />
             </Link>
 
-            <p className="text-slate-500 text-xs sm:text-[13px] leading-relaxed max-w-xs mb-5 font-normal">
+            <p className="text-slate-500 text-[14px] leading-relaxed max-w-xs mb-5 font-normal">
               An online platform for generating paystubs, W-2s, 1099s and direct deposit slips.
             </p>
 
@@ -53,10 +53,10 @@ const FooterLayout = () => {
 
           {/* Column 2: Product */}
           <div className="lg:col-span-3">
-            <h4 className="font-bold text-slate-900 text-sm mb-4">
+            <h4 className="font-bold text-slate-900 text-[15px] mb-4">
               Product
             </h4>
-            <ul className="space-y-3 text-xs sm:text-[13px] text-slate-600">
+            <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
                 <a href="#paystub-generator" className="hover:text-secondary transition-colors">
                   Paystub Generator
@@ -87,10 +87,10 @@ const FooterLayout = () => {
 
           {/* Column 3: Company */}
           <div className="lg:col-span-2">
-            <h4 className="font-bold text-slate-900 text-sm mb-4">
+            <h4 className="font-bold text-slate-900 text-[15px] mb-4">
               Company
             </h4>
-            <ul className="space-y-3 text-xs sm:text-[13px] text-slate-600">
+            <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
                 <a href="#about-us" className="hover:text-secondary transition-colors">
                   About Us
@@ -106,10 +106,10 @@ const FooterLayout = () => {
 
           {/* Column 4: Legal */}
           <div className="lg:col-span-2">
-            <h4 className="font-bold text-slate-900 text-sm mb-4">
+            <h4 className="font-bold text-slate-900 text-[15px] mb-4">
               Legal
             </h4>
-            <ul className="space-y-3 text-xs sm:text-[13px] text-slate-600">
+            <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
                 <a href="#terms-conditions" className="hover:text-secondary transition-colors">
                   Terms & Conditions

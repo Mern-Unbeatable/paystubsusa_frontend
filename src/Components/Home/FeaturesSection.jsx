@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Pencil, Layers, Download, ShieldCheck, ArrowRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FeaturesSection = () => {
+  const sectionRef = useRef(null);
+
   const features = [
     {
       icon: Pencil,
@@ -25,15 +31,56 @@ const FeaturesSection = () => {
     },
   ];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.features-left',
+        { y: 35, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 82%',
+            once: true,
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        }
+      );
+
+      gsap.fromTo(
+        '.feature-card-item',
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            once: true,
+          },
+          y: 0,
+          opacity: 1,
+          stagger: 0.12,
+          duration: 0.75,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 border-b border-slate-100">
+    <section ref={sectionRef} className="w-full bg-white py-16 sm:py-20 lg:py-24 border-b border-slate-100">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
           {/* Left Column: Heading, Subtitle & CTA Button */}
-          <div className="lg:col-span-5 flex flex-col items-start">
+          <div className="features-left lg:col-span-5 flex flex-col items-start">
             {/* Features Label */}
-            <div className="flex items-center gap-2 text-secondary font-semibold text-xs sm:text-[13px] tracking-wider uppercase mb-3">
+            <div className="flex items-center gap-2 text-secondary font-semibold text-[14px] tracking-wider uppercase mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>
               <span>FEATURES</span>
             </div>
@@ -65,7 +112,7 @@ const FeaturesSection = () => {
               {features.map((feature) => {
                 const IconComponent = feature.icon;
                 return (
-                  <div key={feature.title} className="flex flex-col items-start text-left">
+                  <div key={feature.title} className="feature-card-item flex flex-col items-start text-left">
                     {/* Icon */}
                     <div className="text-secondary mb-4 flex items-center justify-center">
                       <IconComponent className="w-6 h-6 stroke-[2]" />

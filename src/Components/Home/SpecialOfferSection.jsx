@@ -1,19 +1,44 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const SpecialOfferSection = () => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.offer-card-box', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 82%',
+          once: true,
+        },
+        y: 40,
+        opacity: 0,
+        scale: 0.98,
+        duration: 0.85,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-[#EBF1F8] py-14 sm:py-18 lg:py-20">
+    <section ref={sectionRef} className="w-full bg-[#EBF1F8] py-14 sm:py-18 lg:py-20">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         
         {/* Prominent Elevated Offer Container */}
-        <div className="max-w-4xl mx-auto bg-white rounded-[28px] p-8 sm:p-12 shadow-[0_12px_45px_rgba(0,0,0,0.06)] border border-slate-100/80">
+        <div className="offer-card-box max-w-4xl mx-auto bg-white rounded-[28px] p-8 sm:p-12 shadow-[0_12px_45px_rgba(0,0,0,0.06)] border border-slate-100/80">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
             {/* Left Content */}
             <div className="md:col-span-7 flex flex-col items-start">
               {/* Discount Tag */}
-              <div className="bg-[#1d63ff] text-white text-[11px] font-bold tracking-wider px-3 py-1 rounded-full uppercase mb-4 shadow-xs">
+              <div className="bg-[#1d63ff] text-white text-[14px] font-bold tracking-wider px-3.5 py-1 rounded-full uppercase mb-4 shadow-xs">
                 SAVE 35%
               </div>
 
@@ -64,9 +89,9 @@ const SpecialOfferSection = () => {
                 />
 
                 {/* 1st Card in stack (front active document) */}
-                <div className="relative w-60 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-lg text-xs">
+                <div className="relative w-64 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-lg text-[14px]">
                   {/* Card Header */}
-                  <div className="flex items-center justify-between pb-2 border-b border-slate-100 text-[10px]">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100 text-[14px]">
                     <span className="text-secondary font-bold tracking-wider">
                       PAYSTUB #3
                     </span>
@@ -76,7 +101,7 @@ const SpecialOfferSection = () => {
                   </div>
 
                   {/* Earnings Breakdown */}
-                  <div className="py-2.5 space-y-1.5 text-[11px]">
+                  <div className="py-2.5 space-y-1.5 text-[14px]">
                     <div className="flex justify-between text-slate-500">
                       <span>Gross Pay</span>
                       <span className="font-semibold text-slate-800">$2,670.00</span>
@@ -88,9 +113,9 @@ const SpecialOfferSection = () => {
                   </div>
 
                   {/* Net Pay */}
-                  <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                  <div className="pt-2 border-t border-slate-100 flex justify-between items-center text-[14px]">
                     <span className="font-bold text-slate-900">Net Pay</span>
-                    <span className="font-bold text-[#1d63ff] text-sm">
+                    <span className="font-bold text-[#1d63ff] text-base">
                       $2,172.04
                     </span>
                   </div>

@@ -1,8 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Star, ArrowLeft, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const TestimonialsSection = () => {
+  const sectionRef = useRef(null);
+
   // Exactly the 3 cards from the Figma design
   const initialCards = [
     {
@@ -30,6 +35,36 @@ const TestimonialsSection = () => {
 
   const [cards, setCards] = useState(initialCards);
   const isAnimating = useRef(false);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.testi-header', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          once: true,
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.75,
+        ease: 'power3.out',
+      });
+
+      gsap.from('.testi-stage', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          once: true,
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleNext = () => {
     if (isAnimating.current) return;
@@ -88,11 +123,11 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20 lg:py-24 select-none">
+    <section ref={sectionRef} className="w-full bg-white py-16 sm:py-20 lg:py-24 select-none">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <div className="testi-header text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#1E232A] tracking-wider uppercase">
             WHAT OUR CLIENTS SAY
           </h2>
@@ -102,7 +137,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Gray Background Stage Container exactly matching Figma */}
-        <div className="max-w-[1040px] mx-auto bg-[#EEEEEE] px-6 sm:px-10 lg:px-12 pt-14 pb-10">
+        <div className="testi-stage max-w-[1040px] mx-auto bg-[#EEEEEE] px-6 sm:px-10 lg:px-12 pt-14 pb-10">
           
           {/* Exactly 3 Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7 items-start">
@@ -129,17 +164,17 @@ const TestimonialsSection = () => {
                     </div>
 
                     {/* Review Quote */}
-                    <p className="text-[#333333] text-[13px] sm:text-[14px] leading-relaxed font-normal">
+                    <p className="text-[#333333] text-[14px] leading-relaxed font-normal">
                       {card.quote}
                     </p>
                   </div>
 
                   {/* Author Info */}
                   <div className="mt-6 pt-2">
-                    <h4 className="font-bold text-[#111827] text-sm">
+                    <h4 className="font-bold text-[#111827] text-[15px]">
                       {card.author}
                     </h4>
-                    <p className="text-slate-400 text-xs mt-0.5 font-normal">
+                    <p className="text-slate-400 text-[14px] mt-0.5 font-normal">
                       {card.role}
                     </p>
                   </div>

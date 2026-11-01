@@ -1,14 +1,78 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const DocumentsSection = () => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.docs-header',
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        }
+      );
+
+      gsap.fromTo(
+        '.docs-featured-card',
+        { y: 40, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 78%',
+            once: true,
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.85,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        }
+      );
+
+      gsap.fromTo(
+        '.docs-subcard',
+        { y: 35, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 78%',
+            once: true,
+          },
+          y: 0,
+          opacity: 1,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-[#EBF1F8] py-16 sm:py-20 lg:py-24">
+    <section ref={sectionRef} className="w-full bg-[#EBF1F8] py-16 sm:py-20 lg:py-24">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 text-secondary font-semibold text-xs sm:text-[13px] tracking-widest uppercase mb-3">
+        <div className="docs-header text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 text-secondary font-semibold text-[14px] tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>
             <span>DOCUMENTS</span>
           </div>
@@ -26,10 +90,10 @@ const DocumentsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
           {/* Left Column: Featured Paystub Generator Card */}
-          <div className="lg:col-span-5 xl:col-span-5 bg-[#1d63ff] rounded-[28px] p-6 sm:p-7 text-white shadow-[0_12px_40px_rgba(29,99,255,0.22)] flex flex-col justify-between">
+          <div className="docs-featured-card lg:col-span-5 xl:col-span-5 bg-[#1d63ff] rounded-[28px] p-6 sm:p-7 text-white shadow-[0_12px_40px_rgba(29,99,255,0.22)] flex flex-col justify-between">
             <div>
               {/* Badge */}
-              <div className="inline-block bg-white/20 backdrop-blur-xs text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
+              <div className="inline-block bg-white/20 backdrop-blur-xs text-white text-[14px] font-semibold px-3 py-1 rounded-full mb-3">
                 Most popular
               </div>
 
@@ -37,7 +101,7 @@ const DocumentsSection = () => {
               <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 Paystub Generator
               </h3>
-              <p className="text-blue-100 text-sm font-medium mt-1 mb-5">
+              <p className="text-blue-100 text-[14px] font-medium mt-1 mb-5">
                 Starting at $12.99
               </p>
 
@@ -45,80 +109,80 @@ const DocumentsSection = () => {
               <div className="bg-white rounded-2xl p-5 sm:p-6 text-slate-800 shadow-xs border border-white/60">
                 
                 {/* Header Statement */}
-                <div className="flex items-start justify-between pb-3 border-b border-slate-100 text-[11px]">
+                <div className="flex items-start justify-between pb-3 border-b border-slate-100 text-[14px]">
                   <div>
-                    <span className="text-[10px] font-bold text-secondary tracking-wider uppercase block">
+                    <span className="text-[14px] font-bold text-secondary tracking-wider uppercase block">
                       EARNINGS STATEMENT
                     </span>
                     <h4 className="font-bold text-slate-900 text-sm mt-0.5">
                       Acme Logistics LLC
                     </h4>
-                    <p className="text-slate-500 text-[11px]">
+                    <p className="text-slate-500 text-[14px]">
                       1200 Market St, Austin, TX 78701
                     </p>
                   </div>
-                  <div className="text-right text-[11px] text-slate-500 space-y-0.5">
-                    <p className="text-[10px] text-slate-400">Pay Period</p>
+                  <div className="text-right text-[14px] text-slate-500 space-y-0.5">
+                    <p className="text-[14px] text-slate-400">Pay Period</p>
                     <p className="font-medium text-slate-700">09/01/2026 - 09/15/2026</p>
-                    <p className="text-[10px] text-slate-400">Pay Date: <span className="text-slate-600 font-medium">09/16/2026</span></p>
+                    <p className="text-[14px] text-slate-400">Pay Date: <span className="text-slate-600 font-medium">09/16/2026</span></p>
                   </div>
                 </div>
 
                 {/* Employee / Employer row */}
-                <div className="grid grid-cols-2 gap-4 py-3 border-b border-slate-100 text-[11px]">
+                <div className="grid grid-cols-2 gap-4 py-3 border-b border-slate-100 text-[14px]">
                   <div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">
+                    <span className="text-[14px] font-bold text-slate-400 uppercase tracking-wider block">
                       EMPLOYEE
                     </span>
                     <p className="font-semibold text-slate-800 mt-0.5">Jordan Smith</p>
-                    <p className="text-slate-500 text-[10px]">SSN: XXX-XX-4821</p>
+                    <p className="text-slate-500 text-[14px]">SSN: XXX-XX-4821</p>
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">
+                    <span className="text-[14px] font-bold text-slate-400 uppercase tracking-wider block">
                       EMPLOYER
                     </span>
-                    <p className="text-slate-600 text-[10px] mt-0.5">EIN: 74-XXXX392</p>
-                    <p className="text-slate-500 text-[10px]">Employee ID: 00418</p>
+                    <p className="text-slate-600 text-[14px] mt-0.5">EIN: 74-XXXX392</p>
+                    <p className="text-slate-500 text-[14px]">Employee ID: 00418</p>
                   </div>
                 </div>
 
                 {/* Gross Earnings vs Tax Deductions */}
-                <div className="grid grid-cols-2 gap-4 py-3 border-b border-slate-100 text-[11px]">
+                <div className="grid grid-cols-2 gap-4 py-3 border-b border-slate-100 text-[14px]">
                   <div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                    <span className="text-[14px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                       GROSS EARNINGS
                     </span>
-                    <div className="flex justify-between text-slate-600 text-[10px] py-0.5">
+                    <div className="flex justify-between text-slate-600 text-[14px] py-0.5">
                       <span>Regular (80 hrs)</span>
                       <span className="font-medium text-slate-800">$2,400.00</span>
                     </div>
-                    <div className="flex justify-between text-slate-600 text-[10px] py-0.5">
+                    <div className="flex justify-between text-slate-600 text-[14px] py-0.5">
                       <span>Overtime (4 hrs)</span>
                       <span className="font-medium text-slate-800">$270.00</span>
                     </div>
-                    <div className="flex justify-between font-bold text-slate-900 text-[11px] pt-1.5 border-t border-slate-100 mt-1">
+                    <div className="flex justify-between font-bold text-slate-900 text-[14px] pt-1.5 border-t border-slate-100 mt-1">
                       <span>Total Gross</span>
                       <span>$2,670.00</span>
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                    <span className="text-[14px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                       TAX DEDUCTIONS
                     </span>
-                    <div className="flex justify-between text-slate-600 text-[10px] py-0.5">
+                    <div className="flex justify-between text-slate-600 text-[14px] py-0.5">
                       <span>Federal Tax</span>
                       <span className="font-medium text-slate-800">$293.70</span>
                     </div>
-                    <div className="flex justify-between text-slate-600 text-[10px] py-0.5">
+                    <div className="flex justify-between text-slate-600 text-[14px] py-0.5">
                       <span>Social Security</span>
                       <span className="font-medium text-slate-800">$165.54</span>
                     </div>
-                    <div className="flex justify-between text-slate-600 text-[10px] py-0.5">
+                    <div className="flex justify-between text-slate-600 text-[14px] py-0.5">
                       <span>Medicare</span>
                       <span className="font-medium text-slate-800">$38.72</span>
                     </div>
-                    <div className="flex justify-between text-slate-600 text-[10px] py-0.5">
+                    <div className="flex justify-between text-slate-600 text-[14px] py-0.5">
                       <span>State Tax</span>
                       <span className="font-medium text-slate-800">$0.00</span>
                     </div>
@@ -127,7 +191,7 @@ const DocumentsSection = () => {
 
                 {/* Net Pay highlight row */}
                 <div className="bg-[#eff6ff] rounded-xl px-4 py-3 flex items-center justify-between mt-3.5">
-                  <span className="text-slate-700 font-semibold text-xs sm:text-sm">
+                  <span className="text-slate-700 font-semibold text-[14px]">
                     Net Pay
                   </span>
                   <span className="text-secondary font-bold text-lg sm:text-xl">
@@ -156,7 +220,7 @@ const DocumentsSection = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               
               {/* W-2 Generator Card */}
-              <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100/80 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
+              <div className="docs-subcard bg-white rounded-3xl p-6 shadow-sm border border-slate-100/80 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
                 <div>
                   {/* Mock Preview Area */}
                   <div className="bg-[#fafcff] rounded-2xl p-4 border border-slate-100 mb-5">
@@ -185,7 +249,7 @@ const DocumentsSection = () => {
                   <h4 className="font-bold text-slate-900 text-lg">
                     W-2 Generator
                   </h4>
-                  <p className="text-slate-500 text-xs mt-0.5">
+                  <p className="text-slate-500 text-[14px] mt-0.5">
                     $14.99
                   </p>
                 </div>
@@ -193,7 +257,7 @@ const DocumentsSection = () => {
                 <div className="mt-4 pt-3 flex items-center justify-end">
                   <a
                     href="#w2"
-                    className="inline-flex items-center gap-1.5 text-secondary font-semibold text-xs sm:text-sm hover:underline group"
+                    className="inline-flex items-center gap-1.5 text-secondary font-semibold text-[14px] hover:underline group"
                   >
                     <span>Create W-2</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -202,7 +266,7 @@ const DocumentsSection = () => {
               </div>
 
               {/* 1099 Generator Card */}
-              <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100/80 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
+              <div className="docs-subcard bg-white rounded-3xl p-6 shadow-sm border border-slate-100/80 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
                 <div>
                   {/* Mock Preview Area */}
                   <div className="bg-[#fafcff] rounded-2xl p-4 border border-slate-100 mb-5">
@@ -231,7 +295,7 @@ const DocumentsSection = () => {
                   <h4 className="font-bold text-slate-900 text-lg">
                     1099 Generator
                   </h4>
-                  <p className="text-slate-500 text-xs mt-0.5">
+                  <p className="text-slate-500 text-[14px] mt-0.5">
                     $14.99
                   </p>
                 </div>
@@ -239,7 +303,7 @@ const DocumentsSection = () => {
                 <div className="mt-4 pt-3 flex items-center justify-end">
                   <a
                     href="#1099"
-                    className="inline-flex items-center gap-1.5 text-secondary font-semibold text-xs sm:text-sm hover:underline group"
+                    className="inline-flex items-center gap-1.5 text-secondary font-semibold text-[14px] hover:underline group"
                   >
                     <span>Create 1099</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -250,26 +314,26 @@ const DocumentsSection = () => {
             </div>
 
             {/* Bottom Row: Direct Deposit Slip (Wide Card) */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100/80 hover:shadow-md transition-shadow duration-200">
+            <div className="docs-subcard bg-white rounded-3xl p-6 shadow-sm border border-slate-100/80 hover:shadow-md transition-shadow duration-200">
               {/* Mock Preview Area */}
               <div className="bg-[#fafcff] rounded-2xl p-4 sm:p-5 border border-slate-100 mb-5">
-                <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 mb-3">
+                <div className="flex items-center justify-between text-[14px] font-bold text-slate-400 mb-3">
                   <span className="text-secondary uppercase tracking-wider">DIRECT DEPOSIT</span>
                   <span className="text-slate-800">AUTHORIZATION</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="bg-white border border-slate-100 rounded-xl p-3">
-                    <span className="text-[10px] text-slate-400 block">Bank</span>
-                    <span className="font-semibold text-slate-800 text-xs sm:text-sm mt-0.5 block">First National</span>
+                    <span className="text-[14px] text-slate-400 block">Bank</span>
+                    <span className="font-semibold text-slate-800 text-[14px] sm:text-base mt-0.5 block">First National</span>
                   </div>
                   <div className="bg-white border border-slate-100 rounded-xl p-3">
-                    <span className="text-[10px] text-slate-400 block">Routing</span>
-                    <span className="font-semibold text-slate-800 text-xs sm:text-sm mt-0.5 block">•••• 0210</span>
+                    <span className="text-[14px] text-slate-400 block">Routing</span>
+                    <span className="font-semibold text-slate-800 text-[14px] sm:text-base mt-0.5 block">•••• 0210</span>
                   </div>
                   <div className="bg-white border border-slate-100 rounded-xl p-3">
-                    <span className="text-[10px] text-slate-400 block">Account</span>
-                    <span className="font-semibold text-slate-800 text-xs sm:text-sm mt-0.5 block">•••• 8841</span>
+                    <span className="text-[14px] text-slate-400 block">Account</span>
+                    <span className="font-semibold text-slate-800 text-[14px] sm:text-base mt-0.5 block">•••• 8841</span>
                   </div>
                 </div>
               </div>
@@ -281,7 +345,7 @@ const DocumentsSection = () => {
                 </h4>
                 <a
                   href="#direct-deposit"
-                  className="inline-flex items-center gap-1.5 text-secondary font-semibold text-xs sm:text-sm hover:underline group"
+                  className="inline-flex items-center gap-1.5 text-secondary font-semibold text-[14px] hover:underline group"
                 >
                   <span>Create Slip</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />

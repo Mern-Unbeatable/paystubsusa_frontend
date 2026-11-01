@@ -17,7 +17,7 @@ const NavbarLayout = () => {
   return (
     <>
       {/* Top Special Offer Announcement Bar */}
-      <div className="w-full bg-secondary text-white text-xs sm:text-sm py-2.5 px-4 text-center font-medium tracking-wide shadow-inner">
+      <div className="w-full bg-secondary text-white text-sm sm:text-[15px] py-2.5 px-4 text-center font-medium tracking-wide shadow-inner">
         <span>
           Special Offer: Get 3 Paystubs for <strong className="font-bold text-white underline decoration-white/70 underline-offset-2">$24.99</strong> - Save 35%!
         </span>
@@ -28,13 +28,13 @@ const NavbarLayout = () => {
         <nav className="w-full">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
             <div className="flex items-center justify-between h-20 sm:h-24">
-              {/* Logo */}
+              {/* Logo - Exactly matching Footer Logo size */}
               <div className="flex-shrink-0 flex items-center">
                 <Link to="/" className="flex items-center group transition-transform active:scale-98">
                   <img
                     src={logoImg}
-                    alt="Payday Stubs"
-                    className="h-10 sm:h-12 md:h-14 lg:h-[58px] w-auto object-contain transition-all duration-200"
+                    alt="Logo"
+                    className="h-10 sm:h-12 w-auto object-contain transition-all duration-200"
                   />
                 </Link>
               </div>
@@ -107,19 +107,19 @@ const NavbarLayout = () => {
                 <a
                   href="#find-paystubs"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center font-medium text-secondary py-2"
+                  className="text-center font-medium text-secondary py-2 text-[15px]"
                 >
                   Find your Paystubs
                 </a>
                 <button
                   type="button"
-                  className="w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition"
+                  className="w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition text-[14px]"
                 >
                   Sign In
                 </button>
                 <button
                   type="button"
-                  className="w-full text-center font-semibold text-white bg-secondary py-2.5 rounded-lg shadow-sm hover:bg-[#0089e0] transition"
+                  className="w-full text-center font-semibold text-white bg-secondary py-2.5 rounded-lg shadow-sm hover:bg-[#0089e0] transition text-[14px]"
                 >
                   Create Paystub
                 </button>

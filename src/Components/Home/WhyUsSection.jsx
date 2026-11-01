@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { User, Sparkles, Layers, Folder } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const WhyUsSection = () => {
+  const sectionRef = useRef(null);
+
   const points = [
     {
       icon: User,
@@ -25,12 +31,43 @@ const WhyUsSection = () => {
     },
   ];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.why-header', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          once: true,
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.75,
+        ease: 'power3.out',
+      });
+
+      gsap.from('.why-point-item', {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          once: true,
+        },
+        y: 25,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.75,
+        ease: 'power3.out',
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-[#EBF1F8] py-16 sm:py-20 lg:py-24 border-t border-slate-100">
+    <section ref={sectionRef} className="w-full bg-[#EBF1F8] py-16 sm:py-20 lg:py-24 border-t border-slate-100">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <div className="why-header text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 text-secondary font-semibold text-xs sm:text-[13px] tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>
             <span>WHY US</span>
@@ -52,7 +89,7 @@ const WhyUsSection = () => {
             return (
               <div
                 key={pt.title}
-                className="flex items-start gap-4 p-2 transition-transform duration-200 hover:-translate-y-0.5"
+                className="why-point-item flex items-start gap-4 p-2 transition-transform duration-200 hover:-translate-y-0.5"
               >
                 {/* Icon Box */}
                 <div className="w-12 h-12 rounded-2xl bg-white border border-blue-100/80 flex items-center justify-center text-secondary shadow-xs flex-shrink-0">
@@ -64,7 +101,7 @@ const WhyUsSection = () => {
                   <h3 className="font-bold text-slate-900 text-[15px] sm:text-base leading-snug">
                     {pt.title}
                   </h3>
-                  <p className="text-slate-500 text-xs sm:text-sm mt-1 leading-relaxed">
+                  <p className="text-slate-500 text-[14px] mt-1 leading-relaxed">
                     {pt.description}
                   </p>
                 </div>
