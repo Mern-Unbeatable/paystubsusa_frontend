@@ -25,7 +25,7 @@ const DashboardLayout = ({ role = 'customer', children, activeTab, setActiveTab 
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+            className="p-2 rounded text-slate-600 hover:bg-slate-100 transition cursor-pointer"
             aria-label="Open sidebar"
           >
             <Menu className="w-5 h-5" />

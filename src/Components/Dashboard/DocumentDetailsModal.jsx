@@ -21,7 +21,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 flex items-center justify-center transition cursor-pointer"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
@@ -192,7 +192,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition cursor-pointer"
+            className="px-5 py-2.5 rounded border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition cursor-pointer"
           >
             Back to Documents
           </button>
@@ -202,7 +202,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
             onClick={() => {
               if (onDownload) onDownload(doc.name);
             }}
-            className="px-6 py-2.5 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-xs transition cursor-pointer active:scale-98"
+            className="px-6 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-xs transition cursor-pointer active:scale-98"
           >
             <Download className="w-4 h-4" />
             <span>Download PDF</span>

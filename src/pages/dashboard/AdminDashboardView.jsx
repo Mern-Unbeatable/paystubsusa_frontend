@@ -135,14 +135,14 @@ const AdminDashboardView = () => {
           <div className="flex items-center gap-2">
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
             >
               <span>View Customer Portal</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
               to="/paystub-generator"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs transition shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs transition shadow-xs"
             >
               <FilePlus className="w-3.5 h-3.5" />
               <span>Generate Document</span>
@@ -163,7 +163,7 @@ const AdminDashboardView = () => {
                   <span className="text-xs font-semibold text-slate-500">
                     {stat.title}
                   </span>
-                  <div className="w-7 h-7 rounded-lg bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center">
+                  <div className="w-7 h-7 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center">
                     <Icon className="w-3.5 h-3.5" />
                   </div>
                 </div>
@@ -210,7 +210,7 @@ const AdminDashboardView = () => {
                   <tr key={index} className="hover:bg-slate-50/60 transition-colors">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
                           <FileText className="w-4 h-4" />
                         </div>
                         <div>
@@ -243,14 +243,14 @@ const AdminDashboardView = () => {
                         <button
                           type="button"
                           onClick={() => alert(`Reviewing ${doc.name} for ${doc.user}`)}
-                          className="w-7 h-7 rounded-lg border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
+                          className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                         </button>
                         <button
                           type="button"
                           onClick={() => alert(`Downloading PDF copy...`)}
-                          className="w-7 h-7 rounded-lg border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
+                          className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
                         >
                           <Download className="w-3.5 h-3.5" />
                         </button>

@@ -141,7 +141,7 @@ const PaymentHistoryView = () => {
               type="button"
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
             >
               Previous
             </button>
@@ -153,7 +153,7 @@ const PaymentHistoryView = () => {
                   key={page}
                   type="button"
                   onClick={() => setCurrentPage(page)}
-                  className={`w-8 h-8 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                  className={`w-8 h-8 rounded text-xs font-bold transition cursor-pointer flex items-center justify-center ${
                     isActive
                       ? 'bg-[#009BFB] text-white shadow-xs'
                       : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -167,7 +167,7 @@ const PaymentHistoryView = () => {
             <button
               type="button"
               onClick={() => setCurrentPage((p) => Math.min(5, p + 1))}
-              className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs transition cursor-pointer"
+              className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs transition cursor-pointer"
             >
               Next
             </button>

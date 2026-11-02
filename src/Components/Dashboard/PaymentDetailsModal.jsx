@@ -21,7 +21,7 @@ const PaymentDetailsModal = ({ payment, onClose }) => {
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 flex items-center justify-center transition cursor-pointer"
+            className="w-8 h-8 rounded border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 flex items-center justify-center transition cursor-pointer"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
@@ -72,7 +72,7 @@ const PaymentDetailsModal = ({ payment, onClose }) => {
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2.5 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition cursor-pointer active:scale-98 shadow-xs"
+            className="px-6 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition cursor-pointer active:scale-98 shadow-xs"
           >
             Close
           </button>

@@ -80,7 +80,7 @@ const MyDocumentsView = () => {
     <div className="space-y-6">
       {/* Download Alert Toast */}
       {downloadNotice && (
-        <div className="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
           <CheckCircle2 className="w-4 h-4" />
           <span>{downloadNotice}</span>
         </div>
@@ -99,7 +99,7 @@ const MyDocumentsView = () => {
 
         <Link
           to="/paystub-generator"
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs hover:shadow active:scale-98 cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs hover:shadow active:scale-98 cursor-pointer self-start sm:self-auto"
         >
           <FilePlus className="w-4 h-4" />
           <span>Create a Document</span>
@@ -120,7 +120,7 @@ const MyDocumentsView = () => {
                   setSelectedCategory(cat.id);
                   setCurrentPage(1);
                 }}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded text-xs font-semibold transition cursor-pointer ${
                   isActive
                     ? 'bg-[#009BFB] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
@@ -144,7 +144,7 @@ const MyDocumentsView = () => {
                 setCurrentPage(1);
               }}
               placeholder="Search by document name or ID..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200/80 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#009BFB]/20 focus:border-[#009BFB] transition bg-white"
+              className="w-full pl-9 pr-4 py-2 rounded border border-slate-200/80 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#009BFB]/20 focus:border-[#009BFB] transition bg-white"
             />
           </div>
 
@@ -152,7 +152,7 @@ const MyDocumentsView = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="appearance-none pl-3.5 pr-8 py-2 rounded-xl border border-slate-200/80 text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#009BFB]/20 cursor-pointer"
+              className="appearance-none pl-3.5 pr-8 py-2 rounded border border-slate-200/80 text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#009BFB]/20 cursor-pointer"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
@@ -193,7 +193,7 @@ const MyDocumentsView = () => {
                   {/* Document Name with Icon & ID */}
                   <td className="py-3.5 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
                         <FileText className="w-4 h-4" />
                       </div>
                       <div>
@@ -231,7 +231,7 @@ const MyDocumentsView = () => {
                       <button
                         type="button"
                         onClick={() => setSelectedDoc(doc)}
-                        className="w-7 h-7 rounded-lg border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+                        className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
                         title="View Document Details"
                         aria-label={`View ${doc.name}`}
                       >
@@ -240,7 +240,7 @@ const MyDocumentsView = () => {
                       <button
                         type="button"
                         onClick={() => handleDownload(doc.name)}
-                        className="w-7 h-7 rounded-lg border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+                        className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
                         title="Download PDF"
                         aria-label={`Download ${doc.name}`}
                       >
@@ -273,7 +273,7 @@ const MyDocumentsView = () => {
               type="button"
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
             >
               Previous
             </button>
@@ -285,7 +285,7 @@ const MyDocumentsView = () => {
                   key={page}
                   type="button"
                   onClick={() => setCurrentPage(page)}
-                  className={`w-8 h-8 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                  className={`w-8 h-8 rounded text-xs font-bold transition cursor-pointer flex items-center justify-center ${
                     isActive
                       ? 'bg-[#009BFB] text-white shadow-xs'
                       : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -300,7 +300,7 @@ const MyDocumentsView = () => {
               type="button"
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
             >
               Next
             </button>
