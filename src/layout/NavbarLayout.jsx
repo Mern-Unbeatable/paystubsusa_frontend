@@ -11,7 +11,7 @@ const NavbarLayout = () => {
     { name: 'Paystub Generator', href: '/paystub-generator' },
     { name: 'W-2', href: '/w-2' },
     { name: '1099-NEC', href: '/1099-nec' },
-    { name: 'Direct Deposit', href: '/#direct-deposit' },
+    { name: 'Direct Deposit', href: '/direct-deposit' },
     { name: 'Pricing', href: '/#pricing' },
   ];
 
@@ -50,6 +50,8 @@ const NavbarLayout = () => {
                       ? location.pathname === '/w-2' || location.pathname === '/w2'
                       : link.href === '/1099-nec'
                       ? location.pathname === '/1099-nec' || location.pathname === '/1099'
+                      : link.href === '/direct-deposit'
+                      ? location.pathname === '/direct-deposit'
                       : false;
 
                   return (

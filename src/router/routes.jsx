@@ -5,6 +5,7 @@ import HomeView from "../pages/public/public_Home/HomeView";
 import PaystubGeneratorView from "../pages/public/public_generator/PaystubGeneratorView";
 import W2View from "../pages/public/public_w2/W2View";
 import Nec1099View from "../pages/public/public_1099/Nec1099View";
+import DirectDepositView from "../pages/public/public_direct_deposit/DirectDepositView";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "1099",
         element: <Nec1099View />,
+      },
+      {
+        path: "direct-deposit",
+        element: <DirectDepositView />,
       },
     ],
   },
