@@ -8,6 +8,8 @@ import Nec1099View from "../pages/public/public_1099/Nec1099View";
 import DirectDepositView from "../pages/public/public_direct_deposit/DirectDepositView";
 import PricingView from "../pages/public/public_pricing/PricingView";
 import FindPaystubsView from "../pages/public/public_find_paystubs/FindPaystubsView";
+import LoginView from "../pages/public/public_auth/LoginView";
+import RegisterView from "../pages/public/public_auth/RegisterView";
 
 export const router = createBrowserRouter([
   {
@@ -59,5 +61,21 @@ export const router = createBrowserRouter([
         element: <FindPaystubsView />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginView />,
+  },
+  {
+    path: "/signin",
+    element: <LoginView />,
+  },
+  {
+    path: "/register",
+    element: <RegisterView />,
+  },
+  {
+    path: "/signup",
+    element: <RegisterView />,
   },
 ]);

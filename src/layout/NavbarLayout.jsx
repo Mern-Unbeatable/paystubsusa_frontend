@@ -85,8 +85,12 @@ const NavbarLayout = () => {
                   Find your Paystubs
                 </Link>
                 <Link
-                  to="/find-paystubs"
-                  className="text-[14px] font-medium text-secondary hover:text-white border border-secondary hover:bg-secondary px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-xs"
+                  to="/login"
+                  className={`text-[14px] font-medium border px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-xs ${
+                    location.pathname === '/login' || location.pathname === '/signin'
+                      ? 'bg-secondary text-white border-secondary'
+                      : 'text-secondary hover:text-white border-secondary hover:bg-secondary'
+                  }`}
                 >
                   Sign In
                 </Link>
@@ -136,7 +140,7 @@ const NavbarLayout = () => {
                   Find your Paystubs
                 </Link>
                 <Link
-                  to="/find-paystubs"
+                  to="/login"
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition text-[14px]"
                 >
