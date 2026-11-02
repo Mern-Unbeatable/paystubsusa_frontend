@@ -10,6 +10,8 @@ import PricingView from "../pages/public/public_pricing/PricingView";
 import FindPaystubsView from "../pages/public/public_find_paystubs/FindPaystubsView";
 import LoginView from "../pages/public/public_auth/LoginView";
 import RegisterView from "../pages/public/public_auth/RegisterView";
+import CustomerDashboardView from "../pages/dashboard/CustomerDashboardView";
+import AdminDashboardView from "../pages/dashboard/AdminDashboardView";
 
 export const router = createBrowserRouter([
   {
@@ -77,5 +79,21 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <RegisterView />,
+  },
+  {
+    path: "/dashboard",
+    element: <CustomerDashboardView />,
+  },
+  {
+    path: "/customer/dashboard",
+    element: <CustomerDashboardView />,
+  },
+  {
+    path: "/admin",
+    element: <AdminDashboardView />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: <AdminDashboardView />,
   },
 ]);

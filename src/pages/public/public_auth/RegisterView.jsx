@@ -37,7 +37,7 @@ const RegisterView = () => {
 
     setTimeout(() => {
       setLoading(false);
-      navigate('/find-paystubs');
+      navigate('/dashboard');
     }, 500);
   };
 

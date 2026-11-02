@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { ArrowLeft, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, ArrowRight, User, ShieldCheck } from 'lucide-react';
 import logoImg from '../../../assets/logo.png';
 import AuthInvoicePreview from '../../../Components/Auth/AuthInvoicePreview';
 
@@ -17,6 +17,35 @@ const LoginView = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleDemoLogin = (role) => {
+    setError('');
+    setLoading(true);
+
+    if (role === 'admin') {
+      setEmail('admin@paystuba.com');
+      setPassword('admin123');
+      try {
+        localStorage.setItem('auth_role', 'admin');
+        localStorage.setItem('auth_user', JSON.stringify({ name: 'Admin Manager', role: 'admin' }));
+      } catch (e) {}
+      setTimeout(() => {
+        setLoading(false);
+        navigate('/admin/dashboard');
+      }, 400);
+    } else {
+      setEmail('atik.adnan@example.com');
+      setPassword('password123');
+      try {
+        localStorage.setItem('auth_role', 'customer');
+        localStorage.setItem('auth_user', JSON.stringify({ name: 'Atik Adnan', role: 'customer' }));
+      } catch (e) {}
+      setTimeout(() => {
+        setLoading(false);
+        navigate('/dashboard');
+      }, 400);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
@@ -32,9 +61,17 @@ const LoginView = () => {
       setLoading(false);
       // Both admin and customer log in through this exact same form
       if (email.toLowerCase().includes('admin')) {
-        navigate('/find-paystubs?role=admin');
+        try {
+          localStorage.setItem('auth_role', 'admin');
+          localStorage.setItem('auth_user', JSON.stringify({ name: 'Admin Manager', role: 'admin' }));
+        } catch (e) {}
+        navigate('/admin/dashboard');
       } else {
-        navigate('/find-paystubs');
+        try {
+          localStorage.setItem('auth_role', 'customer');
+          localStorage.setItem('auth_user', JSON.stringify({ name: 'Atik Adnan', role: 'customer' }));
+        } catch (e) {}
+        navigate('/dashboard');
       }
     }, 500);
   };
@@ -173,6 +210,35 @@ const LoginView = () => {
             </button>
           </form>
 
+          {/* Quick 1-Click Demo Login Bar */}
+          <div className="mt-6 pt-5 border-t border-slate-100">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                Fast Demo Login
+              </span>
+              <span className="text-[10.5px] text-slate-400">1-click access</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('customer')}
+                disabled={loading}
+                className="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/90 hover:border-[#009BFB]/40 text-slate-700 hover:text-[#009BFB] font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs group"
+              >
+                <User className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#009BFB] transition-colors" />
+                <span>Customer Demo</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('admin')}
+                disabled={loading}
+                className="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-purple-50/60 border border-slate-200/90 hover:border-purple-300 text-slate-700 hover:text-purple-600 font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs group"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 transition-colors" />
+                <span>Admin Demo</span>
+              </button>
+            </div>
+          </div>
 
           {/* Switch to Register */}
           <div className="mt-5 text-center text-xs text-slate-500">
