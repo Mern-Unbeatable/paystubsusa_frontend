@@ -3,6 +3,8 @@ import { Link, useSearchParams } from 'react-router';
 import DashboardLayout from '../../layout/DashboardLayout';
 import CustomerOverview from '../../Components/Dashboard/CustomerOverview';
 import MyDocumentsView from '../../Components/Dashboard/MyDocumentsView';
+import PaymentHistoryView from '../../Components/Dashboard/PaymentHistoryView';
+import SubscriptionView from '../../Components/Dashboard/SubscriptionView';
 import {
   FileText,
   CreditCard,
@@ -53,104 +55,14 @@ const CustomerDashboardView = () => {
         <MyDocumentsView />
       )}
 
-      {/* 3. Payment History Tab */}
+      {/* 3. Payment History Tab (Matching Figma Exactly) */}
       {activeTab === 'payments' && (
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Payment History
-            </h1>
-            <p className="text-xs text-slate-500 mt-1">
-              Review all historical receipts, transactions, and payment methods.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-6">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[700px]">
-                <thead>
-                  <tr className="border-b border-slate-100 text-[10.5px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50/40">
-                    <th className="py-3 px-4">Transaction ID</th>
-                    <th className="py-3 px-4">Description</th>
-                    <th className="py-3 px-4">Date</th>
-                    <th className="py-3 px-4">Payment Method</th>
-                    <th className="py-3 px-4">Amount</th>
-                    <th className="py-3 px-4">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-                  {allDocuments.map((doc, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/60 transition">
-                      <td className="py-3.5 px-4 font-mono font-semibold text-slate-800">
-                        TXN-9{182740 + idx}
-                      </td>
-                      <td className="py-3.5 px-4 font-medium text-slate-700">{doc.name}</td>
-                      <td className="py-3.5 px-4 text-slate-500">{doc.date}</td>
-                      <td className="py-3.5 px-4 text-slate-600">Visa **** 4821</td>
-                      <td className="py-3.5 px-4 font-bold text-slate-900">{doc.amount}</td>
-                      <td className="py-3.5 px-4">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          <span>Successful</span>
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <PaymentHistoryView />
       )}
 
-      {/* 4. Subscription Tab */}
+      {/* 4. Subscription Tab (Matching Figma Exactly) */}
       {activeTab === 'subscription' && (
-        <div className="space-y-6 max-w-4xl">
-          <div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Subscription Plan
-            </h1>
-            <p className="text-xs text-slate-500 mt-1">
-              Manage your active subscription, billing cycle, and document quota.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-              <div>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EBF5FF] text-[#009BFB] border border-[#009BFB]/20 mb-2">
-                  <Star className="w-3.5 h-3.5 fill-current" />
-                  <span>Pro Unlimited</span>
-                </span>
-                <h3 className="text-xl font-extrabold text-slate-900">
-                  Active Subscription
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Next renewal on June 28, 2026 • Auto-renew active
-                </p>
-              </div>
-              <div className="text-left sm:text-right">
-                <div className="text-2xl font-black text-slate-900">$29.99<span className="text-xs text-slate-400 font-normal">/month</span></div>
-                <span className="text-xs font-semibold text-emerald-600">Active &amp; In Good Standing</span>
-              </div>
-            </div>
-
-            <div className="py-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <span className="text-slate-400 block mb-1">Documents Generated</span>
-                <span className="text-lg font-bold text-slate-800">12 / Unlimited</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <span className="text-slate-400 block mb-1">Payment Method</span>
-                <span className="text-lg font-bold text-slate-800">Visa ending 4821</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <span className="text-slate-400 block mb-1">Tax Calculation Engine</span>
-                <span className="text-lg font-bold text-emerald-600">Enabled (All 50 States)</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SubscriptionView />
       )}
 
       {/* 5. Help Center Tab */}
