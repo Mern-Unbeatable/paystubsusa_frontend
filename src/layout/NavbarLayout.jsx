@@ -12,7 +12,7 @@ const NavbarLayout = () => {
     { name: 'W-2', href: '/w-2' },
     { name: '1099-NEC', href: '/1099-nec' },
     { name: 'Direct Deposit', href: '/direct-deposit' },
-    { name: 'Pricing', href: '/#pricing' },
+    { name: 'Pricing', href: '/pricing' },
   ];
 
   return (
@@ -52,6 +52,8 @@ const NavbarLayout = () => {
                       ? location.pathname === '/1099-nec' || location.pathname === '/1099'
                       : link.href === '/direct-deposit'
                       ? location.pathname === '/direct-deposit'
+                      : link.href === '/pricing'
+                      ? location.pathname === '/pricing'
                       : false;
 
                   return (
@@ -72,18 +74,22 @@ const NavbarLayout = () => {
 
               {/* Desktop Actions */}
               <div className="hidden md:flex items-center space-x-4 lg:space-x-5">
-                <a
-                  href="#find-paystubs"
-                  className="text-[15px] font-medium text-secondary hover:text-[#0080d0] hover:underline underline-offset-4 transition-colors"
+                <Link
+                  to="/find-paystubs"
+                  className={`text-[15px] font-medium transition-colors ${
+                    location.pathname === '/find-paystubs' || location.pathname === '/find-your-paystubs'
+                      ? 'text-secondary font-semibold underline underline-offset-4'
+                      : 'text-secondary hover:text-[#0080d0] hover:underline underline-offset-4'
+                  }`}
                 >
                   Find your Paystubs
-                </a>
-                <button
-                  type="button"
+                </Link>
+                <Link
+                  to="/find-paystubs"
                   className="text-[14px] font-medium text-secondary hover:text-white border border-secondary hover:bg-secondary px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-xs"
                 >
                   Sign In
-                </button>
+                </Link>
                 <Link
                   to="/paystub-generator"
                   className="text-[14px] font-semibold text-white bg-secondary hover:bg-[#0089e0] px-5 py-2.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 inline-block text-center"
@@ -122,19 +128,20 @@ const NavbarLayout = () => {
                 ))}
               </div>
               <div className="pt-3 border-t border-slate-100 flex flex-col space-y-3">
-                <a
-                  href="#find-paystubs"
+                <Link
+                  to="/find-paystubs"
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-center font-medium text-secondary py-2 text-[15px]"
                 >
                   Find your Paystubs
-                </a>
-                <button
-                  type="button"
+                </Link>
+                <Link
+                  to="/find-paystubs"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition text-[14px]"
                 >
                   Sign In
-                </button>
+                </Link>
                 <Link
                   to="/paystub-generator"
                   onClick={() => setMobileMenuOpen(false)}

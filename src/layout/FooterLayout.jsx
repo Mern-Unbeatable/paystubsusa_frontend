@@ -58,29 +58,29 @@ const FooterLayout = () => {
             </h4>
             <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
-                <a href="#paystub-generator" className="hover:text-secondary transition-colors">
+                <Link to="/paystub-generator" className="hover:text-secondary transition-colors">
                   Paystub Generator
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#w2-generator" className="hover:text-secondary transition-colors">
+                <Link to="/w-2" className="hover:text-secondary transition-colors">
                   W-2 Generator
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#1099-generator" className="hover:text-secondary transition-colors">
+                <Link to="/1099-nec" className="hover:text-secondary transition-colors">
                   1099 Generator
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#direct-deposit-slip" className="hover:text-secondary transition-colors">
+                <Link to="/direct-deposit" className="hover:text-secondary transition-colors">
                   Direct Deposit Slip
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#pricing" className="hover:text-secondary transition-colors">
+                <Link to="/pricing" className="hover:text-secondary transition-colors">
                   Pricing
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

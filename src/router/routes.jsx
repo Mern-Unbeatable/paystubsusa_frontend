@@ -6,6 +6,8 @@ import PaystubGeneratorView from "../pages/public/public_generator/PaystubGenera
 import W2View from "../pages/public/public_w2/W2View";
 import Nec1099View from "../pages/public/public_1099/Nec1099View";
 import DirectDepositView from "../pages/public/public_direct_deposit/DirectDepositView";
+import PricingView from "../pages/public/public_pricing/PricingView";
+import FindPaystubsView from "../pages/public/public_find_paystubs/FindPaystubsView";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +45,18 @@ export const router = createBrowserRouter([
       {
         path: "direct-deposit",
         element: <DirectDepositView />,
+      },
+      {
+        path: "pricing",
+        element: <PricingView />,
+      },
+      {
+        path: "find-paystubs",
+        element: <FindPaystubsView />,
+      },
+      {
+        path: "find-your-paystubs",
+        element: <FindPaystubsView />,
       },
     ],
   },
