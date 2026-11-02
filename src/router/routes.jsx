@@ -12,6 +12,7 @@ import LoginView from "../pages/public/public_auth/LoginView";
 import RegisterView from "../pages/public/public_auth/RegisterView";
 import CustomerDashboardView from "../pages/dashboard/CustomerDashboardView";
 import AdminDashboardView from "../pages/dashboard/AdminDashboardView";
+import AboutView from "../pages/public/public_about/AboutView";
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +62,14 @@ export const router = createBrowserRouter([
       {
         path: "find-your-paystubs",
         element: <FindPaystubsView />,
+      },
+      {
+        path: "about",
+        element: <AboutView />,
+      },
+      {
+        path: "about-us",
+        element: <AboutView />,
       },
     ],
   },

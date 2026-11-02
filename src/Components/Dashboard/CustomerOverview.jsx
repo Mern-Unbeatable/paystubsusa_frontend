@@ -13,6 +13,8 @@ import {
   X
 } from 'lucide-react';
 import DocumentDetailsModal from './DocumentDetailsModal';
+import DashboardHeader from './DashboardHeader';
+import DashboardTable, { DashboardStatusBadge } from './DashboardTable';
 
 const CustomerOverview = ({ setActiveTab }) => {
   const navigate = useNavigate();
@@ -115,24 +117,19 @@ const CustomerOverview = ({ setActiveTab }) => {
       )}
 
       {/* Top Welcome Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Welcome Back!
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Manage your documents, review purchases, and access your subscription.
-          </p>
-        </div>
-
-        <Link
-          to="/paystub-generator"
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs hover:shadow active:scale-98 cursor-pointer self-start sm:self-auto"
-        >
-          <FilePlus className="w-4 h-4" />
-          <span>Create a Document</span>
-        </Link>
-      </div>
+      <DashboardHeader
+        title="Welcome Back!"
+        description="Manage your documents, review purchases, and access your subscription."
+        action={
+          <Link
+            to="/paystub-generator"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs hover:shadow active:scale-98 cursor-pointer"
+          >
+            <FilePlus className="w-4 h-4" />
+            <span>Create a Document</span>
+          </Link>
+        }
+      />
 
       {/* Stats Cards Grid (4 Cards Exactly as in Design) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
@@ -165,18 +162,10 @@ const CustomerOverview = ({ setActiveTab }) => {
       </div>
 
       {/* Section 1: Recent Documents */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-        {/* Card Header */}
-        <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
-          <div>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
-              Recent Documents
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Your latest generated documents
-            </p>
-          </div>
-
+      <DashboardTable
+        title="Recent Documents"
+        minWidth="min-w-[600px]"
+        headerAction={
           <button
             type="button"
             onClick={() => setActiveTab && setActiveTab('documents')}
@@ -185,101 +174,71 @@ const CustomerOverview = ({ setActiveTab }) => {
             <span>View all documents</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
-        </div>
-
-        {/* Documents Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[600px]">
-            <thead>
-              <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                <th className="py-3 px-6">Document Name</th>
-                <th className="py-3 px-6">Document Type</th>
-                <th className="py-3 px-6">Created Date</th>
-                <th className="py-3 px-6">Status</th>
-                <th className="py-3 px-6 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-              {recentDocuments.map((doc, index) => (
-                <tr key={index} className="hover:bg-slate-50/60 transition-colors">
-                  {/* Name with Icon & ID */}
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                        <FileText className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className="font-bold text-slate-900 text-xs">
-                          {doc.name}
-                        </div>
-                        <div className="text-[10.5px] text-slate-400 font-mono">
-                          {doc.id}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Type */}
-                  <td className="py-4 px-6 text-slate-600 font-medium">
-                    {doc.type}
-                  </td>
-
-                  {/* Date */}
-                  <td className="py-4 px-6 text-slate-500 font-medium">
-                    {doc.date}
-                  </td>
-
-                  {/* Status Badge */}
-                  <td className="py-4 px-6">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <span>{doc.status}</span>
-                    </span>
-                  </td>
-
-                  {/* Actions */}
-                  <td className="py-4 px-6 text-right">
-                    <div className="inline-flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedDoc(doc)}
-                        className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                        title="View Document"
-                        aria-label={`View ${doc.name}`}
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDownload(doc.name)}
-                        className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                        title="Download Document"
-                        aria-label={`Download ${doc.name}`}
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        }
+        columns={[
+          {
+            header: 'Document Name',
+            render: (doc) => (
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
+                  <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                </div>
+              </div>
+            ),
+          },
+          {
+            header: 'Document Type',
+            key: 'type',
+            cellClassName: 'text-slate-600 font-medium',
+          },
+          {
+            header: 'Created Date',
+            key: 'date',
+            cellClassName: 'text-slate-500 font-medium',
+          },
+          {
+            header: 'Status',
+            render: (doc) => <DashboardStatusBadge status={doc.status} />,
+          },
+          {
+            header: 'Action',
+            align: 'right',
+            render: (doc) => (
+              <div className="inline-flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedDoc(doc)}
+                  className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+                  title="View Document"
+                  aria-label={`View ${doc.name}`}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDownload(doc.name)}
+                  className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+                  title="Download Document"
+                  aria-label={`Download ${doc.name}`}
+                >
+                  <Download className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ),
+          },
+        ]}
+        data={recentDocuments}
+      />
 
       {/* Section 2: Recent Payment Activity */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-        {/* Card Header */}
-        <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
-          <div>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
-              Recent Payment Activity
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Your latest transactions
-            </p>
-          </div>
-
+      <DashboardTable
+        title="Recent Payment Activity"
+        minWidth="min-w-[700px]"
+        headerAction={
           <button
             type="button"
             onClick={() => setActiveTab && setActiveTab('payments')}
@@ -288,62 +247,40 @@ const CustomerOverview = ({ setActiveTab }) => {
             <span>View payment history</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
-        </div>
-
-        {/* Payments Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[700px]">
-            <thead>
-              <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                <th className="py-3 px-6">Transaction ID</th>
-                <th className="py-3 px-6">Description</th>
-                <th className="py-3 px-6">Date</th>
-                <th className="py-3 px-6">Payment Method</th>
-                <th className="py-3 px-6">Amount</th>
-                <th className="py-3 px-6">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-              {recentPayments.map((payment, index) => (
-                <tr key={index} className="hover:bg-slate-50/60 transition-colors">
-                  {/* Transaction ID */}
-                  <td className="py-4 px-6 font-mono font-semibold text-slate-800 text-[11px]">
-                    {payment.id}
-                  </td>
-
-                  {/* Description */}
-                  <td className="py-4 px-6 font-medium text-slate-700">
-                    {payment.description}
-                  </td>
-
-                  {/* Date */}
-                  <td className="py-4 px-6 text-slate-500 font-medium">
-                    {payment.date}
-                  </td>
-
-                  {/* Payment Method */}
-                  <td className="py-4 px-6 text-slate-600 font-medium">
-                    {payment.method}
-                  </td>
-
-                  {/* Amount */}
-                  <td className="py-4 px-6 font-bold text-slate-900">
-                    {payment.amount}
-                  </td>
-
-                  {/* Status Badge */}
-                  <td className="py-4 px-6">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <span>{payment.status}</span>
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        }
+        columns={[
+          {
+            header: 'Transaction ID',
+            key: 'id',
+            cellClassName: 'font-mono font-semibold text-slate-800 text-[11px]',
+          },
+          {
+            header: 'Description',
+            key: 'description',
+            cellClassName: 'font-medium text-slate-700',
+          },
+          {
+            header: 'Date',
+            key: 'date',
+            cellClassName: 'text-slate-500 font-medium',
+          },
+          {
+            header: 'Payment Method',
+            key: 'method',
+            cellClassName: 'text-slate-600 font-medium',
+          },
+          {
+            header: 'Amount',
+            key: 'amount',
+            cellClassName: 'font-bold text-slate-900',
+          },
+          {
+            header: 'Status',
+            render: (payment) => <DashboardStatusBadge status={payment.status} />,
+          },
+        ]}
+        data={recentPayments}
+      />
 
       {/* Document Details Modal */}
       {selectedDoc && (

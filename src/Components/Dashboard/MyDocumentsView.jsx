@@ -10,6 +10,8 @@ import {
   ChevronDown
 } from 'lucide-react';
 import DocumentDetailsModal from './DocumentDetailsModal';
+import DashboardHeader from './DashboardHeader';
+import DashboardTable, { DashboardStatusBadge } from './DashboardTable';
 
 const INITIAL_DOCUMENTS = [
   { id: 'PS-2025-0841', name: 'Paystub - May 2025', type: 'Paystub', date: 'May 28, 2025', status: 'Completed' },
@@ -87,24 +89,19 @@ const MyDocumentsView = () => {
       )}
 
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            My Documents
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            View and download your previously generated documents.
-          </p>
-        </div>
-
-        <Link
-          to="/paystub-generator"
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs hover:shadow active:scale-98 cursor-pointer self-start sm:self-auto"
-        >
-          <FilePlus className="w-4 h-4" />
-          <span>Create a Document</span>
-        </Link>
-      </div>
+      <DashboardHeader
+        title="My Documents"
+        description="View and download your previously generated documents."
+        action={
+          <Link
+            to="/paystub-generator"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs hover:shadow active:scale-98 cursor-pointer"
+          >
+            <FilePlus className="w-4 h-4" />
+            <span>Create a Document</span>
+          </Link>
+        }
+      />
 
       {/* Category Pills & Search Card */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-4 sm:p-5 space-y-4">
@@ -164,149 +161,75 @@ const MyDocumentsView = () => {
       </div>
 
       {/* Documents Table Card */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-        {/* Card Header */}
-        <div className="p-5 sm:p-6 border-b border-slate-100">
-          <h2 className="text-base sm:text-lg font-bold text-slate-900">
-            All Documents
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Your latest generated documents
-          </p>
-        </div>
-
-        {/* Table View */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[700px]">
-            <thead>
-              <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                <th className="py-3 px-6">Document Name</th>
-                <th className="py-3 px-6">Document Type</th>
-                <th className="py-3 px-6">Created Date</th>
-                <th className="py-3 px-6">Status</th>
-                <th className="py-3 px-6 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-              {paginatedDocs.map((doc, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
-                  {/* Document Name with Icon & ID */}
-                  <td className="py-3.5 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                        <FileText className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className="font-bold text-slate-900 text-xs">
-                          {doc.name}
-                        </div>
-                        <div className="text-[10.5px] text-slate-400 font-mono">
-                          {doc.id}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Document Type */}
-                  <td className="py-3.5 px-6 text-slate-600 font-medium">
-                    {doc.type}
-                  </td>
-
-                  {/* Created Date */}
-                  <td className="py-3.5 px-6 text-slate-500 font-medium">
-                    {doc.date}
-                  </td>
-
-                  {/* Status Badge */}
-                  <td className="py-3.5 px-6">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <span>{doc.status}</span>
-                    </span>
-                  </td>
-
-                  {/* Action Buttons */}
-                  <td className="py-3.5 px-6 text-right">
-                    <div className="inline-flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedDoc(doc)}
-                        className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                        title="View Document Details"
-                        aria-label={`View ${doc.name}`}
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDownload(doc.name)}
-                        className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                        title="Download PDF"
-                        aria-label={`Download ${doc.name}`}
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-
-              {paginatedDocs.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="py-8 text-center text-xs text-slate-400">
-                    No documents matching your search or category filter.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination Footer (Matching Figma Exactly) */}
-        <div className="p-4 sm:p-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <span className="text-slate-400 font-medium text-[11px]">
-            Page {currentPage} of {totalPages} ({filteredDocs.length} matching records)
-          </span>
-
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              disabled={currentPage <= 1}
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
-            >
-              Previous
-            </button>
-
-            {[1, 2, 3].map((page) => {
-              const isActive = currentPage === page;
-              return (
+      <DashboardTable
+        title="All Documents"
+        minWidth="min-w-[700px]"
+        emptyMessage="No documents matching your search or category filter."
+        columns={[
+          {
+            header: 'Document Name',
+            render: (doc) => (
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
+                  <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                </div>
+              </div>
+            ),
+          },
+          {
+            header: 'Document Type',
+            key: 'type',
+            cellClassName: 'text-slate-600 font-medium',
+          },
+          {
+            header: 'Created Date',
+            key: 'date',
+            cellClassName: 'text-slate-500 font-medium',
+          },
+          {
+            header: 'Status',
+            render: (doc) => <DashboardStatusBadge status={doc.status} />,
+          },
+          {
+            header: 'Action',
+            align: 'right',
+            render: (doc) => (
+              <div className="inline-flex items-center gap-2">
                 <button
-                  key={page}
                   type="button"
-                  onClick={() => setCurrentPage(page)}
-                  className={`w-8 h-8 rounded text-xs font-bold transition cursor-pointer flex items-center justify-center ${
-                    isActive
-                      ? 'bg-[#009BFB] text-white shadow-xs'
-                      : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
-                  }`}
+                  onClick={() => setSelectedDoc(doc)}
+                  className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+                  title="View Document Details"
+                  aria-label={`View ${doc.name}`}
                 >
-                  {page}
+                  <Eye className="w-3.5 h-3.5" />
                 </button>
-              );
-            })}
-
-            <button
-              type="button"
-              disabled={currentPage >= totalPages}
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
+                <button
+                  type="button"
+                  onClick={() => handleDownload(doc.name)}
+                  className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+                  title="Download PDF"
+                  aria-label={`Download ${doc.name}`}
+                >
+                  <Download className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ),
+          },
+        ]}
+        data={paginatedDocs}
+        pagination={{
+          currentPage,
+          totalPages,
+          totalRecords: filteredDocs.length,
+          onPageChange: setCurrentPage,
+          pages: [1, 2, 3],
+        }}
+      />
 
       {/* Exact Document Details Modal */}
       {selectedDoc && (

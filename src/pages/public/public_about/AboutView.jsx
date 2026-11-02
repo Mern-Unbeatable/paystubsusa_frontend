@@ -1,159 +1,181 @@
 import React from 'react';
-import { Target, Users, Zap, Shield, Code, Layers } from 'lucide-react';
+import { Link } from 'react-router';
+import { ArrowRight, FileText } from 'lucide-react';
 
 const AboutView = () => {
-  const features = [
+  const featureCards = [
     {
-      icon: <Target className="h-8 w-8" />,
-      title: 'Production Ready',
-      description: 'Built with industry best practices and optimized for production deployment.',
+      title: '50 states',
+      description: 'Current federal, state, and FICA tax rates for every jurisdiction.',
     },
     {
-      icon: <Zap className="h-8 w-8" />,
-      title: 'Fast Development',
-      description: 'Hot module replacement and lightning-fast build times with Vite.',
+      title: 'Free preview',
+      description: 'Review every line of your stub before you pay a cent.',
     },
     {
-      icon: <Shield className="h-8 w-8" />,
-      title: 'Type Safe',
-      description: 'TypeScript ready with proper configurations and linting rules.',
+      title: '30-day guarantee',
+      description: 'Money back if anything is wrong. No questions asked.',
     },
     {
-      icon: <Layers className="h-8 w-8" />,
-      title: 'Scalable Architecture',
-      description: 'Well-structured folder organization that grows with your project.',
+      title: 'Rates verified',
+      description: 'Verified 2026 against IRS Pub. 15-T and state agencies.',
     },
-  ];
-
-  const technologies = [
-    { name: 'React 19', description: 'Latest React with modern features' },
-    { name: 'Redux Toolkit', description: 'Simplified state management' },
-    { name: 'Tailwind CSS 4', description: 'Utility-first CSS framework' },
-    { name: 'Vite', description: 'Next generation frontend tooling' },
-    { name: 'React Router v7', description: 'Declarative routing for React' },
-    { name: 'Axios', description: 'Promise-based HTTP client' },
-    { name: 'ESLint & Prettier', description: 'Code quality and formatting' },
-    { name: 'Lucide React', description: 'Beautiful and consistent icons' },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
-              About This Boilerplate
+    <div className="min-h-screen bg-[#FBFBFA] py-16 sm:py-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main 2-Column Hero Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+          {/* Left Column: Hero Copy & CTA */}
+          <div className="lg:col-span-6 space-y-6">
+            <span className="text-xs font-bold text-[#009BFB] tracking-widest uppercase block">
+              ABOUT PAYDAYSTUBS.COM
+            </span>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+              Accurate pay stubs, <br className="hidden sm:inline" />
+              generated in{' '}
+              <span className="text-[#009BFB] italic font-semibold">minutes.</span>
             </h1>
-            <p className="text-xl leading-relaxed text-gray-600">
-              This React boilerplate is designed to help developers kickstart their projects with
-              modern tools and best practices, saving weeks of setup time and ensuring a solid
-              foundation for scalable applications.
-            </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Mission Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-4xl">
-            <div className="grid items-center gap-12 md:grid-cols-2">
-              <div>
-                <h2 className="mb-6 text-3xl font-bold text-gray-900">Our Mission</h2>
-                <p className="mb-6 text-lg leading-relaxed text-gray-600">
-                  To provide developers with a comprehensive, well-documented React boilerplate that
-                  follows industry standards and incorporates the latest tools and practices in
-                  frontend development.
-                </p>
-                <p className="text-lg leading-relaxed text-gray-600">
-                  We believe that starting a new project shouldn't require hours of configuration.
-                  Our boilerplate eliminates the setup overhead and lets you focus on building
-                  amazing user experiences.
-                </p>
-              </div>
-              <div className="rounded-2xl bg-gradient-to-r from-blue-100 to-purple-100 p-8">
-                <Code className="mb-6 h-16 w-16 text-blue-600" />
-                <h3 className="mb-4 text-xl font-semibold text-gray-900">Developer First</h3>
-                <p className="text-gray-600">
-                  Every decision in this boilerplate is made with developer experience in mind, from
-                  folder structure to tool selection.
-                </p>
-              </div>
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
+              An online pay stub generator for freelancers, sole proprietors, and
+              small business owners who need accurate records of income they
+              actually earned and paid — for their own files, bookkeeping, and
+              accountant.
+            </p>
+
+            <div className="pt-2">
+              <Link
+                to="/paystub-generator"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded bg-slate-900 hover:bg-[#009BFB] text-white font-semibold text-sm transition-colors shadow-sm active:scale-98 cursor-pointer"
+              >
+                <span>Create a Pay Stub</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold text-gray-900">Key Features</h2>
-              <p className="mx-auto max-w-2xl text-gray-600">
-                Built with modern development practices and tools that scale with your project.
+          {/* Right Column: Sample Stub Mockup */}
+          <div className="lg:col-span-6">
+            <div className="relative w-full max-w-lg mx-auto">
+              {/* Floating Badge on Top-Right */}
+              <div className="absolute -top-3.5 right-6 bg-[#009BFB] text-white text-[11px] font-bold px-3 py-1 rounded shadow-md uppercase tracking-wider z-10">
+                Sample stub
+              </div>
+
+              {/* Sample Stub Card */}
+              <div className="bg-white rounded-2xl shadow-[0_15px_45px_rgba(0,0,0,0.06)] border border-slate-200/80 p-6 sm:p-8 text-slate-800">
+                {/* Employer & Net Pay Header */}
+                <div className="flex items-start justify-between pb-5 border-b border-slate-100">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-base">
+                      Sample Employer Inc.
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      123 Main St, Austin, TX 78701
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-black text-slate-900 tracking-tight">
+                      $2,038.20
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 tracking-wider mt-0.5 uppercase">
+                      NET PAY
+                    </div>
+                  </div>
+                </div>
+
+                {/* Details Table Rows */}
+                <div className="py-4 space-y-2.5 text-xs">
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Employee</span>
+                    <span className="font-semibold text-slate-900">
+                      Sample Employee
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Pay Period</span>
+                    <span className="font-semibold text-slate-900">
+                      10/01/2026 – 10/15/2026
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500 pb-3 border-b border-slate-100">
+                    <span>Period</span>
+                    <span className="font-semibold text-slate-900">
+                      19 of 24
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-slate-700">
+                    <span>Gross Earnings (80 hrs × $30.00)</span>
+                    <span className="font-bold text-slate-900">$2,400.00</span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Federal Income Tax</span>
+                    <span className="text-slate-800 font-medium">-$178.20</span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Social Security (6.2%)</span>
+                    <span className="text-slate-800 font-medium">-$148.80</span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Medicare (1.45%)</span>
+                    <span className="text-slate-800 font-medium">-$34.80</span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>State Tax (TX: 0%)</span>
+                    <span className="text-slate-800 font-medium">$0.00</span>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 font-bold text-slate-900">
+                    <span>Total Deductions</span>
+                    <span>-$361.80</span>
+                  </div>
+                </div>
+
+                {/* Dashed Separator */}
+                <div className="border-t border-dashed border-slate-200 my-4" />
+
+                {/* Stub Copy & YTD Metadata Footer */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs font-bold text-[#009BFB] tracking-wider uppercase">
+                    <span>EMPLOYEE COPY</span>
+                    <span>STUB #0019</span>
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono leading-relaxed">
+                    YTD Gross: $45,600.00 | YTD Federal: $3,385.80 | YTD SS: $2,827.20 | YTD Medicare: $661.20 | YTD Net: $38,725.80
+                  </div>
+                </div>
+              </div>
+
+              {/* Legal Disclaimer Caption under Stub */}
+              <p className="text-xs text-slate-400 mt-4 leading-relaxed max-w-lg">
+                Federal withholding depends on each employee's W-4 and may differ
+                from this example. This stub reflects a single filer with default
+                allowances for illustration only.
               </p>
             </div>
-
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm"
-                >
-                  <div className="mb-4 flex justify-center text-blue-600">{feature.icon}</div>
-                  <h3 className="mb-3 text-lg font-semibold text-gray-900">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
-      </section>
 
-      {/* Technologies Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold text-gray-900">Technologies Used</h2>
-              <p className="mx-auto max-w-2xl text-gray-600">
-                Carefully selected tools and libraries that work well together.
+        {/* Bottom 4 Feature Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-20">
+          {featureCards.map((card, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs hover:border-[#009BFB]/40 hover:shadow-sm transition"
+            >
+              <h3 className="text-lg font-bold text-slate-900">
+                {card.title}
+              </h3>
+              <p className="text-xs sm:text-[13px] text-slate-500 mt-2 leading-relaxed">
+                {card.description}
               </p>
             </div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {technologies.map((tech, index) => (
-                <div
-                  key={index}
-                  className="rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
-                >
-                  <h3 className="mb-2 font-semibold text-gray-900">{tech.name}</h3>
-                  <p className="text-sm text-gray-600">{tech.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mx-auto max-w-2xl">
-            <Users className="mx-auto mb-6 h-16 w-16" />
-            <h2 className="mb-4 text-3xl font-bold">Join the Community</h2>
-            <p className="mb-8 text-lg text-blue-100">
-              This boilerplate is open source and maintained by the community. Contributions,
-              feedback, and suggestions are always welcome!
-            </p>
-            <button className="rounded-lg bg-white px-8 py-3 font-semibold text-blue-600 transition-colors hover:bg-gray-100">
-              Contribute on GitHub
-            </button>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

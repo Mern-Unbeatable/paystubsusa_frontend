@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star, Check, HelpCircle } from 'lucide-react';
+import DashboardHeader from './DashboardHeader';
 
 const SubscriptionView = () => {
   const planFeatures = [
@@ -19,14 +20,10 @@ const SubscriptionView = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          My Subscription
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
-          View your current subscription and unlimited access details.
-        </p>
-      </div>
+      <DashboardHeader
+        title="My Subscription"
+        description="View your current subscription and unlimited access details."
+      />
 
       {/* Navy Blue Hero Card */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0B254E] via-[#0E2D5E] to-[#12366F] text-white p-6 sm:p-8 lg:p-10 shadow-lg">

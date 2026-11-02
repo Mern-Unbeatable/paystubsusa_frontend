@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
+import DashboardHeader from './DashboardHeader';
 
 const ProfileView = () => {
   const [name, setName] = useState('John Doe');
@@ -40,14 +41,10 @@ const ProfileView = () => {
       )}
 
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          My Profile
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
-          Manage your account and store preferences.
-        </p>
-      </div>
+      <DashboardHeader
+        title="My Profile"
+        description="Manage your account and store preferences."
+      />
 
       {/* Form Card */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-8">

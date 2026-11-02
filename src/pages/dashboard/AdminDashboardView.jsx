@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import DashboardLayout from '../../layout/DashboardLayout';
+import DashboardHeader from '../../Components/Dashboard/DashboardHeader';
+import DashboardTable, { DashboardStatusBadge } from '../../Components/Dashboard/DashboardTable';
 import {
   FileText,
   LayoutGrid,
@@ -118,37 +120,34 @@ const AdminDashboardView = () => {
     >
       <div className="space-y-6">
         {/* Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-[#EBF5FF] text-[#009BFB] border border-[#009BFB]/20 mb-1.5">
+        <DashboardHeader
+          title="Platform Overview"
+          description="Monitor platform activity, customer documents, transaction volume, and system health."
+          badge={
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-[#EBF5FF] text-[#009BFB] border border-[#009BFB]/20">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Admin Management Portal</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Platform Overview
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Monitor platform activity, customer documents, transaction volume, and system health.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
-            >
-              <span>View Customer Portal</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-            <Link
-              to="/paystub-generator"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs transition shadow-xs"
-            >
-              <FilePlus className="w-3.5 h-3.5" />
-              <span>Generate Document</span>
-            </Link>
-          </div>
-        </div>
+          }
+          action={
+            <>
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
+              >
+                <span>View Customer Portal</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                to="/paystub-generator"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs transition shadow-xs"
+              >
+                <FilePlus className="w-3.5 h-3.5" />
+                <span>Generate Document</span>
+              </Link>
+            </>
+          }
+        />
 
         {/* 4 Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
@@ -181,147 +180,111 @@ const AdminDashboardView = () => {
         </div>
 
         {/* Recent Platform Documents */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-          <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
-            <div>
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                Recent Platform Documents
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                All generated user documents across the system
-              </p>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[700px]">
-              <thead>
-                <tr className="border-b border-slate-100 text-[10.5px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50/40">
-                  <th className="py-3.5 px-6">Document Name</th>
-                  <th className="py-3.5 px-6">User</th>
-                  <th className="py-3.5 px-6">Document Type</th>
-                  <th className="py-3.5 px-6">Created Date</th>
-                  <th className="py-3.5 px-6">Status</th>
-                  <th className="py-3.5 px-6 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-                {adminRecentDocs.map((doc, index) => (
-                  <tr key={index} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                          <FileText className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-slate-900 text-xs">
-                            {doc.name}
-                          </div>
-                          <div className="text-[10.5px] text-slate-400 font-mono">
-                            {doc.id}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 font-medium text-slate-800">
-                      {doc.user}
-                    </td>
-                    <td className="py-4 px-6 text-slate-600 font-medium">
-                      {doc.type}
-                    </td>
-                    <td className="py-4 px-6 text-slate-500 font-medium">
-                      {doc.date}
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        <span>{doc.status}</span>
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <div className="inline-flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => alert(`Reviewing ${doc.name} for ${doc.user}`)}
-                          className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => alert(`Downloading PDF copy...`)}
-                          className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <DashboardTable
+          title="Recent Platform Documents"
+          minWidth="min-w-[700px]"
+          columns={[
+            {
+              header: 'Document Name',
+              render: (doc) => (
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
+                    <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                  </div>
+                </div>
+              ),
+            },
+            {
+              header: 'User',
+              key: 'user',
+              cellClassName: 'font-medium text-slate-800',
+            },
+            {
+              header: 'Document Type',
+              key: 'type',
+              cellClassName: 'text-slate-600 font-medium',
+            },
+            {
+              header: 'Created Date',
+              key: 'date',
+              cellClassName: 'text-slate-500 font-medium',
+            },
+            {
+              header: 'Status',
+              render: (doc) => <DashboardStatusBadge status={doc.status} />,
+            },
+            {
+              header: 'Action',
+              align: 'right',
+              render: (doc) => (
+                <div className="inline-flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => alert(`Reviewing ${doc.name} for ${doc.user}`)}
+                    className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => alert(`Downloading PDF copy...`)}
+                    className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ),
+            },
+          ]}
+          data={adminRecentDocs}
+        />
 
         {/* Recent Payment Transactions */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-          <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
-            <div>
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                Recent Payment Transactions
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Real-time transaction log across all customer accounts
-              </p>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[700px]">
-              <thead>
-                <tr className="border-b border-slate-100 text-[10.5px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50/40">
-                  <th className="py-3.5 px-6">Transaction ID</th>
-                  <th className="py-3.5 px-6">User</th>
-                  <th className="py-3.5 px-6">Description</th>
-                  <th className="py-3.5 px-6">Date</th>
-                  <th className="py-3.5 px-6">Method</th>
-                  <th className="py-3.5 px-6">Amount</th>
-                  <th className="py-3.5 px-6">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-                {adminRecentPayments.map((payment, index) => (
-                  <tr key={index} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="py-4 px-6 font-mono font-semibold text-slate-800 text-[11px]">
-                      {payment.id}
-                    </td>
-                    <td className="py-4 px-6 font-medium text-slate-800">
-                      {payment.user}
-                    </td>
-                    <td className="py-4 px-6 font-medium text-slate-700">
-                      {payment.description}
-                    </td>
-                    <td className="py-4 px-6 text-slate-500 font-medium">
-                      {payment.date}
-                    </td>
-                    <td className="py-4 px-6 text-slate-600 font-medium">
-                      {payment.method}
-                    </td>
-                    <td className="py-4 px-6 font-bold text-slate-900">
-                      {payment.amount}
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        <span>{payment.status}</span>
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <DashboardTable
+          title="Recent Payment Transactions"
+          minWidth="min-w-[700px]"
+          columns={[
+            {
+              header: 'Transaction ID',
+              key: 'id',
+              cellClassName: 'font-mono font-semibold text-slate-800 text-[11px]',
+            },
+            {
+              header: 'User',
+              key: 'user',
+              cellClassName: 'font-medium text-slate-800',
+            },
+            {
+              header: 'Description',
+              key: 'description',
+              cellClassName: 'font-medium text-slate-700',
+            },
+            {
+              header: 'Date',
+              key: 'date',
+              cellClassName: 'text-slate-500 font-medium',
+            },
+            {
+              header: 'Method',
+              key: 'method',
+              cellClassName: 'text-slate-600 font-medium',
+            },
+            {
+              header: 'Amount',
+              key: 'amount',
+              cellClassName: 'font-bold text-slate-900',
+            },
+            {
+              header: 'Status',
+              render: (payment) => <DashboardStatusBadge status={payment.status} />,
+            },
+          ]}
+          data={adminRecentPayments}
+        />
       </div>
     </DashboardLayout>
   );
