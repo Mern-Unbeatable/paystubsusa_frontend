@@ -506,56 +506,178 @@ const FindPaystubsContent = () => {
         </div>
       </div>
 
-      {/* Document Preview Modal */}
+      {/* Document Details Modal matching Figma design */}
       {previewDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 sm:p-6 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 my-auto">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-secondary flex items-center justify-center">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-lg">{previewDoc.name}</h3>
-                  <span className="text-xs text-slate-400 font-mono">{previewDoc.id}</span>
-                </div>
-              </div>
+            <div className="flex items-center justify-between pb-3">
+              <h3 className="font-extrabold text-slate-900 text-xl sm:text-2xl tracking-tight">
+                Document Details
+              </h3>
               <button
                 type="button"
                 onClick={() => setPreviewDoc(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+                className="p-2 rounded-xl border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Document Preview Details */}
-            <div className="py-6 space-y-4">
-              <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Document Type:</span>
-                  <span className="font-semibold text-slate-800">{previewDoc.type}</span>
+            {/* Document Preview Canvas Box */}
+            <div className="bg-[#EEF6FF] rounded-2xl p-4 sm:p-6 flex items-center justify-center my-4 overflow-hidden border border-blue-50/50">
+              {/* Rendered Document Sheet */}
+              <div className="bg-white rounded-sm shadow-md border border-slate-200/80 p-5 sm:p-6 w-full max-w-[340px] sm:max-w-[380px] text-[8px] sm:text-[9px] leading-tight text-slate-800 font-sans select-none">
+                {/* Invoice Top Bar */}
+                <div className="flex items-start justify-between pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3.5 h-3.5 border-2 border-[#FFC711] rotate-45 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-[#FFC711]" />
+                    </div>
+                    <span className="font-bold text-slate-800 text-[10px] tracking-tight">Brand Name</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-sm font-extrabold text-slate-900 tracking-wider">INVOICE</span>
+                    <div className="h-1 w-full bg-[#FFC711] mt-0.5" />
+                  </div>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Employer / Issuer:</span>
-                  <span className="font-semibold text-slate-800">{previewDoc.employer}</span>
+
+                {/* Recipient and Meta Info */}
+                <div className="grid grid-cols-2 gap-4 py-3 text-slate-600 text-[8px]">
+                  <div>
+                    <span className="font-bold text-slate-800 text-[8.5px] block mb-0.5">Invoice to:</span>
+                    <p className="font-semibold text-slate-700">Dayana Clark</p>
+                    <p className="text-slate-500 text-[7.5px] leading-snug">24 Dummy Street Area,<br />Location, Lorem Ipsum,<br />47000000</p>
+                  </div>
+                  <div className="text-right space-y-0.5">
+                    <div>
+                      <span className="font-bold text-slate-700">Invoice#</span>{' '}
+                      <span className="text-slate-500 font-mono">10148</span>
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-700">Date</span>{' '}
+                      <span className="text-slate-500">01 / 03 / 2025</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Employee / Recipient:</span>
-                  <span className="font-semibold text-slate-800">{previewDoc.employee}</span>
+
+                {/* Line Items Table */}
+                <div className="mt-1">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#2B2B2B] text-white font-bold text-[7.5px]">
+                        <th className="py-1 px-1.5 w-6">Sl.</th>
+                        <th className="py-1 px-1.5">Item Description</th>
+                        <th className="py-1 px-1.5 text-right">Price</th>
+                        <th className="py-1 px-1.5 text-center w-8">Qty</th>
+                        <th className="py-1 px-1.5 text-right">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-700 text-[7.5px]">
+                      <tr>
+                        <td className="py-1 px-1.5 text-slate-500">1</td>
+                        <td className="py-1 px-1.5 font-medium">Lorem Ipsum Dolor</td>
+                        <td className="py-1 px-1.5 text-right">$50.00</td>
+                        <td className="py-1 px-1.5 text-center">1</td>
+                        <td className="py-1 px-1.5 text-right font-medium">$50.00</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 px-1.5 text-slate-500">2</td>
+                        <td className="py-1 px-1.5 font-medium">Pellentesque id neque ligula</td>
+                        <td className="py-1 px-1.5 text-right">$20.00</td>
+                        <td className="py-1 px-1.5 text-center">3</td>
+                        <td className="py-1 px-1.5 text-right font-medium">$60.00</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 px-1.5 text-slate-500">3</td>
+                        <td className="py-1 px-1.5 font-medium">Interdum et malesuada fames</td>
+                        <td className="py-1 px-1.5 text-right">$15.00</td>
+                        <td className="py-1 px-1.5 text-center">2</td>
+                        <td className="py-1 px-1.5 text-right font-medium">$30.00</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 px-1.5 text-slate-500">4</td>
+                        <td className="py-1 px-1.5 font-medium">Vivamus volutpat faucibus</td>
+                        <td className="py-1 px-1.5 text-right">$80.00</td>
+                        <td className="py-1 px-1.5 text-center">1</td>
+                        <td className="py-1 px-1.5 text-right font-medium">$80.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Total Amount:</span>
-                  <span className="font-bold text-secondary text-base">{previewDoc.amount}</span>
+
+                {/* Totals & Notes Section */}
+                <div className="grid grid-cols-2 gap-4 mt-3 pt-2 text-[7.5px] border-t border-slate-100">
+                  <div className="space-y-1 text-slate-500 leading-snug">
+                    <p className="font-semibold text-slate-800">Thank you for your business</p>
+                    <p><strong className="text-slate-700">Terms & Conditions:</strong><br />Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Viverra dignissim pretium scelerisque.</p>
+                    <p><strong className="text-slate-700">Payment Info:</strong><br />Account No: 0000 0000 0000<br />A/C Name: Name Here<br />Bank Details: Bank Name Here</p>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-slate-600 px-1">
+                      <span>Sub Total:</span>
+                      <span className="font-semibold text-slate-800">$220.00</span>
+                    </div>
+                    <div className="flex justify-between text-slate-600 px-1">
+                      <span>Tax:</span>
+                      <span className="font-semibold text-slate-800">0.00%</span>
+                    </div>
+                    <div className="bg-[#FFC711] text-slate-900 font-extrabold px-2 py-1 rounded-xs flex justify-between text-[8.5px] mt-1 shadow-xs">
+                      <span>Total:</span>
+                      <span>$220.00</span>
+                    </div>
+                    <div className="pt-3 text-center">
+                      <div className="border-b border-slate-300 w-24 mx-auto mb-0.5" />
+                      <span className="text-[7px] text-slate-400 uppercase tracking-wider block">Authorized Sign</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Created Date:</span>
-                  <span className="font-medium text-slate-700">{previewDoc.date}</span>
+
+                {/* Footer Info line */}
+                <div className="mt-3 pt-1 border-t border-slate-100 flex justify-between text-[7px] text-slate-400">
+                  <span>Phone #</span>
+                  <span>Address</span>
+                  <span>Website</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Status:</span>
-                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600">
+              </div>
+            </div>
+
+            {/* Document Metadata Grid (Exact layout from Figma) */}
+            <div className="grid grid-cols-2 gap-y-4 gap-x-6 mt-5 px-1">
+              <div>
+                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  DOCUMENT NAME
+                </span>
+                <span className="block text-sm sm:text-[15px] font-bold text-slate-900 mt-1">
+                  {previewDoc.name}
+                </span>
+              </div>
+
+              <div>
+                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  CREATED
+                </span>
+                <span className="block text-sm sm:text-[15px] font-medium text-slate-700 mt-1">
+                  {previewDoc.date}
+                </span>
+              </div>
+
+              <div>
+                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  DOCUMENT ID
+                </span>
+                <span className="block text-sm sm:text-[15px] font-semibold text-slate-900 mt-1 font-mono">
+                  {previewDoc.id}
+                </span>
+              </div>
+
+              <div>
+                <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  STATUS
+                </span>
+                <div className="mt-1">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200/60">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     {previewDoc.status}
                   </span>
@@ -563,15 +685,14 @@ const FindPaystubsContent = () => {
               </div>
             </div>
 
-            {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+            {/* Modal Actions matching Figma buttons */}
+            <div className="flex items-center justify-end gap-3 pt-6 mt-4 border-t border-slate-100">
               <button
                 type="button"
-                onClick={() => window.print()}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition inline-flex items-center gap-1.5"
+                onClick={() => setPreviewDoc(null)}
+                className="px-6 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition cursor-pointer"
               >
-                <Printer className="w-4 h-4" />
-                <span>Print</span>
+                Back to Documents
               </button>
               <button
                 type="button"
@@ -579,9 +700,9 @@ const FindPaystubsContent = () => {
                   alert(`Downloading ${previewDoc.name} (${previewDoc.id}) PDF...`);
                   setPreviewDoc(null);
                 }}
-                className="px-5 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm inline-flex items-center gap-1.5"
+                className="px-6 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm inline-flex items-center gap-2 active:scale-98 cursor-pointer"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 stroke-[2.5]" />
                 <span>Download PDF</span>
               </button>
             </div>
