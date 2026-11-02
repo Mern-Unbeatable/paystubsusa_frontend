@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
+import DocumentDetailsModal from './DocumentDetailsModal';
 
 const CustomerOverview = ({ setActiveTab }) => {
   const navigate = useNavigate();
@@ -344,67 +345,16 @@ const CustomerOverview = ({ setActiveTab }) => {
         </div>
       </div>
 
-      {/* Document Quick Preview Modal */}
+      {/* Document Details Modal */}
       {selectedDoc && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-[#009BFB]" />
-                <h3 className="font-bold text-slate-900 text-sm">
-                  {selectedDoc.name}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedDoc(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="py-5 space-y-3 text-xs text-slate-600">
-              <div className="flex justify-between py-1 border-b border-slate-50">
-                <span className="text-slate-400">Document Reference</span>
-                <span className="font-mono font-semibold text-slate-800">{selectedDoc.id}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-50">
-                <span className="text-slate-400">Document Type</span>
-                <span className="font-semibold text-slate-800">{selectedDoc.type}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-50">
-                <span className="text-slate-400">Generated On</span>
-                <span className="font-semibold text-slate-800">{selectedDoc.date}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-50">
-                <span className="text-slate-400">Status</span>
-                <span className="font-semibold text-emerald-600">Completed &amp; Verified</span>
-              </div>
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  handleDownload(selectedDoc.name);
-                  setSelectedDoc(null);
-                }}
-                className="flex-1 py-2.5 px-3 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Download PDF</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedDoc(null)}
-                className="py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs transition cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
+        <DocumentDetailsModal
+          doc={selectedDoc}
+          onClose={() => setSelectedDoc(null)}
+          onDownload={(name) => {
+            handleDownload(name);
+            setSelectedDoc(null);
+          }}
+        />
       )}
     </div>
   );

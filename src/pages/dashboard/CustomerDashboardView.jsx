@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import DashboardLayout from '../../layout/DashboardLayout';
 import CustomerOverview from '../../Components/Dashboard/CustomerOverview';
+import MyDocumentsView from '../../Components/Dashboard/MyDocumentsView';
 import {
   FileText,
   CreditCard,
@@ -22,7 +23,6 @@ const CustomerDashboardView = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'overview';
   const [activeTab, setActiveTab] = useState(initialTab);
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,12 +37,6 @@ const CustomerDashboardView = () => {
     { id: 'PS-2025-0501', name: 'Paystub - February 2025', type: 'Paystub', date: 'Feb 28, 2025', status: 'Completed', amount: '$14.99' },
   ];
 
-  const filteredDocs = allDocuments.filter((doc) =>
-    doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doc.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doc.type.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
     <DashboardLayout
       role="customer"
@@ -54,99 +48,9 @@ const CustomerDashboardView = () => {
         <CustomerOverview setActiveTab={setActiveTab} />
       )}
 
-      {/* 2. My Documents Tab */}
+      {/* 2. My Documents Tab (Matching Figma Exactly) */}
       {activeTab === 'documents' && (
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                My Documents
-              </h1>
-              <p className="text-xs text-slate-500 mt-1">
-                Browse, search, view, and re-download all your generated tax and payroll documents.
-              </p>
-            </div>
-            <Link
-              to="/paystub-generator"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs sm:text-sm transition shadow-xs"
-            >
-              <FilePlus className="w-4 h-4" />
-              <span>Create New Document</span>
-            </Link>
-          </div>
-
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-5">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative flex-1 max-w-sm">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by name, ID or type..."
-                  className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#009BFB]/20 focus:border-[#009BFB]"
-                />
-              </div>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[650px]">
-                <thead>
-                  <tr className="border-b border-slate-100 text-[10.5px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50/40">
-                    <th className="py-3 px-4">Document Name</th>
-                    <th className="py-3 px-4">Type</th>
-                    <th className="py-3 px-4">Created Date</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-                  {filteredDocs.map((doc, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/60 transition">
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                            <FileText className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <div className="font-bold text-slate-900">{doc.name}</div>
-                            <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-600 font-medium">{doc.type}</td>
-                      <td className="py-3.5 px-4 text-slate-500 font-medium">{doc.date}</td>
-                      <td className="py-3.5 px-4">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          <span>{doc.status}</span>
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <div className="inline-flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => alert(`Viewing ${doc.name}`)}
-                            className="w-7 h-7 rounded-lg border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => alert(`Downloading ${doc.name} PDF...`)}
-                            className="w-7 h-7 rounded-lg border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
-                          >
-                            <Download className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <MyDocumentsView />
       )}
 
       {/* 3. Payment History Tab */}
