@@ -1,13 +1,25 @@
-import React, { Suspense, lazy } from 'react';
-import HeroSection from '../../../Components/Home/HeroSection';
-import FeaturesSection from '../../../Components/Home/FeaturesSection';
+import React, { Suspense, lazy } from "react";
+import HeroSection from "../../../Components/Home/HeroSection";
+import FeaturesSection from "../../../Components/Home/FeaturesSection";
 
-const DocumentsSection = lazy(() => import('../../../Components/Home/DocumentsSection'));
-const HowItWorksSection = lazy(() => import('../../../Components/Home/HowItWorksSection'));
-const SpecialOfferSection = lazy(() => import('../../../Components/Home/SpecialOfferSection'));
-const PricingSection = lazy(() => import('../../../Components/Home/PricingSection'));
-const WhyUsSection = lazy(() => import('../../../Components/Home/WhyUsSection'));
-const TestimonialsSection = lazy(() => import('../../../Components/Home/TestimonialsSection'));
+const DocumentsSection = lazy(
+  () => import("../../../Components/Home/DocumentsSection"),
+);
+const HowItWorksSection = lazy(
+  () => import("../../../Components/Home/HowItWorksSection"),
+);
+const SpecialOfferSection = lazy(
+  () => import("../../../Components/Home/SpecialOfferSection"),
+);
+const PricingSection = lazy(
+  () => import("../../../Components/Home/PricingSection"),
+);
+const WhyUsSection = lazy(
+  () => import("../../../Components/Home/WhyUsSection"),
+);
+const TestimonialsSection = lazy(
+  () => import("../../../Components/Home/TestimonialsSection"),
+);
 
 const sectionFallback = (
   <div className="py-12 flex items-center justify-center text-sm text-slate-500">
