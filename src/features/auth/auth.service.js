@@ -1,11 +1,6 @@
 import { clearAccessToken } from "../../api/tokenManager";
 import { ENV_CONFIG } from "../../config/env";
-import {
-  loginApi,
-  logoutApi,
-  registerApi,
-  restoreSessionApi,
-} from "./authApi";
+import { loginApi, logoutApi, registerApi, restoreSessionApi } from "./authApi";
 import {
   clearDemoAuthState,
   loginDemoByEmailAndPassword,
