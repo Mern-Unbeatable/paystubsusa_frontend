@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Check, Shield, FileText } from 'lucide-react';
-import gsap from 'gsap';
+import React, { useEffect, useRef } from "react";
+import { Check, Shield, FileText } from "lucide-react";
+import gsap from "gsap";
 
 const W2HeroSection = () => {
   const heroRef = useRef(null);
@@ -11,24 +11,24 @@ const W2HeroSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.fromTo(
         eyebrowRef.current,
         { opacity: 0, y: -12 },
-        { opacity: 1, y: 0, duration: 0.6, clearProps: 'transform' }
+        { opacity: 1, y: 0, duration: 0.6, clearProps: "transform" },
       )
         .fromTo(
           headingRef.current,
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, clearProps: 'transform' },
-          '-=0.35'
+          { opacity: 1, y: 0, duration: 0.7, clearProps: "transform" },
+          "-=0.35",
         )
         .fromTo(
           subtitleRef.current,
           { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.7, clearProps: 'transform' },
-          '-=0.4'
+          { opacity: 1, y: 0, duration: 0.7, clearProps: "transform" },
+          "-=0.4",
         )
         .fromTo(
           featuresRef.current?.children || [],
@@ -38,9 +38,9 @@ const W2HeroSection = () => {
             y: 0,
             duration: 0.6,
             stagger: 0.1,
-            clearProps: 'transform',
+            clearProps: "transform",
           },
-          '-=0.35'
+          "-=0.35",
         );
     }, heroRef);
 
@@ -50,15 +50,15 @@ const W2HeroSection = () => {
   const featureItems = [
     {
       icon: <Check className="w-4 h-4 text-secondary stroke-[2.5]" />,
-      text: 'Simple Form Process',
+      text: "Simple Form Process",
     },
     {
       icon: <Shield className="w-4 h-4 text-secondary stroke-[2]" />,
-      text: 'Secure Checkout',
+      text: "Secure Checkout",
     },
     {
       icon: <FileText className="w-4 h-4 text-secondary stroke-[2]" />,
-      text: 'PDF Document',
+      text: "PDF Document",
     },
   ];
 

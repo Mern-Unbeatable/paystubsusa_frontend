@@ -1,6 +1,6 @@
-import React from 'react';
-import DirectDepositHeroSection from '../../../Components/DirectDeposit/DirectDepositHeroSection';
-import DirectDepositGeneratorForm from '../../../Components/DirectDeposit/DirectDepositGeneratorForm';
+import React from "react";
+import DirectDepositHeroSection from "./components/sections/DirectDepositHeroSection";
+import DirectDepositGeneratorForm from "./components/sections/DirectDepositGeneratorForm";
 
 const DirectDepositView = () => {
   return (

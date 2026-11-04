@@ -1,5 +1,5 @@
-import React from 'react';
-import FindPaystubsContent from '../../../Components/FindPaystubs/FindPaystubsContent';
+import React from "react";
+import FindPaystubsContent from "./components/sections/FindPaystubsContent";
 
 const FindPaystubsView = () => {
   return (

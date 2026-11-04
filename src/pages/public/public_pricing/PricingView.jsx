@@ -1,6 +1,6 @@
-import React from 'react';
-import PricingHeroSection from '../../../Components/Pricing/PricingHeroSection';
-import PricingCardsSection from '../../../Components/Pricing/PricingCardsSection';
+import React from "react";
+import PricingHeroSection from "./components/sections/PricingHeroSection";
+import PricingCardsSection from "./components/sections/PricingCardsSection";
 
 const PricingView = () => {
   return (

@@ -1,54 +1,54 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
-import { Check, ChevronRight } from 'lucide-react';
+import React, { useState } from "react";
+import { Link } from "react-router";
+import { Check, ChevronRight } from "lucide-react";
 
 const PricingCardsSection = () => {
-  const [billingType, setBillingType] = useState('one-time'); // 'one-time' | 'monthly'
+  const [billingType, setBillingType] = useState("one-time"); // 'one-time' | 'monthly'
 
   const oneTimeCards = [
     {
-      id: 'paystub',
-      name: 'Single Paystub',
-      price: '$12.99',
-      feature: 'Generate 1 professional paystub',
-      btnText: 'Create Paystub',
-      btnLink: '/paystub-generator',
+      id: "paystub",
+      name: "Single Paystub",
+      price: "$12.99",
+      feature: "Generate 1 professional paystub",
+      btnText: "Create Paystub",
+      btnLink: "/paystub-generator",
       isPopular: false,
     },
     {
-      id: 'paystub-3',
-      name: '3 Paystub Package',
-      price: '$24.99',
-      feature: 'Generate 3 paystubs - Save 35%',
-      btnText: 'Get 3 Paystubs',
-      btnLink: '/paystub-generator',
+      id: "paystub-3",
+      name: "3 Paystub Package",
+      price: "$24.99",
+      feature: "Generate 3 paystubs - Save 35%",
+      btnText: "Get 3 Paystubs",
+      btnLink: "/paystub-generator",
       isPopular: true,
     },
     {
-      id: 'w2',
-      name: 'W-2 Document',
-      price: '$14.99',
-      feature: 'Create a professional W-2 PDF',
-      btnText: 'Create W-2',
-      btnLink: '/w-2',
+      id: "w2",
+      name: "W-2 Document",
+      price: "$14.99",
+      feature: "Create a professional W-2 PDF",
+      btnText: "Create W-2",
+      btnLink: "/w-2",
       isPopular: false,
     },
     {
-      id: '1099',
-      name: '1099-NEC',
-      price: '$14.99',
-      feature: 'Create a professional 1099-NEC PDF',
-      btnText: 'Create 1099',
-      btnLink: '/1099-nec',
+      id: "1099",
+      name: "1099-NEC",
+      price: "$14.99",
+      feature: "Create a professional 1099-NEC PDF",
+      btnText: "Create 1099",
+      btnLink: "/1099-nec",
       isPopular: false,
     },
     {
-      id: 'direct-deposit',
-      name: 'Direct Deposit Slip',
-      price: '$20.99',
-      feature: 'Create a professional deposit slip',
-      btnText: 'Create Slip',
-      btnLink: '/direct-deposit',
+      id: "direct-deposit",
+      name: "Direct Deposit Slip",
+      price: "$20.99",
+      feature: "Create a professional deposit slip",
+      btnText: "Create Slip",
+      btnLink: "/direct-deposit",
       isPopular: false,
     },
   ];
@@ -75,7 +75,8 @@ const PricingCardsSection = () => {
                 Get 3 Paystubs for $24.99
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1">
-                Three professional paystubs. Each additional paystub costs $7.99.
+                Three professional paystubs. Each additional paystub costs
+                $7.99.
               </p>
             </div>
           </div>
@@ -97,22 +98,22 @@ const PricingCardsSection = () => {
           <div className="bg-[#EAF2FA] p-1 sm:p-1.5 rounded-xl inline-flex gap-1 border border-slate-200/60 shadow-xs">
             <button
               type="button"
-              onClick={() => setBillingType('one-time')}
+              onClick={() => setBillingType("one-time")}
               className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
-                billingType === 'one-time'
-                  ? 'bg-white text-secondary shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                billingType === "one-time"
+                  ? "bg-white text-secondary shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               One-Time Purchase
             </button>
             <button
               type="button"
-              onClick={() => setBillingType('monthly')}
+              onClick={() => setBillingType("monthly")}
               className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
-                billingType === 'monthly'
-                  ? 'bg-white text-secondary shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                billingType === "monthly"
+                  ? "bg-white text-secondary shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               Monthly Subscription
@@ -121,7 +122,7 @@ const PricingCardsSection = () => {
         </div>
 
         {/* Dynamic Content based on selected toggle */}
-        {billingType === 'one-time' ? (
+        {billingType === "one-time" ? (
           /* One-Time Purchase Grid: 6 Cards */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch">
             {oneTimeCards.map((card) => {
@@ -137,7 +138,9 @@ const PricingCardsSection = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-base font-semibold text-slate-800">{card.name}</h3>
+                      <h3 className="text-base font-semibold text-slate-800">
+                        {card.name}
+                      </h3>
                       <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-4 tracking-tight">
                         {card.price}
                       </div>
@@ -165,7 +168,9 @@ const PricingCardsSection = () => {
                   className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-shadow p-6 sm:p-7 flex flex-col justify-between"
                 >
                   <div>
-                    <h3 className="text-base font-semibold text-slate-800">{card.name}</h3>
+                    <h3 className="text-base font-semibold text-slate-800">
+                      {card.name}
+                    </h3>
                     <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-4 tracking-tight">
                       {card.price}
                     </div>
@@ -224,7 +229,9 @@ const PricingCardsSection = () => {
                 <span className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
                   $199
                 </span>
-                <span className="text-slate-300 text-base font-normal">/ month</span>
+                <span className="text-slate-300 text-base font-normal">
+                  / month
+                </span>
               </div>
 
               {/* Thin Divider Line */}

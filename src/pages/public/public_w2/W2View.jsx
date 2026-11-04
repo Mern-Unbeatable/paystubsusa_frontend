@@ -1,6 +1,6 @@
-import React from 'react';
-import W2HeroSection from '../../../Components/W2/W2HeroSection';
-import W2GeneratorForm from '../../../Components/W2/W2GeneratorForm';
+import React from "react";
+import W2HeroSection from "./components/sections/W2HeroSection";
+import W2GeneratorForm from "./components/sections/W2GeneratorForm";
 
 const W2View = () => {
   return (

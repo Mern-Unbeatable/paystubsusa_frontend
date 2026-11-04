@@ -1,6 +1,6 @@
-import React from 'react';
-import Nec1099HeroSection from '../../../Components/Nec1099/Nec1099HeroSection';
-import Nec1099GeneratorForm from '../../../Components/Nec1099/Nec1099GeneratorForm';
+import React from "react";
+import Nec1099HeroSection from "./components/sections/Nec1099HeroSection";
+import Nec1099GeneratorForm from "./components/sections/Nec1099GeneratorForm";
 
 const Nec1099View = () => {
   return (
