@@ -26,4 +26,3 @@ export function writeDemoSession(userKey) {
 export function clearDemoSession() {
   localStorage.removeItem(AUTH_STORAGE_KEYS.demoSessionUser);
 }
-

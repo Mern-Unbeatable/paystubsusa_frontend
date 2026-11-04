@@ -38,12 +38,26 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(bootstrapAuth.fulfilled, (state, action) => {
+        if (state.status === "authenticated" && !action.payload?.user) {
+          state.loading = false;
+          state.error = null;
+          return;
+        }
+
         state.user = action.payload?.user || null;
         state.loading = false;
-        state.status = action.payload?.user ? "authenticated" : "unauthenticated";
+        state.status = action.payload?.user
+          ? "authenticated"
+          : "unauthenticated";
         state.error = null;
       })
       .addCase(bootstrapAuth.rejected, (state, action) => {
+        if (state.status === "authenticated") {
+          state.loading = false;
+          state.error = null;
+          return;
+        }
+
         state.user = null;
         state.loading = false;
         state.status = "unauthenticated";
@@ -76,17 +90,27 @@ const authSlice = createSlice({
         },
       )
       .addMatcher(
-        isAnyOf(loginUser.fulfilled, registerUser.fulfilled, loginAsDemoUser.fulfilled),
+        isAnyOf(
+          loginUser.fulfilled,
+          registerUser.fulfilled,
+          loginAsDemoUser.fulfilled,
+        ),
         (state, action) => {
           state.user = action.payload?.user || null;
           state.loading = false;
-          state.status = action.payload?.user ? "authenticated" : "unauthenticated";
+          state.status = action.payload?.user
+            ? "authenticated"
+            : "unauthenticated";
           state.error = null;
           state.logoutReason = null;
         },
       )
       .addMatcher(
-        isAnyOf(loginUser.rejected, registerUser.rejected, loginAsDemoUser.rejected),
+        isAnyOf(
+          loginUser.rejected,
+          registerUser.rejected,
+          loginAsDemoUser.rejected,
+        ),
         (state, action) => {
           state.loading = false;
           state.status = "unauthenticated";

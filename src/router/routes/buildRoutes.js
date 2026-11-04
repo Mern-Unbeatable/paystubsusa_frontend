@@ -1,15 +1,10 @@
 // router/buildRoutes.js
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { PublicLayout, AuthLayout, DashboardLayout } from "../layouts";
-import { RequireAuth, RequireAdmin, RequireGuest } from "./guard";
-import {
-  publicRoutes,
-  authRoutes,
-  customerRoutes,
-  adminRoutes,
-} from "./routes";
-import { ALIASES } from "./config/paths";
+import { PublicLayout, AuthLayout, DashboardLayout } from "../../layouts";
+import { RequireAuth, RequireAdmin, RequireGuest } from "../guard";
+import { publicRoutes, authRoutes, customerRoutes, adminRoutes } from ".";
+import { ALIASES } from "../config/paths";
 
 const redirectRoutes = Object.entries(ALIASES).map(([from, to]) => ({
   path: from,
