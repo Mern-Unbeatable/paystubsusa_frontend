@@ -17,21 +17,21 @@ const AuthInvoicePreview = lazy(() =>
 
 const LoginView = () => {
   const navigate = useNavigate();
-  const { loginAs } = useAuth();
+  const { login, loginAs, loading, error: authError } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
+
+  const errorMessage = formError || authError?.message || "";
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleDemoLogin = (role) => {
-    setError("");
-    setLoading(true);
+  const handleDemoLogin = async (role) => {
+    setFormError("");
 
     const targetRole = role === "admin" ? "admin" : "customer";
 
@@ -43,32 +43,31 @@ const LoginView = () => {
       setPassword("password123");
     }
 
-    setTimeout(() => {
-      loginAs(targetRole);
-      setLoading(false);
-      navigate(role === "admin" ? "/admin" : "/dashboard");
-    }, 400);
+    try {
+      const result = await loginAs(targetRole);
+      const nextRole = result?.user?.role === "admin" ? "admin" : "customer";
+      navigate(nextRole === "admin" ? "/admin" : "/dashboard");
+    } catch (error) {
+      setFormError(error?.message || "Unable to log in with demo account.");
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setFormError("");
 
     if (!email || !password) {
-      setError("Please enter your email and password");
+      setFormError("Please enter your email and password");
       return;
     }
 
-    setLoading(true);
-
-    setTimeout(() => {
-      const targetRole = email.toLowerCase().includes("admin")
-        ? "admin"
-        : "customer";
-      loginAs(targetRole);
-      setLoading(false);
-      navigate(targetRole === "admin" ? "/admin" : "/dashboard");
-    }, 500);
+    try {
+      const result = await login({ email, password, rememberMe });
+      const nextRole = result?.user?.role === "admin" ? "admin" : "customer";
+      navigate(nextRole === "admin" ? "/admin" : "/dashboard");
+    } catch (error) {
+      setFormError(error?.message || "Unable to sign in. Please try again.");
+    }
   };
 
   return (
@@ -123,9 +122,9 @@ const LoginView = () => {
           </div>
 
           {/* Error Banner */}
-          {error && (
+          {errorMessage && (
             <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 text-center">
-              {error}
+              {errorMessage}
             </div>
           )}
 

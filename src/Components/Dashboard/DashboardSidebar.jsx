@@ -28,8 +28,12 @@ const DashboardSidebar = ({
 
   const effectiveRole = role || user?.role || 'customer';
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      // State is still cleared for secure local logout even if API logout fails.
+    }
     navigate('/login');
   };
 

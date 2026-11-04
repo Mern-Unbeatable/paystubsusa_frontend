@@ -1,10 +1,17 @@
 import "./index.css";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import { AuthProvider } from "./hooks/useAuth";
+import { bootstrapAuth } from "./features/auth/authThunks";
 import { router } from "./router";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(bootstrapAuth());
+  }, [dispatch]);
+
   useEffect(() => {
     const preloadAuthRoutes = () => {
       import("./pages/auth/LoginView");
@@ -22,11 +29,7 @@ function App() {
     return () => window.clearTimeout(timeoutId);
   }, []);
 
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

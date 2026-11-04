@@ -1,53 +1,53 @@
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+  selectAuthError,
+  selectAuthLoading,
+  selectAuthStatus,
+  selectAuthUser,
+  selectIsAuthenticated,
+} from "../features/auth/authSelectors";
 import {
-  readSession,
-  writeSession,
-  clearSession,
-} from "../router/server/session.server";
-
-const AuthContext = createContext(null);
-
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setUser(readSession());
-    setLoading(false);
-  }, []);
-
-  const loginAs = useCallback((userKey) => {
-    const sessionUser = writeSession(userKey);
-    setUser(sessionUser);
-    return sessionUser;
-  }, []);
-
-  const logout = useCallback(() => {
-    clearSession();
-    setUser(null);
-  }, []);
-
-  const value = useMemo(
-    () => ({ user, loading, loginAs, logout }),
-    [user, loading, loginAs, logout],
-  );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+  loginAsDemoUser,
+  loginUser,
+  logoutUser,
+  registerUser,
+} from "../features/auth/authThunks";
 
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const user = useSelector(selectAuthUser);
+  const loading = useSelector(selectAuthLoading);
+  const status = useSelector(selectAuthStatus);
+  const error = useSelector(selectAuthError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
-  if (!context) {
-    throw new Error("useAuth must be used inside <AuthProvider>");
-  }
+  const login = useCallback(
+    (credentials) => dispatch(loginUser(credentials)).unwrap(),
+    [dispatch],
+  );
 
-  return context;
+  const register = useCallback(
+    (payload) => dispatch(registerUser(payload)).unwrap(),
+    [dispatch],
+  );
+
+  const loginAs = useCallback(
+    (userKey) => dispatch(loginAsDemoUser(userKey)).unwrap(),
+    [dispatch],
+  );
+
+  const logout = useCallback(() => dispatch(logoutUser()).unwrap(), [dispatch]);
+
+  return {
+    user,
+    loading,
+    status,
+    error,
+    isAuthenticated,
+    login,
+    register,
+    loginAs,
+    logout,
+  };
 }

@@ -10,41 +10,46 @@ const AuthInvoicePreview = lazy(() =>
 
 const RegisterView = () => {
   const navigate = useNavigate();
-  const { loginAs } = useAuth();
+  const { register, loading, error: authError } = useAuth();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
+
+  const errorMessage = formError || authError?.message || "";
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setFormError("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setFormError("Passwords do not match");
       return;
     }
 
     if (!agreed) {
-      setError("Please accept the Terms & Conditions");
+      setFormError("Please accept the Terms & Conditions");
       return;
     }
 
-    setLoading(true);
-
-    setTimeout(() => {
-      loginAs("customer");
-      setLoading(false);
-      navigate("/dashboard");
-    }, 500);
+    try {
+      const result = await register({
+        name: fullName,
+        email,
+        password,
+      });
+      const nextRole = result?.user?.role === "admin" ? "admin" : "customer";
+      navigate(nextRole === "admin" ? "/admin" : "/dashboard");
+    } catch (error) {
+      setFormError(error?.message || "Unable to create your account.");
+    }
   };
 
   return (
@@ -98,9 +103,9 @@ const RegisterView = () => {
             </p>
           </div>
 
-          {error && (
+          {errorMessage && (
             <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 text-center">
-              {error}
+              {errorMessage}
             </div>
           )}
 
