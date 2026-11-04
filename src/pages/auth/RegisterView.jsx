@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
@@ -20,10 +20,6 @@ const RegisterView = () => {
   const [formError, setFormError] = useState("");
 
   const errorMessage = formError || authError?.message || "";
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

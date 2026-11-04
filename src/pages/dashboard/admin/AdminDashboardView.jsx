@@ -1,114 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router';
-import DashboardLayout from '../../../layout/DashboardLayout';
-import DashboardHeader from '../../../Components/Dashboard/DashboardHeader';
-import DashboardTable, { DashboardStatusBadge } from '../../../Components/Dashboard/DashboardTable';
+import React, { useState } from "react";
+import { Link, useSearchParams } from "react-router";
+import DashboardLayout from "../../../layout/DashboardLayout";
+import DashboardHeader from "../../../Components/Dashboard/DashboardHeader";
+import DashboardTable, {
+  DashboardStatusBadge,
+} from "../../../Components/Dashboard/DashboardTable";
 import {
   FileText,
-  LayoutGrid,
   CreditCard,
-  Star,
   Users,
   FilePlus,
   Eye,
   Download,
   ArrowRight,
-  TrendingUp,
   ShieldCheck,
-  Search
-} from 'lucide-react';
+} from "lucide-react";
 
 const AdminDashboardView = () => {
   const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get('tab') || 'overview';
+  const initialTab = searchParams.get("tab") || "overview";
   const [activeTab, setActiveTab] = useState(initialTab);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [activeTab]);
 
   const adminStats = [
     {
-      title: 'Total Revenue',
-      value: '$24,850',
-      change: '+14% from last month',
+      title: "Total Revenue",
+      value: "$24,850",
+      change: "+14% from last month",
       icon: CreditCard,
     },
     {
-      title: 'Total Documents',
-      value: '1,420',
-      change: 'All user generated files',
+      title: "Total Documents",
+      value: "1,420",
+      change: "All user generated files",
       icon: FileText,
     },
     {
-      title: 'Active Customers',
-      value: '382',
-      change: '88% active this week',
+      title: "Active Customers",
+      value: "382",
+      change: "88% active this week",
       icon: Users,
     },
     {
-      title: 'System Status',
-      value: 'Optimal',
-      change: '99.98% calculation uptime',
+      title: "System Status",
+      value: "Optimal",
+      change: "99.98% calculation uptime",
       icon: ShieldCheck,
     },
   ];
 
   const adminRecentDocs = [
     {
-      id: 'DOC-2025-9921',
-      user: 'Sarah Jenkins',
-      name: 'Paystub - May 2025',
-      type: 'Paystub',
-      date: 'May 28, 2025',
-      status: 'Completed',
+      id: "DOC-2025-9921",
+      user: "Sarah Jenkins",
+      name: "Paystub - May 2025",
+      type: "Paystub",
+      date: "May 28, 2025",
+      status: "Completed",
     },
     {
-      id: 'DOC-2025-9920',
-      user: 'Michael Chang',
-      name: 'W-2 Form - 2024',
-      type: 'W-2',
-      date: 'May 28, 2025',
-      status: 'Completed',
+      id: "DOC-2025-9920",
+      user: "Michael Chang",
+      name: "W-2 Form - 2024",
+      type: "W-2",
+      date: "May 28, 2025",
+      status: "Completed",
     },
     {
-      id: 'DOC-2025-9919',
-      user: 'Atik Adnan',
-      name: 'Paystub - May 2025',
-      type: 'Paystub',
-      date: 'May 28, 2025',
-      status: 'Completed',
+      id: "DOC-2025-9919",
+      user: "Atik Adnan",
+      name: "Paystub - May 2025",
+      type: "Paystub",
+      date: "May 28, 2025",
+      status: "Completed",
     },
   ];
 
   const adminRecentPayments = [
     {
-      id: 'TXN-984021',
-      user: 'Sarah Jenkins',
-      description: 'Paystub - May 2025',
-      date: 'May 28, 2025',
-      method: 'Visa **** 4821',
-      amount: '$14.99',
-      status: 'Successful',
+      id: "TXN-984021",
+      user: "Sarah Jenkins",
+      description: "Paystub - May 2025",
+      date: "May 28, 2025",
+      method: "Visa **** 4821",
+      amount: "$14.99",
+      status: "Successful",
     },
     {
-      id: 'TXN-984020',
-      user: 'Michael Chang',
-      description: 'W-2 Form - 2024',
-      date: 'May 28, 2025',
-      method: 'Mastercard **** 8820',
-      amount: '$19.99',
-      status: 'Successful',
+      id: "TXN-984020",
+      user: "Michael Chang",
+      description: "W-2 Form - 2024",
+      date: "May 28, 2025",
+      method: "Mastercard **** 8820",
+      amount: "$19.99",
+      status: "Successful",
     },
     {
-      id: 'TXN-984019',
-      user: 'Atik Adnan',
-      description: 'Paystub - May 2025',
-      date: 'May 28, 2025',
-      method: 'Visa **** 4821',
-      amount: '$14.99',
-      status: 'Successful',
+      id: "TXN-984019",
+      user: "Atik Adnan",
+      description: "Paystub - May 2025",
+      date: "May 28, 2025",
+      method: "Visa **** 4821",
+      amount: "$14.99",
+      status: "Successful",
     },
   ];
 
@@ -185,46 +178,52 @@ const AdminDashboardView = () => {
           minWidth="min-w-[700px]"
           columns={[
             {
-              header: 'Document Name',
+              header: "Document Name",
               render: (doc) => (
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                    <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                    <div className="font-bold text-slate-900 text-xs">
+                      {doc.name}
+                    </div>
+                    <div className="text-[10.5px] text-slate-400 font-mono">
+                      {doc.id}
+                    </div>
                   </div>
                 </div>
               ),
             },
             {
-              header: 'User',
-              key: 'user',
-              cellClassName: 'font-medium text-slate-800',
+              header: "User",
+              key: "user",
+              cellClassName: "font-medium text-slate-800",
             },
             {
-              header: 'Document Type',
-              key: 'type',
-              cellClassName: 'text-slate-600 font-medium',
+              header: "Document Type",
+              key: "type",
+              cellClassName: "text-slate-600 font-medium",
             },
             {
-              header: 'Created Date',
-              key: 'date',
-              cellClassName: 'text-slate-500 font-medium',
+              header: "Created Date",
+              key: "date",
+              cellClassName: "text-slate-500 font-medium",
             },
             {
-              header: 'Status',
+              header: "Status",
               render: (doc) => <DashboardStatusBadge status={doc.status} />,
             },
             {
-              header: 'Action',
-              align: 'right',
+              header: "Action",
+              align: "right",
               render: (doc) => (
                 <div className="inline-flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => alert(`Reviewing ${doc.name} for ${doc.user}`)}
+                    onClick={() =>
+                      alert(`Reviewing ${doc.name} for ${doc.user}`)
+                    }
                     className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
                   >
                     <Eye className="w-3.5 h-3.5" />
@@ -249,38 +248,41 @@ const AdminDashboardView = () => {
           minWidth="min-w-[700px]"
           columns={[
             {
-              header: 'Transaction ID',
-              key: 'id',
-              cellClassName: 'font-mono font-semibold text-slate-800 text-[11px]',
+              header: "Transaction ID",
+              key: "id",
+              cellClassName:
+                "font-mono font-semibold text-slate-800 text-[11px]",
             },
             {
-              header: 'User',
-              key: 'user',
-              cellClassName: 'font-medium text-slate-800',
+              header: "User",
+              key: "user",
+              cellClassName: "font-medium text-slate-800",
             },
             {
-              header: 'Description',
-              key: 'description',
-              cellClassName: 'font-medium text-slate-700',
+              header: "Description",
+              key: "description",
+              cellClassName: "font-medium text-slate-700",
             },
             {
-              header: 'Date',
-              key: 'date',
-              cellClassName: 'text-slate-500 font-medium',
+              header: "Date",
+              key: "date",
+              cellClassName: "text-slate-500 font-medium",
             },
             {
-              header: 'Method',
-              key: 'method',
-              cellClassName: 'text-slate-600 font-medium',
+              header: "Method",
+              key: "method",
+              cellClassName: "text-slate-600 font-medium",
             },
             {
-              header: 'Amount',
-              key: 'amount',
-              cellClassName: 'font-bold text-slate-900',
+              header: "Amount",
+              key: "amount",
+              cellClassName: "font-bold text-slate-900",
             },
             {
-              header: 'Status',
-              render: (payment) => <DashboardStatusBadge status={payment.status} />,
+              header: "Status",
+              render: (payment) => (
+                <DashboardStatusBadge status={payment.status} />
+              ),
             },
           ]}
           data={adminRecentPayments}

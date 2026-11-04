@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import {
   ArrowLeft,
@@ -25,10 +25,6 @@ const LoginView = () => {
   const [formError, setFormError] = useState("");
 
   const errorMessage = formError || authError?.message || "";
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleDemoLogin = async (role) => {
     setFormError("");

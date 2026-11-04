@@ -21,10 +21,6 @@ const CustomerDashboardView = () => {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [activeTab]);
-
   return (
     <DashboardLayout
       role="customer"

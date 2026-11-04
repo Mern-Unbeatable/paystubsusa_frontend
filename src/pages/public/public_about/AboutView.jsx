@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowRight, FileText, Plus, Minus, Check } from 'lucide-react';
 
 const AboutView = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   const toggleFaq = (index) => {
