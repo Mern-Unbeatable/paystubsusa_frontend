@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router';
-import logoImg from '../../assets/logo.png';
-import atikAvatar from '../../assets/atik_avatar.png';
-import { useAuth } from '../../hooks/useAuth';
+import logoImg from '../../../assets/logo.png';
+import atikAvatar from '../../../assets/atik_avatar.png';
+import { useAuth } from '../../../hooks/useAuth';
 import {
   LayoutGrid,
   FileText,

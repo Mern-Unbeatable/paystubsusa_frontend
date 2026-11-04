@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
-import DashboardHeader from './DashboardHeader';
+import { DashboardHeader } from '../../shared';
 
 const ProfileView = () => {
   const [name, setName] = useState('John Doe');

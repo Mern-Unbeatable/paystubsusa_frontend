@@ -12,9 +12,8 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
-import DocumentDetailsModal from './DocumentDetailsModal';
-import DashboardHeader from './DashboardHeader';
-import DashboardTable, { DashboardStatusBadge } from './DashboardTable';
+import { DocumentDetailsModal } from '../components/modals';
+import { DashboardHeader, DashboardTable, DashboardStatusBadge } from '../../shared';
 
 const CustomerOverview = ({ setActiveTab }) => {
   const navigate = useNavigate();

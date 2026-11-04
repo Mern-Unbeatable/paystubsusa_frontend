@@ -1,13 +1,12 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import DashboardLayout from '../../../layout/DashboardLayout';
-import CustomerOverview from './components/tabs/CustomerOverview';
-
-const MyDocumentsView = lazy(() => import('./components/tabs/MyDocumentsView'));
-const PaymentHistoryView = lazy(() => import('./components/tabs/PaymentHistoryView'));
-const SubscriptionView = lazy(() => import('./components/tabs/SubscriptionView'));
-const HelpCenterView = lazy(() => import('./components/tabs/HelpCenterView'));
-const ProfileView = lazy(() => import('./components/tabs/ProfileView'));
+import CustomerOverview from './CustomerOverview';
+import MyDocumentsView from './MyDocumentsView';
+import PaymentHistoryView from './PaymentHistoryView';
+import SubscriptionView from './SubscriptionView';
+import HelpCenterView from './HelpCenterView';
+import ProfileView from './ProfileView';
 
 const CustomerDashboardView = () => {
   const [searchParams] = useSearchParams();
@@ -27,44 +26,34 @@ const CustomerDashboardView = () => {
       activeTab={activeTab}
       setActiveTab={setActiveTab}
     >
-      {/* 1. Overview Tab (The exact Figma layout) */}
+      {/* 1. Overview Tab */}
       {activeTab === 'overview' && (
         <CustomerOverview setActiveTab={setActiveTab} />
       )}
 
-      {/* 2. My Documents Tab (Matching Figma Exactly) */}
+      {/* 2. My Documents Tab */}
       {activeTab === 'documents' && (
-        <Suspense fallback={<div className="py-12 text-sm text-slate-500 text-center">Loading documents…</div>}>
-          <MyDocumentsView />
-        </Suspense>
+        <MyDocumentsView />
       )}
 
-      {/* 3. Payment History Tab (Matching Figma Exactly) */}
+      {/* 3. Payment History Tab */}
       {activeTab === 'payments' && (
-        <Suspense fallback={<div className="py-12 text-sm text-slate-500 text-center">Loading payment history…</div>}>
-          <PaymentHistoryView />
-        </Suspense>
+        <PaymentHistoryView />
       )}
 
-      {/* 4. Subscription Tab (Matching Figma Exactly) */}
+      {/* 4. Subscription Tab */}
       {activeTab === 'subscription' && (
-        <Suspense fallback={<div className="py-12 text-sm text-slate-500 text-center">Loading subscription details…</div>}>
-          <SubscriptionView />
-        </Suspense>
+        <SubscriptionView />
       )}
 
-      {/* 5. Help Center Tab (Matching Figma Exactly) */}
+      {/* 5. Help Center Tab */}
       {activeTab === 'help' && (
-        <Suspense fallback={<div className="py-12 text-sm text-slate-500 text-center">Loading help center…</div>}>
-          <HelpCenterView />
-        </Suspense>
+        <HelpCenterView />
       )}
 
-      {/* 6. Profile Tab (Matching Figma Exactly) */}
+      {/* 6. Profile Tab */}
       {activeTab === 'profile' && (
-        <Suspense fallback={<div className="py-12 text-sm text-slate-500 text-center">Loading profile…</div>}>
-          <ProfileView />
-        </Suspense>
+        <ProfileView />
       )}
     </DashboardLayout>
   );

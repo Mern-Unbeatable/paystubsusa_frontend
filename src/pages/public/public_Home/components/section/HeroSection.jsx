@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import heroImg from '../../assets/herosection.png';
+import heroImg from '../../../../../assets/herosection.png';
 import gsap from 'gsap';
 
 const HeroSection = () => {

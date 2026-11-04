@@ -1,12 +1,12 @@
 import React from "react";
-import HeroSection from "../../../Components/Home/HeroSection";
-import FeaturesSection from "../../../Components/Home/FeaturesSection";
-import DocumentsSection from "../../../Components/Home/DocumentsSection";
-import HowItWorksSection from "../../../Components/Home/HowItWorksSection";
-import SpecialOfferSection from "../../../Components/Home/SpecialOfferSection";
-import PricingSection from "../../../Components/Home/PricingSection";
-import WhyUsSection from "../../../Components/Home/WhyUsSection";
-import TestimonialsSection from "../../../Components/Home/TestimonialsSection";
+import HeroSection from "./components/section/HeroSection";
+import FeaturesSection from "./components/section/FeaturesSection";
+import DocumentsSection from "./components/section/DocumentsSection";
+import HowItWorksSection from "./components/section/HowItWorksSection";
+import SpecialOfferSection from "./components/section/SpecialOfferSection";
+import PricingSection from "./components/section/PricingSection";
+import WhyUsSection from "./components/section/WhyUsSection";
+import TestimonialsSection from "./components/section/TestimonialsSection";
 
 const HomeView = () => {
   return (
