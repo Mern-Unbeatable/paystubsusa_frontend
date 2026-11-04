@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronRight, ArrowRight } from 'lucide-react';
-import { DashboardHeader } from '../../shared';
+import { DashboardHeader } from '../../../../components/Dashboard';
 
 const FAQS = [
   {

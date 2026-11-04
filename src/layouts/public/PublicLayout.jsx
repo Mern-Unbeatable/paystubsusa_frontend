@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router';
-import NavbarLayout from './NavbarLayout';
-import FooterLayout from './FooterLayout';
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router";
+import NavbarLayout from "../navigation/public/NavbarLayout";
+import FooterLayout from "../navigation/public/FooterLayout";
 
-const RootLayout = () => {
+const PublicLayout = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
 
   return (
@@ -21,4 +21,4 @@ const RootLayout = () => {
   );
 };
 
-export default RootLayout;
+export default PublicLayout;

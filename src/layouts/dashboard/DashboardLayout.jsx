@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router';
-import { Menu } from 'lucide-react';
-import logoImg from '../assets/logo.png';
-import { DashboardSidebar } from '../pages/dashboard/shared';
+import React, { useState } from "react";
+import { Outlet, Link } from "react-router";
+import { Menu } from "lucide-react";
+import logoImg from "../../assets/logo.png";
+import DashboardSidebar from "../navigation/dash/DashboardSidebar";
 
-const DashboardLayout = ({ role = 'customer', children, activeTab, setActiveTab }) => {
+const DashboardLayout = ({ role = "customer" }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -12,8 +12,6 @@ const DashboardLayout = ({ role = 'customer', children, activeTab, setActiveTab 
       {/* Sidebar */}
       <DashboardSidebar
         role={role}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
       />
@@ -46,7 +44,7 @@ const DashboardLayout = ({ role = 'customer', children, activeTab, setActiveTab 
 
         {/* Content Body */}
         <main className="flex-1 p-6 sm:p-8 w-full">
-          {children || <Outlet />}
+          <Outlet />
         </main>
       </div>
     </div>

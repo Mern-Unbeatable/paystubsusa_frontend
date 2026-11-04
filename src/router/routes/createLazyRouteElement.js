@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-import LazyRouteErrorBoundary from "./loading/LazyRouteErrorBoundary";
-import RouteLoadingFallback from "./loading/RouteLoadingFallback";
+import LazyRouteErrorBoundary from "../loading/LazyRouteErrorBoundary";
+import RouteLoadingFallback from "../loading/RouteLoadingFallback";
 
 export function createLazyRouteElement(LazyComponent, options = {}) {
   const { compactFallback = false } = options;

@@ -1,7 +1,7 @@
 // router/buildRoutes.js
 import React from "react";
 import { Navigate } from "react-router-dom";
-import RootLayout from "../layout/RootLayout";
+import { PublicLayout, AuthLayout } from "../layouts";
 import { RequireAuth, RequireAdmin, RequireGuest } from "./guard";
 import {
   publicRoutes,
@@ -19,12 +19,17 @@ const redirectRoutes = Object.entries(ALIASES).map(([from, to]) => ({
 export const routeConfig = [
   {
     path: "/",
-    element: React.createElement(RootLayout),
+    element: React.createElement(PublicLayout),
     children: publicRoutes,
   },
   {
     element: React.createElement(RequireGuest),
-    children: authRoutes,
+    children: [
+      {
+        element: React.createElement(AuthLayout),
+        children: authRoutes,
+      },
+    ],
   },
   {
     element: React.createElement(RequireAuth),

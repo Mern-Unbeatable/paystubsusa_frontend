@@ -13,9 +13,10 @@ import {
   X
 } from 'lucide-react';
 import { DocumentDetailsModal } from '../components/modals';
-import { DashboardHeader, DashboardTable, DashboardStatusBadge } from '../../shared';
+import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
+import { DashboardStatusBadge } from '../../../../layouts';
 
-const CustomerOverview = ({ setActiveTab }) => {
+const CustomerOverview = () => {
   const navigate = useNavigate();
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadSuccess, setDownloadSuccess] = useState(null);
@@ -165,14 +166,13 @@ const CustomerOverview = ({ setActiveTab }) => {
         title="Recent Documents"
         minWidth="min-w-[600px]"
         headerAction={
-          <button
-            type="button"
-            onClick={() => setActiveTab && setActiveTab('documents')}
-            className="text-xs font-semibold text-[#009BFB] hover:text-[#0089e0] hover:underline inline-flex items-center gap-1 cursor-pointer transition"
+          <Link
+            to="/dashboard/documents"
+            className="text-xs font-semibold text-[#009BFB] hover:text-[#0089e0] hover:underline inline-flex items-center gap-1 cursor-pointer transition no-underline"
           >
             <span>View all documents</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
         }
         columns={[
           {
@@ -238,14 +238,13 @@ const CustomerOverview = ({ setActiveTab }) => {
         title="Recent Payment Activity"
         minWidth="min-w-[700px]"
         headerAction={
-          <button
-            type="button"
-            onClick={() => setActiveTab && setActiveTab('payments')}
-            className="text-xs font-semibold text-[#009BFB] hover:text-[#0089e0] hover:underline inline-flex items-center gap-1 cursor-pointer transition"
+          <Link
+            to="/dashboard/payments"
+            className="text-xs font-semibold text-[#009BFB] hover:text-[#0089e0] hover:underline inline-flex items-center gap-1 cursor-pointer transition no-underline"
           >
             <span>View payment history</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
         }
         columns={[
           {

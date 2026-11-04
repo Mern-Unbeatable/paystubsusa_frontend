@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router';
-import logoImg from '../assets/logo.png';
+import logoImg from '../../../assets/logo.png';
 import { Menu, X } from 'lucide-react';
 
 const NavbarLayout = () => {

@@ -10,7 +10,8 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { DocumentDetailsModal } from '../components/modals';
-import { DashboardHeader, DashboardTable, DashboardStatusBadge } from '../../shared';
+import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
+import { DashboardStatusBadge } from '../../../../layouts';
 
 const INITIAL_DOCUMENTS = [
   { id: 'PS-2025-0841', name: 'Paystub - May 2025', type: 'Paystub', date: 'May 28, 2025', status: 'Completed' },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Star, Check, HelpCircle } from 'lucide-react';
-import { DashboardHeader } from '../../shared';
+import { DashboardHeader } from '../../../../components/Dashboard';
 
 const SubscriptionView = () => {
   const planFeatures = [

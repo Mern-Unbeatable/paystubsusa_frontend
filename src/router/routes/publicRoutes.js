@@ -1,7 +1,7 @@
 // router/routes/publicRoutes.js
 import React, { lazy } from "react";
 import HomeView from "../../pages/public/public_Home/HomeView";
-import { createLazyRouteElement } from "../createLazyRouteElement";
+import { createLazyRouteElement } from "./createLazyRouteElement";
 
 const PaystubGeneratorView = lazy(
   () => import("../../pages/public/public_generator/PaystubGeneratorView"),
@@ -24,7 +24,7 @@ const AboutView = lazy(
 );
 const NotFound = lazy(() => import("../../pages/error/NotFound"));
 
-// Rendered inside RootLayout (shared header/footer)
+// Rendered inside PublicLayout (shared header/footer)
 export const publicRoutes = [
   { index: true, element: React.createElement(HomeView) },
   {

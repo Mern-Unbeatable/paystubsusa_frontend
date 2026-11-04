@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import DashboardLayout from "../../../layout/DashboardLayout";
-import { DashboardHeader, DashboardTable, DashboardStatusBadge } from "../shared";
-import {
-  FileText,
-  CreditCard,
-  Users,
+import { DashboardLayout, DashboardStatusBadge } from "../../../layouts";
+import { DashboardHeader, DashboardTable } from "../../../components/Dashboard";import {  FileText,  CreditCard,  Users,
   FilePlus,
   Eye,
   Download,

@@ -15,10 +15,19 @@ export const PATHS = {
     register: "/register",
   },
   CUSTOMER: {
-    dashboard: "/dashboard",
+    dashboard: "/customer/overview",
+    home: "/customer/home",
+    overview: "/customer/overview",
+    documents: "/customer/documents",
+    payments: "/customer/payments",
+    subscription: "/customer/subscription",
+    help: "/customer/help",
+    profile: "/customer/profile",
   },
   ADMIN: {
-    dashboard: "/admin",
+    dashboard: "/admin/overview",
+    home: "/admin/home",
+    overview: "/admin/overview",
   },
 };
 
@@ -33,4 +42,12 @@ export const ALIASES = {
   signup: PATHS.AUTH.register,
   "customer/dashboard": PATHS.CUSTOMER.dashboard,
   "admin/dashboard": PATHS.ADMIN.dashboard,
+  "/dashboard": PATHS.CUSTOMER.dashboard,
+  "/dashboard/overview": PATHS.CUSTOMER.overview,
+  "/dashboard/documents": PATHS.CUSTOMER.documents,
+  "/dashboard/payments": PATHS.CUSTOMER.payments,
+  "/dashboard/subscription": PATHS.CUSTOMER.subscription,
+  "/dashboard/help": PATHS.CUSTOMER.help,
+  "/dashboard/profile": PATHS.CUSTOMER.profile,
+  "/admin": PATHS.ADMIN.dashboard,
 };

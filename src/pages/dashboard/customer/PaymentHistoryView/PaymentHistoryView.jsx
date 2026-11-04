@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PaymentDetailsModal } from '../components/modals';
-import { DashboardHeader, DashboardTable, DashboardStatusBadge } from '../../shared';
+import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
+import { DashboardStatusBadge } from '../../../../layouts';
 
 const TRANSACTIONS = [
   {

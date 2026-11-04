@@ -1,6 +1,6 @@
 // router/routes/authRoutes.js
 import { lazy } from "react";
-import { createLazyRouteElement } from "../createLazyRouteElement";
+import { createLazyRouteElement } from "./createLazyRouteElement";
 
 const LoginView = lazy(() => import("../../pages/auth/LoginView"));
 const RegisterView = lazy(() => import("../../pages/auth/RegisterView"));

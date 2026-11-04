@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router';
-import logoImg from '../../../assets/logo.png';
-import atikAvatar from '../../../assets/atik_avatar.png';
-import { useAuth } from '../../../hooks/useAuth';
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import logoImg from "../../../assets/logo.png";
+import atikAvatar from "../../../assets/atik_avatar.png";
+import { useAuth } from "../../../hooks/useAuth";
 import {
   LayoutGrid,
   FileText,
@@ -12,21 +12,14 @@ import {
   User,
   LogOut,
   X,
-  FilePlus,
-  ShieldCheck
-} from 'lucide-react';
+} from "lucide-react";
 
-const DashboardSidebar = ({
-  role,
-  activeTab = 'overview',
-  setActiveTab,
-  mobileOpen = false,
-  setMobileOpen
-}) => {
+const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuth();
 
-  const effectiveRole = role || user?.role || 'customer';
+  const effectiveRole = role || user?.role || "customer";
 
   const handleLogout = async () => {
     try {
@@ -34,26 +27,45 @@ const DashboardSidebar = ({
     } catch {
       // State is still cleared for secure local logout even if API logout fails.
     }
-    navigate('/login');
+    navigate("/login");
   };
 
   const navItems = [
-    { id: 'overview', label: 'Overview', icon: LayoutGrid },
-    { id: 'documents', label: 'My Documents', icon: FileText },
-    { id: 'payments', label: 'Payment History', icon: CreditCard },
-    { id: 'subscription', label: 'Subscription', icon: Star },
-    { id: 'help', label: 'Help Center', icon: HelpCircle },
-    { id: 'profile', label: 'Profile', icon: User },
+    { id: "overview", label: "Overview", icon: LayoutGrid, path: "/customer/overview" },
+    {
+      id: "documents",
+      label: "My Documents",
+      icon: FileText,
+      path: "/customer/documents",
+    },
+    {
+      id: "payments",
+      label: "Payment History",
+      icon: CreditCard,
+      path: "/customer/payments",
+    },
+    {
+      id: "subscription",
+      label: "Subscription",
+      icon: Star,
+      path: "/customer/subscription",
+    },
+    {
+      id: "help",
+      label: "Help Center",
+      icon: HelpCircle,
+      path: "/customer/help",
+    },
+    { id: "profile", label: "Profile", icon: User, path: "/customer/profile" },
   ];
 
-  const handleItemClick = (id) => {
-    if (setActiveTab) {
-      setActiveTab(id);
-    }
+  const handleNavClick = () => {
     if (setMobileOpen) {
       setMobileOpen(false);
     }
   };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <>
@@ -68,14 +80,17 @@ const DashboardSidebar = ({
       {/* Sidebar Container */}
       <aside
         className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200/80 flex flex-col justify-between py-6 px-4 transition-transform duration-300 lg:translate-x-0 ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Top Branding & Nav */}
         <div className="flex flex-col">
           {/* Logo & Mobile Close */}
           <div className="flex items-center justify-between px-2 mb-8">
-            <Link to="/" className="flex items-center group transition-transform active:scale-98">
+            <Link
+              to="/"
+              className="flex items-center group transition-transform active:scale-98"
+            >
               <img
                 src={logoImg}
                 alt="Paystuba"
@@ -99,7 +114,7 @@ const DashboardSidebar = ({
           {/* Section Category Title */}
           <div className="px-3 mb-2.5">
             <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              {effectiveRole === 'admin' ? 'Admin Portal' : 'Customer Portal'}
+              {effectiveRole === "admin" ? "Admin Portal" : "Customer Portal"}
             </span>
           </div>
 
@@ -107,30 +122,32 @@ const DashboardSidebar = ({
           <nav className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = activeTab === item.id;
+              const active = isActive(item.path);
               return (
-                <button
+                <Link
                   key={item.id}
-                  type="button"
-                  onClick={() => handleItemClick(item.id)}
-                  className={`relative overflow-hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded text-xs sm:text-sm font-semibold transition cursor-pointer text-left ${
-                    isActive
-                      ? 'bg-[#EAF5FF] text-[#009BFB]'
-                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                  to={item.path}
+                  onClick={handleNavClick}
+                  className={`relative overflow-hidden flex items-center gap-3 px-3.5 py-2.5 rounded text-xs sm:text-sm font-semibold transition text-left no-underline ${
+                    active
+                      ? "bg-[#EAF5FF] text-[#009BFB]"
+                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                   }`}
                 >
                   {/* Active Left Indicator Bar */}
-                  {isActive && (
+                  {active && (
                     <span className="absolute left-0 top-0 bottom-0 w-[4.5px] bg-[#009BFB]" />
                   )}
 
                   <Icon
                     className={`w-4 h-4 flex-shrink-0 transition-colors ${
-                      isActive ? 'text-[#009BFB]' : 'text-slate-400 group-hover:text-slate-600'
+                      active
+                        ? "text-[#009BFB]"
+                        : "text-slate-400 group-hover:text-slate-600"
                     }`}
                   />
                   <span>{item.label}</span>
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -152,10 +169,10 @@ const DashboardSidebar = ({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-slate-800 truncate">
-                {effectiveRole === 'admin' ? 'Admin Manager' : 'Atik Adnan'}
+                {effectiveRole === "admin" ? "Admin Manager" : "Atik Adnan"}
               </p>
               <p className="text-[11px] text-slate-400 capitalize">
-                {effectiveRole === 'admin' ? 'Super Admin' : 'Customer'}
+                {effectiveRole === "admin" ? "Super Admin" : "Customer"}
               </p>
             </div>
           </div>
