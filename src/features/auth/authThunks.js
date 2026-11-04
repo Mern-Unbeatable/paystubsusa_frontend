@@ -1,21 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { normalizeThunkError } from "../../api/errorNormalizer";
 import { authService } from "./auth.service";
-
-function toThunkError(error) {
-  if (error?.isNormalizedError) {
-    return error;
-  }
-
-  return {
-    isNormalizedError: true,
-    status: null,
-    code: error?.code || "APP_ERROR",
-    message: error?.message || "Something went wrong. Please try again.",
-    fieldErrors: null,
-    isNetworkError: false,
-    isCanceled: false,
-  };
-}
 
 export const bootstrapAuth = createAsyncThunk(
   "auth/bootstrap",
@@ -28,7 +13,7 @@ export const bootstrapAuth = createAsyncThunk(
         return { user: null };
       }
 
-      return rejectWithValue(toThunkError(error));
+      return rejectWithValue(normalizeThunkError(error));
     }
   },
   {
@@ -50,7 +35,7 @@ export const loginUser = createAsyncThunk(
     try {
       return await authService.login(credentials, { signal });
     } catch (error) {
-      return rejectWithValue(toThunkError(error));
+      return rejectWithValue(normalizeThunkError(error));
     }
   },
 );
@@ -61,7 +46,7 @@ export const registerUser = createAsyncThunk(
     try {
       return await authService.register(payload, { signal });
     } catch (error) {
-      return rejectWithValue(toThunkError(error));
+      return rejectWithValue(normalizeThunkError(error));
     }
   },
 );
@@ -72,7 +57,7 @@ export const loginAsDemoUser = createAsyncThunk(
     try {
       return await authService.loginAsDemoUser(userKey);
     } catch (error) {
-      return rejectWithValue(toThunkError(error));
+      return rejectWithValue(normalizeThunkError(error));
     }
   },
 );
@@ -84,7 +69,7 @@ export const logoutUser = createAsyncThunk(
       await authService.logout({ signal });
       return null;
     } catch (error) {
-      return rejectWithValue(toThunkError(error));
+      return rejectWithValue(normalizeThunkError(error));
     }
   },
 );

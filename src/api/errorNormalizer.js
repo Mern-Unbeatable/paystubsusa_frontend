@@ -66,3 +66,27 @@ export function normalizeHttpError(error) {
   };
 }
 
+export function normalizeThunkError(error, fallbackMessage = DEFAULT_ERROR_MESSAGE) {
+  const normalized = normalizeHttpError(error);
+
+  if (normalized.isNormalizedError) {
+    return {
+      ...normalized,
+      message: normalized.message || fallbackMessage,
+    };
+  }
+
+  return {
+    isNormalizedError: true,
+    status: null,
+    code: error?.code || "APP_ERROR",
+    message:
+      typeof error?.message === "string" && error.message.trim()
+        ? error.message
+        : fallbackMessage,
+    fieldErrors: null,
+    isNetworkError: false,
+    isCanceled: false,
+  };
+}
+
