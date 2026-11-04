@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import logoImg from "../../assets/logo.png";
+import { DEMO_CREDENTIALS } from "../../features/auth/auth.constants";
 
 const AuthInvoicePreview = lazy(() =>
   import("../../Components/Auth/AuthInvoicePreview")
@@ -243,6 +244,16 @@ const LoginView = () => {
                 <ShieldCheck className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 transition-colors" />
                 <span>Admin Demo</span>
               </button>
+            </div>
+            <div className="mt-3 space-y-1 text-[11px] text-slate-500">
+              <p>
+                Customer: <span className="font-semibold">{DEMO_CREDENTIALS.customer.email}</span>{" "}
+                / <span className="font-semibold">{DEMO_CREDENTIALS.customer.password}</span>
+              </p>
+              <p>
+                Admin: <span className="font-semibold">{DEMO_CREDENTIALS.admin.email}</span> /{" "}
+                <span className="font-semibold">{DEMO_CREDENTIALS.admin.password}</span>
+              </p>
             </div>
           </div>
 

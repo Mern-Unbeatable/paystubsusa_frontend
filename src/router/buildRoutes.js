@@ -1,7 +1,7 @@
 // router/buildRoutes.js
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { PublicLayout, AuthLayout } from "../layouts";
+import { PublicLayout, AuthLayout, DashboardLayout } from "../layouts";
 import { RequireAuth, RequireAdmin, RequireGuest } from "./guard";
 import {
   publicRoutes,

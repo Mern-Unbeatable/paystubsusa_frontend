@@ -8,7 +8,7 @@ import {
 } from "./authApi";
 import {
   clearDemoAuthState,
-  loginDemoByEmail,
+  loginDemoByEmailAndPassword,
   loginDemoUser,
   registerDemoUser,
   restoreDemoSession,
@@ -16,7 +16,10 @@ import {
 
 async function login(credentials, options = {}) {
   if (ENV_CONFIG.useDemoAuth) {
-    const user = loginDemoByEmail(credentials?.email);
+    const user = loginDemoByEmailAndPassword(
+      credentials?.email,
+      credentials?.password,
+    );
     return { user };
   }
 

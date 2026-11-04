@@ -28,6 +28,9 @@ export const PATHS = {
     dashboard: "/admin/overview",
     home: "/admin/home",
     overview: "/admin/overview",
+    users: "/admin/users",
+    documents: "/admin/documents",
+    transactions: "/admin/transactions",
   },
 };
 

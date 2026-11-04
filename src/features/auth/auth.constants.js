@@ -19,3 +19,13 @@ export const DEMO_USERS = Object.freeze({
   }),
 });
 
+export const DEMO_CREDENTIALS = Object.freeze({
+  customer: Object.freeze({
+    email: "customer@demo.test",
+    password: "password123",
+  }),
+  admin: Object.freeze({
+    email: "admin@demo.test",
+    password: "admin123",
+  }),
+});

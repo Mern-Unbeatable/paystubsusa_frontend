@@ -4,9 +4,6 @@ import React from "react";
 import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const CustomerDashboardView = lazy(
-  () => import("../../pages/dashboard/customer/home/CustomerDashboardView"),
-);
 const CustomerOverview = lazy(
   () => import("../../pages/dashboard/customer/CustomerOverview"),
 );
@@ -62,4 +59,3 @@ export const customerRoutes = [
     ],
   },
 ];
-

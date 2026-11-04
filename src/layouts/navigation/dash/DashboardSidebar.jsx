@@ -30,7 +30,7 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
     navigate("/login");
   };
 
-  const navItems = [
+  const customerNavItems = [
     { id: "overview", label: "Overview", icon: LayoutGrid, path: "/customer/overview" },
     {
       id: "documents",
@@ -58,6 +58,30 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
     },
     { id: "profile", label: "Profile", icon: User, path: "/customer/profile" },
   ];
+
+  const adminNavItems = [
+    { id: "overview", label: "Overview", icon: LayoutGrid, path: "/admin/overview" },
+    {
+      id: "users",
+      label: "Manage Users",
+      icon: FileText,
+      path: "/admin/users",
+    },
+    {
+      id: "documents",
+      label: "Documents",
+      icon: FileText,
+      path: "/admin/documents",
+    },
+    {
+      id: "transactions",
+      label: "Transactions",
+      icon: CreditCard,
+      path: "/admin/transactions",
+    },
+  ];
+
+  const navItems = effectiveRole === "admin" ? adminNavItems : customerNavItems;
 
   const handleNavClick = () => {
     if (setMobileOpen) {
