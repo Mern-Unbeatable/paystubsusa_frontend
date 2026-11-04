@@ -36,6 +36,8 @@ const NavbarLayout = () => {
                     src={logoImg}
                     alt="Logo"
                     className="h-10 sm:h-12 w-auto object-contain transition-all duration-200"
+                    loading="eager"
+                    decoding="async"
                   />
                 </Link>
               </div>

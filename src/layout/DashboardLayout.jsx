@@ -36,6 +36,8 @@ const DashboardLayout = ({ role = 'customer', children, activeTab, setActiveTab 
               src={logoImg}
               alt="Paystuba"
               className="h-8 w-auto object-contain"
+              loading="eager"
+              decoding="async"
             />
           </Link>
 

@@ -1,0 +1,40 @@
+// router/buildRoutes.js
+import React from "react";
+import { Navigate } from "react-router-dom";
+import RootLayout from "../layout/RootLayout";
+import { RequireAuth, RequireAdmin, RequireGuest } from "./guard";
+import {
+  publicRoutes,
+  authRoutes,
+  customerRoutes,
+  adminRoutes,
+} from "./routes";
+import { ALIASES } from "./config/paths";
+
+const redirectRoutes = Object.entries(ALIASES).map(([from, to]) => ({
+  path: from,
+  element: React.createElement(Navigate, { to, replace: true }),
+}));
+
+export const routeConfig = [
+  {
+    path: "/",
+    element: React.createElement(RootLayout),
+    children: publicRoutes,
+  },
+  {
+    element: React.createElement(RequireGuest),
+    children: authRoutes,
+  },
+  {
+    element: React.createElement(RequireAuth),
+    children: [
+      ...customerRoutes,
+      {
+        element: React.createElement(RequireAdmin),
+        children: adminRoutes,
+      },
+    ],
+  },
+  ...redirectRoutes,
+];

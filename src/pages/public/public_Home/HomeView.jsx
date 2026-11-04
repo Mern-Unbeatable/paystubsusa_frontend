@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import HeroSection from '../../../Components/Home/HeroSection';
 import FeaturesSection from '../../../Components/Home/FeaturesSection';
-import DocumentsSection from '../../../Components/Home/DocumentsSection';
-import HowItWorksSection from '../../../Components/Home/HowItWorksSection';
-import SpecialOfferSection from '../../../Components/Home/SpecialOfferSection';
-import PricingSection from '../../../Components/Home/PricingSection';
-import WhyUsSection from '../../../Components/Home/WhyUsSection';
-import TestimonialsSection from '../../../Components/Home/TestimonialsSection';
+
+const DocumentsSection = lazy(() => import('../../../Components/Home/DocumentsSection'));
+const HowItWorksSection = lazy(() => import('../../../Components/Home/HowItWorksSection'));
+const SpecialOfferSection = lazy(() => import('../../../Components/Home/SpecialOfferSection'));
+const PricingSection = lazy(() => import('../../../Components/Home/PricingSection'));
+const WhyUsSection = lazy(() => import('../../../Components/Home/WhyUsSection'));
+const TestimonialsSection = lazy(() => import('../../../Components/Home/TestimonialsSection'));
+
+const sectionFallback = (
+  <div className="py-12 flex items-center justify-center text-sm text-slate-500">
+    Loading section…
+  </div>
+);
 
 const HomeView = () => {
   return (
@@ -18,22 +25,34 @@ const HomeView = () => {
       <FeaturesSection />
 
       {/* 3. Documents Section (#EBF1F8 background) */}
-      <DocumentsSection />
+      <Suspense fallback={sectionFallback}>
+        <DocumentsSection />
+      </Suspense>
 
       {/* 4. How It Works Section */}
-      <HowItWorksSection />
+      <Suspense fallback={sectionFallback}>
+        <HowItWorksSection />
+      </Suspense>
 
       {/* 5. Special Offer Section (#EBF1F8 background) */}
-      <SpecialOfferSection />
+      <Suspense fallback={sectionFallback}>
+        <SpecialOfferSection />
+      </Suspense>
 
       {/* 6. Simple Pricing Section */}
-      <PricingSection />
+      <Suspense fallback={sectionFallback}>
+        <PricingSection />
+      </Suspense>
 
       {/* 7. Why Us Section (#EBF1F8 background) */}
-      <WhyUsSection />
+      <Suspense fallback={sectionFallback}>
+        <WhyUsSection />
+      </Suspense>
 
       {/* 8. What Our Clients Say Section */}
-      <TestimonialsSection />
+      <Suspense fallback={sectionFallback}>
+        <TestimonialsSection />
+      </Suspense>
     </div>
   );
 };

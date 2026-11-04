@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import logoImg from '../../assets/logo.png';
 import atikAvatar from '../../assets/atik_avatar.png';
+import { useAuth } from '../../hooks/useAuth';
 import {
   LayoutGrid,
   FileText,
@@ -23,16 +24,12 @@ const DashboardSidebar = ({
   setMobileOpen
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { user, logout } = useAuth();
 
-  const storedRole = typeof window !== 'undefined' ? localStorage.getItem('auth_role') : null;
-  const effectiveRole = role || storedRole || 'customer';
+  const effectiveRole = role || user?.role || 'customer';
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem('auth_role');
-      localStorage.removeItem('auth_user');
-    } catch (e) {}
+    logout();
     navigate('/login');
   };
 
@@ -79,6 +76,8 @@ const DashboardSidebar = ({
                 src={logoImg}
                 alt="Paystuba"
                 className="h-10 w-auto object-contain"
+                loading="eager"
+                decoding="async"
               />
             </Link>
 
@@ -142,6 +141,8 @@ const DashboardSidebar = ({
                 src={atikAvatar}
                 alt="Atik Adnan"
                 className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-xs"
+                loading="lazy"
+                decoding="async"
               />
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ring-white" />
             </div>

@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { ArrowLeft, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import logoImg from '../../../assets/logo.png';
-import AuthInvoicePreview from '../../../Components/Auth/AuthInvoicePreview';
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router";
+import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
+import logoImg from "../../assets/logo.png";
+
+const AuthInvoicePreview = lazy(() =>
+  import("../../Components/Auth/AuthInvoicePreview")
+);
 
 const RegisterView = () => {
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const { loginAs } = useAuth();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -21,23 +26,24 @@ const RegisterView = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     if (!agreed) {
-      setError('Please accept the Terms & Conditions');
+      setError("Please accept the Terms & Conditions");
       return;
     }
 
     setLoading(true);
 
     setTimeout(() => {
+      loginAs("customer");
       setLoading(false);
-      navigate('/dashboard');
+      navigate("/dashboard");
     }, 500);
   };
 
@@ -45,7 +51,13 @@ const RegisterView = () => {
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
       {/* Left Column: Interactive Invoice Preview Showcase (50% width) */}
       <div className="hidden lg:block w-full h-full">
-        <AuthInvoicePreview />
+        <Suspense
+          fallback={
+            <div className="w-full h-full min-h-screen bg-slate-100 animate-pulse" />
+          }
+        >
+          <AuthInvoicePreview />
+        </Suspense>
       </div>
 
       {/* Right Column: Clean Registration Form (50% width) */}
@@ -70,6 +82,8 @@ const RegisterView = () => {
                 src={logoImg}
                 alt="Logo"
                 className="h-10 w-auto object-contain"
+                loading="eager"
+                decoding="async"
               />
             </Link>
           </div>
@@ -129,7 +143,7 @@ const RegisterView = () => {
               </label>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -142,7 +156,11 @@ const RegisterView = () => {
                   className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
                   aria-label="Toggle password visibility"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -153,7 +171,7 @@ const RegisterView = () => {
                 Confirm Password
               </label>
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -173,11 +191,11 @@ const RegisterView = () => {
                   className="w-4 h-4 mt-0.5 rounded text-secondary border-slate-300 focus:ring-secondary cursor-pointer"
                 />
                 <span className="text-xs text-slate-600 leading-snug">
-                  I agree to the{' '}
+                  I agree to the{" "}
                   <a href="#terms" className="text-secondary hover:underline">
                     Terms &amp; Conditions
-                  </a>{' '}
-                  and{' '}
+                  </a>{" "}
+                  and{" "}
                   <a href="#privacy" className="text-secondary hover:underline">
                     Privacy Policy
                   </a>

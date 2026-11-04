@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { Suspense, lazy, useRef, useState } from 'react';
 import GeneratorHeroSection from '../../../Components/PaystubGenerator/GeneratorHeroSection';
-import TemplateSelectionSection from '../../../Components/PaystubGenerator/TemplateSelectionSection';
-import PaystubGeneratorForm from '../../../Components/PaystubGenerator/PaystubGeneratorForm';
+
+const TemplateSelectionSection = lazy(() =>
+  import('../../../Components/PaystubGenerator/TemplateSelectionSection')
+);
+const PaystubGeneratorForm = lazy(() =>
+  import('../../../Components/PaystubGenerator/PaystubGeneratorForm')
+);
 
 const PaystubGeneratorView = () => {
   const [selectedTemplateId, setSelectedTemplateId] = useState('01');
@@ -27,10 +32,12 @@ const PaystubGeneratorView = () => {
 
       {/* 2. Choose Your Paystub Template Section */}
       <div ref={templateSectionRef}>
-        <TemplateSelectionSection
-          selectedTemplateId={selectedTemplateId}
-          onSelectTemplate={handleSelectTemplate}
-        />
+        <Suspense fallback={<div className="py-10 flex items-center justify-center text-sm text-slate-500">Loading template options…</div>}>
+          <TemplateSelectionSection
+            selectedTemplateId={selectedTemplateId}
+            onSelectTemplate={handleSelectTemplate}
+          />
+        </Suspense>
       </div>
 
       {/* 3. The 4-Step Interactive Paystub Generator Form & Live Preview */}
@@ -39,10 +46,12 @@ const PaystubGeneratorView = () => {
         id="generator-form"
         className="w-full bg-[#F4F7FB] border-t border-slate-200/80 py-8 sm:py-14 scroll-mt-20"
       >
-        <PaystubGeneratorForm
-          selectedTemplateId={selectedTemplateId}
-          onChangeTemplate={handleChangeTemplate}
-        />
+        <Suspense fallback={<div className="py-12 flex items-center justify-center text-sm text-slate-500">Loading generator form…</div>}>
+          <PaystubGeneratorForm
+            selectedTemplateId={selectedTemplateId}
+            onChangeTemplate={handleChangeTemplate}
+          />
+        </Suspense>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router';
-import DashboardLayout from '../../layout/DashboardLayout';
-import DashboardHeader from '../../Components/Dashboard/DashboardHeader';
-import DashboardTable, { DashboardStatusBadge } from '../../Components/Dashboard/DashboardTable';
+import DashboardLayout from '../../../layout/DashboardLayout';
+import DashboardHeader from '../../../Components/Dashboard/DashboardHeader';
+import DashboardTable, { DashboardStatusBadge } from '../../../Components/Dashboard/DashboardTable';
 import {
   FileText,
   LayoutGrid,

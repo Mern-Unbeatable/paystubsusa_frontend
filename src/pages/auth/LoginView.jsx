@@ -1,78 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { ArrowLeft, Eye, EyeOff, ArrowRight, User, ShieldCheck } from 'lucide-react';
-import logoImg from '../../../assets/logo.png';
-import AuthInvoicePreview from '../../../Components/Auth/AuthInvoicePreview';
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import {
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  User,
+  ShieldCheck,
+} from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
+import logoImg from "../../assets/logo.png";
+
+const AuthInvoicePreview = lazy(() =>
+  import("../../Components/Auth/AuthInvoicePreview")
+);
 
 const LoginView = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { loginAs } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const handleDemoLogin = (role) => {
-    setError('');
+    setError("");
     setLoading(true);
 
-    if (role === 'admin') {
-      setEmail('admin@paystuba.com');
-      setPassword('admin123');
-      try {
-        localStorage.setItem('auth_role', 'admin');
-        localStorage.setItem('auth_user', JSON.stringify({ name: 'Admin Manager', role: 'admin' }));
-      } catch (e) {}
-      setTimeout(() => {
-        setLoading(false);
-        navigate('/admin/dashboard');
-      }, 400);
+    const targetRole = role === "admin" ? "admin" : "customer";
+
+    if (role === "admin") {
+      setEmail("admin@demo.test");
+      setPassword("admin123");
     } else {
-      setEmail('atik.adnan@example.com');
-      setPassword('password123');
-      try {
-        localStorage.setItem('auth_role', 'customer');
-        localStorage.setItem('auth_user', JSON.stringify({ name: 'Atik Adnan', role: 'customer' }));
-      } catch (e) {}
-      setTimeout(() => {
-        setLoading(false);
-        navigate('/dashboard');
-      }, 400);
+      setEmail("customer@demo.test");
+      setPassword("password123");
     }
+
+    setTimeout(() => {
+      loginAs(targetRole);
+      setLoading(false);
+      navigate(role === "admin" ? "/admin" : "/dashboard");
+    }, 400);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!email || !password) {
-      setError('Please enter your email and password');
+      setError("Please enter your email and password");
       return;
     }
 
     setLoading(true);
 
     setTimeout(() => {
+      const targetRole = email.toLowerCase().includes("admin")
+        ? "admin"
+        : "customer";
+      loginAs(targetRole);
       setLoading(false);
-      // Both admin and customer log in through this exact same form
-      if (email.toLowerCase().includes('admin')) {
-        try {
-          localStorage.setItem('auth_role', 'admin');
-          localStorage.setItem('auth_user', JSON.stringify({ name: 'Admin Manager', role: 'admin' }));
-        } catch (e) {}
-        navigate('/admin/dashboard');
-      } else {
-        try {
-          localStorage.setItem('auth_role', 'customer');
-          localStorage.setItem('auth_user', JSON.stringify({ name: 'Atik Adnan', role: 'customer' }));
-        } catch (e) {}
-        navigate('/dashboard');
-      }
+      navigate(targetRole === "admin" ? "/admin" : "/dashboard");
     }, 500);
   };
 
@@ -80,7 +75,13 @@ const LoginView = () => {
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
       {/* Left Column: Interactive Invoice Preview Showcase (50% width) */}
       <div className="hidden lg:block w-full h-full">
-        <AuthInvoicePreview />
+        <Suspense
+          fallback={
+            <div className="w-full h-full min-h-screen bg-slate-100 animate-pulse" />
+          }
+        >
+          <AuthInvoicePreview />
+        </Suspense>
       </div>
 
       {/* Right Column: Clean Authentication Form (50% width) */}
@@ -105,6 +106,8 @@ const LoginView = () => {
                 src={logoImg}
                 alt="Logo"
                 className="h-10 w-auto object-contain"
+                loading="eager"
+                decoding="async"
               />
             </Link>
           </div>
@@ -153,7 +156,7 @@ const LoginView = () => {
                   href="#forgot"
                   onClick={(e) => {
                     e.preventDefault();
-                    alert('Password reset link sent to your email.');
+                    alert("Password reset link sent to your email.");
                   }}
                   className="text-xs font-medium text-secondary hover:underline"
                 >
@@ -162,7 +165,7 @@ const LoginView = () => {
               </div>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -175,7 +178,11 @@ const LoginView = () => {
                   className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
                   aria-label="Toggle password visibility"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -189,7 +196,9 @@ const LoginView = () => {
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className="w-4 h-4 rounded text-secondary border-slate-300 focus:ring-secondary cursor-pointer"
                 />
-                <span className="text-xs text-slate-600 font-medium">Remember me on this device</span>
+                <span className="text-xs text-slate-600 font-medium">
+                  Remember me on this device
+                </span>
               </label>
             </div>
 
@@ -216,12 +225,14 @@ const LoginView = () => {
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                 Fast Demo Login
               </span>
-              <span className="text-[10.5px] text-slate-400">1-click access</span>
+              <span className="text-[10.5px] text-slate-400">
+                1-click access
+              </span>
             </div>
             <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
-                onClick={() => handleDemoLogin('customer')}
+                onClick={() => handleDemoLogin("customer")}
                 disabled={loading}
                 className="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/90 hover:border-[#009BFB]/40 text-slate-700 hover:text-[#009BFB] font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs group"
               >
@@ -230,7 +241,7 @@ const LoginView = () => {
               </button>
               <button
                 type="button"
-                onClick={() => handleDemoLogin('admin')}
+                onClick={() => handleDemoLogin("admin")}
                 disabled={loading}
                 className="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-purple-50/60 border border-slate-200/90 hover:border-purple-300 text-slate-700 hover:text-purple-600 font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs group"
               >

@@ -90,6 +90,8 @@ const HeroSection = () => {
                 alt="Business professionals holding up paystub documents"
                 className="w-full sm:w-[96%] lg:w-[108%] xl:w-[114%] 2xl:w-[118%] max-w-none h-auto object-contain max-h-[520px] sm:max-h-[600px] lg:max-h-[660px] xl:max-h-[730px] select-none pointer-events-none drop-shadow-2xl align-bottom block lg:translate-x-3 xl:translate-x-6"
                 loading="eager"
+                decoding="async"
+                fetchPriority="high"
               />
             </div>
           </div>
