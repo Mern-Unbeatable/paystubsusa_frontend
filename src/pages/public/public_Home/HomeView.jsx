@@ -1,31 +1,12 @@
-import React, { Suspense, lazy } from "react";
+import React from "react";
 import HeroSection from "../../../Components/Home/HeroSection";
 import FeaturesSection from "../../../Components/Home/FeaturesSection";
-
-const DocumentsSection = lazy(
-  () => import("../../../Components/Home/DocumentsSection"),
-);
-const HowItWorksSection = lazy(
-  () => import("../../../Components/Home/HowItWorksSection"),
-);
-const SpecialOfferSection = lazy(
-  () => import("../../../Components/Home/SpecialOfferSection"),
-);
-const PricingSection = lazy(
-  () => import("../../../Components/Home/PricingSection"),
-);
-const WhyUsSection = lazy(
-  () => import("../../../Components/Home/WhyUsSection"),
-);
-const TestimonialsSection = lazy(
-  () => import("../../../Components/Home/TestimonialsSection"),
-);
-
-const sectionFallback = (
-  <div className="py-12 flex items-center justify-center text-sm text-slate-500">
-    Loading section…
-  </div>
-);
+import DocumentsSection from "../../../Components/Home/DocumentsSection";
+import HowItWorksSection from "../../../Components/Home/HowItWorksSection";
+import SpecialOfferSection from "../../../Components/Home/SpecialOfferSection";
+import PricingSection from "../../../Components/Home/PricingSection";
+import WhyUsSection from "../../../Components/Home/WhyUsSection";
+import TestimonialsSection from "../../../Components/Home/TestimonialsSection";
 
 const HomeView = () => {
   return (
@@ -36,35 +17,23 @@ const HomeView = () => {
       {/* 2. Features Section */}
       <FeaturesSection />
 
-      {/* 3. Documents Section (#EBF1F8 background) */}
-      <Suspense fallback={sectionFallback}>
-        <DocumentsSection />
-      </Suspense>
+      {/* 3. Documents Section */}
+      <DocumentsSection />
 
       {/* 4. How It Works Section */}
-      <Suspense fallback={sectionFallback}>
-        <HowItWorksSection />
-      </Suspense>
+      <HowItWorksSection />
 
-      {/* 5. Special Offer Section (#EBF1F8 background) */}
-      <Suspense fallback={sectionFallback}>
-        <SpecialOfferSection />
-      </Suspense>
+      {/* 5. Special Offer Section */}
+      <SpecialOfferSection />
 
-      {/* 6. Simple Pricing Section */}
-      <Suspense fallback={sectionFallback}>
-        <PricingSection />
-      </Suspense>
+      {/* 6. Pricing Section */}
+      <PricingSection />
 
-      {/* 7. Why Us Section (#EBF1F8 background) */}
-      <Suspense fallback={sectionFallback}>
-        <WhyUsSection />
-      </Suspense>
+      {/* 7. Why Us Section */}
+      <WhyUsSection />
 
-      {/* 8. What Our Clients Say Section */}
-      <Suspense fallback={sectionFallback}>
-        <TestimonialsSection />
-      </Suspense>
+      {/* 8. Testimonials Section */}
+      <TestimonialsSection />
     </div>
   );
 };

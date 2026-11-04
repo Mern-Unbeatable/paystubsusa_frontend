@@ -1,13 +1,13 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import DashboardLayout from '../../../layout/DashboardLayout';
-import CustomerOverview from '../../../Components/Dashboard/CustomerOverview';
+import CustomerOverview from './components/tabs/CustomerOverview';
 
-const MyDocumentsView = lazy(() => import('../../../Components/Dashboard/MyDocumentsView'));
-const PaymentHistoryView = lazy(() => import('../../../Components/Dashboard/PaymentHistoryView'));
-const SubscriptionView = lazy(() => import('../../../Components/Dashboard/SubscriptionView'));
-const HelpCenterView = lazy(() => import('../../../Components/Dashboard/HelpCenterView'));
-const ProfileView = lazy(() => import('../../../Components/Dashboard/ProfileView'));
+const MyDocumentsView = lazy(() => import('./components/tabs/MyDocumentsView'));
+const PaymentHistoryView = lazy(() => import('./components/tabs/PaymentHistoryView'));
+const SubscriptionView = lazy(() => import('./components/tabs/SubscriptionView'));
+const HelpCenterView = lazy(() => import('./components/tabs/HelpCenterView'));
+const ProfileView = lazy(() => import('./components/tabs/ProfileView'));
 
 const CustomerDashboardView = () => {
   const [searchParams] = useSearchParams();

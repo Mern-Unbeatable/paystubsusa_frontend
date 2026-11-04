@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router';
 import { Menu } from 'lucide-react';
 import logoImg from '../assets/logo.png';
-import DashboardSidebar from '../Components/Dashboard/DashboardSidebar';
+import { DashboardSidebar } from '../pages/dashboard/shared';
 
 const DashboardLayout = ({ role = 'customer', children, activeTab, setActiveTab }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
