@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router";
 import {
   FileText,
@@ -111,6 +111,29 @@ const CATEGORIES = [
   { id: "direct_deposit", label: "Direct Deposit Slip" },
 ];
 
+const DocumentActionButtons = ({ doc, onView, onDownload }) => (
+  <div className="inline-flex items-center gap-2">
+    <button
+      type="button"
+      onClick={() => onView(doc)}
+      className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+      title="View Document Details"
+      aria-label={`View ${doc.name}`}
+    >
+      <Eye className="w-3.5 h-3.5" />
+    </button>
+    <button
+      type="button"
+      onClick={() => onDownload(doc.name)}
+      className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+      title="Download PDF"
+      aria-label={`Download ${doc.name}`}
+    >
+      <Download className="w-3.5 h-3.5" />
+    </button>
+  </div>
+);
+
 const MyDocumentsView = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -121,10 +144,8 @@ const MyDocumentsView = () => {
 
   const pageSize = 10;
 
-  // Filter & Search
   const filteredDocs = useMemo(() => {
-    return INITIAL_DOCUMENTS.filter((doc) => {
-      // Category filter
+    const filtered = INITIAL_DOCUMENTS.filter((doc) => {
       if (selectedCategory === "paystubs" && doc.type !== "Paystub")
         return false;
       if (selectedCategory === "w2" && doc.type !== "W-2") return false;
@@ -136,7 +157,6 @@ const MyDocumentsView = () => {
       )
         return false;
 
-      // Search filter
       if (searchTerm.trim()) {
         const query = searchTerm.toLowerCase();
         return (
@@ -147,9 +167,22 @@ const MyDocumentsView = () => {
       }
       return true;
     });
-  }, [selectedCategory, searchTerm]);
+
+    const comparatorMap = {
+      newest: (a, b) => new Date(b.date) - new Date(a.date),
+      oldest: (a, b) => new Date(a.date) - new Date(b.date),
+      name: (a, b) => a.name.localeCompare(b.name),
+    };
+
+    return [...filtered].sort(comparatorMap[sortBy] || comparatorMap.newest);
+  }, [selectedCategory, searchTerm, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filteredDocs.length / pageSize));
+
+  useEffect(() => {
+    setCurrentPage((previousPage) => Math.min(previousPage, totalPages));
+  }, [totalPages]);
+
   const paginatedDocs = filteredDocs.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize,
@@ -286,26 +319,11 @@ const MyDocumentsView = () => {
             header: "Action",
             align: "right",
             render: (doc) => (
-              <div className="inline-flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedDoc(doc)}
-                  className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                  title="View Document Details"
-                  aria-label={`View ${doc.name}`}
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDownload(doc.name)}
-                  className="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                  title="Download PDF"
-                  aria-label={`Download ${doc.name}`}
-                >
-                  <Download className="w-3.5 h-3.5" />
-                </button>
-              </div>
+              <DocumentActionButtons
+                doc={doc}
+                onView={setSelectedDoc}
+                onDownload={handleDownload}
+              />
             ),
           },
         ]}
@@ -314,8 +332,9 @@ const MyDocumentsView = () => {
           currentPage,
           totalPages,
           totalRecords: filteredDocs.length,
+          label: `Page ${currentPage} of ${totalPages} - ${filteredDocs.length} matching records`,
           onPageChange: setCurrentPage,
-          pages: [1, 2, 3],
+          pages: Array.from({ length: Math.min(totalPages, 3) }, (_, index) => index + 1),
         }}
       />
 

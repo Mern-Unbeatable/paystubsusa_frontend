@@ -25,8 +25,32 @@ const FAQS = [
   },
 ];
 
+const FaqItem = ({ faq, isOpen, onToggle }) => (
+  <div className="py-4 sm:py-4.5">
+    <button
+      type="button"
+      onClick={onToggle}
+      className="w-full flex items-center justify-between gap-4 text-left transition group cursor-pointer"
+    >
+      <span className="text-sm sm:text-[15px] font-semibold text-slate-800 group-hover:text-[#009BFB] transition-colors">
+        {faq.q}
+      </span>
+      <ChevronRight
+        className={`w-4.5 h-4.5 text-slate-400 transition-transform flex-shrink-0 ${
+          isOpen ? 'rotate-90 text-[#009BFB]' : ''
+        }`}
+      />
+    </button>
+    {isOpen && (
+      <p className="mt-2.5 text-sm text-slate-500 leading-relaxed pr-6 animate-in fade-in duration-200">
+        {faq.a}
+      </p>
+    )}
+  </div>
+);
+
 const HelpCenterView = () => {
-  const [openIndex, setOpenIndex] = useState(0); // first item expanded as in Figma design
+  const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFaq = (idx) => {
     setOpenIndex(openIndex === idx ? -1 : idx);
@@ -54,32 +78,14 @@ const HelpCenterView = () => {
           </div>
 
           <div className="divide-y divide-slate-100">
-            {FAQS.map((faq, idx) => {
-              const isOpen = openIndex === idx;
-              return (
-                <div key={idx} className="py-4 sm:py-4.5">
-                  <button
-                    type="button"
-                    onClick={() => toggleFaq(idx)}
-                    className="w-full flex items-center justify-between gap-4 text-left transition group cursor-pointer"
-                  >
-                    <span className="text-sm sm:text-[15px] font-semibold text-slate-800 group-hover:text-[#009BFB] transition-colors">
-                      {faq.q}
-                    </span>
-                    <ChevronRight
-                      className={`w-4.5 h-4.5 text-slate-400 transition-transform flex-shrink-0 ${
-                        isOpen ? 'rotate-90 text-[#009BFB]' : ''
-                      }`}
-                    />
-                  </button>
-                  {isOpen && (
-                    <p className="mt-2.5 text-sm text-slate-500 leading-relaxed pr-6 animate-in fade-in duration-200">
-                      {faq.a}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
+            {FAQS.map((faq, idx) => (
+              <FaqItem
+                key={faq.q}
+                faq={faq}
+                isOpen={openIndex === idx}
+                onToggle={() => toggleFaq(idx)}
+              />
+            ))}
           </div>
         </div>
 

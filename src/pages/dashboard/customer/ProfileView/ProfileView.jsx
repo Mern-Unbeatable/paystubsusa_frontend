@@ -2,6 +2,25 @@ import React, { useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { DashboardHeader } from '../../../../components/Dashboard';
 
+const FormField = ({ label, type = 'text', value, onChange, placeholder, isLabelHidden = false }) => (
+  <div>
+    <label
+      className={`text-xs font-medium text-slate-700 block mb-2 ${
+        isLabelHidden ? 'text-transparent select-none' : ''
+      }`}
+    >
+      {isLabelHidden ? '\u00A0' : label}
+    </label>
+    <input
+      type={type}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+    />
+  </div>
+);
+
 const ProfileView = () => {
   const [name, setName] = useState('John Doe');
   const [phone, setPhone] = useState('01780053624');
@@ -55,41 +74,9 @@ const ProfileView = () => {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
-            </div>
+            <FormField label="Name" value={name} onChange={(e) => setName(e.target.value)} />
+            <FormField label="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <FormField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <div className="flex justify-end pt-2">
@@ -109,42 +96,24 @@ const ProfileView = () => {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
-                Current Password
-              </label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
-                New Password
-              </label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
-            </div>
-
-            <div>
-              {/* In the design mockup, the 3rd column label space is blank/invisible */}
-              <label className="text-xs font-medium text-transparent block mb-2 select-none">
-                &nbsp;
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
-            </div>
+            <FormField
+              label="Current Password"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <FormField
+              label="New Password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <FormField
+              isLabelHidden
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
           </div>
 
           <div className="flex justify-end pt-2">
