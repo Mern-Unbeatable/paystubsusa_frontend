@@ -10,6 +10,8 @@ import PricingView from "../pages/public/public_pricing/PricingView";
 import FindPaystubsView from "../pages/public/public_find_paystubs/FindPaystubsView";
 import LoginView from "../pages/public/public_auth/LoginView";
 import RegisterView from "../pages/public/public_auth/RegisterView";
+import ForgotPasswordView from "../pages/public/public_auth/ForgotPasswordView";
+import ResetPasswordView from "../pages/public/public_auth/ResetPasswordView";
 import CustomerDashboardView from "../pages/dashboard/CustomerDashboardView";
 import AdminDashboardView from "../pages/dashboard/AdminDashboardView";
 import AboutView from "../pages/public/public_about/AboutView";
@@ -88,6 +90,30 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <RegisterView />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordView />,
+  },
+  {
+    path: "/forgot",
+    element: <ForgotPasswordView />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPasswordView />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordView />,
+  },
+  {
+    path: "/reset",
+    element: <ResetPasswordView />,
+  },
+  {
+    path: "/resetpassword",
+    element: <ResetPasswordView />,
   },
   {
     path: "/dashboard",
