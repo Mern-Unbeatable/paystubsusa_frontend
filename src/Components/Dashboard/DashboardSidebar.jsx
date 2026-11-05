@@ -17,7 +17,6 @@ import {
   ShoppingBag,
   LayoutTemplate,
   Tag,
-  TrendingUp
 } from 'lucide-react';
 
 const DashboardSidebar = ({
@@ -58,7 +57,6 @@ const DashboardSidebar = ({
     { id: 'subscription', label: 'Subscription', icon: Star },
     { id: 'template', label: 'Document Template', icon: LayoutTemplate },
     { id: 'pricing', label: 'Pricing Plan & Tag', icon: Tag },
-    { id: 'analytics', label: 'Report & Analytics', icon: TrendingUp },
     { id: 'profile', label: 'Profile', icon: User },
   ];
 
@@ -114,7 +112,7 @@ const DashboardSidebar = ({
 
           {/* Section Category Title */}
           <div className="px-3 mb-2.5">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {effectiveRole === 'admin' ? 'Admin Portal' : 'Customer Portal'}
             </span>
           </div>
@@ -172,7 +170,7 @@ const DashboardSidebar = ({
               <p className="text-xs font-bold text-slate-800 truncate">
                 Atik Adnan
               </p>
-              <p className="text-[11px] text-slate-400 capitalize">
+              <p className="text-xs text-slate-400 capitalize">
                 {effectiveRole === 'admin' ? 'Admin' : 'Customer'}
               </p>
             </div>

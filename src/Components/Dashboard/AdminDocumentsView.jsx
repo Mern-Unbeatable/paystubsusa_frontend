@@ -49,10 +49,10 @@ const AdminDocumentsView = () => {
       {/* Header with Title, Subtitle, and Data updated Live indicator */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
             Documents
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-base text-slate-400 mt-1.5">
             Monitor and manage all documents generated through the platform.
           </p>
         </div>
@@ -60,7 +60,7 @@ const AdminDocumentsView = () => {
         {/* Live Data Updated Indicator */}
         <div className="flex items-center gap-1.5 self-start sm:self-auto">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[11px] text-slate-400">
+          <span className="text-sm text-slate-400">
             Data updated <span className="font-medium text-slate-500">just now</span>
           </span>
         </div>
@@ -70,11 +70,10 @@ const AdminDocumentsView = () => {
       <div className="bg-white rounded-xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
         {/* Table Title and Count */}
         <div className="pb-4">
-          <h3 className="text-sm font-bold text-slate-800">
+          <h3 className="text-base font-bold text-slate-800">
             All documents
           </h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">
-            {documents.length} records in this view
+          <p className="text-sm text-slate-400 mt-0.5">
           </p>
         </div>
 
@@ -82,7 +81,7 @@ const AdminDocumentsView = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[680px]">
             <thead>
-              <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              <tr className="border-b border-slate-100 text-sm font-semibold text-slate-400 uppercase tracking-wider">
                 <th className="py-3 font-medium">ID</th>
                 <th className="py-3 font-medium">CUSTOMER</th>
                 <th className="py-3 font-medium">DETAIL</th>
@@ -91,7 +90,7 @@ const AdminDocumentsView = () => {
                 <th className="py-3 text-right font-medium pr-2">ACTION</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50 text-xs">
+            <tbody className="divide-y divide-slate-50 text-sm">
               {documents.map((doc) => (
                 <tr
                   key={doc.id}
@@ -110,7 +109,7 @@ const AdminDocumentsView = () => {
                     {doc.value}
                   </td>
                   <td className="py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10.5px] font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
                       {doc.status}
                     </span>
                   </td>
@@ -127,7 +126,7 @@ const AdminDocumentsView = () => {
                           amount: doc.value,
                         })
                       }
-                      className="px-3.5 py-1 rounded bg-[#EAF5FF] text-[#009BFB] hover:bg-[#d8edff] font-semibold text-xs transition cursor-pointer active:scale-98"
+                      className="px-3.5 py-1 rounded bg-[#EAF5FF] text-[#009BFB] hover:bg-[#d8edff] font-semibold text-sm transition cursor-pointer active:scale-98"
                     >
                       View
                     </button>
@@ -140,7 +139,7 @@ const AdminDocumentsView = () => {
 
         {/* Pagination Footer */}
         <div className="pt-5 mt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs text-slate-400 font-medium">
+          <span className="text-sm text-slate-400 font-medium">
             Page {currentPage} of 3 · 5 matching records
           </span>
 
@@ -149,7 +148,7 @@ const AdminDocumentsView = () => {
               type="button"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
+              className="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
             >
               Previous
             </button>
@@ -158,7 +157,7 @@ const AdminDocumentsView = () => {
                 key={page}
                 type="button"
                 onClick={() => setCurrentPage(page)}
-                className={`w-7 h-7 rounded text-xs font-semibold flex items-center justify-center transition cursor-pointer ${
+                className={`w-7 h-7 rounded text-sm font-semibold flex items-center justify-center transition cursor-pointer ${
                   currentPage === page
                     ? 'bg-[#009BFB] text-white shadow-xs'
                     : 'border border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
@@ -171,7 +170,7 @@ const AdminDocumentsView = () => {
               type="button"
               onClick={() => setCurrentPage((p) => Math.min(3, p + 1))}
               disabled={currentPage === 3}
-              className="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
+              className="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
             >
               Next
             </button>

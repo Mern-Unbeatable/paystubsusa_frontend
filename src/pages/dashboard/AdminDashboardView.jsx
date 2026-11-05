@@ -46,7 +46,7 @@ const revenueData = [
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded shadow-lg">
+      <div className="bg-slate-900 text-white text-sm px-2.5 py-1.5 rounded shadow-lg">
         <p className="font-semibold">{label}</p>
         <p className="text-[#009BFB]">
           ${payload[0].value.toLocaleString()}
@@ -240,16 +240,16 @@ const AdminDashboardView = () => {
         <div className="space-y-6">
           {/* Page Title & Subtitle */}
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
               Dashboard Overview
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-base text-slate-400 mt-1.5">
               Monitor your platform activity, customers, documents, and revenue.
             </p>
           </div>
 
         {/* 6 Metric Cards Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {kpiStats.map((stat) => {
             const Icon = stat.icon;
             const isClickable = ['customers', 'documents', 'orders', 'subscriptions'].includes(stat.id);
@@ -262,8 +262,8 @@ const AdminDashboardView = () => {
                   else if (stat.id === 'orders') handleTabChange('orders');
                   else if (stat.id === 'subscriptions') handleTabChange('subscription');
                 }}
-                className={`bg-white rounded-xl border border-slate-200/80 p-3.5 sm:p-4 flex items-center gap-3 shadow-xs hover:border-slate-300 transition ${
-                  isClickable ? 'cursor-pointer hover:shadow-xs hover:border-blue-200' : ''
+                className={`bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex items-center gap-3.5 shadow-xs hover:border-slate-300 hover:shadow-sm transition ${
+                  isClickable ? 'cursor-pointer hover:border-blue-200' : ''
                 }`}
               >
                 <div
@@ -272,10 +272,10 @@ const AdminDashboardView = () => {
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[11px] font-medium text-slate-400 block truncate">
+                  <span className="text-sm sm:text-base font-semibold text-slate-700 block truncate">
                     {stat.label}
                   </span>
-                  <span className="text-base sm:text-lg lg:text-xl font-bold text-slate-900 leading-tight block mt-0.5">
+                  <span className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight block mt-0.5">
                     {stat.value}
                   </span>
                 </div>
@@ -295,9 +295,6 @@ const AdminDashboardView = () => {
                   <h3 className="text-sm font-bold text-slate-800">
                     Revenue analytics
                   </h3>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Revenue performance over time
-                  </p>
                 </div>
 
                 {/* Dropdown Timeframe */}
@@ -309,7 +306,7 @@ const AdminDashboardView = () => {
                         prev === 'Last Year' ? 'Last 6 Months' : 'Last Year'
                       )
                     }
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-600 text-xs font-medium hover:border-slate-300 transition cursor-pointer select-none"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-600 text-sm font-medium hover:border-slate-300 transition cursor-pointer select-none"
                   >
                     <span>{timeframe}</span>
                     <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -319,10 +316,7 @@ const AdminDashboardView = () => {
 
               {/* Total Revenue KPI */}
               <div className="mt-1 mb-2">
-                <span className="text-[11px] font-medium text-slate-400 block">
-                  Total revenue
-                </span>
-                <span className="text-2xl font-bold text-slate-900 tracking-tight block mt-0.5">
+                <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight block">
                   $84,290
                 </span>
               </div>
@@ -396,16 +390,13 @@ const AdminDashboardView = () => {
                 <h3 className="text-sm font-bold text-slate-800">
                   Documents generated
                 </h3>
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  By document type
-                </p>
               </div>
 
               {/* Document Progress Bars */}
               <div className="space-y-4 pt-1">
                 {documentBreakdown.map((doc, idx) => (
                   <div key={idx}>
-                    <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-600 font-medium">
                         {doc.name}
                       </span>
@@ -426,7 +417,7 @@ const AdminDashboardView = () => {
 
             {/* Total Generated Footer */}
             <div className="pt-5 mt-6 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs text-slate-400 font-medium">
+              <span className="text-sm text-slate-400 font-medium">
                 Total generated:
               </span>
               <span className="text-sm font-bold text-slate-900">
@@ -446,15 +437,12 @@ const AdminDashboardView = () => {
                 <h3 className="text-sm font-bold text-slate-800">
                   Recent orders
                 </h3>
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  Latest purchases across the platform
-                </p>
               </div>
 
               <Link
                 to="/admin?tab=orders"
                 onClick={() => setActiveTab('orders')}
-                className="text-xs font-semibold text-[#009BFB] hover:underline flex items-center gap-1"
+                className="text-sm font-semibold text-[#009BFB] hover:underline flex items-center gap-1"
               >
                 <span>View all orders</span>
                 <span>→</span>
@@ -465,7 +453,7 @@ const AdminDashboardView = () => {
             <div className="overflow-x-auto mt-2">
               <table className="w-full text-left border-collapse min-w-[620px]">
                 <thead>
-                  <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <tr className="border-b border-slate-100 text-sm font-semibold text-slate-400 uppercase tracking-wider">
                     <th className="py-2.5 font-medium">ORDER ID</th>
                     <th className="py-2.5 font-medium">CUSTOMER</th>
                     <th className="py-2.5 font-medium">TYPE</th>
@@ -475,7 +463,7 @@ const AdminDashboardView = () => {
                     <th className="py-2.5 text-right font-medium"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50 text-xs">
+                <tbody className="divide-y divide-slate-50 text-sm">
                   {recentOrders.map((order, idx) => (
                     <tr
                       key={idx}
@@ -497,7 +485,7 @@ const AdminDashboardView = () => {
                         {order.amount}
                       </td>
                       <td className="py-3">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10.5px] font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
                           {order.status}
                         </span>
                       </td>
@@ -520,13 +508,10 @@ const AdminDashboardView = () => {
                   <h3 className="text-sm font-bold text-slate-800">
                     Recent activity
                   </h3>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Live platform events
-                  </p>
                 </div>
 
                 {/* Live Indicator */}
-                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 bg-emerald-50/80 border border-emerald-100/60 px-2 py-0.5 rounded-full">
+                <div className="flex items-center gap-1.5 text-sm font-semibold text-emerald-600 bg-emerald-50/80 border border-emerald-100/60 px-2 py-0.5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   <span>Live</span>
                 </div>
@@ -539,22 +524,22 @@ const AdminDashboardView = () => {
                   return (
                     <div
                       key={act.id}
-                      className="flex items-start justify-between gap-3 text-xs"
+                      className="flex items-start justify-between gap-3 text-sm"
                     >
                       <div className="flex items-start gap-2.5 min-w-0">
                         <div className="w-7 h-7 rounded-full bg-blue-50 text-[#009BFB] flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Icon className="w-3.5 h-3.5" />
                         </div>
                         <div className="min-w-0">
-                          <p className="font-semibold text-slate-800 text-[11.5px] truncate">
+                          <p className="font-semibold text-slate-800 text-sm truncate">
                             {act.title}
                           </p>
-                          <p className="text-[10.5px] text-slate-400 truncate mt-0.5">
+                          <p className="text-sm text-slate-400 truncate mt-0.5">
                             {act.subtext}
                           </p>
                         </div>
                       </div>
-                      <span className="text-[10.5px] text-slate-400 flex-shrink-0 font-medium whitespace-nowrap">
+                      <span className="text-sm text-slate-400 flex-shrink-0 font-medium whitespace-nowrap">
                         {act.time}
                       </span>
                     </div>

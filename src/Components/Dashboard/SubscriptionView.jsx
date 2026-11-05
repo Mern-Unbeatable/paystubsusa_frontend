@@ -93,7 +93,7 @@ const SubscriptionView = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {metadataItems.map((item, idx) => (
             <div key={idx}>
-              <span className="text-[11px] font-medium text-slate-400 block mb-1">
+              <span className="text-xs font-medium text-slate-400 block mb-1">
                 {item.label}
               </span>
               <p className="font-bold text-xs sm:text-sm text-slate-900">
