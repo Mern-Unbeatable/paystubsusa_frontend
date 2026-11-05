@@ -9,13 +9,13 @@ const AdminOverview = lazy(
   () => import("../../pages/dashboard/admin/overview/AdminOverview"),
 );
 const AdminUsers = lazy(
-  () => import("../../pages/dashboard/admin/users/AdminUsers"),
+  () => import("../../pages/dashboard/admin/users/AdminUsersView"),
 );
 const AdminDocuments = lazy(
-  () => import("../../pages/dashboard/admin/documents/AdminDocuments"),
+  () => import("../../pages/dashboard/admin/documents/AdminDocumentsView"),
 );
 const AdminTransactions = lazy(
-  () => import("../../pages/dashboard/admin/transactions/AdminTransactions"),
+  () => import("../../pages/dashboard/admin/transactions/AdminTransactionsView"),
 );
 
 export const adminRoutes = [

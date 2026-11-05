@@ -1,3 +1,6 @@
+import atikAvatar from "../../assets/atik_avatar.png";
+import avatarTest from "../../assets/avatar_test.png";
+
 export const AUTH_STORAGE_KEYS = Object.freeze({
   demoSessionUser: "__demo_session_user__",
 });
@@ -8,6 +11,7 @@ export const DEMO_USERS = Object.freeze({
     name: "Ada Customer",
     email: "customer@demo.test",
     role: "customer",
+    avatar: atikAvatar,
     permissions: ["customer:read"],
   }),
   admin: Object.freeze({
@@ -15,6 +19,7 @@ export const DEMO_USERS = Object.freeze({
     name: "Grace Admin",
     email: "admin@demo.test",
     role: "admin",
+    avatar: avatarTest,
     permissions: ["customer:read", "admin:read", "admin:write"],
   }),
 });

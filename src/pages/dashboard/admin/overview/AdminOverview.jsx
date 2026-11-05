@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router";
 import { DashboardStatusBadge } from "../../../../layouts";
-import { DashboardHeader, DashboardTable } from "../../../../components/Dashboard";
+
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../components/Dashboard";
+
 import {
   FileText,
   CreditCard,
@@ -109,7 +114,9 @@ const StatCard = ({ title, value, change, icon: Icon }) => (
       <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
         {value}
       </div>
-      <div className="text-[11px] text-slate-400 font-medium mt-1">{change}</div>
+      <div className="text-[11px] text-slate-400 font-medium mt-1">
+        {change}
+      </div>
     </div>
   </div>
 );
@@ -184,8 +191,12 @@ const AdminOverview = () => (
                 <FileText className="w-4 h-4" />
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                <div className="font-bold text-slate-900 text-xs">
+                  {doc.name}
+                </div>
+                <div className="text-[10.5px] text-slate-400 font-mono">
+                  {doc.id}
+                </div>
               </div>
             </div>
           ),

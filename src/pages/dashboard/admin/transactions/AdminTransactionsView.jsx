@@ -1,6 +1,9 @@
 import React from "react";
 import { Eye } from "lucide-react";
-import { DashboardHeader, DashboardTable } from "../../../../components/Dashboard";
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 
 const transactions = [
@@ -33,7 +36,7 @@ const transactions = [
   },
 ];
 
-const AdminTransactions = () => (
+const AdminTransactionsView = () => (
   <div className="space-y-6">
     <DashboardHeader
       title="Transactions"
@@ -97,4 +100,4 @@ const AdminTransactions = () => (
   </div>
 );
 
-export default AdminTransactions;
+export default AdminTransactionsView;

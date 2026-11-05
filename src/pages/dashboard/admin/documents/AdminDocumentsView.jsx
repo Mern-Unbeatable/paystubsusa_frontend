@@ -1,6 +1,9 @@
 import React from "react";
 import { Eye, Download, FileText } from "lucide-react";
-import { DashboardHeader, DashboardTable } from "../../../../components/Dashboard";
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 
 const documents = [
@@ -51,7 +54,7 @@ const DocumentActionButtons = ({ doc }) => (
   </div>
 );
 
-const AdminDocuments = () => (
+const AdminDocumentsView = () => (
   <div className="space-y-6">
     <DashboardHeader
       title="Documents"
@@ -70,8 +73,12 @@ const AdminDocuments = () => (
                 <FileText className="w-4 h-4" />
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                <div className="font-bold text-slate-900 text-xs">
+                  {doc.name}
+                </div>
+                <div className="text-[10.5px] text-slate-400 font-mono">
+                  {doc.id}
+                </div>
               </div>
             </div>
           ),
@@ -106,4 +113,4 @@ const AdminDocuments = () => (
   </div>
 );
 
-export default AdminDocuments;
+export default AdminDocumentsView;

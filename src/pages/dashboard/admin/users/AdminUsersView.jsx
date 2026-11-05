@@ -1,6 +1,9 @@
 import React from "react";
 import { UserCog, ShieldCheck, Mail } from "lucide-react";
-import { DashboardHeader, DashboardTable } from "../../../../components/Dashboard";
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 
 const users = [
@@ -30,7 +33,7 @@ const users = [
   },
 ];
 
-const AdminUsers = () => (
+const AdminUsersView = () => (
   <div className="space-y-6">
     <DashboardHeader
       title="Manage Users"
@@ -49,8 +52,12 @@ const AdminUsers = () => (
                 <UserCog className="w-4 h-4" />
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-xs">{user.name}</div>
-                <div className="text-[10.5px] text-slate-400 font-mono">{user.id}</div>
+                <div className="font-bold text-slate-900 text-xs">
+                  {user.name}
+                </div>
+                <div className="text-[10.5px] text-slate-400 font-mono">
+                  {user.id}
+                </div>
               </div>
             </div>
           ),
@@ -94,4 +101,4 @@ const AdminUsers = () => (
   </div>
 );
 
-export default AdminUsers;
+export default AdminUsersView;
