@@ -1,6 +1,7 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { PATHS } from "../config/paths";
+import GuardRedirect from "./GuardRedirect";
 
 export default function RequireAuth() {
   const { user, loading } = useAuth();
@@ -8,7 +9,16 @@ export default function RequireAuth() {
   if (loading) return null;
   if (!user) {
     return (
-      <Navigate to={PATHS.AUTH.login} replace state={{ from: location }} />
+      <GuardRedirect
+        to={PATHS.AUTH.login}
+        replace
+        state={{ from: location }}
+        toastConfig={{
+          id: `auth-required:${location.pathname}`,
+          type: "error",
+          message: "Please log in to continue.",
+        }}
+      />
     );
   }
   return <Outlet />;
