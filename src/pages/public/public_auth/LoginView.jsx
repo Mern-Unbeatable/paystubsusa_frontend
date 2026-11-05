@@ -149,16 +149,12 @@ const LoginView = () => {
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
                   Password
                 </label>
-                <a
-                  href="#forgot"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert('Password reset link sent to your email.');
-                  }}
+                <Link
+                  to="/forgot-password"
                   className="text-xs font-medium text-secondary hover:underline"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <div className="relative">
                 <input
