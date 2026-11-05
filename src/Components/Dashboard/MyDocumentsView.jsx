@@ -175,7 +175,7 @@ const MyDocumentsView = () => {
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                  <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                  <div className="text-xs text-slate-400 font-mono">{doc.id}</div>
                 </div>
               </div>
             ),

@@ -37,7 +37,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
                 <div className="w-3.5 h-3.5 border-2 border-[#FFC711] rotate-45 flex items-center justify-center">
                   <div className="w-1 h-1 bg-[#FFC711]" />
                 </div>
-                <span className="font-bold text-slate-800 text-[10px] tracking-tight">Brand Name</span>
+                <span className="font-bold text-slate-800 text-xs tracking-tight">Brand Name</span>
               </div>
               <div className="text-right">
                 <span className="text-xs font-black text-slate-900 tracking-wider">INVOICE</span>
@@ -148,7 +148,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
         {/* Document Details Metadata */}
         <div className="p-6 grid grid-cols-2 gap-y-4 gap-x-6 text-xs">
           <div>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
               DOCUMENT NAME
             </span>
             <p className="font-bold text-slate-900 text-sm mt-0.5">
@@ -157,7 +157,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
           </div>
 
           <div>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
               CREATED
             </span>
             <p className="font-bold text-slate-900 text-sm mt-0.5">
@@ -166,7 +166,7 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
           </div>
 
           <div>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
               DOCUMENT ID
             </span>
             <p className="font-bold text-slate-800 font-mono text-xs mt-0.5">
@@ -175,11 +175,11 @@ const DocumentDetailsModal = ({ doc, onClose, onDownload }) => {
           </div>
 
           <div>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
               STATUS
             </span>
             <div className="mt-1">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span>{doc.status || 'Completed'}</span>
               </span>

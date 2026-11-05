@@ -152,7 +152,7 @@ const CustomerOverview = ({ setActiveTab }) => {
                 <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                   {stat.value}
                 </div>
-                <div className="text-[11px] text-slate-400 font-medium mt-1">
+                <div className="text-xs text-slate-400 font-medium mt-1">
                   {stat.change}
                 </div>
               </div>
@@ -185,7 +185,7 @@ const CustomerOverview = ({ setActiveTab }) => {
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                  <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                  <div className="text-xs text-slate-400 font-mono">{doc.id}</div>
                 </div>
               </div>
             ),
@@ -252,7 +252,7 @@ const CustomerOverview = ({ setActiveTab }) => {
           {
             header: 'Transaction ID',
             key: 'id',
-            cellClassName: 'font-mono font-semibold text-slate-800 text-[11px]',
+            cellClassName: 'font-mono font-semibold text-slate-800 text-xs',
           },
           {
             header: 'Description',

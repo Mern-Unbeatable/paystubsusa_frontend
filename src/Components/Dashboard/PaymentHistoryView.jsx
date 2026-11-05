@@ -58,7 +58,7 @@ const PaymentHistoryView = () => {
           {
             header: 'Transaction ID',
             key: 'id',
-            cellClassName: 'font-mono font-bold text-slate-900 text-[11px]',
+            cellClassName: 'font-mono font-bold text-slate-900 text-xs',
           },
           {
             header: 'Description',

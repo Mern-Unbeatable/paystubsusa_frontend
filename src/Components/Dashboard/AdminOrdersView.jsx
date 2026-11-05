@@ -47,10 +47,10 @@ const AdminOrdersView = () => {
     <div className="space-y-6">
       {/* Title & Subtitle */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
           Orders
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
+        <p className="text-base text-slate-400 mt-1.5">
           Manage all document purchases and subscription orders.
         </p>
       </div>
@@ -59,11 +59,10 @@ const AdminOrdersView = () => {
       <div className="bg-white rounded-xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
         {/* Table Title and Count */}
         <div className="pb-4">
-          <h3 className="text-sm font-bold text-slate-800">
+          <h3 className="text-base font-bold text-slate-800">
             All orders
           </h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">
-            {orders.length} records in this view
+          <p className="text-sm text-slate-400 mt-0.5">
           </p>
         </div>
 
@@ -71,7 +70,7 @@ const AdminOrdersView = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[680px]">
             <thead>
-              <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              <tr className="border-b border-slate-100 text-sm font-semibold text-slate-400 uppercase tracking-wider">
                 <th className="py-3 font-medium">ID</th>
                 <th className="py-3 font-medium">CUSTOMER</th>
                 <th className="py-3 font-medium">DETAIL</th>
@@ -80,7 +79,7 @@ const AdminOrdersView = () => {
                 <th className="py-3 text-right font-medium pr-2">ACTION</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50 text-xs">
+            <tbody className="divide-y divide-slate-50 text-sm">
               {orders.map((order) => (
                 <tr
                   key={order.id}
@@ -99,7 +98,7 @@ const AdminOrdersView = () => {
                     {order.value}
                   </td>
                   <td className="py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10.5px] font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
                       {order.status}
                     </span>
                   </td>
@@ -107,7 +106,7 @@ const AdminOrdersView = () => {
                     <button
                       type="button"
                       onClick={() => setSelectedOrder(order)}
-                      className="px-3.5 py-1 rounded bg-[#EAF5FF] text-[#009BFB] hover:bg-[#d8edff] font-semibold text-xs transition cursor-pointer active:scale-98"
+                      className="px-3.5 py-1 rounded bg-[#EAF5FF] text-[#009BFB] hover:bg-[#d8edff] font-semibold text-sm transition cursor-pointer active:scale-98"
                     >
                       View
                     </button>
@@ -120,7 +119,7 @@ const AdminOrdersView = () => {
 
         {/* Pagination Footer */}
         <div className="pt-5 mt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs text-slate-400 font-medium">
+          <span className="text-sm text-slate-400 font-medium">
             Showing 1-{orders.length} of {orders.length}
           </span>
 
@@ -129,7 +128,7 @@ const AdminOrdersView = () => {
               type="button"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="w-7 h-7 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
+              className="w-7 h-7 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
@@ -138,7 +137,7 @@ const AdminOrdersView = () => {
                 key={page}
                 type="button"
                 onClick={() => setCurrentPage(page)}
-                className={`w-7 h-7 rounded text-xs font-semibold flex items-center justify-center transition cursor-pointer ${
+                className={`w-7 h-7 rounded text-sm font-semibold flex items-center justify-center transition cursor-pointer ${
                   currentPage === page
                     ? 'bg-[#009BFB] text-white shadow-xs'
                     : 'border border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
@@ -151,7 +150,7 @@ const AdminOrdersView = () => {
               type="button"
               onClick={() => setCurrentPage((p) => Math.min(2, p + 1))}
               disabled={currentPage === 2}
-              className="w-7 h-7 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
+              className="w-7 h-7 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
             >
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
@@ -175,7 +174,7 @@ const AdminOrdersView = () => {
                 {/* Header */}
                 <div className="flex items-start justify-between pb-4">
                   <div>
-                    <span className="text-[10px] font-bold text-[#009BFB] uppercase tracking-wider block">
+                    <span className="text-sm font-bold text-[#009BFB] uppercase tracking-wider block">
                       ORDER DETAILS
                     </span>
                     <h2 className="text-2xl font-bold text-slate-900 mt-1">
@@ -194,10 +193,10 @@ const AdminOrdersView = () => {
 
                 {/* Status & Synced line */}
                 <div className="flex items-center justify-between pt-2">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
                     {selectedOrder.status}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-medium">
+                  <span className="text-sm text-slate-400 font-medium">
                     Synced moments ago
                   </span>
                 </div>
@@ -208,37 +207,37 @@ const AdminOrdersView = () => {
                 {/* Field List */}
                 <div className="space-y-5">
                   <div>
-                    <span className="text-[10.5px] font-medium text-slate-400 block">
+                    <span className="text-sm font-medium text-slate-400 block">
                       Customer
                     </span>
-                    <p className="text-xs font-bold text-slate-800 mt-1">
+                    <p className="text-sm font-bold text-slate-800 mt-1">
                       {selectedOrder.customer}
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[10.5px] font-medium text-slate-400 block">
+                    <span className="text-sm font-medium text-slate-400 block">
                       Product / detail
                     </span>
-                    <p className="text-xs font-bold text-slate-800 mt-1">
+                    <p className="text-sm font-bold text-slate-800 mt-1">
                       {selectedOrder.detail}
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[10.5px] font-medium text-slate-400 block">
+                    <span className="text-sm font-medium text-slate-400 block">
                       Amount / value
                     </span>
-                    <p className="text-xs font-bold text-slate-800 mt-1">
+                    <p className="text-sm font-bold text-slate-800 mt-1">
                       {selectedOrder.value}
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[10.5px] font-medium text-slate-400 block">
+                    <span className="text-sm font-medium text-slate-400 block">
                       Status
                     </span>
-                    <p className="text-xs font-bold text-slate-800 mt-1">
+                    <p className="text-sm font-bold text-slate-800 mt-1">
                       {selectedOrder.status}
                     </p>
                   </div>
@@ -250,7 +249,7 @@ const AdminOrdersView = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedOrder(null)}
-                  className="flex-1 py-2.5 rounded border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs transition cursor-pointer text-center"
+                  className="flex-1 py-2.5 rounded border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-sm transition cursor-pointer text-center"
                 >
                   Close
                 </button>
@@ -261,7 +260,7 @@ const AdminOrdersView = () => {
                     alert(`Opening full details for order ${selectedOrder.id}`);
                     setSelectedOrder(null);
                   }}
-                  className="flex-1 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs shadow-xs transition cursor-pointer active:scale-98 text-center"
+                  className="flex-1 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-sm shadow-xs transition cursor-pointer active:scale-98 text-center"
                 >
                   Open full details
                 </button>

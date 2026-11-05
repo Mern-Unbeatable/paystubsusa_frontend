@@ -38,7 +38,7 @@ const ProfileView = () => {
     <div className="space-y-6">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded shadow-lg flex items-center gap-2 text-sm font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
           <CheckCircle2 className="w-4 h-4" />
           <span>{toastMessage}</span>
         </div>
@@ -60,38 +60,38 @@ const ProfileView = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
+              <label className="text-sm font-medium text-slate-700 block mb-2">
                 Name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
               />
             </div>
 
             <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
+              <label className="text-sm font-medium text-slate-700 block mb-2">
                 Phone Number
               </label>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
               />
             </div>
 
             <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
+              <label className="text-sm font-medium text-slate-700 block mb-2">
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
               />
             </div>
           </div>
@@ -99,7 +99,7 @@ const ProfileView = () => {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs shadow-xs transition cursor-pointer active:scale-98"
+              className="px-6 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-sm shadow-xs transition cursor-pointer active:scale-98"
             >
               Update Profile
             </button>
@@ -114,7 +114,7 @@ const ProfileView = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
+              <label className="text-sm font-medium text-slate-700 block mb-2">
                 Current Password
               </label>
               <div className="relative">
@@ -122,7 +122,7 @@ const ProfileView = () => {
                   type={showCurrentPassword ? 'text' : 'password'}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
                 />
                 <button
                   type="button"
@@ -140,7 +140,7 @@ const ProfileView = () => {
             </div>
 
             <div>
-              <label className="text-xs font-medium text-slate-700 block mb-2">
+              <label className="text-sm font-medium text-slate-700 block mb-2">
                 New Password
               </label>
               <div className="relative">
@@ -148,7 +148,7 @@ const ProfileView = () => {
                   type={showNewPassword ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
                 />
                 <button
                   type="button"
@@ -167,7 +167,7 @@ const ProfileView = () => {
 
             <div>
               {/* In the design mockup, the 3rd column label space is blank/invisible */}
-              <label className="text-xs font-medium text-transparent block mb-2 select-none">
+              <label className="text-sm font-medium text-transparent block mb-2 select-none">
                 &nbsp;
               </label>
               <div className="relative">
@@ -175,7 +175,7 @@ const ProfileView = () => {
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
                 />
                 <button
                   type="button"
@@ -196,7 +196,7 @@ const ProfileView = () => {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs shadow-xs transition cursor-pointer active:scale-98"
+              className="px-6 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-sm shadow-xs transition cursor-pointer active:scale-98"
             >
               Change Password
             </button>

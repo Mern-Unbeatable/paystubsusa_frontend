@@ -14,7 +14,7 @@ export const DashboardPagination = ({
 
   return (
     <div className="p-4 sm:p-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-      <span className="text-slate-400 font-medium text-[11px]">
+      <span className="text-slate-400 font-medium text-xs">
         {displayLabel}
       </span>
 
@@ -63,7 +63,7 @@ export const DashboardPagination = ({
 
 export const DashboardStatusBadge = ({ status = 'Completed' }) => {
   return (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
       <span>{status}</span>
     </span>
@@ -108,7 +108,7 @@ const DashboardTable = ({
         ) : (
           <table className={`w-full text-left border-collapse ${minWidth}`}>
             <thead>
-              <tr className="border-b border-slate-100 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+              <tr className="border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
