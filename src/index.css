@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-secondary: #009BFB;
+  --color-secondary: #009bfb;
   --color-primary: #092258;
-  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans:
+    "Plus Jakarta Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
 }
 
 html,
