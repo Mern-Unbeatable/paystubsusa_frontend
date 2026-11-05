@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
-import atikAvatar from "../../../assets/atik_avatar.png";
+import avatarTest from "../../../assets/avatar_test.png";
 import { useAuth } from "../../../hooks/useAuth";
+import { toast } from "react-hot-toast";
 import {
   LayoutGrid,
   FileText,
@@ -83,7 +84,7 @@ const PORTAL_META = {
   },
   customer: {
     label: "Customer Portal",
-    userName: "Atik Adnan",
+    userName: "Customer User",
     userRole: "Customer",
   },
 };
@@ -148,39 +149,90 @@ const SidebarHeader = ({ setMobileOpen }) => (
   </div>
 );
 
-const UserSummaryCard = ({ role }) => {
-  const meta = PORTAL_META[role === "admin" ? "admin" : "customer"];
+const resolveUserName = (user, role) => {
+  const fullName = [user?.firstName, user?.lastName]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+  return (
+    user?.name ||
+    user?.fullName ||
+    fullName ||
+    (role === "admin"
+      ? PORTAL_META.admin.userName
+      : PORTAL_META.customer.userName)
+  );
+};
+
+const resolveUserRole = (user, role) => {
+  if (user?.role === "admin") {
+    return PORTAL_META.admin.userRole;
+  }
+  if (user?.role === "customer") {
+    return PORTAL_META.customer.userRole;
+  }
+  return role === "admin"
+    ? PORTAL_META.admin.userRole
+    : PORTAL_META.customer.userRole;
+};
+
+const DUMMY_AVATAR_URL =
+  "https://img.magnific.com/premium-photo/memoji-emoji-handsome-smiling-man-white-background_826801-6987.jpg?semt=ais_hybrid&w=740&q=80";
+
+const extractErrorMessage = (error) => {
+  if (typeof error === "string") {
+    return error;
+  }
+
+  if (error?.message) {
+    return error.message;
+  }
+
+  if (typeof error?.status === "number") {
+    return `Request failed with status ${error.status}.`;
+  }
+
+  return "Unable to sign out from server. You were signed out locally.";
+};
+
+const UserSummaryCard = ({ role, user }) => {
+  const userName = resolveUserName(user, role);
+  const userRole = resolveUserRole(user, role);
+  const avatarUrl = DUMMY_AVATAR_URL;
 
   return (
     <div className="p-2.5 rounded bg-slate-50/80 border border-slate-100 flex items-center gap-3">
       <div className="relative">
         <img
-          src={atikAvatar}
-          alt={meta.userName}
+          src={avatarUrl}
+          alt={userName}
           className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-xs"
           loading="lazy"
           decoding="async"
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = avatarTest;
+          }}
         />
-        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ring-white" />
+        <span className="absolute bottom-0 right-0 w-1.5 h-1.5 bg-emerald-500 rounded-full ring-2 ring-white" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-bold text-slate-800 truncate">
-          {meta.userName}
-        </p>
-        <p className="text-[11px] text-slate-400 capitalize">{meta.userRole}</p>
+        <p className="text-xs font-bold text-slate-800 truncate">{userName}</p>
+        <p className="text-[11px] text-slate-400 capitalize">{userRole}</p>
       </div>
     </div>
   );
 };
 
-const LogoutButton = ({ onClick }) => (
+const LogoutButton = ({ onClick, isLoading }) => (
   <button
     type="button"
     onClick={onClick}
+    disabled={isLoading}
     className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded border border-rose-100 bg-rose-50/50 hover:bg-rose-100/70 text-rose-600 font-semibold text-xs transition cursor-pointer"
   >
     <LogOut className="w-3.5 h-3.5" />
-    <span>Log Out</span>
+    <span>{isLoading ? "Logging out..." : "Log Out"}</span>
   </button>
 );
 
@@ -188,6 +240,7 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const effectiveRole = role || user?.role || "customer";
   const portalMeta =
@@ -195,12 +248,24 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
   const navItems = getNavItems(effectiveRole);
 
   const handleLogout = async () => {
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+
     try {
       await logout();
-    } catch {
-      // State is still cleared for secure local logout even if API logout fails.
+      navigate("/login");
+    } catch (error) {
+      toast.error(extractErrorMessage(error), {
+        id: "dashboard-logout-error",
+        duration: 2800,
+      });
+      navigate("/login");
+    } finally {
+      setIsLoggingOut(false);
     }
-    navigate("/login");
   };
 
   const handleNavClick = () => {
@@ -247,8 +312,8 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
         </div>
 
         <div className="pt-4 border-t border-slate-100 space-y-3">
-          <UserSummaryCard role={effectiveRole} />
-          <LogoutButton onClick={handleLogout} />
+          <UserSummaryCard role={effectiveRole} user={user} />
+          <LogoutButton onClick={handleLogout} isLoading={isLoggingOut} />
         </div>
       </aside>
     </>
