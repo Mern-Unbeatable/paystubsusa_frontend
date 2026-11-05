@@ -53,7 +53,10 @@ const DashboardTable = ({
                 </tr>
               ) : (
                 data.map((row, rowIndex) => (
-                  <tr key={row.id || rowIndex} className="border-t border-slate-100">
+                  <tr
+                    key={row.id || rowIndex}
+                    className="border-t border-slate-100"
+                  >
                     {columns.map((column, columnIndex) => {
                       const cellValue = column.render
                         ? column.render(row)
@@ -81,7 +84,8 @@ const DashboardTable = ({
       {hasPagination && (
         <div className="border-t border-slate-100 px-4 sm:px-5 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-[11px] text-slate-500">
-            {pagination.label || `Page ${pagination.currentPage} of ${pagination.totalPages}`}
+            {pagination.label ||
+              `Page ${pagination.currentPage} of ${pagination.totalPages}`}
           </div>
 
           <div className="flex items-center gap-2">

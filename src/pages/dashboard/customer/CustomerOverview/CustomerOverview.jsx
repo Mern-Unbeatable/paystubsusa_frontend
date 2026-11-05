@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import {
   FileText,
   LayoutGrid,
@@ -10,11 +10,14 @@ import {
   Download,
   ArrowRight,
   CheckCircle2,
-  X
-} from 'lucide-react';
-import { DocumentDetailsModal } from '../components/modals';
-import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
-import { DashboardStatusBadge } from '../../../../layouts';
+  X,
+} from "lucide-react";
+import { DocumentDetailsModal } from "../components/modals";
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../components/Dashboard";
+import { DashboardStatusBadge } from "../../../../layouts";
 
 const CustomerOverview = () => {
   const navigate = useNavigate();
@@ -23,79 +26,79 @@ const CustomerOverview = () => {
 
   const stats = [
     {
-      title: 'Total Documents',
-      value: '12',
-      change: 'All-time documents',
+      title: "Total Documents",
+      value: "12",
+      change: "All-time documents",
       icon: FileText,
     },
     {
-      title: 'Paystubs Created',
-      value: '8',
-      change: '67% of your documents',
+      title: "Paystubs Created",
+      value: "8",
+      change: "67% of your documents",
       icon: LayoutGrid,
     },
     {
-      title: 'Total Purchases',
-      value: '10',
-      change: 'Successful purchases',
+      title: "Total Purchases",
+      value: "10",
+      change: "Successful purchases",
       icon: CreditCard,
     },
     {
-      title: 'Subscription Status',
-      value: 'Active',
-      change: 'Unlimited Access',
+      title: "Subscription Status",
+      value: "Active",
+      change: "Unlimited Access",
       icon: Star,
     },
   ];
 
   const recentDocuments = [
     {
-      id: 'PS-2025-0841',
-      name: 'Paystub - May 2025',
-      type: 'Paystub',
-      date: 'May 28, 2025',
-      status: 'Completed',
+      id: "PS-2025-0841",
+      name: "Paystub - May 2025",
+      type: "Paystub",
+      date: "May 28, 2025",
+      status: "Completed",
     },
     {
-      id: 'W2-2025-1120',
-      name: 'W-2 Form - 2024',
-      type: 'W-2',
-      date: 'May 22, 2025',
-      status: 'Completed',
+      id: "W2-2025-1120",
+      name: "W-2 Form - 2024",
+      type: "W-2",
+      date: "May 22, 2025",
+      status: "Completed",
     },
     {
-      id: 'PS-2025-0723',
-      name: 'Paystub - April 2025',
-      type: 'Paystub',
-      date: 'May 03, 2025',
-      status: 'Completed',
+      id: "PS-2025-0723",
+      name: "Paystub - April 2025",
+      type: "Paystub",
+      date: "May 03, 2025",
+      status: "Completed",
     },
   ];
 
   const recentPayments = [
     {
-      id: 'TXN-9182746',
-      description: 'Paystub - May 2025',
-      date: 'May 28, 2025',
-      method: 'Visa **** 4821',
-      amount: '$14.99',
-      status: 'Successful',
+      id: "TXN-9182746",
+      description: "Paystub - May 2025",
+      date: "May 28, 2025",
+      method: "Visa **** 4821",
+      amount: "$14.99",
+      status: "Successful",
     },
     {
-      id: 'TXN-9191822',
-      description: 'W-2 Form - 2024',
-      date: 'May 22, 2025',
-      method: 'Visa **** 4821',
-      amount: '$19.99',
-      status: 'Successful',
+      id: "TXN-9191822",
+      description: "W-2 Form - 2024",
+      date: "May 22, 2025",
+      method: "Visa **** 4821",
+      amount: "$19.99",
+      status: "Successful",
     },
     {
-      id: 'TXN-9178021',
-      description: 'Paystub - April 2025',
-      date: 'May 03, 2025',
-      method: 'Mastercard **** 1092',
-      amount: '$14.99',
-      status: 'Successful',
+      id: "TXN-9178021",
+      description: "Paystub - April 2025",
+      date: "May 03, 2025",
+      method: "Mastercard **** 1092",
+      amount: "$14.99",
+      status: "Successful",
     },
   ];
 
@@ -176,36 +179,40 @@ const CustomerOverview = () => {
         }
         columns={[
           {
-            header: 'Document Name',
+            header: "Document Name",
             render: (doc) => (
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                  <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                  <div className="font-bold text-slate-900 text-xs">
+                    {doc.name}
+                  </div>
+                  <div className="text-[10.5px] text-slate-400 font-mono">
+                    {doc.id}
+                  </div>
                 </div>
               </div>
             ),
           },
           {
-            header: 'Document Type',
-            key: 'type',
-            cellClassName: 'text-slate-600 font-medium',
+            header: "Document Type",
+            key: "type",
+            cellClassName: "text-slate-600 font-medium",
           },
           {
-            header: 'Created Date',
-            key: 'date',
-            cellClassName: 'text-slate-500 font-medium',
+            header: "Created Date",
+            key: "date",
+            cellClassName: "text-slate-500 font-medium",
           },
           {
-            header: 'Status',
+            header: "Status",
             render: (doc) => <DashboardStatusBadge status={doc.status} />,
           },
           {
-            header: 'Action',
-            align: 'right',
+            header: "Action",
+            align: "right",
             render: (doc) => (
               <div className="inline-flex items-center gap-2">
                 <button
@@ -248,33 +255,35 @@ const CustomerOverview = () => {
         }
         columns={[
           {
-            header: 'Transaction ID',
-            key: 'id',
-            cellClassName: 'font-mono font-semibold text-slate-800 text-[11px]',
+            header: "Transaction ID",
+            key: "id",
+            cellClassName: "font-mono font-semibold text-slate-800 text-[11px]",
           },
           {
-            header: 'Description',
-            key: 'description',
-            cellClassName: 'font-medium text-slate-700',
+            header: "Description",
+            key: "description",
+            cellClassName: "font-medium text-slate-700",
           },
           {
-            header: 'Date',
-            key: 'date',
-            cellClassName: 'text-slate-500 font-medium',
+            header: "Date",
+            key: "date",
+            cellClassName: "text-slate-500 font-medium",
           },
           {
-            header: 'Payment Method',
-            key: 'method',
-            cellClassName: 'text-slate-600 font-medium',
+            header: "Payment Method",
+            key: "method",
+            cellClassName: "text-slate-600 font-medium",
           },
           {
-            header: 'Amount',
-            key: 'amount',
-            cellClassName: 'font-bold text-slate-900',
+            header: "Amount",
+            key: "amount",
+            cellClassName: "font-bold text-slate-900",
           },
           {
-            header: 'Status',
-            render: (payment) => <DashboardStatusBadge status={payment.status} />,
+            header: "Status",
+            render: (payment) => (
+              <DashboardStatusBadge status={payment.status} />
+            ),
           },
         ]}
         data={recentPayments}
