@@ -12,7 +12,12 @@ import {
   LogOut,
   X,
   FilePlus,
-  ShieldCheck
+  ShieldCheck,
+  Users,
+  ShoppingBag,
+  LayoutTemplate,
+  Tag,
+  TrendingUp
 } from 'lucide-react';
 
 const DashboardSidebar = ({
@@ -36,7 +41,7 @@ const DashboardSidebar = ({
     navigate('/login');
   };
 
-  const navItems = [
+  const customerNavItems = [
     { id: 'overview', label: 'Overview', icon: LayoutGrid },
     { id: 'documents', label: 'My Documents', icon: FileText },
     { id: 'payments', label: 'Payment History', icon: CreditCard },
@@ -44,6 +49,20 @@ const DashboardSidebar = ({
     { id: 'help', label: 'Help Center', icon: HelpCircle },
     { id: 'profile', label: 'Profile', icon: User },
   ];
+
+  const adminNavItems = [
+    { id: 'overview', label: 'Overview', icon: LayoutGrid },
+    { id: 'customers', label: 'Customers', icon: Users },
+    { id: 'documents', label: 'Documents', icon: FileText },
+    { id: 'orders', label: 'Orders', icon: ShoppingBag },
+    { id: 'subscription', label: 'Subscription', icon: Star },
+    { id: 'template', label: 'Document Template', icon: LayoutTemplate },
+    { id: 'pricing', label: 'Pricing Plan & Tag', icon: Tag },
+    { id: 'analytics', label: 'Report & Analytics', icon: TrendingUp },
+    { id: 'profile', label: 'Profile', icon: User },
+  ];
+
+  const navItems = effectiveRole === 'admin' ? adminNavItems : customerNavItems;
 
   const handleItemClick = (id) => {
     if (setActiveTab) {
@@ -104,7 +123,11 @@ const DashboardSidebar = ({
           <nav className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = activeTab === item.id;
+              const isActive =
+                activeTab === item.id ||
+                (item.id === 'subscription' && activeTab === 'subscriptions') ||
+                (item.id === 'template' && (activeTab === 'templates' || activeTab === 'document-template')) ||
+                (item.id === 'pricing' && (activeTab === 'pricing-plans' || activeTab === 'pricing-plan'));
               return (
                 <button
                   key={item.id}
@@ -147,10 +170,10 @@ const DashboardSidebar = ({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-slate-800 truncate">
-                {effectiveRole === 'admin' ? 'Admin Manager' : 'Atik Adnan'}
+                Atik Adnan
               </p>
               <p className="text-[11px] text-slate-400 capitalize">
-                {effectiveRole === 'admin' ? 'Super Admin' : 'Customer'}
+                {effectiveRole === 'admin' ? 'Admin' : 'Customer'}
               </p>
             </div>
           </div>

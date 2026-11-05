@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import DashboardHeader from './DashboardHeader';
 
 const ProfileView = () => {
@@ -10,6 +10,10 @@ const ProfileView = () => {
   const [currentPassword, setCurrentPassword] = useState('password123');
   const [newPassword, setNewPassword] = useState('newpassword123');
   const [confirmPassword, setConfirmPassword] = useState('newpassword123');
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -47,7 +51,7 @@ const ProfileView = () => {
       />
 
       {/* Form Card */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-8">
+      <div className="bg-white rounded-xl border border-slate-200/80 shadow-xs p-6 sm:p-8 space-y-8">
         {/* Section 1: Account Information */}
         <form onSubmit={handleUpdateProfile} className="space-y-4">
           <h2 className="text-sm sm:text-base font-bold text-slate-900">
@@ -113,24 +117,52 @@ const ProfileView = () => {
               <label className="text-xs font-medium text-slate-700 block mb-2">
                 Current Password
               </label>
-              <input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
+              <div className="relative">
+                <input
+                  type={showCurrentPassword ? 'text' : 'password'}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer transition"
+                  aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showCurrentPassword ? (
+                    <EyeOff className="w-4 h-4 stroke-[2]" />
+                  ) : (
+                    <Eye className="w-4 h-4 stroke-[2]" />
+                  )}
+                </button>
+              </div>
             </div>
 
             <div>
               <label className="text-xs font-medium text-slate-700 block mb-2">
                 New Password
               </label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
+              <div className="relative">
+                <input
+                  type={showNewPassword ? 'text' : 'password'}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer transition"
+                  aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showNewPassword ? (
+                    <EyeOff className="w-4 h-4 stroke-[2]" />
+                  ) : (
+                    <Eye className="w-4 h-4 stroke-[2]" />
+                  )}
+                </button>
+              </div>
             </div>
 
             <div>
@@ -138,12 +170,26 @@ const ProfileView = () => {
               <label className="text-xs font-medium text-transparent block mb-2 select-none">
                 &nbsp;
               </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full pl-4 pr-11 py-3 rounded bg-[#E2E6EA] border border-transparent text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#009BFB]/30 focus:border-[#009BFB] transition"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer transition"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-4 h-4 stroke-[2]" />
+                  ) : (
+                    <Eye className="w-4 h-4 stroke-[2]" />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 

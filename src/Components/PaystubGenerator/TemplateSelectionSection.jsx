@@ -49,7 +49,7 @@ const STUB_DATA = {
   },
 };
 
-const TEMPLATES = [
+export const TEMPLATES = [
   {
     id: '01',
     title: 'Template 01',
@@ -117,7 +117,7 @@ const TEMPLATES = [
 ];
 
 // Miniature rendered Paystub Document matching Figma
-const PaystubThumbnail = ({ template }) => {
+export const PaystubThumbnail = ({ template }) => {
   const { headerVariant, netPayVariant, tableVariant } = template;
 
   return (
