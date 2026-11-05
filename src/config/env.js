@@ -22,4 +22,3 @@ export const ENV_CONFIG = Object.freeze({
     useDemoAuthFlag === "true" ||
     (useDemoAuthFlag !== "false" && !configuredBaseUrl),
 });
-

@@ -12,8 +12,8 @@ import { useAuth } from "../../hooks/useAuth";
 import logoImg from "../../assets/logo.png";
 import { DEMO_CREDENTIALS } from "../../features/auth/auth.constants";
 
-const AuthInvoicePreview = lazy(() =>
-  import("../../Components/Auth/AuthInvoicePreview")
+const AuthInvoicePreview = lazy(
+  () => import("./components/AuthInvoicePreview"),
 );
 
 const LoginView = () => {
@@ -247,12 +247,24 @@ const LoginView = () => {
             </div>
             <div className="mt-3 space-y-1 text-[11px] text-slate-500">
               <p>
-                Customer: <span className="font-semibold">{DEMO_CREDENTIALS.customer.email}</span>{" "}
-                / <span className="font-semibold">{DEMO_CREDENTIALS.customer.password}</span>
+                Customer:{" "}
+                <span className="font-semibold">
+                  {DEMO_CREDENTIALS.customer.email}
+                </span>{" "}
+                /{" "}
+                <span className="font-semibold">
+                  {DEMO_CREDENTIALS.customer.password}
+                </span>
               </p>
               <p>
-                Admin: <span className="font-semibold">{DEMO_CREDENTIALS.admin.email}</span> /{" "}
-                <span className="font-semibold">{DEMO_CREDENTIALS.admin.password}</span>
+                Admin:{" "}
+                <span className="font-semibold">
+                  {DEMO_CREDENTIALS.admin.email}
+                </span>{" "}
+                /{" "}
+                <span className="font-semibold">
+                  {DEMO_CREDENTIALS.admin.password}
+                </span>
               </p>
             </div>
           </div>

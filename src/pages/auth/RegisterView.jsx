@@ -1,12 +1,8 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import logoImg from "../../assets/logo.png";
-
-const AuthInvoicePreview = lazy(() =>
-  import("../../Components/Auth/AuthInvoicePreview")
-);
 
 const RegisterView = () => {
   const navigate = useNavigate();
@@ -18,7 +14,6 @@ const RegisterView = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [formError, setFormError] = useState("");
-
   const errorMessage = formError || authError?.message || "";
 
   const handleSubmit = async (e) => {
@@ -50,17 +45,6 @@ const RegisterView = () => {
 
   return (
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
-      {/* Left Column: Interactive Invoice Preview Showcase (50% width) */}
-      <div className="hidden lg:block w-full h-full">
-        <Suspense
-          fallback={
-            <div className="w-full h-full min-h-screen bg-slate-100 animate-pulse" />
-          }
-        >
-          <AuthInvoicePreview />
-        </Suspense>
-      </div>
-
       {/* Right Column: Clean Registration Form (50% width) */}
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
         {/* Top Header / Back Button */}
