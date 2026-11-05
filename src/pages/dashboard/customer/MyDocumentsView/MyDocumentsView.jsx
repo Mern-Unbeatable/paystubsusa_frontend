@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router';
+import React, { useState, useMemo } from "react";
+import { Link } from "react-router";
 import {
   FileText,
   FilePlus,
@@ -7,39 +7,114 @@ import {
   Eye,
   Download,
   CheckCircle2,
-  ChevronDown
-} from 'lucide-react';
-import { DocumentDetailsModal } from '../components/modals';
-import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
-import { DashboardStatusBadge } from '../../../../layouts';
+  ChevronDown,
+} from "lucide-react";
+import { DocumentDetailsModal } from "../components/modals";
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../components/Dashboard";
+import { DashboardStatusBadge } from "../../../../layouts";
 
 const INITIAL_DOCUMENTS = [
-  { id: 'PS-2025-0841', name: 'Paystub - May 2025', type: 'Paystub', date: 'May 28, 2025', status: 'Completed' },
-  { id: 'W2-2025-1120', name: 'W-2 Form - 2024', type: 'W-2', date: 'May 22, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
-  { id: 'PS-2025-0722', name: 'Paystub - April 2025', type: 'Paystub', date: 'May 03, 2025', status: 'Completed' },
+  {
+    id: "PS-2025-0841",
+    name: "Paystub - May 2025",
+    type: "Paystub",
+    date: "May 28, 2025",
+    status: "Completed",
+  },
+  {
+    id: "W2-2025-1120",
+    name: "W-2 Form - 2024",
+    type: "W-2",
+    date: "May 22, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
+  {
+    id: "PS-2025-0722",
+    name: "Paystub - April 2025",
+    type: "Paystub",
+    date: "May 03, 2025",
+    status: "Completed",
+  },
 ];
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Documents' },
-  { id: 'paystubs', label: 'Paystubs' },
-  { id: 'w2', label: 'W-2' },
-  { id: '1099', label: '1099-NEC' },
-  { id: 'direct_deposit', label: 'Direct Deposit Slip' },
+  { id: "all", label: "All Documents" },
+  { id: "paystubs", label: "Paystubs" },
+  { id: "w2", label: "W-2" },
+  { id: "1099", label: "1099-NEC" },
+  { id: "direct_deposit", label: "Direct Deposit Slip" },
 ];
 
 const MyDocumentsView = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadNotice, setDownloadNotice] = useState(null);
@@ -50,10 +125,16 @@ const MyDocumentsView = () => {
   const filteredDocs = useMemo(() => {
     return INITIAL_DOCUMENTS.filter((doc) => {
       // Category filter
-      if (selectedCategory === 'paystubs' && doc.type !== 'Paystub') return false;
-      if (selectedCategory === 'w2' && doc.type !== 'W-2') return false;
-      if (selectedCategory === '1099' && !doc.type.includes('1099')) return false;
-      if (selectedCategory === 'direct_deposit' && !doc.type.toLowerCase().includes('deposit')) return false;
+      if (selectedCategory === "paystubs" && doc.type !== "Paystub")
+        return false;
+      if (selectedCategory === "w2" && doc.type !== "W-2") return false;
+      if (selectedCategory === "1099" && !doc.type.includes("1099"))
+        return false;
+      if (
+        selectedCategory === "direct_deposit" &&
+        !doc.type.toLowerCase().includes("deposit")
+      )
+        return false;
 
       // Search filter
       if (searchTerm.trim()) {
@@ -69,7 +150,10 @@ const MyDocumentsView = () => {
   }, [selectedCategory, searchTerm]);
 
   const totalPages = Math.max(1, Math.ceil(filteredDocs.length / pageSize));
-  const paginatedDocs = filteredDocs.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const paginatedDocs = filteredDocs.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
 
   const handleDownload = (docName) => {
     setDownloadNotice(`Downloading ${docName}...`);
@@ -119,8 +203,8 @@ const MyDocumentsView = () => {
                 }}
                 className={`px-3.5 py-1.5 rounded text-xs font-semibold transition cursor-pointer ${
                   isActive
-                    ? 'bg-[#009BFB] text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+                    ? "bg-[#009BFB] text-white shadow-xs"
+                    : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                 }`}
               >
                 {cat.label}
@@ -167,36 +251,40 @@ const MyDocumentsView = () => {
         emptyMessage="No documents matching your search or category filter."
         columns={[
           {
-            header: 'Document Name',
+            header: "Document Name",
             render: (doc) => (
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                  <div className="text-[10.5px] text-slate-400 font-mono">{doc.id}</div>
+                  <div className="font-bold text-slate-900 text-xs">
+                    {doc.name}
+                  </div>
+                  <div className="text-[10.5px] text-slate-400 font-mono">
+                    {doc.id}
+                  </div>
                 </div>
               </div>
             ),
           },
           {
-            header: 'Document Type',
-            key: 'type',
-            cellClassName: 'text-slate-600 font-medium',
+            header: "Document Type",
+            key: "type",
+            cellClassName: "text-slate-600 font-medium",
           },
           {
-            header: 'Created Date',
-            key: 'date',
-            cellClassName: 'text-slate-500 font-medium',
+            header: "Created Date",
+            key: "date",
+            cellClassName: "text-slate-500 font-medium",
           },
           {
-            header: 'Status',
+            header: "Status",
             render: (doc) => <DashboardStatusBadge status={doc.status} />,
           },
           {
-            header: 'Action',
-            align: 'right',
+            header: "Action",
+            align: "right",
             render: (doc) => (
               <div className="inline-flex items-center gap-2">
                 <button
