@@ -1,57 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import { Check, ChevronRight } from "lucide-react";
+import monthlyFeatures from "../../../data/pricing/monthlyFeatures.json";
+import oneTimeCards from "../../../data/pricing/oneTimeCards.json";
 
 const PricingCardsSection = () => {
   const [billingType, setBillingType] = useState("one-time"); // 'one-time' | 'monthly'
-
-  const oneTimeCards = [
-    {
-      id: "paystub",
-      name: "Single Paystub",
-      price: "$12.99",
-      feature: "Generate 1 professional paystub",
-      btnText: "Create Paystub",
-      btnLink: "/paystub-generator",
-      isPopular: false,
-    },
-    {
-      id: "paystub-3",
-      name: "3 Paystub Package",
-      price: "$24.99",
-      feature: "Generate 3 paystubs - Save 35%",
-      btnText: "Get 3 Paystubs",
-      btnLink: "/paystub-generator",
-      isPopular: true,
-    },
-    {
-      id: "w2",
-      name: "W-2 Document",
-      price: "$14.99",
-      feature: "Create a professional W-2 PDF",
-      btnText: "Create W-2",
-      btnLink: "/w-2",
-      isPopular: false,
-    },
-    {
-      id: "1099",
-      name: "1099-NEC",
-      price: "$14.99",
-      feature: "Create a professional 1099-NEC PDF",
-      btnText: "Create 1099",
-      btnLink: "/1099-nec",
-      isPopular: false,
-    },
-    {
-      id: "direct-deposit",
-      name: "Direct Deposit Slip",
-      price: "$20.99",
-      feature: "Create a professional deposit slip",
-      btnText: "Create Slip",
-      btnLink: "/direct-deposit",
-      isPopular: false,
-    },
-  ];
 
   return (
     <section className="w-full bg-[#F7FAFF] pt-2 pb-24 px-4 sm:px-6 lg:px-8 border-t border-slate-100">
@@ -239,22 +193,12 @@ const PricingCardsSection = () => {
 
               {/* 4 Feature Checkmarks in 2 Columns */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-8 text-sm sm:text-base text-slate-200 mb-8">
-                <div className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-secondary flex-shrink-0 stroke-[2.5]" />
-                  <span>Unlimited Paystub generation</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-secondary flex-shrink-0 stroke-[2.5]" />
-                  <span>Unlimited W-2 generation</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-secondary flex-shrink-0 stroke-[2.5]" />
-                  <span>Unlimited 1099 generation</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-secondary flex-shrink-0 stroke-[2.5]" />
-                  <span>Unlimited access to all supported document types</span>
-                </div>
+                {monthlyFeatures.map((feature) => (
+                  <div key={feature} className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-secondary flex-shrink-0 stroke-[2.5]" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
               </div>
 
               {/* Action Button & Disclaimer */}

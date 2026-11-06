@@ -12,22 +12,9 @@ import {
   Download,
   ShieldAlert,
 } from 'lucide-react';
-
-const US_STATES = [
-  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-  'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-  'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-  'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-  'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-];
-
-const STEPS = [
-  { id: 1, name: 'Employer Information' },
-  { id: 2, name: 'Employee Information' },
-  { id: 3, name: 'Deposit Details' },
-  { id: 4, name: 'Review Document' },
-  { id: 5, name: 'Checkout' },
-];
+import accountTypeOptions from '../../../data/directDeposit/accountTypeOptions.json';
+import STEPS from '../../../data/directDeposit/steps.json';
+import US_STATES from '../../../data/shared/usStates.json';
 
 const DirectDepositGeneratorForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -568,8 +555,11 @@ const DirectDepositGeneratorForm = () => {
                           onChange={(e) => handleInputChange('accountType', e.target.value)}
                           className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                         >
-                          <option value="Checking">Checking</option>
-                          <option value="Savings">Savings</option>
+                          {accountTypeOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
                         </select>
                         <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                       </div>

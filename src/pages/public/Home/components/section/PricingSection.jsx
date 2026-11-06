@@ -2,26 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import oneTimeItems from '../../../data/home/pricingOneTimeItems.json';
+import subscriptionFeatures from '../../../data/home/pricingSubscriptionFeatures.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PricingSection = () => {
   const sectionRef = useRef(null);
-
-  const oneTimeItems = [
-    { name: '1 Paystub', price: '$12.99' },
-    { name: '3 Paystubs', price: '$24.99' },
-    { name: 'Each additional Paystub', price: '$7.99' },
-    { name: 'W-2', price: '$14.99' },
-    { name: '1099', price: '$14.99' },
-  ];
-
-  const subscriptionFeatures = [
-    'Unlimited Paystub generation',
-    'Unlimited W-2 generation',
-    'Unlimited 1099 generation',
-    'Unlimited access to supported document types',
-  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {

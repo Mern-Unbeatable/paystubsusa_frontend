@@ -13,167 +13,16 @@ import {
   X,
   Printer
 } from 'lucide-react';
-
-const INITIAL_DOCUMENTS = [
-  {
-    id: 'PS-2025-0841',
-    name: 'Paystub - May 2025',
-    type: 'Paystub',
-    date: 'May 26, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'W2-2025-1120',
-    name: 'W-2 Form - 2024',
-    type: 'W-2',
-    date: 'May 22, 2025',
-    status: 'Completed',
-    employer: 'TechNova Solutions',
-    employee: 'Jane Smith',
-    amount: '$84,500.00',
-  },
-  {
-    id: 'PS-2025-0722',
-    name: 'Paystub - April 2025',
-    type: 'Paystub',
-    date: 'May 03, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'PS-2025-0721',
-    name: 'Paystub - April 2025',
-    type: 'Paystub',
-    date: 'May 03, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'Sarah Jenkins',
-    amount: '$2,890.00',
-  },
-  {
-    id: 'NEC-2025-0419',
-    name: '1099-NEC - 2024',
-    type: '1099-NEC',
-    date: 'Apr 28, 2025',
-    status: 'Completed',
-    employer: 'Creative Studio LLC',
-    employee: 'Alex Rivera',
-    amount: '$14,200.00',
-  },
-  {
-    id: 'DD-2025-0312',
-    name: 'Direct Deposit Slip',
-    type: 'Direct Deposit Slip',
-    date: 'Apr 15, 2025',
-    status: 'Completed',
-    employer: 'Apex Global Inc',
-    employee: 'Michael Chang',
-    amount: '$4,120.00',
-  },
-  {
-    id: 'PS-2025-0610',
-    name: 'Paystub - March 2025',
-    type: 'Paystub',
-    date: 'Apr 02, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'PS-2025-0504',
-    name: 'Paystub - February 2025',
-    type: 'Paystub',
-    date: 'Mar 01, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'W2-2024-0980',
-    name: 'W-2 Form - 2023',
-    type: 'W-2',
-    date: 'Feb 15, 2025',
-    status: 'Completed',
-    employer: 'TechNova Solutions',
-    employee: 'Jane Smith',
-    amount: '$79,000.00',
-  },
-  {
-    id: 'PS-2025-0401',
-    name: 'Paystub - January 2025',
-    type: 'Paystub',
-    date: 'Feb 01, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'NEC-2024-0820',
-    name: '1099-NEC - 2023',
-    type: '1099-NEC',
-    date: 'Jan 22, 2025',
-    status: 'Completed',
-    employer: 'Apex Global Inc',
-    employee: 'Alex Rivera',
-    amount: '$12,800.00',
-  },
-  {
-    id: 'DD-2025-0105',
-    name: 'Direct Deposit Slip',
-    type: 'Direct Deposit Slip',
-    date: 'Jan 10, 2025',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'PS-2024-1228',
-    name: 'Paystub - December 2024',
-    type: 'Paystub',
-    date: 'Dec 30, 2024',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'PS-2024-1125',
-    name: 'Paystub - November 2024',
-    type: 'Paystub',
-    date: 'Nov 29, 2024',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-  {
-    id: 'PS-2024-1022',
-    name: 'Paystub - October 2024',
-    type: 'Paystub',
-    date: 'Oct 31, 2024',
-    status: 'Completed',
-    employer: 'Acme Corp',
-    employee: 'John Doe',
-    amount: '$3,450.00',
-  },
-];
-
-const ITEMS_PER_PAGE = 5;
+import documents from '../../../data/findPaystubs/documents.json';
+import paginationConfig from '../../../data/findPaystubs/pagination.json';
+import sortOptions from '../../../data/findPaystubs/sortOptions.json';
+import tabs from '../../../data/findPaystubs/tabs.json';
 
 const FindPaystubsContent = () => {
   // Login form states
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Default true so user sees dashboard matching screenshot!
+  const [, setIsLoggedIn] = useState(true); // Default true so user sees dashboard matching screenshot!
 
   // Filters and table states
   const [activeTab, setActiveTab] = useState('All Documents');
@@ -182,17 +31,11 @@ const FindPaystubsContent = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [previewDoc, setPreviewDoc] = useState(null);
 
-  const tabs = [
-    'All Documents',
-    'Paystubs',
-    'W-2',
-    '1099-NEC',
-    'Direct Deposit Slip',
-  ];
+  const ITEMS_PER_PAGE = paginationConfig.itemsPerPage;
 
   // Filtering and Sorting logic
   const filteredDocuments = useMemo(() => {
-    return INITIAL_DOCUMENTS.filter((doc) => {
+    return documents.filter((doc) => {
       // Tab filter
       if (activeTab === 'Paystubs' && doc.type !== 'Paystub') return false;
       if (activeTab === 'W-2' && doc.type !== 'W-2') return false;
@@ -356,9 +199,11 @@ const FindPaystubsContent = () => {
                     onChange={(e) => setSortBy(e.target.value)}
                     className="appearance-none bg-white border border-slate-200 rounded-xl px-4 py-2 pr-9 text-sm font-medium text-slate-700 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition cursor-pointer"
                   >
-                    <option value="newest">Newest first</option>
-                    <option value="oldest">Oldest first</option>
-                    <option value="name">Name (A-Z)</option>
+                    {sortOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                   <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>

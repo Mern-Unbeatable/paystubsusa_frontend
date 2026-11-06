@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Payer Information" },
+  { "id": 2, "name": "Recipient Information" },
+  { "id": 3, "name": "Compensation Details" },
+  { "id": 4, "name": "Review Document" },
+  { "id": 5, "name": "Checkout" }
+]

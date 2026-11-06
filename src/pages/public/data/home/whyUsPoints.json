@@ -1,0 +1,22 @@
+[
+  {
+    "iconKey": "User",
+    "title": "No Account Required",
+    "description": "Create documents without signing up."
+  },
+  {
+    "iconKey": "Sparkles",
+    "title": "Simple User Experience",
+    "description": "A clear, guided flow from start to finish."
+  },
+  {
+    "iconKey": "Layers",
+    "title": "Multiple Document Options",
+    "description": "Paystubs, W-2s, 1099s and deposit slips."
+  },
+  {
+    "iconKey": "Folder",
+    "title": "Convenient Document Access",
+    "description": "Download your PDFs when you need them."
+  }
+]

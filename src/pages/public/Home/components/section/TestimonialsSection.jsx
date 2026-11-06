@@ -1,32 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { Star, ArrowLeft, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
+import ratingStars from '../../../data/home/ratingStars.json';
+import testimonials from '../../../data/home/testimonials.json';
 
 const TestimonialsSection = () => {
   // Exactly the 3 cards from the Figma design
-  const [cards, setCards] = useState([
-    {
-      id: 'sabo',
-      author: 'Sabo Masties',
-      role: 'Founder @ Rolex',
-      quote:
-        'Creating professional paystubs has never been this easy. The process was simple, fast, and the final document looked clean and professional. Highly recommended!',
-    },
-    {
-      id: 'sam',
-      author: 'Sam',
-      role: 'Founder @ Migelko',
-      quote:
-        'I needed a paystub quickly and Paystubs USA made the entire process straightforward. I could enter my information, review the document, and download it without creating.',
-    },
-    {
-      id: 'mansur',
-      author: 'Mansur',
-      role: 'Founder @ Google',
-      quote:
-        'The templates are easy to understand and the document creation process is very convenient. I especially like being able to choose a template that fits my needs.',
-    },
-  ]);
+  const [cards, setCards] = useState(testimonials);
 
   const isAnimating = useRef(false);
 
@@ -127,9 +107,9 @@ const TestimonialsSection = () => {
                   <div>
                     {/* 5 Stars */}
                     <div className="flex items-center gap-1 mb-3.5 text-[#F59E0B]">
-                      {[...Array(5)].map((_, i) => (
+                      {ratingStars.map((starIndex) => (
                         <Star
-                          key={i}
+                          key={starIndex}
                           className="w-3.5 h-3.5 fill-[#F59E0B] text-[#F59E0B]"
                         />
                       ))}

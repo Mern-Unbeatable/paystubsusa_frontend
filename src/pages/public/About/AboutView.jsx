@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowRight, FileText, Plus, Minus, Check } from 'lucide-react';
+import faqs from '../data/about/faqs.json';
+import featureCards from '../data/about/featureCards.json';
 
 const AboutView = () => {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
@@ -8,25 +10,6 @@ const AboutView = () => {
   const toggleFaq = (index) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
-  const featureCards = [
-    {
-      title: '50 states',
-      description: 'Current federal, state, and FICA tax rates for every jurisdiction.',
-    },
-    {
-      title: 'Free preview',
-      description: 'Review every line of your stub before you pay a cent.',
-    },
-    {
-      title: '30-day guarantee',
-      description: 'Money back if anything is wrong. No questions asked.',
-    },
-    {
-      title: 'Rates verified',
-      description: 'Verified 2026 against IRS Pub. 15-T and state agencies.',
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-[#FBFBFA] py-16 sm:py-24">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
@@ -497,43 +480,7 @@ const AboutView = () => {
           </h2>
 
           <div className="space-y-3">
-            {[
-              {
-                question: 'What happens to my Social Security number?',
-                answer:
-                  'Your SSN is encrypted in transit and at rest using bank-grade AES-256 encryption. We never store raw SSNs in plain text, never share them with third parties, and never use them for marketing or advertising. All sensitive records can be permanently deleted upon request.',
-              },
-              {
-                question: 'How accurate are the calculations?',
-                answer:
-                  'Our calculations are verified against IRS Publication 15-T and official state tax schedules for 2026. We compute precise federal withholding, state income tax, local taxes, Social Security (6.2%), and Medicare (1.45%) down to the penny.',
-              },
-              {
-                question: 'Which states do you support?',
-                answer:
-                  'We support all fifty US states plus Washington D.C. State income tax brackets, non-tax states (such as Texas, Florida, and Washington), and local withholding rules are automatically applied based on your state of residence.',
-              },
-              {
-                question: 'Can I get a refund?',
-                answer:
-                  'Yes. We offer a 100% 30-day money-back guarantee. If anything on your generated document is inaccurate or does not meet your expectations, contact our support team and we will issue a full refund immediately — no questions asked.',
-              },
-              {
-                question: 'Are you a payroll service?',
-                answer:
-                  'No. We are an online stub generation tool designed for freelancers, independent contractors, and small business owners who need clear, itemized records. We do not remit taxes on your behalf or manage direct deposit transfers.',
-              },
-              {
-                question: 'Can I use these stubs as proof of income?',
-                answer:
-                  'Yes, provided the figures reflect real income and deductions that you actually earned and paid. Freelancers, gig workers, and business owners routinely use our itemized stubs for accounting, bookkeeping, and proof of legitimate earnings.',
-              },
-              {
-                question: 'Is it legal to create my own pay stub?',
-                answer:
-                  'Yes, it is entirely legal for business owners, independent contractors, and self-employed individuals to generate pay stubs for legitimate record-keeping, payroll accounting, and tax filing purposes. Stubs must always reflect actual earnings.',
-              },
-            ].map((faq, idx) => {
+            {faqs.map((faq, idx) => {
               const isOpen = openFaqIndex === idx;
               return (
                 <div

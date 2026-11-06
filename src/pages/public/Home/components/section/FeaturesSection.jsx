@@ -2,34 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { Pencil, Layers, Download, ShieldCheck, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import features from '../../../data/home/features.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FeaturesSection = () => {
   const sectionRef = useRef(null);
 
-  const features = [
-    {
-      icon: Pencil,
-      title: 'Easy Document Creation',
-      description: 'Fill in a guided form and watch your document take shape in real time.',
-    },
-    {
-      icon: Layers,
-      title: 'Multiple Document Types',
-      description: 'Paystubs, W-2s, 1099s and direct deposit slips — all in one place.',
-    },
-    {
-      icon: Download,
-      title: 'Convenient PDF Downloads',
-      description: 'Download clean, print-ready PDFs right after checkout.',
-    },
-    {
-      icon: ShieldCheck,
-      title: 'Secure Checkout Experience',
-      description: 'Payments are processed through an encrypted, secure checkout.',
-    },
-  ];
+  const ICON_MAP = { Download, Layers, Pencil, ShieldCheck };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -110,7 +90,7 @@ const FeaturesSection = () => {
           <div className="lg:col-span-7 pt-4 lg:pt-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 lg:gap-x-14 gap-y-10 lg:gap-y-12">
               {features.map((feature) => {
-                const IconComponent = feature.icon;
+                const IconComponent = ICON_MAP[feature.iconKey];
                 return (
                   <div key={feature.title} className="feature-card-item flex flex-col items-start text-left">
                     {/* Icon */}
