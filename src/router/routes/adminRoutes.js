@@ -6,16 +6,16 @@ import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
 const AdminOverview = lazy(
-  () => import("../../pages/dashboard/admin/overview/AdminOverview"),
+  () => import("../../pages/dash/admin/overview/AdminOverview"),
 );
 const AdminUsers = lazy(
-  () => import("../../pages/dashboard/admin/users/AdminUsersView"),
+  () => import("../../pages/dash/admin/users/AdminUsersView"),
 );
 const AdminDocuments = lazy(
-  () => import("../../pages/dashboard/admin/documents/AdminDocumentsView"),
+  () => import("../../pages/dash/admin/documents/AdminDocumentsView"),
 );
 const AdminTransactions = lazy(
-  () => import("../../pages/dashboard/admin/transactions/AdminTransactionsView"),
+  () => import("../../pages/dash/admin/transactions/AdminTransactionsView"),
 );
 
 export const adminRoutes = [
@@ -25,7 +25,10 @@ export const adminRoutes = [
     children: [
       {
         index: true,
-        element: React.createElement(Navigate, { to: "overview", replace: true }),
+        element: React.createElement(Navigate, {
+          to: "overview",
+          replace: true,
+        }),
       },
       {
         path: "home",
