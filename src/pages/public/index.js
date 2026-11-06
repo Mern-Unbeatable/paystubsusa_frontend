@@ -1,0 +1,9 @@
+export { default as HomeView } from "./Home/HomeView";
+export { default as GeneratorView } from "./Generator/GeneratorView";
+export { default as W2View } from "./W2/W2View";
+export { default as Tax1099View } from "./1099/Tax1099View";
+export { default as DirectDepositView } from "./DirectDeposit/DirectDepositView";
+export { default as PricingView } from "./Pricing/PricingView";
+export { default as FindPaystubsView } from "./FindPaystubs/FindPaystubsView";
+export { default as AboutView } from "./About/AboutView";
+export { default as ContactView } from "./Contact/ContactView";

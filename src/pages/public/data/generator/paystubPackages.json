@@ -1,0 +1,28 @@
+{
+  "1paystub": {
+    "id": "1paystub",
+    "name": "1 Paystub",
+    "displayPrice": "$12.99",
+    "price": 12.99,
+    "subtitle": "Single document",
+    "orderSummaryName": "1 paystub"
+  },
+  "3paystubs": {
+    "id": "3paystubs",
+    "name": "3 Paystubs",
+    "displayPrice": "$24.99",
+    "price": 24.99,
+    "subtitle": "Best value",
+    "badge": "Save 35%",
+    "orderSummaryName": "3 paystubs"
+  },
+  "unlimited": {
+    "id": "unlimited",
+    "name": "Unlimited Access",
+    "displayPrice": "$199",
+    "price": 199,
+    "period": "/month",
+    "subtitle": "All supported document types",
+    "orderSummaryName": "Unlimited Access ($199/mo)"
+  }
+}

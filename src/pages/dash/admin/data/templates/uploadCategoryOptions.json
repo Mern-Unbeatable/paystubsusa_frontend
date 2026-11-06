@@ -1,0 +1,6 @@
+[
+  { "value": "Paystub", "label": "Paystub Template" },
+  { "value": "W-2", "label": "W-2 Template" },
+  { "value": "1099", "label": "1099 Template" },
+  { "value": "Direct Deposit", "label": "Direct Deposit Template" }
+]

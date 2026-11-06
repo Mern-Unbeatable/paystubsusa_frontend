@@ -1,183 +1,111 @@
-import React from 'react';
-
-export const DashboardPagination = ({
-  currentPage = 1,
-  totalPages = 1,
-  totalRecords = 0,
-  onPageChange,
-  pages = [1, 2, 3],
-  label,
-}) => {
-  const displayLabel =
-    label ||
-    `Page ${currentPage} of ${totalPages} (${totalRecords} matching records)`;
-
-  return (
-    <div className="p-4 sm:p-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-      <span className="text-slate-400 font-medium text-xs">
-        {displayLabel}
-      </span>
-
-      <div className="flex items-center gap-1.5">
-        <button
-          type="button"
-          disabled={currentPage <= 1}
-          onClick={() => onPageChange && onPageChange(Math.max(1, currentPage - 1))}
-          className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
-        >
-          Previous
-        </button>
-
-        {pages.map((page) => {
-          const isActive = currentPage === page;
-          return (
-            <button
-              key={page}
-              type="button"
-              onClick={() => onPageChange && onPageChange(page)}
-              className={`w-8 h-8 rounded text-xs font-bold transition cursor-pointer flex items-center justify-center ${
-                isActive
-                  ? 'bg-[#009BFB] text-white shadow-xs'
-                  : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {page}
-            </button>
-          );
-        })}
-
-        <button
-          type="button"
-          disabled={currentPage >= totalPages}
-          onClick={() =>
-            onPageChange && onPageChange(Math.min(totalPages, currentPage + 1))
-          }
-          className="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs disabled:opacity-40 transition cursor-pointer disabled:cursor-not-allowed"
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export const DashboardStatusBadge = ({ status = 'Completed' }) => {
-  return (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">
-      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-      <span>{status}</span>
-    </span>
-  );
-};
+import React from "react";
 
 const DashboardTable = ({
   title,
-  subtitle,
+  minWidth = "min-w-[600px]",
   headerAction,
   columns = [],
   data = [],
-  renderRow,
-  minWidth = 'min-w-[700px]',
-  emptyMessage = 'No matching records found.',
   pagination,
-  children,
+  emptyMessage = "No records found.",
 }) => {
+  const hasPagination = Boolean(pagination);
+
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden">
-      {/* Header if title/subtitle/headerAction present */}
-      {(title || subtitle || headerAction) && (
-        <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
-          <div>
-            {title && (
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                {title}
-              </h2>
-            )}
-            {subtitle && (
-              <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>
-            )}
-          </div>
-          {headerAction && <div>{headerAction}</div>}
+      {(title || headerAction) && (
+        <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 sm:px-5 py-3.5">
+          {title && (
+            <h2 className="text-sm font-bold text-slate-800 tracking-tight">
+              {title}
+            </h2>
+          )}
+          {headerAction}
         </div>
       )}
 
-      {/* Table Container */}
       <div className="overflow-x-auto">
-        {children ? (
-          children
-        ) : (
-          <table className={`w-full text-left border-collapse ${minWidth}`}>
-            <thead>
-              <tr className="border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                {columns.map((col, idx) => (
+        <div className={minWidth}>
+          <table className="w-full border-collapse">
+            <thead className="bg-slate-50">
+              <tr>
+                {columns.map((column, index) => (
                   <th
-                    key={idx}
-                    className={`py-3 px-6 ${
-                      col.align === 'right'
-                        ? 'text-right'
-                        : col.align === 'center'
-                        ? 'text-center'
-                        : 'text-left'
-                    } ${col.headerClassName || ''}`}
+                    key={column.header || index}
+                    className={`px-4 py-3 text-left text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500 ${
+                      column.align === "right" ? "text-right" : ""
+                    }`}
                   >
-                    {col.header}
+                    {column.header}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
-              {data.map((row, rowIdx) =>
-                renderRow ? (
-                  renderRow(row, rowIdx)
-                ) : (
-                  <tr
-                    key={row.id || rowIdx}
-                    className="hover:bg-slate-50/60 transition-colors"
-                  >
-                    {columns.map((col, colIdx) => (
-                      <td
-                        key={colIdx}
-                        className={`py-4 px-6 ${
-                          col.align === 'right'
-                            ? 'text-right'
-                            : col.align === 'center'
-                            ? 'text-center'
-                            : 'text-left'
-                        } ${col.cellClassName || ''}`}
-                      >
-                        {col.render
-                          ? col.render(row, rowIdx)
-                          : col.key
-                          ? row[col.key]
-                          : null}
-                      </td>
-                    ))}
-                  </tr>
-                )
-              )}
 
-              {data.length === 0 && (
+            <tbody>
+              {data.length === 0 ? (
                 <tr>
                   <td
                     colSpan={columns.length || 1}
-                    className="py-8 text-center text-xs text-slate-400"
+                    className="px-4 py-10 text-center text-sm text-slate-500"
                   >
                     {emptyMessage}
                   </td>
                 </tr>
+              ) : (
+                data.map((row, rowIndex) => (
+                  <tr
+                    key={row.id || rowIndex}
+                    className="border-t border-slate-100"
+                  >
+                    {columns.map((column, columnIndex) => {
+                      const cellValue = column.render
+                        ? column.render(row)
+                        : row[column.key];
+
+                      return (
+                        <td
+                          key={`${row.id || rowIndex}-${column.header || columnIndex}`}
+                          className={`px-4 py-3 text-sm ${
+                            column.cellClassName || "text-slate-600"
+                          } ${column.align === "right" ? "text-right" : ""}`}
+                        >
+                          {cellValue}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))
               )}
             </tbody>
           </table>
-        )}
+        </div>
       </div>
 
-      {/* Pagination Footer */}
-      {pagination && (
-        React.isValidElement(pagination) ? (
-          pagination
-        ) : (
-          <DashboardPagination {...pagination} />
-        )
+      {hasPagination && (
+        <div className="border-t border-slate-100 px-4 sm:px-5 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-[11px] text-slate-500">
+            {pagination.label ||
+              `Page ${pagination.currentPage} of ${pagination.totalPages}`}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {pagination.pages?.map((page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => pagination.onPageChange?.(page)}
+                className={`min-w-[2rem] px-2.5 py-1.5 rounded text-xs font-semibold transition ${
+                  pagination.currentPage === page
+                    ? "bg-[#009BFB] text-white"
+                    : "border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

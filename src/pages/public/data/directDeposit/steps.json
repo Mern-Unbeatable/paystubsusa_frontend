@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Employer Information" },
+  { "id": 2, "name": "Employee Information" },
+  { "id": 3, "name": "Deposit Details" },
+  { "id": 4, "name": "Review Document" },
+  { "id": 5, "name": "Checkout" }
+]

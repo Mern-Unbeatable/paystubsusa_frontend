@@ -1,0 +1,11 @@
+[
+  {
+    "id": "01",
+    "title": "Template 01",
+    "subtitle": "Classic layout",
+    "headerVariant": "dark-full",
+    "netPayVariant": "dark",
+    "tableVariant": "light-blue",
+    "category": "Direct Deposit"
+  }
+]

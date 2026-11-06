@@ -1,0 +1,7 @@
+[
+  { "name": "1 Paystub", "price": "$12.99" },
+  { "name": "3 Paystubs", "price": "$24.99" },
+  { "name": "Each additional Paystub", "price": "$7.99" },
+  { "name": "W-2", "price": "$14.99" },
+  { "name": "1099", "price": "$14.99" }
+]
