@@ -2,8 +2,13 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { PublicLayout, AuthLayout, DashboardLayout } from "../../layouts";
-import { RequireAuth, RequireAdmin, RequireGuest } from "../guard";
-import { publicRoutes, authRoutes, customerRoutes, adminRoutes } from ".";
+import RequireAuth from "../guard/RequireAuth";
+import RequireAdmin from "../guard/RequireAdmin";
+import RequireGuest from "../guard/RequireGuest";
+import { publicRoutes } from "./publicRoutes";
+import { authRoutes } from "./authRoutes";
+import { customerRoutes } from "./customerRoutes";
+import { adminRoutes } from "./adminRoutes";
 import { ALIASES } from "../config/paths";
 
 const redirectRoutes = Object.entries(ALIASES).map(([from, to]) => ({
