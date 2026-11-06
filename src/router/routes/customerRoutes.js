@@ -5,23 +5,21 @@ import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
 const CustomerOverview = lazy(
-  () => import("../../pages/dashboard/customer/CustomerOverview"),
+  () => import("../../pages/dash/customer/CustomerOverview"),
 );
 const MyDocumentsView = lazy(
-  () => import("../../pages/dashboard/customer/MyDocumentsView"),
+  () => import("../../pages/dash/customer/MyDocumentsView"),
 );
 const PaymentHistoryView = lazy(
-  () => import("../../pages/dashboard/customer/PaymentHistoryView"),
+  () => import("../../pages/dash/customer/PaymentHistoryView"),
 );
 const SubscriptionView = lazy(
-  () => import("../../pages/dashboard/customer/SubscriptionView"),
+  () => import("../../pages/dash/customer/SubscriptionView"),
 );
 const HelpCenterView = lazy(
-  () => import("../../pages/dashboard/customer/HelpCenterView"),
+  () => import("../../pages/dash/customer/HelpCenterView"),
 );
-const ProfileView = lazy(
-  () => import("../../pages/dashboard/customer/ProfileView"),
-);
+const ProfileView = lazy(() => import("../../pages/dash/customer/ProfileView"));
 
 export const customerRoutes = [
   {
