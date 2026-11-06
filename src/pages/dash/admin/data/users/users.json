@@ -1,0 +1,26 @@
+[
+  {
+    "id": "USR-1042",
+    "name": "Atik Adnan",
+    "email": "atik@paystuba.com",
+    "plan": "Unlimited Access",
+    "lastActive": "2 hours ago",
+    "status": "Active"
+  },
+  {
+    "id": "USR-1041",
+    "name": "Sarah Jenkins",
+    "email": "sarah.jenkins@email.com",
+    "plan": "Paystub Only",
+    "lastActive": "1 day ago",
+    "status": "Active"
+  },
+  {
+    "id": "USR-1039",
+    "name": "Michael Chang",
+    "email": "michael.c@email.com",
+    "plan": "W-2 Bundle",
+    "lastActive": "3 days ago",
+    "status": "Pending"
+  }
+]

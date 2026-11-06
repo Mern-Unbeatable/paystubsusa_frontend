@@ -19,158 +19,21 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import chartAxisConfig from "../data/overview/chartAxisConfig.json";
+import documentBreakdown from "../data/overview/documentBreakdown.json";
+import kpiStats from "../data/overview/kpiStats.json";
+import recentActivities from "../data/overview/recentActivities.json";
+import recentOrders from "../data/overview/recentOrders.json";
+import revenueData from "../data/overview/revenueData.json";
 
-const revenueData = [
-  { month: "Jan", revenue: 10500 },
-  { month: "Feb", revenue: 13800 },
-  { month: "Mar", revenue: 17200 },
-  { month: "Apr", revenue: 15900 },
-  { month: "May", revenue: 20100 },
-  { month: "Jun", revenue: 19000 },
-  { month: "Jul", revenue: 23500 },
-  { month: "Aug", revenue: 24200 },
-  { month: "Sep", revenue: 27500 },
-  { month: "Oct", revenue: 29800 },
-  { month: "Nov", revenue: 33900 },
-  { month: "Dec", revenue: 38400 },
-];
-
-const kpiStats = [
-  {
-    id: "customers",
-    label: "Total Customers",
-    value: "12,842",
-    icon: Users,
-    color: "text-blue-500 bg-blue-50",
-    path: "/admin/customers",
-  },
-  {
-    id: "documents",
-    label: "Total Documents",
-    value: "48,291",
-    icon: FileText,
-    color: "text-blue-500 bg-blue-50",
-    path: "/admin/documents",
-  },
-  {
-    id: "orders",
-    label: "Total Orders",
-    value: "21,064",
-    icon: ShoppingBag,
-    color: "text-blue-500 bg-blue-50",
-    path: "/admin/orders",
-  },
-  {
-    id: "revenue",
-    label: "Total Revenue",
-    value: "$284,920",
-    icon: CreditCard,
-    color: "text-emerald-500 bg-emerald-50",
-  },
-  {
-    id: "subscriptions",
-    label: "Active Subscriptions",
-    value: "1,284",
-    icon: RefreshCw,
-    color: "text-purple-500 bg-purple-50",
-    path: "/admin/subscriptions",
-  },
-  {
-    id: "today",
-    label: "Generated Today",
-    value: "392",
-    icon: TrendingUp,
-    color: "text-orange-500 bg-orange-50",
-  },
-];
-
-const documentBreakdown = [
-  { name: "Paystubs", count: "18,420", percent: 68 },
-  { name: "W-2", count: "8,921", percent: 38 },
-  { name: "1099-NEC", count: "6,842", percent: 29 },
-  { name: "Direct Deposit", count: "4,108", percent: 18 },
-];
-
-const recentOrders = [
-  {
-    id: "#PG-10482",
-    customer: "sarah.miller@example.com",
-    type: "3 Paystub Package",
-    date: "May 23, 2025",
-    amount: "$24.99",
-    status: "Successful",
-  },
-  {
-    id: "#PG-10481",
-    customer: "daniel.chen@example.com",
-    type: "W-2",
-    date: "May 23, 2025",
-    amount: "$14.99",
-    status: "Successful",
-  },
-  {
-    id: "#PG-10480",
-    customer: "morgan.reed@example.com",
-    type: "Monthly Subscription",
-    date: "May 23, 2025",
-    amount: "$199.00",
-    status: "Successful",
-  },
-  {
-    id: "#PG-10479",
-    customer: "andrewkim@example.com",
-    type: "1099-NEC",
-    date: "May 22, 2025",
-    amount: "$14.99",
-    status: "Successful",
-  },
-  {
-    id: "#PG-10478",
-    customer: "olivia.hayes@example.com",
-    type: "Single Paystub",
-    date: "May 22, 2025",
-    amount: "$12.99",
-    status: "Successful",
-  },
-];
-
-const recentActivities = [
-  {
-    id: 1,
-    icon: FileText,
-    title: "New monthly subscription activated",
-    subtext: "Morgan Reed · Unlimited Access",
-    time: "2 min",
-  },
-  {
-    id: 2,
-    icon: FileText,
-    title: "W-2 order completed",
-    subtext: "daniel.chen@example.com",
-    time: "8 min",
-  },
-  {
-    id: 3,
-    icon: ShoppingBag,
-    title: "3-paystub package purchased",
-    subtext: "sarah.miller@example.com",
-    time: "15 min",
-  },
-  {
-    id: 4,
-    icon: CreditCard,
-    title: "Payment failed",
-    subtext: "olivia.hayes@example.com",
-    time: "32 min",
-  },
-  {
-    id: 5,
-    icon: Users,
-    title: "New customer registered",
-    subtext: "james.wilson@example.com",
-    time: "48 min",
-  },
-];
+const ICON_MAP = {
+  CreditCard,
+  FileText,
+  RefreshCw,
+  ShoppingBag,
+  TrendingUp,
+  Users,
+};
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -202,7 +65,7 @@ const AdminOverviewView = () => {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {kpiStats.map((stat) => {
-          const Icon = stat.icon;
+          const Icon = ICON_MAP[stat.iconKey];
           const isClickable = Boolean(stat.path);
 
           return (
@@ -294,8 +157,8 @@ const AdminOverviewView = () => {
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "#94A3B8", fontSize: 11 }}
-                  domain={[0, 40000]}
-                  ticks={[0, 10000, 20000, 30000, 40000]}
+                  domain={chartAxisConfig.domain}
+                  ticks={chartAxisConfig.ticks}
                   tickFormatter={(value) => (value === 0 ? "$0" : `$${value / 1000}k`)}
                   dx={-4}
                 />
@@ -421,7 +284,7 @@ const AdminOverviewView = () => {
 
             <div className="space-y-4 pt-1">
               {recentActivities.map((activity) => {
-                const Icon = activity.icon;
+                const Icon = ICON_MAP[activity.iconKey];
 
                 return (
                   <div

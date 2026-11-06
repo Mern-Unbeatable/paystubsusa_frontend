@@ -5,33 +5,7 @@ import {
   DashboardTable,
 } from "../../../../components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
-
-const documents = [
-  {
-    id: "DOC-2025-9921",
-    user: "Sarah Jenkins",
-    name: "Paystub - May 2025",
-    type: "Paystub",
-    date: "May 28, 2025",
-    status: "Completed",
-  },
-  {
-    id: "DOC-2025-9920",
-    user: "Michael Chang",
-    name: "W-2 Form - 2024",
-    type: "W-2",
-    date: "May 28, 2025",
-    status: "Completed",
-  },
-  {
-    id: "DOC-2025-9919",
-    user: "Atik Adnan",
-    name: "Paystub - May 2025",
-    type: "Paystub",
-    date: "May 28, 2025",
-    status: "Pending",
-  },
-];
+import documents from "../data/documents/documents.json";
 
 const DocumentActionButtons = ({ doc }) => (
   <div className="inline-flex items-center gap-2">

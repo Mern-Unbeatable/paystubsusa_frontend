@@ -1,47 +1,12 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import orders from '../../data/orders/orders.json';
+import paginationPages from '../../data/orders/paginationPages.json';
 
 const AdminOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const orders = [
-    {
-      id: '#PS-10482',
-      customer: 'sarah.miller@example.com',
-      detail: '3 Paystub Package',
-      value: '$24.99',
-      status: 'Successful',
-    },
-    {
-      id: '#PS-10481',
-      customer: 'daniel.chen@example.com',
-      detail: 'W-2',
-      value: '$14.99',
-      status: 'Successful',
-    },
-    {
-      id: '#PS-10480',
-      customer: 'morgan.reed@example.com',
-      detail: 'Monthly Subscription',
-      value: '$199.00',
-      status: 'Successful',
-    },
-    {
-      id: '#PS-10479',
-      customer: 'andrewkim@example.com',
-      detail: '1099-NEC',
-      value: '$14.99',
-      status: 'Successful',
-    },
-    {
-      id: '#PS-10478',
-      customer: 'olivia.hayes@example.com',
-      detail: 'Single Paystub',
-      value: '$12.99',
-      status: 'Successful',
-    },
-  ];
+  const totalPages = paginationPages.length;
 
   return (
     <div className="space-y-6">
@@ -132,7 +97,7 @@ const AdminOrders = () => {
             >
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
-            {[1, 2].map((page) => (
+            {paginationPages.map((page) => (
               <button
                 key={page}
                 type="button"
@@ -148,8 +113,8 @@ const AdminOrders = () => {
             ))}
             <button
               type="button"
-              onClick={() => setCurrentPage((p) => Math.min(2, p + 1))}
-              disabled={currentPage === 2}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
               className="w-7 h-7 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
             >
               <ChevronRight className="w-3.5 h-3.5" />

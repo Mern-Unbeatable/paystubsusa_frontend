@@ -4,6 +4,10 @@ import {
   TEMPLATES,
   PaystubThumbnail,
 } from "../../../../public/Generator/components/sections/TemplateSelectionSection";
+import ddTemplatesData from "../../data/templates/ddTemplates.json";
+import necTemplatesData from "../../data/templates/necTemplates.json";
+import uploadCategoryOptions from "../../data/templates/uploadCategoryOptions.json";
+import w2TemplatesData from "../../data/templates/w2Templates.json";
 
 const AdminDocumentTemplates = () => {
   // Active/selected template for each category
@@ -29,43 +33,13 @@ const AdminDocumentTemplates = () => {
   const [paystubTemplates, setPaystubTemplates] = useState(TEMPLATES);
 
   // W-2 templates
-  const [w2Templates, setW2Templates] = useState([
-    {
-      id: '01',
-      title: 'Template 01',
-      subtitle: 'Classic layout',
-      headerVariant: 'dark-full',
-      netPayVariant: 'dark',
-      tableVariant: 'light-blue',
-      category: 'W-2',
-    },
-  ]);
+  const [w2Templates, setW2Templates] = useState(w2TemplatesData);
 
   // 1099 templates
-  const [necTemplates, setNecTemplates] = useState([
-    {
-      id: '01',
-      title: 'Template 01',
-      subtitle: 'Classic layout',
-      headerVariant: 'dark-full',
-      netPayVariant: 'dark',
-      tableVariant: 'light-blue',
-      category: '1099',
-    },
-  ]);
+  const [necTemplates, setNecTemplates] = useState(necTemplatesData);
 
   // Direct Deposit templates
-  const [ddTemplates, setDdTemplates] = useState([
-    {
-      id: '01',
-      title: 'Template 01',
-      subtitle: 'Classic layout',
-      headerVariant: 'dark-full',
-      netPayVariant: 'dark',
-      tableVariant: 'light-blue',
-      category: 'Direct Deposit',
-    },
-  ]);
+  const [ddTemplates, setDdTemplates] = useState(ddTemplatesData);
 
   const handleOpenUpload = (category) => {
     setUploadCategory(category);
@@ -433,10 +407,11 @@ const AdminDocumentTemplates = () => {
                   onChange={(e) => setUploadCategory(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-800 focus:outline-none focus:border-[#009BFB] bg-white cursor-pointer"
                 >
-                  <option value="Paystub">Paystub Template</option>
-                  <option value="W-2">W-2 Template</option>
-                  <option value="1099">1099 Template</option>
-                  <option value="Direct Deposit">Direct Deposit Template</option>
+                  {uploadCategoryOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 

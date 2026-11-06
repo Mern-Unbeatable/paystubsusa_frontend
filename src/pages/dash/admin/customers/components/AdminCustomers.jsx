@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { ChevronDown, MoreVertical } from 'lucide-react';
+import customersData from '../../data/customers/customers.json';
+import paginationPages from '../../data/customers/paginationPages.json';
+import statusFilters from '../../data/customers/statusFilters.json';
 
 const AdminCustomers = () => {
   const [statusFilter, setStatusFilter] = useState('All statuses');
@@ -7,38 +10,7 @@ const AdminCustomers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeActionMenu, setActiveActionMenu] = useState(null);
 
-  const initialCustomers = [
-    {
-      id: 'CUS-4092',
-      customer: 'sarah.miller@example.com',
-      detail: '16 documents',
-      value: '$248.83',
-      status: 'Active',
-    },
-    {
-      id: 'CUS-4091',
-      customer: 'daniel.chen@example.com',
-      detail: '4 documents',
-      value: '$52.96',
-      status: 'Inactive',
-    },
-    {
-      id: 'CUS-4090',
-      customer: 'morgan.reed@example.com',
-      detail: '32 documents',
-      value: '$597.00',
-      status: 'Active',
-    },
-    {
-      id: 'CUS-4089',
-      customer: 'andrewkim@example.com',
-      detail: '2 documents',
-      value: '$27.98',
-      status: 'Inactive',
-    },
-  ];
-
-  const [customers, setCustomers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState(customersData);
 
   const filteredCustomers = customers.filter((cus) => {
     if (statusFilter === 'All statuses') return true;
@@ -82,7 +54,7 @@ const AdminCustomers = () => {
 
           {filterOpen && (
             <div className="absolute left-0 mt-1.5 w-36 bg-white border border-slate-200 rounded shadow-lg py-1 z-30 text-sm">
-              {['All statuses', 'Active', 'Inactive'].map((status) => (
+              {statusFilters.map((status) => (
                 <button
                   key={status}
                   type="button"
@@ -214,7 +186,7 @@ const AdminCustomers = () => {
             >
               Previous
             </button>
-            {[1, 2, 3].map((page) => (
+            {paginationPages.map((page) => (
               <button
                 key={page}
                 type="button"

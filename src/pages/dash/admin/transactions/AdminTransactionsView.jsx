@@ -5,36 +5,7 @@ import {
   DashboardTable,
 } from "../../../../components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
-
-const transactions = [
-  {
-    id: "TXN-984021",
-    user: "Sarah Jenkins",
-    description: "Paystub - May 2025",
-    date: "May 28, 2025",
-    method: "Visa **** 4821",
-    amount: "$14.99",
-    status: "Successful",
-  },
-  {
-    id: "TXN-984020",
-    user: "Michael Chang",
-    description: "W-2 Form - 2024",
-    date: "May 28, 2025",
-    method: "Mastercard **** 8820",
-    amount: "$19.99",
-    status: "Successful",
-  },
-  {
-    id: "TXN-984019",
-    user: "Atik Adnan",
-    description: "Unlimited Access",
-    date: "May 28, 2025",
-    method: "Visa **** 4821",
-    amount: "$199.00",
-    status: "Pending",
-  },
-];
+import transactions from "../data/transactions/transactions.json";
 
 const AdminTransactionsView = () => (
   <div className="space-y-6">

@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import { Check, RotateCcw, Save } from 'lucide-react';
+import pricingPlans from '../../data/pricing/pricingPlans.json';
 
 const AdminPricingPlans = () => {
-  const initialPricing = [
-    { id: 'paystub-1', label: '1 Paystub', value: '$ 1895' },
-    { id: 'paystub-3', label: '3 Paystub', value: '$ 1795' },
-    { id: 'paystub-add', label: 'Additional Paystub', value: '$ 2095' },
-    { id: 'w2', label: 'W-2', value: '$ 2095' },
-    { id: '1099', label: '1099-NEC', value: '$ 2095' },
-    { id: 'unlimited', label: 'Unlimited Access', value: '$ 2095/Month' },
-  ];
-
-  const [pricingItems, setPricingItems] = useState(initialPricing);
+  const [pricingItems, setPricingItems] = useState(pricingPlans);
   const [hasChanges, setHasChanges] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
@@ -29,7 +21,7 @@ const AdminPricingPlans = () => {
   };
 
   const handleReset = () => {
-    setPricingItems(initialPricing);
+    setPricingItems(pricingPlans);
     setHasChanges(false);
     setToastMessage('Pricing reset to default demo values.');
     setTimeout(() => setToastMessage(''), 3500);
