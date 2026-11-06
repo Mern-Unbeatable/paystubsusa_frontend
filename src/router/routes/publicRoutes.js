@@ -1,26 +1,49 @@
 // router/routes/publicRoutes.js
 import React, { lazy } from "react";
-import HomeView from "../../pages/public/public_Home/HomeView";
+import { HomeView } from "../../pages/public";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const PaystubGeneratorView = lazy(
-  () => import("../../pages/public/public_generator/PaystubGeneratorView"),
+const GeneratorView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.GeneratorView,
+    })),
 );
-const W2View = lazy(() => import("../../pages/public/public_w2/W2View"));
-const Nec1099View = lazy(
-  () => import("../../pages/public/public_1099/Nec1099View"),
+const W2View = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.W2View,
+    })),
+);
+const Tax1099View = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.Tax1099View,
+    })),
 );
 const DirectDepositView = lazy(
-  () => import("../../pages/public/public_direct_deposit/DirectDepositView"),
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.DirectDepositView,
+    })),
 );
 const PricingView = lazy(
-  () => import("../../pages/public/public_pricing/PricingView"),
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.PricingView,
+    })),
 );
 const FindPaystubsView = lazy(
-  () => import("../../pages/public/public_find_paystubs/FindPaystubsView"),
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.FindPaystubsView,
+    })),
 );
 const AboutView = lazy(
-  () => import("../../pages/public/public_about/AboutView"),
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.AboutView,
+    })),
 );
 const NotFound = lazy(() => import("../../pages/error/NotFound"));
 
@@ -29,10 +52,10 @@ export const publicRoutes = [
   { index: true, element: React.createElement(HomeView) },
   {
     path: "paystub-generator",
-    element: createLazyRouteElement(PaystubGeneratorView),
+    element: createLazyRouteElement(GeneratorView),
   },
   { path: "w-2", element: createLazyRouteElement(W2View) },
-  { path: "1099-nec", element: createLazyRouteElement(Nec1099View) },
+  { path: "1099-nec", element: createLazyRouteElement(Tax1099View) },
   {
     path: "direct-deposit",
     element: createLazyRouteElement(DirectDepositView),

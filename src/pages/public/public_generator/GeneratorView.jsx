@@ -3,7 +3,7 @@ import GeneratorHeroSection from "./components/sections/GeneratorHeroSection";
 import TemplateSelectionSection from "./components/sections/TemplateSelectionSection";
 import PaystubGeneratorForm from "./components/sections/PaystubGeneratorForm";
 
-const PaystubGeneratorView = () => {
+const GeneratorView = () => {
   const [selectedTemplateId, setSelectedTemplateId] = useState("01");
   const generatorFormRef = useRef(null);
   const templateSectionRef = useRef(null);
@@ -54,4 +54,4 @@ const PaystubGeneratorView = () => {
   );
 };
 
-export default PaystubGeneratorView;
+export default GeneratorView;

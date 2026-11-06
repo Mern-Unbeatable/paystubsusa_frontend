@@ -2,7 +2,7 @@ import React from "react";
 import Nec1099HeroSection from "./components/sections/Nec1099HeroSection";
 import Nec1099GeneratorForm from "./components/sections/Nec1099GeneratorForm";
 
-const Nec1099View = () => {
+const Tax1099View = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       {/* 1099-NEC Hero Section */}
@@ -14,4 +14,4 @@ const Nec1099View = () => {
   );
 };
 
-export default Nec1099View;
+export default Tax1099View;
