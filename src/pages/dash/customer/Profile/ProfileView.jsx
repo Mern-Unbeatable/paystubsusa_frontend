@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CheckCircle2, Eye, EyeOff } from "lucide-react";
-import { DashboardHeader } from "../../../../components/Dashboard";
+import { DashboardHeader } from "../../../../Components/Dashboard";
 import initialValues from "../data/profile/initialValues.json";
 
 const ProfileView = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Star, Check, HelpCircle } from 'lucide-react';
-import { DashboardHeader } from '../../../../components/Dashboard';
+import { DashboardHeader } from '../../../../Components/Dashboard';
 import metadataItems from '../data/subscription/metadataItems.json';
 import planFeatures from '../data/subscription/planFeatures.json';
 

@@ -13,7 +13,7 @@ import { DocumentDetailsModal } from "../components/modals";
 import {
   DashboardHeader,
   DashboardTable,
-} from "../../../../components/Dashboard";
+} from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 import categories from "../data/myDocuments/categories.json";
 import documents from "../data/myDocuments/documents.json";

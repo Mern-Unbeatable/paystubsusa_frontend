@@ -15,7 +15,7 @@ import { DocumentDetailsModal } from "../components/modals";
 import {
   DashboardHeader,
   DashboardTable,
-} from "../../../../components/Dashboard";
+} from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 import recentDocuments from "../data/overview/recentDocuments.json";
 import stats from "../data/overview/stats.json";

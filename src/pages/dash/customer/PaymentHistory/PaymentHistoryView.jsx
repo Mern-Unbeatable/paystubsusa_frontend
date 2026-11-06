@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PaymentDetailsModal } from '../components/modals';
-import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
+import { DashboardHeader, DashboardTable } from '../../../../Components/Dashboard';
 import { DashboardStatusBadge } from '../../../../layouts';
 import historyPagination from '../data/payments/historyPagination.json';
 import transactions from '../data/payments/transactions.json';

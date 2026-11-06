@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import PageLoadingFallback from "@/components/loader/fallbacks/PageLoadingFallback";
+import RouteLoadingFallback from "@/Components/loader/RouteLoadingFallback";
 
 /**
  * Wraps a dynamic import in React.lazy + Suspense for route elements.
@@ -10,7 +10,7 @@ export function lazyPage(factory) {
 
   return function LazyRoutePage(props) {
     return (
-      <Suspense fallback={<PageLoadingFallback />}>
+      <Suspense fallback={<RouteLoadingFallback />}>
         <Component {...props} />
       </Suspense>
     );

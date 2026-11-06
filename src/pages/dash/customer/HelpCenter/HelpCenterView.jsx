@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronRight, ArrowRight } from 'lucide-react';
-import { DashboardHeader } from '../../../../components/Dashboard';
+import { DashboardHeader } from '../../../../Components/Dashboard';
 import faqs from '../data/help/faqs.json';
 
 const FaqItem = ({ faq, isOpen, onToggle }) => (
