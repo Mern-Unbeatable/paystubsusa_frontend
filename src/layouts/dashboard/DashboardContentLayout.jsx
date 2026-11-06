@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router";
-import DashboardMobileHeader from "../navigation/dash/DashboardMobileHeader";
+import DashboardMobileHeader from "../../Components/navigation/dash/DashboardMobileHeader";
 
 const DashboardContentLayout = ({ onOpenSidebar }) => {
   return (

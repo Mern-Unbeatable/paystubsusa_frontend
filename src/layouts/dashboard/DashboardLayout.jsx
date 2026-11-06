@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DashboardSidebar from "../navigation/dash/DashboardSidebar";
+import DashboardSidebar from "../../Components/navigation/dash/DashboardSidebar";
 import DashboardContentLayout from "./DashboardContentLayout";
 
 const DashboardLayout = ({ role = "customer" }) => {

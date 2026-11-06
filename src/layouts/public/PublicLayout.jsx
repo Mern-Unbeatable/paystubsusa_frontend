@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
-import NavbarLayout from "../navigation/public/NavbarLayout";
-import FooterLayout from "../navigation/public/FooterLayout";
+import NavbarLayout from "../../Components/navigation/public/NavbarLayout";
+import FooterLayout from "../../Components/navigation/public/FooterLayout";
 
 const PublicLayout = () => {
   const { pathname } = useLocation();

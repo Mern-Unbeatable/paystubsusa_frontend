@@ -1,2 +1,2 @@
 export { default as PublicLayout } from "./PublicLayout";
-export * from "../navigation/public";
+export * from "../../Components/navigation/public";
