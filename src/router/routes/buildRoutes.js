@@ -9,7 +9,7 @@ import { publicRoutes } from "./publicRoutes";
 import { authRoutes } from "./authRoutes";
 import { customerRoutes } from "./customerRoutes";
 import { adminRoutes } from "./adminRoutes";
-import { ALIASES } from "../config/paths";
+import { ALIASES } from "../../config/paths";
 
 const redirectRoutes = Object.entries(ALIASES).map(([from, to]) => ({
   path: from,

@@ -25,7 +25,12 @@ function showGuardToast(toastConfig) {
   toast(toastConfig.message, toastOptions);
 }
 
-export default function GuardRedirect({ to, replace = true, state, toastConfig }) {
+export default function GuardRedirect({
+  to,
+  replace = true,
+  state,
+  toastConfig,
+}) {
   useEffect(() => {
     showGuardToast(toastConfig);
   }, [
