@@ -5,65 +5,55 @@ import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const AdminOverviewView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminOverviewView,
-    })),
+const AdminOverviewView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminOverviewView,
+  })),
 );
-const AdminUsersView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminUsersView,
-    })),
+const AdminUsersView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminUsersView,
+  })),
 );
-const AdminCustomersView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminCustomersView,
-    })),
+const AdminCustomersView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminCustomersView,
+  })),
 );
-const AdminDocumentsView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminDocumentsView,
-    })),
+const AdminDocumentsView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminDocumentsView,
+  })),
 );
-const AdminOrdersView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminOrdersView,
-    })),
+const AdminOrdersView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminOrdersView,
+  })),
 );
-const AdminTransactionsView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminTransactionsView,
-    })),
+const AdminTransactionsView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminTransactionsView,
+  })),
 );
-const AdminSubscriptionsView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminSubscriptionsView,
-    })),
+const AdminSubscriptionsView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminSubscriptionsView,
+  })),
 );
-const AdminDocumentTemplatesView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminDocumentTemplatesView,
-    })),
+const AdminDocumentTemplatesView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminDocumentTemplatesView,
+  })),
 );
-const AdminPricingPlansView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminPricingPlansView,
-    })),
+const AdminPricingPlansView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminPricingPlansView,
+  })),
 );
-const AdminProfileView = lazy(
-  () =>
-    import("../../pages/dashboard/admin").then((module) => ({
-      default: module.AdminProfileView,
-    })),
+const AdminProfileView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminProfileView,
+  })),
 );
 
 export const adminRoutes = [
@@ -73,7 +63,10 @@ export const adminRoutes = [
     children: [
       {
         index: true,
-        element: React.createElement(Navigate, { to: "overview", replace: true }),
+        element: React.createElement(Navigate, {
+          to: "overview",
+          replace: true,
+        }),
       },
       {
         path: "home",

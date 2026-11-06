@@ -4,41 +4,35 @@ import React from "react";
 import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const CustomerOverviewView = lazy(
-  () =>
-    import("../../pages/dashboard/customer").then((module) => ({
-      default: module.CustomerOverviewView,
-    })),
+const CustomerOverviewView = lazy(() =>
+  import("../../pages/dash/customer").then((module) => ({
+    default: module.CustomerOverviewView,
+  })),
 );
-const MyDocumentsView = lazy(
-  () =>
-    import("../../pages/dashboard/customer").then((module) => ({
-      default: module.MyDocumentsView,
-    })),
+const MyDocumentsView = lazy(() =>
+  import("../../pages/dash/customer").then((module) => ({
+    default: module.MyDocumentsView,
+  })),
 );
-const PaymentHistoryView = lazy(
-  () =>
-    import("../../pages/dashboard/customer").then((module) => ({
-      default: module.PaymentHistoryView,
-    })),
+const PaymentHistoryView = lazy(() =>
+  import("../../pages/dash/customer").then((module) => ({
+    default: module.PaymentHistoryView,
+  })),
 );
-const SubscriptionView = lazy(
-  () =>
-    import("../../pages/dashboard/customer").then((module) => ({
-      default: module.SubscriptionView,
-    })),
+const SubscriptionView = lazy(() =>
+  import("../../pages/dash/customer").then((module) => ({
+    default: module.SubscriptionView,
+  })),
 );
-const HelpCenterView = lazy(
-  () =>
-    import("../../pages/dashboard/customer").then((module) => ({
-      default: module.HelpCenterView,
-    })),
+const HelpCenterView = lazy(() =>
+  import("../../pages/dash/customer").then((module) => ({
+    default: module.HelpCenterView,
+  })),
 );
-const ProfileView = lazy(
-  () =>
-    import("../../pages/dashboard/customer").then((module) => ({
-      default: module.ProfileView,
-    })),
+const ProfileView = lazy(() =>
+  import("../../pages/dash/customer").then((module) => ({
+    default: module.ProfileView,
+  })),
 );
 
 export const customerRoutes = [
