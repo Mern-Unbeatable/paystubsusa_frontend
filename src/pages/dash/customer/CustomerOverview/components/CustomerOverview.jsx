@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { useCallback, useMemo, useState } from "react";
+import { Link } from "react-router";
 import {
   FileText,
   LayoutGrid,
@@ -10,14 +10,17 @@ import {
   Download,
   ArrowRight,
   CheckCircle2,
-  X
-} from 'lucide-react';
-import { DashboardHeader, DashboardTable } from "../../../../../Components/Dashboard";
+  X,
+} from "lucide-react";
+import {
+  DashboardHeader,
+  DashboardTable,
+} from "../../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../../layouts";
-import DocumentDetailsModal from '../../components/modals/DocumentDetailsModal';
-import stats from '../../data/overview/stats.json';
-import recentDocuments from '../../data/overview/recentDocuments.json';
-import transactions from '../../data/payments/transactions.json';
+import DocumentDetailsModal from "../../components/modals/DocumentDetailsModal";
+import stats from "../../data/overview/stats.json";
+import recentDocuments from "../../data/overview/recentDocuments.json";
+import transactions from "../../data/payments/transactions.json";
 
 const STAT_ICON_MAP = {
   FileText,
@@ -25,18 +28,138 @@ const STAT_ICON_MAP = {
   CreditCard,
   Star,
 };
+const RECENT_PAYMENTS_LIMIT = 3;
+const DOWNLOAD_TOAST_DURATION_MS = 2500;
 
 const CustomerOverview = ({ setActiveTab }) => {
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadSuccess, setDownloadSuccess] = useState(null);
-  const recentPayments = transactions.slice(0, 3);
+  const recentPayments = useMemo(
+    () => transactions.slice(0, RECENT_PAYMENTS_LIMIT),
+    [],
+  );
 
-  const handleDownload = (docName) => {
+  const handleDownload = useCallback((docName) => {
     setDownloadSuccess(`Downloading ${docName}...`);
     setTimeout(() => {
       setDownloadSuccess(null);
-    }, 2500);
-  };
+    }, DOWNLOAD_TOAST_DURATION_MS);
+  }, []);
+
+  const handleGoToDocuments = useCallback(() => {
+    if (setActiveTab) {
+      setActiveTab("documents");
+    }
+  }, [setActiveTab]);
+
+  const handleGoToPayments = useCallback(() => {
+    if (setActiveTab) {
+      setActiveTab("payments");
+    }
+  }, [setActiveTab]);
+
+  const handleModalDownload = useCallback(
+    (name) => {
+      handleDownload(name);
+      setSelectedDoc(null);
+    },
+    [handleDownload],
+  );
+
+  const documentColumns = useMemo(
+    () => [
+      {
+        header: "Document Name",
+        render: (doc) => (
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
+              <FileText className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
+              <div className="text-xs text-slate-400 font-mono">{doc.id}</div>
+            </div>
+          </div>
+        ),
+      },
+      {
+        header: "Document Type",
+        key: "type",
+        cellClassName: "text-slate-600 font-medium",
+      },
+      {
+        header: "Created Date",
+        key: "date",
+        cellClassName: "text-slate-500 font-medium",
+      },
+      {
+        header: "Status",
+        render: (doc) => <DashboardStatusBadge status={doc.status} />,
+      },
+      {
+        header: "Action",
+        align: "right",
+        render: (doc) => (
+          <div className="inline-flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedDoc(doc)}
+              className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+              title="View Document"
+              aria-label={`View ${doc.name}`}
+            >
+              <Eye className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDownload(doc.name)}
+              className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
+              title="Download Document"
+              aria-label={`Download ${doc.name}`}
+            >
+              <Download className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    [handleDownload],
+  );
+
+  const paymentColumns = useMemo(
+    () => [
+      {
+        header: "Transaction ID",
+        key: "id",
+        cellClassName: "font-mono font-semibold text-slate-800 text-xs",
+      },
+      {
+        header: "Description",
+        key: "description",
+        cellClassName: "font-medium text-slate-700",
+      },
+      {
+        header: "Date",
+        key: "date",
+        cellClassName: "text-slate-500 font-medium",
+      },
+      {
+        header: "Payment Method",
+        key: "method",
+        cellClassName: "text-slate-600 font-medium",
+      },
+      {
+        header: "Amount",
+        key: "amount",
+        cellClassName: "font-bold text-slate-900",
+      },
+      {
+        header: "Status",
+        render: (payment) => <DashboardStatusBadge status={payment.status} />,
+      },
+    ],
+    [],
+  );
 
   return (
     <div className="space-y-6">
@@ -100,69 +223,14 @@ const CustomerOverview = ({ setActiveTab }) => {
         headerAction={
           <button
             type="button"
-            onClick={() => setActiveTab && setActiveTab('documents')}
+            onClick={handleGoToDocuments}
             className="text-xs font-semibold text-[#009BFB] hover:text-[#0089e0] hover:underline inline-flex items-center gap-1 cursor-pointer transition"
           >
             <span>View all documents</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         }
-        columns={[
-          {
-            header: 'Document Name',
-            render: (doc) => (
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                  <FileText className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-                  <div className="text-xs text-slate-400 font-mono">{doc.id}</div>
-                </div>
-              </div>
-            ),
-          },
-          {
-            header: 'Document Type',
-            key: 'type',
-            cellClassName: 'text-slate-600 font-medium',
-          },
-          {
-            header: 'Created Date',
-            key: 'date',
-            cellClassName: 'text-slate-500 font-medium',
-          },
-          {
-            header: 'Status',
-            render: (doc) => <DashboardStatusBadge status={doc.status} />,
-          },
-          {
-            header: 'Action',
-            align: 'right',
-            render: (doc) => (
-              <div className="inline-flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedDoc(doc)}
-                  className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                  title="View Document"
-                  aria-label={`View ${doc.name}`}
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDownload(doc.name)}
-                  className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] hover:bg-sky-50/40 flex items-center justify-center transition cursor-pointer"
-                  title="Download Document"
-                  aria-label={`Download ${doc.name}`}
-                >
-                  <Download className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ),
-          },
-        ]}
+        columns={documentColumns}
         data={recentDocuments}
       />
 
@@ -173,44 +241,14 @@ const CustomerOverview = ({ setActiveTab }) => {
         headerAction={
           <button
             type="button"
-            onClick={() => setActiveTab && setActiveTab('payments')}
+            onClick={handleGoToPayments}
             className="text-xs font-semibold text-[#009BFB] hover:text-[#0089e0] hover:underline inline-flex items-center gap-1 cursor-pointer transition"
           >
             <span>View payment history</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         }
-        columns={[
-          {
-            header: 'Transaction ID',
-            key: 'id',
-            cellClassName: 'font-mono font-semibold text-slate-800 text-xs',
-          },
-          {
-            header: 'Description',
-            key: 'description',
-            cellClassName: 'font-medium text-slate-700',
-          },
-          {
-            header: 'Date',
-            key: 'date',
-            cellClassName: 'text-slate-500 font-medium',
-          },
-          {
-            header: 'Payment Method',
-            key: 'method',
-            cellClassName: 'text-slate-600 font-medium',
-          },
-          {
-            header: 'Amount',
-            key: 'amount',
-            cellClassName: 'font-bold text-slate-900',
-          },
-          {
-            header: 'Status',
-            render: (payment) => <DashboardStatusBadge status={payment.status} />,
-          },
-        ]}
+        columns={paymentColumns}
         data={recentPayments}
       />
 
@@ -219,10 +257,7 @@ const CustomerOverview = ({ setActiveTab }) => {
         <DocumentDetailsModal
           doc={selectedDoc}
           onClose={() => setSelectedDoc(null)}
-          onDownload={(name) => {
-            handleDownload(name);
-            setSelectedDoc(null);
-          }}
+          onDownload={handleModalDownload}
         />
       )}
     </div>
