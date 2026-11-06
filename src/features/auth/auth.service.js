@@ -1,5 +1,5 @@
-import { clearAccessToken } from "../../api/tokenManager";
 import { ENV_CONFIG } from "../../config/env";
+import { clearAccessToken } from "../../api/tokenManager";
 import { loginApi, logoutApi, registerApi, restoreSessionApi } from "./authApi";
 import {
   clearDemoAuthState,
@@ -14,6 +14,7 @@ async function login(credentials, options = {}) {
     const user = loginDemoByEmailAndPassword(
       credentials?.email,
       credentials?.password,
+      { rememberMe: credentials?.rememberMe === true },
     );
     return { user };
   }
@@ -23,14 +24,14 @@ async function login(credentials, options = {}) {
 
 async function register(payload, options = {}) {
   if (ENV_CONFIG.useDemoAuth) {
-    return { user: registerDemoUser() };
+    return { user: registerDemoUser({ rememberMe: payload?.rememberMe === true }) };
   }
 
   return registerApi(payload, options);
 }
 
-async function loginAsDemoUser(userKey) {
-  return { user: loginDemoUser(userKey) };
+async function loginAsDemoUser(userKey, options = {}) {
+  return { user: loginDemoUser(userKey, options) };
 }
 
 async function restoreSession(options = {}) {

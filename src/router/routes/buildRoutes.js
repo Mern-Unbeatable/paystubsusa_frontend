@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { PublicLayout, AuthLayout, DashboardLayout } from "../../layouts";
 import RequireAuth from "../guard/RequireAuth";
 import RequireAdmin from "../guard/RequireAdmin";
+import RequireCustomer from "../guard/RequireCustomer";
 import RequireGuest from "../guard/RequireGuest";
 import { publicRoutes } from "./publicRoutes";
 import { authRoutes } from "./authRoutes";
@@ -34,7 +35,10 @@ export const routeConfig = [
   {
     element: React.createElement(RequireAuth),
     children: [
-      ...customerRoutes,
+      {
+        element: React.createElement(RequireCustomer),
+        children: customerRoutes,
+      },
       {
         element: React.createElement(RequireAdmin),
         children: adminRoutes,

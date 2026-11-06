@@ -17,7 +17,7 @@ function resolveDemoUserKeyByCredentials(email, password) {
   return matchedUser?.[0] || null;
 }
 
-export function loginDemoByEmailAndPassword(email, password) {
+export function loginDemoByEmailAndPassword(email, password, options = {}) {
   const userKey = resolveDemoUserKeyByCredentials(email, password);
 
   if (!userKey) {
@@ -27,15 +27,15 @@ export function loginDemoByEmailAndPassword(email, password) {
     throw error;
   }
 
-  return writeDemoSession(userKey);
+  return writeDemoSession(userKey, options);
 }
 
-export function registerDemoUser() {
-  return writeDemoSession("customer");
+export function registerDemoUser(options = {}) {
+  return writeDemoSession("customer", options);
 }
 
-export function loginDemoUser(userKey) {
-  return writeDemoSession(userKey);
+export function loginDemoUser(userKey, options = {}) {
+  return writeDemoSession(userKey, options);
 }
 
 export function restoreDemoSession() {

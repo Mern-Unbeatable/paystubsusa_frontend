@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   user: null,
+  isAuthenticated: false,
   loading: true,
   status: "idle",
   error: null,
@@ -39,12 +40,14 @@ const authSlice = createSlice({
       })
       .addCase(bootstrapAuth.fulfilled, (state, action) => {
         if (state.status === "authenticated" && !action.payload?.user) {
+          state.isAuthenticated = false;
           state.loading = false;
           state.error = null;
           return;
         }
 
         state.user = action.payload?.user || null;
+        state.isAuthenticated = Boolean(action.payload?.user);
         state.loading = false;
         state.status = action.payload?.user
           ? "authenticated"
@@ -53,18 +56,21 @@ const authSlice = createSlice({
       })
       .addCase(bootstrapAuth.rejected, (state, action) => {
         if (state.status === "authenticated") {
+          state.isAuthenticated = true;
           state.loading = false;
           state.error = null;
           return;
         }
 
         state.user = null;
+        state.isAuthenticated = false;
         state.loading = false;
         state.status = "unauthenticated";
         state.error = action.payload || null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
+        state.isAuthenticated = false;
         state.loading = false;
         state.status = "unauthenticated";
         state.error = null;
@@ -72,6 +78,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.user = null;
+        state.isAuthenticated = false;
         state.loading = false;
         state.status = "unauthenticated";
         state.error = action.payload || null;
@@ -85,6 +92,7 @@ const authSlice = createSlice({
           logoutUser.pending,
         ),
         (state) => {
+          state.isAuthenticated = false;
           state.loading = true;
           state.error = null;
         },
@@ -97,6 +105,7 @@ const authSlice = createSlice({
         ),
         (state, action) => {
           state.user = action.payload?.user || null;
+          state.isAuthenticated = Boolean(action.payload?.user);
           state.loading = false;
           state.status = action.payload?.user
             ? "authenticated"

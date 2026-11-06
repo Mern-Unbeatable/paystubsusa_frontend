@@ -66,7 +66,10 @@ export function normalizeHttpError(error) {
   };
 }
 
-export function normalizeThunkError(error, fallbackMessage = DEFAULT_ERROR_MESSAGE) {
+export function normalizeThunkError(
+  error,
+  fallbackMessage = DEFAULT_ERROR_MESSAGE,
+) {
   const normalized = normalizeHttpError(error);
 
   if (normalized.isNormalizedError) {
@@ -89,4 +92,3 @@ export function normalizeThunkError(error, fallbackMessage = DEFAULT_ERROR_MESSA
     isCanceled: false,
   };
 }
-

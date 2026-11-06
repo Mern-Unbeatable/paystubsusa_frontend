@@ -11,4 +11,3 @@ export function setAccessToken(token) {
 export function clearAccessToken() {
   accessToken = null;
 }
-
