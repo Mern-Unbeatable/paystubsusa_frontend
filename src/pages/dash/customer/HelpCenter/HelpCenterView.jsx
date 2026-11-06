@@ -1,29 +1,7 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronRight, ArrowRight } from 'lucide-react';
 import { DashboardHeader } from '../../../../components/Dashboard';
-
-const FAQS = [
-  {
-    q: 'How can I download my previous documents?',
-    a: 'Open My Documents, find the document you need, and select the download icon. Completed documents are available as PDFs.',
-  },
-  {
-    q: 'How long can I access my documents?',
-    a: 'Your documents remain accessible in your account indefinitely with an active subscription or verified document purchase.',
-  },
-  {
-    q: 'How can I access my payment history?',
-    a: 'Navigate to the Payment History tab in the dashboard sidebar to review all past transactions, receipts, and order invoices.',
-  },
-  {
-    q: 'How does the Unlimited Access subscription work?',
-    a: 'Unlimited Access allows you to generate unlimited paystubs, W-2s, and 1099s with real-time tax calculation for all 50 states without individual checkout.',
-  },
-  {
-    q: 'What should I do if my document download fails?',
-    a: 'Try refreshing your browser or clearing temporary cache. You can also re-trigger the download from My Documents or contact our support team.',
-  },
-];
+import faqs from '../data/help/faqs.json';
 
 const FaqItem = ({ faq, isOpen, onToggle }) => (
   <div className="py-4 sm:py-4.5">
@@ -78,7 +56,7 @@ const HelpCenterView = () => {
           </div>
 
           <div className="divide-y divide-slate-100">
-            {FAQS.map((faq, idx) => (
+            {faqs.map((faq, idx) => (
               <FaqItem
                 key={faq.q}
                 faq={faq}

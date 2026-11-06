@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router";
 import {
   FileText,
@@ -15,101 +15,9 @@ import {
   DashboardTable,
 } from "../../../../components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
-
-const INITIAL_DOCUMENTS = [
-  {
-    id: "PS-2025-0841",
-    name: "Paystub - May 2025",
-    type: "Paystub",
-    date: "May 28, 2025",
-    status: "Completed",
-  },
-  {
-    id: "W2-2025-1120",
-    name: "W-2 Form - 2024",
-    type: "W-2",
-    date: "May 22, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-  {
-    id: "PS-2025-0722",
-    name: "Paystub - April 2025",
-    type: "Paystub",
-    date: "May 03, 2025",
-    status: "Completed",
-  },
-];
-
-const CATEGORIES = [
-  { id: "all", label: "All Documents" },
-  { id: "paystubs", label: "Paystubs" },
-  { id: "w2", label: "W-2" },
-  { id: "1099", label: "1099-NEC" },
-  { id: "direct_deposit", label: "Direct Deposit Slip" },
-];
+import categories from "../data/myDocuments/categories.json";
+import documents from "../data/myDocuments/documents.json";
+import sortOptions from "../data/myDocuments/sortOptions.json";
 
 const DocumentActionButtons = ({ doc, onView, onDownload }) => (
   <div className="inline-flex items-center gap-2">
@@ -145,7 +53,7 @@ const MyDocumentsView = () => {
   const pageSize = 10;
 
   const filteredDocs = useMemo(() => {
-    const filtered = INITIAL_DOCUMENTS.filter((doc) => {
+    const filtered = documents.filter((doc) => {
       if (selectedCategory === "paystubs" && doc.type !== "Paystub")
         return false;
       if (selectedCategory === "w2" && doc.type !== "W-2") return false;
@@ -178,10 +86,6 @@ const MyDocumentsView = () => {
   }, [selectedCategory, searchTerm, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filteredDocs.length / pageSize));
-
-  useEffect(() => {
-    setCurrentPage((previousPage) => Math.min(previousPage, totalPages));
-  }, [totalPages]);
 
   const paginatedDocs = filteredDocs.slice(
     (currentPage - 1) * pageSize,
@@ -224,7 +128,7 @@ const MyDocumentsView = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-4 sm:p-5 space-y-4">
         {/* Category Pills Row */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
               <button
@@ -268,9 +172,11 @@ const MyDocumentsView = () => {
               onChange={(e) => setSortBy(e.target.value)}
               className="appearance-none pl-3.5 pr-8 py-2 rounded border border-slate-200/80 text-xs font-medium text-slate-600 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#009BFB]/20 cursor-pointer"
             >
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="name">Name (A-Z)</option>
+              {sortOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>

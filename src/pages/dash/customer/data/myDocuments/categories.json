@@ -1,0 +1,7 @@
+[
+  { "id": "all", "label": "All Documents" },
+  { "id": "paystubs", "label": "Paystubs" },
+  { "id": "w2", "label": "W-2" },
+  { "id": "1099", "label": "1099-NEC" },
+  { "id": "direct_deposit", "label": "Direct Deposit Slip" }
+]

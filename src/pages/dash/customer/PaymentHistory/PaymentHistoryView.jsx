@@ -2,41 +2,8 @@ import React, { useState } from 'react';
 import { PaymentDetailsModal } from '../components/modals';
 import { DashboardHeader, DashboardTable } from '../../../../components/Dashboard';
 import { DashboardStatusBadge } from '../../../../layouts';
-
-const TRANSACTIONS = [
-  {
-    id: 'TXN-9182746',
-    description: 'Paystub - May 2025',
-    date: 'May 28, 2025',
-    method: 'Visa **** 4821',
-    amount: '$14.99',
-    status: 'Successful',
-  },
-  {
-    id: 'TXN-9191822',
-    description: 'W-2 Form - 2024',
-    date: 'May 22, 2025',
-    method: 'Visa **** 4821',
-    amount: '$19.99',
-    status: 'Successful',
-  },
-  {
-    id: 'TXN-9178021',
-    description: 'Paystub - April 2025',
-    date: 'May 03, 2025',
-    method: 'Mastercard **** 1092',
-    amount: '$14.99',
-    status: 'Successful',
-  },
-  {
-    id: 'TXN-9176480',
-    description: 'Unlimited Access',
-    date: 'April 29, 2025',
-    method: 'Visa **** 4821',
-    amount: '$199.00',
-    status: 'Successful',
-  },
-];
+import historyPagination from '../data/payments/historyPagination.json';
+import transactions from '../data/payments/transactions.json';
 
 const PaymentHistoryView = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,14 +65,14 @@ const PaymentHistoryView = () => {
             ),
           },
         ]}
-        data={TRANSACTIONS}
+        data={transactions}
         pagination={{
           currentPage,
-          totalPages: 5,
-          totalRecords: TRANSACTIONS.length,
-          label: `Page ${currentPage} of 5 - ${TRANSACTIONS.length} matching records`,
+          totalPages: historyPagination.totalPages,
+          totalRecords: transactions.length,
+          label: `Page ${currentPage} of ${historyPagination.totalPages} - ${transactions.length} matching records`,
           onPageChange: setCurrentPage,
-          pages: [1, 2, 5],
+          pages: historyPagination.pages,
         }}
       />
 

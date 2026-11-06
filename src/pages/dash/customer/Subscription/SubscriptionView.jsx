@@ -1,22 +1,10 @@
 import React from 'react';
 import { Star, Check, HelpCircle } from 'lucide-react';
 import { DashboardHeader } from '../../../../components/Dashboard';
+import metadataItems from '../data/subscription/metadataItems.json';
+import planFeatures from '../data/subscription/planFeatures.json';
 
 const SubscriptionView = () => {
-  const planFeatures = [
-    'Unlimited Paystub Generation',
-    'Unlimited W-2 Generation',
-    'Unlimited 1099 Generation',
-    'Access to All Supported Document Types',
-  ];
-
-  const metadataItems = [
-    { label: 'Billing frequency', value: 'Monthly' },
-    { label: 'Expiry Date', value: 'June 28, 2026' },
-    { label: 'Next billing date', value: 'June 29, 2026' },
-    { label: 'Payment method', value: 'Visa ending in 4821' },
-  ];
-
   return (
     <div className="space-y-6">
       {/* Header */}

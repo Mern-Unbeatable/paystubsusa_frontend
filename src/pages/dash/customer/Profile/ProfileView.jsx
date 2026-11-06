@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { DashboardHeader } from "../../../../components/Dashboard";
+import initialValues from "../data/profile/initialValues.json";
 
 const ProfileView = () => {
-  const [name, setName] = useState("John Doe");
-  const [phone, setPhone] = useState("01780053624");
-  const [email, setEmail] = useState("admin@johnindustries.com");
+  const [name, setName] = useState(initialValues.name);
+  const [phone, setPhone] = useState(initialValues.phone);
+  const [email, setEmail] = useState(initialValues.email);
 
-  const [currentPassword, setCurrentPassword] = useState("password123");
-  const [newPassword, setNewPassword] = useState("newpassword123");
-  const [confirmPassword, setConfirmPassword] = useState("newpassword123");
+  const [currentPassword, setCurrentPassword] = useState(initialValues.currentPassword);
+  const [newPassword, setNewPassword] = useState(initialValues.newPassword);
+  const [confirmPassword, setConfirmPassword] = useState(initialValues.confirmPassword);
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
