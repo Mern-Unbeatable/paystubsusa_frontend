@@ -15,88 +15,21 @@ import {
 import { DashboardHeader, DashboardTable } from "../../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../../layouts";
 import DocumentDetailsModal from '../../components/modals/DocumentDetailsModal';
+import stats from '../../data/overview/stats.json';
+import recentDocuments from '../../data/overview/recentDocuments.json';
+import transactions from '../../data/payments/transactions.json';
+
+const STAT_ICON_MAP = {
+  FileText,
+  LayoutGrid,
+  CreditCard,
+  Star,
+};
 
 const CustomerOverview = ({ setActiveTab }) => {
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadSuccess, setDownloadSuccess] = useState(null);
-
-  const stats = [
-    {
-      title: 'Total Documents',
-      value: '12',
-      change: 'All-time documents',
-      icon: FileText,
-    },
-    {
-      title: 'Paystubs Created',
-      value: '8',
-      change: '67% of your documents',
-      icon: LayoutGrid,
-    },
-    {
-      title: 'Total Purchases',
-      value: '10',
-      change: 'Successful purchases',
-      icon: CreditCard,
-    },
-    {
-      title: 'Subscription Status',
-      value: 'Active',
-      change: 'Unlimited Access',
-      icon: Star,
-    },
-  ];
-
-  const recentDocuments = [
-    {
-      id: 'PS-2025-0841',
-      name: 'Paystub - May 2025',
-      type: 'Paystub',
-      date: 'May 28, 2025',
-      status: 'Completed',
-    },
-    {
-      id: 'W2-2025-1120',
-      name: 'W-2 Form - 2024',
-      type: 'W-2',
-      date: 'May 22, 2025',
-      status: 'Completed',
-    },
-    {
-      id: 'PS-2025-0723',
-      name: 'Paystub - April 2025',
-      type: 'Paystub',
-      date: 'May 03, 2025',
-      status: 'Completed',
-    },
-  ];
-
-  const recentPayments = [
-    {
-      id: 'TXN-9182746',
-      description: 'Paystub - May 2025',
-      date: 'May 28, 2025',
-      method: 'Visa **** 4821',
-      amount: '$14.99',
-      status: 'Successful',
-    },
-    {
-      id: 'TXN-9191822',
-      description: 'W-2 Form - 2024',
-      date: 'May 22, 2025',
-      method: 'Visa **** 4821',
-      amount: '$19.99',
-      status: 'Successful',
-    },
-    {
-      id: 'TXN-9178021',
-      description: 'Paystub - April 2025',
-      date: 'May 03, 2025',
-      method: 'Mastercard **** 1092',
-      amount: '$14.99',
-      status: 'Successful',
-    },
-  ];
+  const recentPayments = transactions.slice(0, 3);
 
   const handleDownload = (docName) => {
     setDownloadSuccess(`Downloading ${docName}...`);
@@ -133,7 +66,7 @@ const CustomerOverview = ({ setActiveTab }) => {
       {/* Stats Cards Grid (4 Cards Exactly as in Design) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {stats.map((stat, idx) => {
-          const Icon = stat.icon;
+          const Icon = STAT_ICON_MAP[stat.iconKey];
           return (
             <div
               key={idx}
