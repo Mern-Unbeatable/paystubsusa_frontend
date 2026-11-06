@@ -1,5 +1,5 @@
 import React from "react";
-import AdminCustomersPanel from "./components/AdminCustomersView";
+import AdminCustomersPanel from "./components/AdminCustomers";
 
 const AdminCustomersView = () => {
   return <AdminCustomersPanel />;

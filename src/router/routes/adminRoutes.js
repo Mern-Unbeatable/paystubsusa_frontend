@@ -5,8 +5,8 @@ import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const AdminOverview = lazy(
-  () => import("../../pages/dashboard/admin/overview/AdminOverview"),
+const AdminOverviewView = lazy(
+  () => import("../../pages/dashboard/admin/overview/AdminOverviewView"),
 );
 const AdminUsers = lazy(
   () => import("../../pages/dashboard/admin/users/AdminUsersView"),
@@ -50,11 +50,11 @@ export const adminRoutes = [
       },
       {
         path: "home",
-        element: createLazyRouteElement(AdminOverview),
+        element: createLazyRouteElement(AdminOverviewView),
       },
       {
         path: "overview",
-        element: createLazyRouteElement(AdminOverview),
+        element: createLazyRouteElement(AdminOverviewView),
       },
       {
         path: "users",

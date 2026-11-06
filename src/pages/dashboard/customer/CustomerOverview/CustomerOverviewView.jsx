@@ -138,7 +138,7 @@ const DocumentActionButtons = ({ doc, onView, onDownload }) => (
   </div>
 );
 
-const CustomerOverview = () => {
+const CustomerOverviewView = () => {
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadSuccess, setDownloadSuccess] = useState(null);
 
@@ -306,4 +306,4 @@ const CustomerOverview = () => {
   );
 };
 
-export default CustomerOverview;
+export default CustomerOverviewView;

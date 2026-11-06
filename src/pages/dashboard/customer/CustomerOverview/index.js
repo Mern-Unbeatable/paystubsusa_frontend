@@ -1,2 +1,2 @@
-﻿export { default } from './CustomerOverview'
-export { default as CustomerOverviewPage } from './CustomerOverview'
+export { default } from './CustomerOverviewView'
+export { default as CustomerOverviewPage } from './CustomerOverviewView'

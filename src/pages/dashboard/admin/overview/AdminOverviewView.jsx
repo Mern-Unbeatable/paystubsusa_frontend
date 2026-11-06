@@ -185,7 +185,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const AdminOverview = () => {
+const AdminOverviewView = () => {
   const navigate = useNavigate();
   const [timeframe, setTimeframe] = useState("Last Year");
 
@@ -455,4 +455,4 @@ const AdminOverview = () => {
   );
 };
 
-export default AdminOverview;
+export default AdminOverviewView;

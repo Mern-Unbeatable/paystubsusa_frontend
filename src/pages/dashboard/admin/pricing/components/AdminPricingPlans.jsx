@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Check, RotateCcw, Save } from 'lucide-react';
 
-const AdminPricingPlansView = () => {
+const AdminPricingPlans = () => {
   const initialPricing = [
     { id: 'paystub-1', label: '1 Paystub', value: '$ 1895' },
     { id: 'paystub-3', label: '3 Paystub', value: '$ 1795' },
@@ -130,5 +130,4 @@ const AdminPricingPlansView = () => {
   );
 };
 
-export default AdminPricingPlansView;
-
+export default AdminPricingPlans;

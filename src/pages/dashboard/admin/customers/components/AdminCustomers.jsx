@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, MoreVertical } from 'lucide-react';
 
-const AdminCustomersView = () => {
+const AdminCustomers = () => {
   const [statusFilter, setStatusFilter] = useState('All statuses');
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -243,4 +243,4 @@ const AdminCustomersView = () => {
   );
 };
 
-export default AdminCustomersView;
+export default AdminCustomers;

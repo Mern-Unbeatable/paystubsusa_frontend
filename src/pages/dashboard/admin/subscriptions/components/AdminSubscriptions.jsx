@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const AdminSubscriptionsView = () => {
+const AdminSubscriptions = () => {
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showFullDetailsModal, setShowFullDetailsModal] = useState(false);
@@ -438,5 +438,4 @@ const AdminSubscriptionsView = () => {
   );
 };
 
-export default AdminSubscriptionsView;
-
+export default AdminSubscriptions;

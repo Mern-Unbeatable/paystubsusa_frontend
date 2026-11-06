@@ -5,7 +5,7 @@ import {
   PaystubThumbnail,
 } from "../../../../public/public_generator/components/sections/TemplateSelectionSection";
 
-const AdminDocumentTemplatesView = () => {
+const AdminDocumentTemplates = () => {
   // Active/selected template for each category
   const [selectedPaystubTpl, setSelectedPaystubTpl] = useState('01');
   const [selectedW2Tpl, setSelectedW2Tpl] = useState('01');
@@ -463,4 +463,4 @@ const AdminDocumentTemplatesView = () => {
   );
 };
 
-export default AdminDocumentTemplatesView;
+export default AdminDocumentTemplates;

@@ -4,7 +4,7 @@ import React from "react";
 import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const CustomerOverview = lazy(
+const CustomerOverviewView = lazy(
   () => import("../../pages/dashboard/customer/CustomerOverview"),
 );
 const MyDocumentsView = lazy(
@@ -30,11 +30,11 @@ export const customerRoutes = [
     children: [
       {
         path: "home",
-        element: createLazyRouteElement(CustomerOverview),
+        element: createLazyRouteElement(CustomerOverviewView),
       },
       {
         path: "overview",
-        element: createLazyRouteElement(CustomerOverview),
+        element: createLazyRouteElement(CustomerOverviewView),
       },
       {
         path: "documents",

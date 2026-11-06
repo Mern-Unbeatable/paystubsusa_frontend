@@ -1,5 +1,5 @@
 import React from "react";
-import AdminPricingPlansPanel from "./components/AdminPricingPlansView";
+import AdminPricingPlansPanel from "./components/AdminPricingPlans";
 
 const AdminPricingPlansView = () => {
   return <AdminPricingPlansPanel />;

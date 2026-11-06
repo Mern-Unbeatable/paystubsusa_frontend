@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const AdminOrdersView = () => {
+const AdminOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -273,4 +273,4 @@ const AdminOrdersView = () => {
   );
 };
 
-export default AdminOrdersView;
+export default AdminOrders;
