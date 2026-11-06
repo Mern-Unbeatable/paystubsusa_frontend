@@ -1,276 +1,458 @@
-import React from "react";
-import { Link } from "react-router";
-import { DashboardStatusBadge } from "../../../../layouts";
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router";
 import {
-  DashboardHeader,
-  DashboardTable,
-} from "../../../../components/Dashboard";
-
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
-  FileText,
+  ChevronDown,
+  ChevronRight,
   CreditCard,
+  FileText,
+  RefreshCw,
+  ShoppingBag,
+  TrendingUp,
   Users,
-  FilePlus,
-  Eye,
-  Download,
-  ArrowRight,
-  ShieldCheck,
 } from "lucide-react";
 
-const adminStats = [
+const revenueData = [
+  { month: "Jan", revenue: 10500 },
+  { month: "Feb", revenue: 13800 },
+  { month: "Mar", revenue: 17200 },
+  { month: "Apr", revenue: 15900 },
+  { month: "May", revenue: 20100 },
+  { month: "Jun", revenue: 19000 },
+  { month: "Jul", revenue: 23500 },
+  { month: "Aug", revenue: 24200 },
+  { month: "Sep", revenue: 27500 },
+  { month: "Oct", revenue: 29800 },
+  { month: "Nov", revenue: 33900 },
+  { month: "Dec", revenue: 38400 },
+];
+
+const kpiStats = [
   {
-    title: "Total Revenue",
-    value: "$24,850",
-    change: "+14% from last month",
-    icon: CreditCard,
-  },
-  {
-    title: "Total Documents",
-    value: "1,420",
-    change: "All user generated files",
-    icon: FileText,
-  },
-  {
-    title: "Active Customers",
-    value: "382",
-    change: "88% active this week",
+    id: "customers",
+    label: "Total Customers",
+    value: "12,842",
     icon: Users,
+    color: "text-blue-500 bg-blue-50",
+    path: "/admin/customers",
   },
   {
-    title: "System Status",
-    value: "Optimal",
-    change: "99.98% calculation uptime",
-    icon: ShieldCheck,
+    id: "documents",
+    label: "Total Documents",
+    value: "48,291",
+    icon: FileText,
+    color: "text-blue-500 bg-blue-50",
+    path: "/admin/documents",
+  },
+  {
+    id: "orders",
+    label: "Total Orders",
+    value: "21,064",
+    icon: ShoppingBag,
+    color: "text-blue-500 bg-blue-50",
+    path: "/admin/orders",
+  },
+  {
+    id: "revenue",
+    label: "Total Revenue",
+    value: "$284,920",
+    icon: CreditCard,
+    color: "text-emerald-500 bg-emerald-50",
+  },
+  {
+    id: "subscriptions",
+    label: "Active Subscriptions",
+    value: "1,284",
+    icon: RefreshCw,
+    color: "text-purple-500 bg-purple-50",
+    path: "/admin/subscriptions",
+  },
+  {
+    id: "today",
+    label: "Generated Today",
+    value: "392",
+    icon: TrendingUp,
+    color: "text-orange-500 bg-orange-50",
   },
 ];
 
-const adminRecentDocs = [
+const documentBreakdown = [
+  { name: "Paystubs", count: "18,420", percent: 68 },
+  { name: "W-2", count: "8,921", percent: 38 },
+  { name: "1099-NEC", count: "6,842", percent: 29 },
+  { name: "Direct Deposit", count: "4,108", percent: 18 },
+];
+
+const recentOrders = [
   {
-    id: "DOC-2025-9921",
-    user: "Sarah Jenkins",
-    name: "Paystub - May 2025",
-    type: "Paystub",
-    date: "May 28, 2025",
-    status: "Completed",
+    id: "#PG-10482",
+    customer: "sarah.miller@example.com",
+    type: "3 Paystub Package",
+    date: "May 23, 2025",
+    amount: "$24.99",
+    status: "Successful",
   },
   {
-    id: "DOC-2025-9920",
-    user: "Michael Chang",
-    name: "W-2 Form - 2024",
+    id: "#PG-10481",
+    customer: "daniel.chen@example.com",
     type: "W-2",
-    date: "May 28, 2025",
-    status: "Completed",
-  },
-  {
-    id: "DOC-2025-9919",
-    user: "Atik Adnan",
-    name: "Paystub - May 2025",
-    type: "Paystub",
-    date: "May 28, 2025",
-    status: "Completed",
-  },
-];
-
-const adminRecentPayments = [
-  {
-    id: "TXN-984021",
-    user: "Sarah Jenkins",
-    description: "Paystub - May 2025",
-    date: "May 28, 2025",
-    method: "Visa **** 4821",
+    date: "May 23, 2025",
     amount: "$14.99",
     status: "Successful",
   },
   {
-    id: "TXN-984020",
-    user: "Michael Chang",
-    description: "W-2 Form - 2024",
-    date: "May 28, 2025",
-    method: "Mastercard **** 8820",
-    amount: "$19.99",
+    id: "#PG-10480",
+    customer: "morgan.reed@example.com",
+    type: "Monthly Subscription",
+    date: "May 23, 2025",
+    amount: "$199.00",
     status: "Successful",
   },
   {
-    id: "TXN-984019",
-    user: "Atik Adnan",
-    description: "Paystub - May 2025",
-    date: "May 28, 2025",
-    method: "Visa **** 4821",
+    id: "#PG-10479",
+    customer: "andrewkim@example.com",
+    type: "1099-NEC",
+    date: "May 22, 2025",
     amount: "$14.99",
+    status: "Successful",
+  },
+  {
+    id: "#PG-10478",
+    customer: "olivia.hayes@example.com",
+    type: "Single Paystub",
+    date: "May 22, 2025",
+    amount: "$12.99",
     status: "Successful",
   },
 ];
 
-const StatCard = ({ title, value, change, icon: Icon }) => (
-  <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-5 flex flex-col justify-between">
-    <div className="flex items-center justify-between">
-      <span className="text-xs font-semibold text-slate-500">{title}</span>
-      <div className="w-7 h-7 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center">
-        <Icon className="w-3.5 h-3.5" />
+const recentActivities = [
+  {
+    id: 1,
+    icon: FileText,
+    title: "New monthly subscription activated",
+    subtext: "Morgan Reed · Unlimited Access",
+    time: "2 min",
+  },
+  {
+    id: 2,
+    icon: FileText,
+    title: "W-2 order completed",
+    subtext: "daniel.chen@example.com",
+    time: "8 min",
+  },
+  {
+    id: 3,
+    icon: ShoppingBag,
+    title: "3-paystub package purchased",
+    subtext: "sarah.miller@example.com",
+    time: "15 min",
+  },
+  {
+    id: 4,
+    icon: CreditCard,
+    title: "Payment failed",
+    subtext: "olivia.hayes@example.com",
+    time: "32 min",
+  },
+  {
+    id: 5,
+    icon: Users,
+    title: "New customer registered",
+    subtext: "james.wilson@example.com",
+    time: "48 min",
+  },
+];
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900 text-white text-sm px-2.5 py-1.5 rounded shadow-lg">
+        <p className="font-semibold">{label}</p>
+        <p className="text-[#009BFB]">${payload[0].value.toLocaleString()}</p>
       </div>
-    </div>
-    <div className="mt-3">
-      <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-        {value}
+    );
+  }
+
+  return null;
+};
+
+const AdminOverview = () => {
+  const navigate = useNavigate();
+  const [timeframe, setTimeframe] = useState("Last Year");
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          Dashboard Overview
+        </h1>
+        <p className="text-base text-slate-400 mt-1.5">
+          Monitor your platform activity, customers, documents, and revenue.
+        </p>
       </div>
-      <div className="text-[11px] text-slate-400 font-medium mt-1">
-        {change}
-      </div>
-    </div>
-  </div>
-);
 
-const DocumentActionButtons = ({ doc }) => (
-  <div className="inline-flex items-center gap-2">
-    <button
-      type="button"
-      onClick={() => alert(`Reviewing ${doc.name} for ${doc.user}`)}
-      className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
-      aria-label={`Review ${doc.name}`}
-    >
-      <Eye className="w-3.5 h-3.5" />
-    </button>
-    <button
-      type="button"
-      onClick={() => alert("Downloading PDF copy...")}
-      className="w-7 h-7 rounded border border-slate-200 text-slate-500 hover:text-[#009BFB] hover:border-[#009BFB] flex items-center justify-center transition cursor-pointer"
-      aria-label={`Download ${doc.name}`}
-    >
-      <Download className="w-3.5 h-3.5" />
-    </button>
-  </div>
-);
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {kpiStats.map((stat) => {
+          const Icon = stat.icon;
+          const isClickable = Boolean(stat.path);
 
-const AdminOverview = () => (
-  <div className="space-y-6">
-    <DashboardHeader
-      title="Platform Overview"
-      description="Monitor platform activity, customer documents, transaction volume, and system health."
-      badge={
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-[#EBF5FF] text-[#009BFB] border border-slate-300">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>Admin Management Portal</span>
-        </div>
-      }
-      action={
-        <>
-          <Link
-            to="/customer/overview"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
-          >
-            <span>View Customer Portal</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-          <Link
-            to="/paystub-generator"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-xs transition shadow-xs"
-          >
-            <FilePlus className="w-3.5 h-3.5" />
-            <span>Generate Document</span>
-          </Link>
-        </>
-      }
-    />
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-      {adminStats.map((stat) => (
-        <StatCard key={stat.title} {...stat} />
-      ))}
-    </div>
-
-    <DashboardTable
-      title="Recent Platform Documents"
-      minWidth="min-w-[700px]"
-      columns={[
-        {
-          header: "Document Name",
-          render: (doc) => (
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                <FileText className="w-4 h-4" />
+          return (
+            <button
+              key={stat.id}
+              type="button"
+              onClick={() => stat.path && navigate(stat.path)}
+              className={`bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex items-center gap-3.5 shadow-xs hover:border-slate-300 hover:shadow-sm transition text-left ${
+                isClickable ? "cursor-pointer hover:border-blue-200" : "cursor-default"
+              }`}
+            >
+              <div
+                className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${stat.color}`}
+              >
+                <Icon className="w-4 h-4" />
               </div>
-              <div>
-                <div className="font-bold text-slate-900 text-xs">
-                  {doc.name}
-                </div>
-                <div className="text-[10.5px] text-slate-400 font-mono">
-                  {doc.id}
-                </div>
+              <div className="min-w-0">
+                <span className="text-sm sm:text-base font-semibold text-slate-700 block truncate">
+                  {stat.label}
+                </span>
+                <span className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight block mt-0.5">
+                  {stat.value}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div className="lg:col-span-8 bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-start justify-between pb-2">
+              <h3 className="text-sm font-bold text-slate-800">
+                Revenue analytics
+              </h3>
+
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setTimeframe((previous) =>
+                      previous === "Last Year" ? "Last 6 Months" : "Last Year",
+                    )
+                  }
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-600 text-sm font-medium hover:border-slate-300 transition cursor-pointer select-none"
+                >
+                  <span>{timeframe}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                </button>
               </div>
             </div>
-          ),
-        },
-        {
-          header: "User",
-          key: "user",
-          cellClassName: "font-medium text-slate-800",
-        },
-        {
-          header: "Document Type",
-          key: "type",
-          cellClassName: "text-slate-600 font-medium",
-        },
-        {
-          header: "Created Date",
-          key: "date",
-          cellClassName: "text-slate-500 font-medium",
-        },
-        {
-          header: "Status",
-          render: (doc) => <DashboardStatusBadge status={doc.status} />,
-        },
-        {
-          header: "Action",
-          align: "right",
-          render: (doc) => <DocumentActionButtons doc={doc} />,
-        },
-      ]}
-      data={adminRecentDocs}
-    />
 
-    <DashboardTable
-      title="Recent Payment Transactions"
-      minWidth="min-w-[700px]"
-      columns={[
-        {
-          header: "Transaction ID",
-          key: "id",
-          cellClassName: "font-mono font-semibold text-slate-800 text-[11px]",
-        },
-        {
-          header: "User",
-          key: "user",
-          cellClassName: "font-medium text-slate-800",
-        },
-        {
-          header: "Description",
-          key: "description",
-          cellClassName: "font-medium text-slate-700",
-        },
-        {
-          header: "Date",
-          key: "date",
-          cellClassName: "text-slate-500 font-medium",
-        },
-        {
-          header: "Method",
-          key: "method",
-          cellClassName: "text-slate-600 font-medium",
-        },
-        {
-          header: "Amount",
-          key: "amount",
-          cellClassName: "font-bold text-slate-900",
-        },
-        {
-          header: "Status",
-          render: (payment) => <DashboardStatusBadge status={payment.status} />,
-        },
-      ]}
-      data={adminRecentPayments}
-    />
-  </div>
-);
+            <div className="mt-1 mb-2">
+              <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight block">
+                $84,290
+              </span>
+            </div>
+          </div>
+
+          <div className="w-full h-52 sm:h-60 pt-2">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={revenueData}
+                margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
+              >
+                <defs>
+                  <linearGradient
+                    id="rechartsRevenueGrad"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor="#2563EB" stopOpacity={0.24} />
+                    <stop offset="60%" stopColor="#2563EB" stopOpacity={0.06} />
+                    <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid vertical={false} stroke="#F1F5F9" strokeWidth={1} />
+                <XAxis
+                  dataKey="month"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#94A3B8", fontSize: 11 }}
+                  dy={6}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#94A3B8", fontSize: 11 }}
+                  domain={[0, 40000]}
+                  ticks={[0, 10000, 20000, 30000, 40000]}
+                  tickFormatter={(value) => (value === 0 ? "$0" : `$${value / 1000}k`)}
+                  dx={-4}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Area
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#2563EB"
+                  strokeWidth={2.5}
+                  fill="url(#rechartsRevenueGrad)"
+                  activeDot={{
+                    r: 4.5,
+                    fill: "#FFFFFF",
+                    stroke: "#2563EB",
+                    strokeWidth: 2.5,
+                  }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="pb-4">
+              <h3 className="text-sm font-bold text-slate-800">
+                Documents generated
+              </h3>
+            </div>
+
+            <div className="space-y-4 pt-1">
+              {documentBreakdown.map((doc) => (
+                <div key={doc.name}>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-600 font-medium">{doc.name}</span>
+                    <span className="text-slate-900 font-bold">{doc.count}</span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1.5 overflow-hidden">
+                    <div
+                      className="bg-[#2563EB] h-full rounded-full transition-all duration-500"
+                      style={{ width: `${doc.percent}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-5 mt-6 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-sm text-slate-400 font-medium">
+              Total generated:
+            </span>
+            <span className="text-sm font-bold text-slate-900">38,291</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div className="lg:col-span-8 bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
+          <div className="flex items-center justify-between pb-3">
+            <h3 className="text-sm font-bold text-slate-800">Recent orders</h3>
+            <Link
+              to="/admin/orders"
+              className="text-sm font-semibold text-[#009BFB] hover:underline flex items-center gap-1"
+            >
+              <span>View all orders</span>
+              <span>→</span>
+            </Link>
+          </div>
+
+          <div className="overflow-x-auto mt-2">
+            <table className="w-full text-left border-collapse min-w-[620px]">
+              <thead>
+                <tr className="border-b border-slate-100 text-sm font-semibold text-slate-400 uppercase tracking-wider">
+                  <th className="py-2.5 font-medium">ORDER ID</th>
+                  <th className="py-2.5 font-medium">CUSTOMER</th>
+                  <th className="py-2.5 font-medium">TYPE</th>
+                  <th className="py-2.5 font-medium">DATE</th>
+                  <th className="py-2.5 font-medium">AMOUNT</th>
+                  <th className="py-2.5 font-medium">STATUS</th>
+                  <th className="py-2.5 text-right font-medium" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50 text-sm">
+                {recentOrders.map((order) => (
+                  <tr
+                    key={order.id}
+                    className="hover:bg-slate-50/60 transition group"
+                  >
+                    <td className="py-3 font-semibold text-slate-700">{order.id}</td>
+                    <td className="py-3 text-slate-600 font-medium">
+                      {order.customer}
+                    </td>
+                    <td className="py-3 text-slate-600">{order.type}</td>
+                    <td className="py-3 text-slate-400">{order.date}</td>
+                    <td className="py-3 font-bold text-slate-900">{order.amount}</td>
+                    <td className="py-3">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="py-3 text-right">
+                      <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 inline-block transition" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-4">
+              <h3 className="text-sm font-bold text-slate-800">
+                Recent activity
+              </h3>
+              <div className="flex items-center gap-1.5 text-sm font-semibold text-emerald-600 bg-emerald-50/80 border border-emerald-100/60 px-2 py-0.5 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Live</span>
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-1">
+              {recentActivities.map((activity) => {
+                const Icon = activity.icon;
+
+                return (
+                  <div
+                    key={activity.id}
+                    className="flex items-start justify-between gap-3 text-sm"
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-full bg-blue-50 text-[#009BFB] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Icon className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-slate-800 text-sm truncate">
+                          {activity.title}
+                        </p>
+                        <p className="text-sm text-slate-400 truncate mt-0.5">
+                          {activity.subtext}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-sm text-slate-400 flex-shrink-0 font-medium whitespace-nowrap">
+                      {activity.time}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default AdminOverview;

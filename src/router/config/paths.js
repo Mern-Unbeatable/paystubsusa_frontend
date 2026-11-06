@@ -13,6 +13,8 @@ export const PATHS = {
   AUTH: {
     login: "/login",
     register: "/register",
+    forgotPassword: "/forgot-password",
+    resetPassword: "/reset-password",
   },
   CUSTOMER: {
     dashboard: "/customer/overview",
@@ -29,8 +31,14 @@ export const PATHS = {
     home: "/admin/home",
     overview: "/admin/overview",
     users: "/admin/users",
+    customers: "/admin/customers",
     documents: "/admin/documents",
+    orders: "/admin/orders",
     transactions: "/admin/transactions",
+    subscriptions: "/admin/subscriptions",
+    templates: "/admin/templates",
+    pricing: "/admin/pricing",
+    profile: "/admin/profile",
   },
 };
 
@@ -43,6 +51,10 @@ export const ALIASES = {
   "about-us": PATHS.PUBLIC.about,
   signin: PATHS.AUTH.login,
   signup: PATHS.AUTH.register,
+  forgot: PATHS.AUTH.forgotPassword,
+  forgotpassword: PATHS.AUTH.forgotPassword,
+  reset: PATHS.AUTH.resetPassword,
+  resetpassword: PATHS.AUTH.resetPassword,
   "customer/dashboard": PATHS.CUSTOMER.dashboard,
   "admin/dashboard": PATHS.ADMIN.dashboard,
   "/dashboard": PATHS.CUSTOMER.dashboard,

@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Eye, Upload, X, Check, FileUp, Sparkles } from 'lucide-react';
-import { TEMPLATES, PaystubThumbnail } from '../PaystubGenerator/TemplateSelectionSection';
+import {
+  TEMPLATES,
+  PaystubThumbnail,
+} from "../../pages/public/public_generator/components/sections/TemplateSelectionSection";
 
 const AdminDocumentTemplatesView = () => {
   // Active/selected template for each category
@@ -64,7 +67,7 @@ const AdminDocumentTemplatesView = () => {
     },
   ]);
 
-  const handleOpenUpload = (category, tpl) => {
+  const handleOpenUpload = (category) => {
     setUploadCategory(category);
     setUploadTplName(`New ${category} Template`);
     setUploadTplSubtitle('Custom layout');
@@ -461,4 +464,3 @@ const AdminDocumentTemplatesView = () => {
 };
 
 export default AdminDocumentTemplatesView;
-

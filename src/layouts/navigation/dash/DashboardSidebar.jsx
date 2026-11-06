@@ -12,6 +12,10 @@ import {
   HelpCircle,
   User,
   LogOut,
+  Users,
+  ShoppingBag,
+  LayoutTemplate,
+  Tag,
   X,
 } from "lucide-react";
 
@@ -57,16 +61,52 @@ const ADMIN_NAV_ITEMS = [
     path: "/admin/overview",
   },
   {
-    id: "users",
-    label: "Manage Users",
-    icon: FileText,
-    path: "/admin/users",
+    id: "customers",
+    label: "Customers",
+    icon: Users,
+    path: "/admin/customers",
   },
   {
     id: "documents",
     label: "Documents",
     icon: FileText,
     path: "/admin/documents",
+  },
+  {
+    id: "orders",
+    label: "Orders",
+    icon: ShoppingBag,
+    path: "/admin/orders",
+  },
+  {
+    id: "subscriptions",
+    label: "Subscription",
+    icon: Star,
+    path: "/admin/subscriptions",
+  },
+  {
+    id: "templates",
+    label: "Document Template",
+    icon: LayoutTemplate,
+    path: "/admin/templates",
+  },
+  {
+    id: "pricing",
+    label: "Pricing Plan & Tag",
+    icon: Tag,
+    path: "/admin/pricing",
+  },
+  {
+    id: "profile",
+    label: "Profile",
+    icon: User,
+    path: "/admin/profile",
+  },
+  {
+    id: "users",
+    label: "Manage Users",
+    icon: Users,
+    path: "/admin/users",
   },
   {
     id: "transactions",
