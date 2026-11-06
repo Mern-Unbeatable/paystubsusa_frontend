@@ -1,5 +1,5 @@
 import React from "react";
-import AdminDocumentTemplatesPanel from "../../../../Components/Dashboard/AdminDocumentTemplatesView";
+import AdminDocumentTemplatesPanel from "./components/AdminDocumentTemplatesView";
 
 const AdminDocumentTemplatesView = () => {
   return <AdminDocumentTemplatesPanel />;

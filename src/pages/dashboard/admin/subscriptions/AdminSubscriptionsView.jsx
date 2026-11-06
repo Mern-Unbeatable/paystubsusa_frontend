@@ -1,5 +1,5 @@
 import React from "react";
-import AdminSubscriptionsPanel from "../../../../Components/Dashboard/AdminSubscriptionsView";
+import AdminSubscriptionsPanel from "./components/AdminSubscriptionsView";
 
 const AdminSubscriptionsView = () => {
   return <AdminSubscriptionsPanel />;

@@ -3,7 +3,7 @@ import { Eye, Upload, X, Check, FileUp, Sparkles } from 'lucide-react';
 import {
   TEMPLATES,
   PaystubThumbnail,
-} from "../../pages/public/public_generator/components/sections/TemplateSelectionSection";
+} from "../../../../public/public_generator/components/sections/TemplateSelectionSection";
 
 const AdminDocumentTemplatesView = () => {
   // Active/selected template for each category
