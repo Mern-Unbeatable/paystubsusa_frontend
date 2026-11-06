@@ -6,37 +6,64 @@ import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
 const AdminOverviewView = lazy(
-  () => import("../../pages/dashboard/admin/overview/AdminOverviewView"),
-);
-const AdminUsers = lazy(
-  () => import("../../pages/dashboard/admin/users/AdminUsersView"),
-);
-const AdminCustomers = lazy(
-  () => import("../../pages/dashboard/admin/customers/AdminCustomersView"),
-);
-const AdminDocuments = lazy(
-  () => import("../../pages/dashboard/admin/documents/AdminDocumentsView"),
-);
-const AdminOrders = lazy(
-  () => import("../../pages/dashboard/admin/orders/AdminOrdersView"),
-);
-const AdminTransactions = lazy(
-  () => import("../../pages/dashboard/admin/transactions/AdminTransactionsView"),
-);
-const AdminSubscriptions = lazy(
   () =>
-    import(
-      "../../pages/dashboard/admin/subscriptions/AdminSubscriptionsView"
-    ),
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminOverviewView,
+    })),
 );
-const AdminDocumentTemplates = lazy(
-  () => import("../../pages/dashboard/admin/templates/AdminDocumentTemplatesView"),
+const AdminUsersView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminUsersView,
+    })),
 );
-const AdminPricingPlans = lazy(
-  () => import("../../pages/dashboard/admin/pricing/AdminPricingPlansView"),
+const AdminCustomersView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminCustomersView,
+    })),
 );
-const AdminProfile = lazy(
-  () => import("../../pages/dashboard/admin/profile/AdminProfileView"),
+const AdminDocumentsView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminDocumentsView,
+    })),
+);
+const AdminOrdersView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminOrdersView,
+    })),
+);
+const AdminTransactionsView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminTransactionsView,
+    })),
+);
+const AdminSubscriptionsView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminSubscriptionsView,
+    })),
+);
+const AdminDocumentTemplatesView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminDocumentTemplatesView,
+    })),
+);
+const AdminPricingPlansView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminPricingPlansView,
+    })),
+);
+const AdminProfileView = lazy(
+  () =>
+    import("../../pages/dashboard/admin").then((module) => ({
+      default: module.AdminProfileView,
+    })),
 );
 
 export const adminRoutes = [
@@ -58,39 +85,39 @@ export const adminRoutes = [
       },
       {
         path: "users",
-        element: createLazyRouteElement(AdminUsers),
+        element: createLazyRouteElement(AdminUsersView),
       },
       {
         path: "customers",
-        element: createLazyRouteElement(AdminCustomers),
+        element: createLazyRouteElement(AdminCustomersView),
       },
       {
         path: "documents",
-        element: createLazyRouteElement(AdminDocuments),
+        element: createLazyRouteElement(AdminDocumentsView),
       },
       {
         path: "orders",
-        element: createLazyRouteElement(AdminOrders),
+        element: createLazyRouteElement(AdminOrdersView),
       },
       {
         path: "transactions",
-        element: createLazyRouteElement(AdminTransactions),
+        element: createLazyRouteElement(AdminTransactionsView),
       },
       {
         path: "subscriptions",
-        element: createLazyRouteElement(AdminSubscriptions),
+        element: createLazyRouteElement(AdminSubscriptionsView),
       },
       {
         path: "templates",
-        element: createLazyRouteElement(AdminDocumentTemplates),
+        element: createLazyRouteElement(AdminDocumentTemplatesView),
       },
       {
         path: "pricing",
-        element: createLazyRouteElement(AdminPricingPlans),
+        element: createLazyRouteElement(AdminPricingPlansView),
       },
       {
         path: "profile",
-        element: createLazyRouteElement(AdminProfile),
+        element: createLazyRouteElement(AdminProfileView),
       },
     ],
   },

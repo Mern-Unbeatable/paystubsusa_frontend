@@ -1,8 +1,8 @@
 import React from "react";
-import ProfileView from "../../customer/ProfileView";
+import { ProfileView as CustomerProfileView } from "../../customer";
 
 const AdminProfileView = () => {
-  return <ProfileView />;
+  return <CustomerProfileView />;
 };
 
 export default AdminProfileView;

@@ -5,22 +5,40 @@ import { DashboardLayout } from "../../layouts";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
 const CustomerOverviewView = lazy(
-  () => import("../../pages/dashboard/customer/CustomerOverview"),
+  () =>
+    import("../../pages/dashboard/customer").then((module) => ({
+      default: module.CustomerOverviewView,
+    })),
 );
 const MyDocumentsView = lazy(
-  () => import("../../pages/dashboard/customer/MyDocumentsView"),
+  () =>
+    import("../../pages/dashboard/customer").then((module) => ({
+      default: module.MyDocumentsView,
+    })),
 );
 const PaymentHistoryView = lazy(
-  () => import("../../pages/dashboard/customer/PaymentHistoryView"),
+  () =>
+    import("../../pages/dashboard/customer").then((module) => ({
+      default: module.PaymentHistoryView,
+    })),
 );
 const SubscriptionView = lazy(
-  () => import("../../pages/dashboard/customer/SubscriptionView"),
+  () =>
+    import("../../pages/dashboard/customer").then((module) => ({
+      default: module.SubscriptionView,
+    })),
 );
 const HelpCenterView = lazy(
-  () => import("../../pages/dashboard/customer/HelpCenterView"),
+  () =>
+    import("../../pages/dashboard/customer").then((module) => ({
+      default: module.HelpCenterView,
+    })),
 );
 const ProfileView = lazy(
-  () => import("../../pages/dashboard/customer/ProfileView"),
+  () =>
+    import("../../pages/dashboard/customer").then((module) => ({
+      default: module.ProfileView,
+    })),
 );
 
 export const customerRoutes = [
