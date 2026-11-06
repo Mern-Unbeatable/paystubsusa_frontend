@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { UserPlus, Zap, ShieldCheck } from 'lucide-react';
 import gsap from 'gsap';
+import badgeItems from '../../../data/generator/heroBadges.json';
 
 const GeneratorHeroSection = () => {
   const heroRef = useRef(null);
@@ -48,20 +49,7 @@ const GeneratorHeroSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const badgeItems = [
-    {
-      icon: <UserPlus className="w-4 h-4 text-secondary stroke-[2.2]" />,
-      text: 'No Account Required',
-    },
-    {
-      icon: <Zap className="w-4 h-4 text-secondary stroke-[2.2] fill-secondary/20" />,
-      text: 'Easy Document Creation',
-    },
-    {
-      icon: <ShieldCheck className="w-4 h-4 text-secondary stroke-[2.2]" />,
-      text: 'Secure Checkout',
-    },
-  ];
+  const ICON_MAP = { ShieldCheck, UserPlus, Zap };
 
   return (
     <section
@@ -111,17 +99,25 @@ const GeneratorHeroSection = () => {
           ref={badgesRef}
           className="flex flex-wrap items-center justify-center gap-3 sm:gap-4.5"
         >
-          {badgeItems.map((badge, idx) => (
-            <div
-              key={idx}
-              className="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-secondary/40 transition-all duration-200"
-            >
-              {badge.icon}
-              <span className="text-[14px] sm:text-[14.5px] font-medium text-slate-700 whitespace-nowrap">
-                {badge.text}
-              </span>
-            </div>
-          ))}
+          {badgeItems.map((badge, idx) => {
+            const IconComponent = ICON_MAP[badge.iconKey];
+            const iconClassName =
+              badge.iconKey === 'Zap'
+                ? 'w-4 h-4 text-secondary stroke-[2.2] fill-secondary/20'
+                : 'w-4 h-4 text-secondary stroke-[2.2]';
+
+            return (
+              <div
+                key={idx}
+                className="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-secondary/40 transition-all duration-200"
+              >
+                <IconComponent className={iconClassName} />
+                <span className="text-[14px] sm:text-[14.5px] font-medium text-slate-700 whitespace-nowrap">
+                  {badge.text}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -2,34 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { User, Sparkles, Layers, Folder } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import points from '../../../data/home/whyUsPoints.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const WhyUsSection = () => {
   const sectionRef = useRef(null);
 
-  const points = [
-    {
-      icon: User,
-      title: 'No Account Required',
-      description: 'Create documents without signing up.',
-    },
-    {
-      icon: Sparkles,
-      title: 'Simple User Experience',
-      description: 'A clear, guided flow from start to finish.',
-    },
-    {
-      icon: Layers,
-      title: 'Multiple Document Options',
-      description: 'Paystubs, W-2s, 1099s and deposit slips.',
-    },
-    {
-      icon: Folder,
-      title: 'Convenient Document Access',
-      description: 'Download your PDFs when you need them.',
-    },
-  ];
+  const ICON_MAP = { Folder, Layers, Sparkles, User };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -85,7 +65,7 @@ const WhyUsSection = () => {
         {/* 4 Points Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {points.map((pt) => {
-            const IconComponent = pt.icon;
+            const IconComponent = ICON_MAP[pt.iconKey];
             return (
               <div
                 key={pt.title}

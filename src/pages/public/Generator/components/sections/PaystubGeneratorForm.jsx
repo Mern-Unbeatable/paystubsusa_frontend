@@ -16,14 +16,10 @@ import {
   Download,
   RotateCcw,
 } from 'lucide-react';
-
-const US_STATES = [
-  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-  'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-  'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-  'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-  'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-].filter(Boolean);
+import packagesConfig from '../../../data/generator/paystubPackages.json';
+import payFrequencyOptions from '../../../data/generator/payFrequencyOptions.json';
+import stepsList from '../../../data/generator/paystubSteps.json';
+import US_STATES from '../../../data/shared/usStates.json';
 
 const PaystubGeneratorForm = ({ selectedTemplateId = '01', onChangeTemplate }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -135,36 +131,6 @@ const PaystubGeneratorForm = ({ selectedTemplateId = '01', onChangeTemplate }) =
     };
   }, [formData]);
 
-  // Packages pricing calculation
-  const packagesConfig = {
-    '1paystub': {
-      id: '1paystub',
-      name: '1 Paystub',
-      displayPrice: '$12.99',
-      price: 12.99,
-      subtitle: 'Single document',
-      orderSummaryName: '1 paystub',
-    },
-    '3paystubs': {
-      id: '3paystubs',
-      name: '3 Paystubs',
-      displayPrice: '$24.99',
-      price: 24.99,
-      subtitle: 'Best value',
-      badge: 'Save 35%',
-      orderSummaryName: '3 paystubs',
-    },
-    'unlimited': {
-      id: 'unlimited',
-      name: 'Unlimited Access',
-      displayPrice: '$199',
-      price: 199.00,
-      period: '/month',
-      subtitle: 'All supported document types',
-      orderSummaryName: 'Unlimited Access ($199/mo)',
-    },
-  };
-
   const currentPkg = packagesConfig[selectedPackage] || packagesConfig['3paystubs'];
   const additionalCost = additionalCount * 7.99;
   const grandTotal = currentPkg.price + additionalCost;
@@ -246,15 +212,8 @@ const PaystubGeneratorForm = ({ selectedTemplateId = '01', onChangeTemplate }) =
     }, 1200);
   };
 
-  const stepsList = [
-    { num: 1, label: 'Employer Information' },
-    { num: 2, label: 'Employee Information' },
-    { num: 3, label: 'Pay Details' },
-    { num: 4, label: 'Review Paystub' },
-  ];
-
   // Reusable Paystub Document Component for Live Preview
-  const PaystubDocumentPreview = () => (
+  const renderPaystubDocumentPreview = () => (
     <div className="bg-white rounded-xl border border-slate-200/90 shadow-sm overflow-hidden p-3.5 sm:p-5 text-[8.5px] sm:text-[9px] leading-tight select-none font-sans">
       {/* Top Company Banner */}
       <div className="bg-[#092258] text-white p-2.5 sm:p-3 rounded-lg flex justify-between items-center mb-3">
@@ -729,10 +688,11 @@ const PaystubGeneratorForm = ({ selectedTemplateId = '01', onChangeTemplate }) =
                           onChange={(e) => updateField('payFrequency', e.target.value)}
                           className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 focus:border-[#1E60F2] text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8"
                         >
-                          <option value="Semi-Monthly">Semi-Monthly</option>
-                          <option value="Bi-Weekly">Bi-Weekly</option>
-                          <option value="Weekly">Weekly</option>
-                          <option value="Monthly">Monthly</option>
+                          {payFrequencyOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
                         </select>
                         <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
@@ -1192,7 +1152,7 @@ const PaystubGeneratorForm = ({ selectedTemplateId = '01', onChangeTemplate }) =
                 </button>
               </div>
 
-              <PaystubDocumentPreview />
+              {renderPaystubDocumentPreview()}
 
               <div className="flex items-center gap-1.5 mt-2.5 text-slate-400 text-[12px]">
                 <Lock className="w-3.5 h-3.5" />
@@ -1343,7 +1303,7 @@ const PaystubGeneratorForm = ({ selectedTemplateId = '01', onChangeTemplate }) =
 
               {/* Paystub Document Thumbnail */}
               <div className="mb-5 overflow-hidden">
-                <PaystubDocumentPreview />
+                {renderPaystubDocumentPreview()}
               </div>
 
               {/* Line Items */}

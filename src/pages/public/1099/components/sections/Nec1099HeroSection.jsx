@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Check, Shield, FileText } from 'lucide-react';
 import gsap from 'gsap';
+import featureItems from '../../../data/tax1099/heroFeatures.json';
 
 const Nec1099HeroSection = () => {
   const heroRef = useRef(null);
@@ -47,20 +48,7 @@ const Nec1099HeroSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const featureItems = [
-    {
-      icon: <Check className="w-4 h-4 text-secondary stroke-[2.5]" />,
-      text: 'Simple Form Process',
-    },
-    {
-      icon: <Shield className="w-4 h-4 text-secondary stroke-[2]" />,
-      text: 'Secure Checkout',
-    },
-    {
-      icon: <FileText className="w-4 h-4 text-secondary stroke-[2]" />,
-      text: 'PDF Document',
-    },
-  ];
+  const ICON_MAP = { Check, FileText, Shield };
 
   return (
     <section
@@ -110,15 +98,23 @@ const Nec1099HeroSection = () => {
           ref={featuresRef}
           className="flex flex-wrap items-center justify-center gap-7 sm:gap-9"
         >
-          {featureItems.map((item, idx) => (
-            <div
-              key={idx}
-              className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              {item.icon}
-              <span>{item.text}</span>
-            </div>
-          ))}
+          {featureItems.map((item, idx) => {
+            const IconComponent = ICON_MAP[item.iconKey];
+            const iconClassName =
+              item.iconKey === 'Check'
+                ? 'w-4 h-4 text-secondary stroke-[2.5]'
+                : 'w-4 h-4 text-secondary stroke-[2]';
+
+            return (
+              <div
+                key={idx}
+                className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                <IconComponent className={iconClassName} />
+                <span>{item.text}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

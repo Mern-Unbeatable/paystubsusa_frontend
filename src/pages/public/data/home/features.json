@@ -1,0 +1,22 @@
+[
+  {
+    "iconKey": "Pencil",
+    "title": "Easy Document Creation",
+    "description": "Fill in a guided form and watch your document take shape in real time."
+  },
+  {
+    "iconKey": "Layers",
+    "title": "Multiple Document Types",
+    "description": "Paystubs, W-2s, 1099s and direct deposit slips — all in one place."
+  },
+  {
+    "iconKey": "Download",
+    "title": "Convenient PDF Downloads",
+    "description": "Download clean, print-ready PDFs right after checkout."
+  },
+  {
+    "iconKey": "ShieldCheck",
+    "title": "Secure Checkout Experience",
+    "description": "Payments are processed through an encrypted, secure checkout."
+  }
+]

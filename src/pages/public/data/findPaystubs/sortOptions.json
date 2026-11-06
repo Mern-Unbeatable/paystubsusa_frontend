@@ -1,0 +1,5 @@
+[
+  { "value": "newest", "label": "Newest first" },
+  { "value": "oldest", "label": "Oldest first" },
+  { "value": "name", "label": "Name (A-Z)" }
+]

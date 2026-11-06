@@ -1,0 +1,20 @@
+[
+  {
+    "stepNumber": "STEP 01",
+    "iconKey": "PenTool",
+    "title": "Enter Your Information",
+    "description": "Provide the required details using our easy-to-follow form."
+  },
+  {
+    "stepNumber": "STEP 02",
+    "iconKey": "Eye",
+    "title": "Review Your Document",
+    "description": "Preview your document and check the information before checkout."
+  },
+  {
+    "stepNumber": "STEP 03",
+    "iconKey": "Download",
+    "title": "Download Your Document",
+    "description": "Complete your payment and download your generated document."
+  }
+]

@@ -12,22 +12,8 @@ import {
   Download,
   Plus,
 } from 'lucide-react';
-
-const US_STATES = [
-  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-  'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-  'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-  'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-  'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-];
-
-const STEPS = [
-  { id: 1, name: 'Payer Information' },
-  { id: 2, name: 'Recipient Information' },
-  { id: 3, name: 'Compensation Details' },
-  { id: 4, name: 'Review Document' },
-  { id: 5, name: 'Checkout' },
-];
+import STEPS from '../../../data/tax1099/steps.json';
+import US_STATES from '../../../data/shared/usStates.json';
 
 const Nec1099GeneratorForm = () => {
   const [currentStep, setCurrentStep] = useState(1);

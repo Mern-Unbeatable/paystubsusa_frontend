@@ -2,32 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { PenTool, Eye, Download } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import steps from '../../../data/home/howItWorksSteps.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HowItWorksSection = () => {
   const sectionRef = useRef(null);
 
-  const steps = [
-    {
-      stepNumber: 'STEP 01',
-      icon: PenTool,
-      title: 'Enter Your Information',
-      description: 'Provide the required details using our easy-to-follow form.',
-    },
-    {
-      stepNumber: 'STEP 02',
-      icon: Eye,
-      title: 'Review Your Document',
-      description: 'Preview your document and check the information before checkout.',
-    },
-    {
-      stepNumber: 'STEP 03',
-      icon: Download,
-      title: 'Download Your Document',
-      description: 'Complete your payment and download your generated document.',
-    },
-  ];
+  const ICON_MAP = { Download, Eye, PenTool };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -90,7 +72,7 @@ const HowItWorksSection = () => {
 
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {steps.map((item) => {
-              const IconComp = item.icon;
+              const IconComp = ICON_MAP[item.iconKey];
               return (
                 <div
                   key={item.stepNumber}

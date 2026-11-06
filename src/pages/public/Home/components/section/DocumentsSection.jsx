@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import mockPreviewRows from '../../../data/home/mockPreviewRows.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -230,13 +231,13 @@ const DocumentsSection = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2.5">
-                      {[1, 2, 3, 4].map((i) => (
+                      {mockPreviewRows.map((i) => (
                         <div key={`w2-l-${i}`} className="bg-white border border-slate-100 rounded-lg p-2 h-9 flex flex-col justify-center">
                           <div className="w-12 h-1.5 bg-blue-100 rounded-full mb-1"></div>
                           <div className="w-8 h-1.5 bg-slate-100 rounded-full"></div>
                         </div>
                       ))}
-                      {[1, 2, 3, 4].map((i) => (
+                      {mockPreviewRows.map((i) => (
                         <div key={`w2-r-${i}`} className="bg-white border border-slate-100 rounded-lg p-2 h-9 flex flex-col justify-center">
                           <div className="w-14 h-1.5 bg-blue-100 rounded-full mb-1"></div>
                           <div className="w-6 h-1.5 bg-slate-100 rounded-full"></div>
@@ -276,13 +277,13 @@ const DocumentsSection = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2.5">
-                      {[1, 2, 3, 4].map((i) => (
+                      {mockPreviewRows.map((i) => (
                         <div key={`1099-l-${i}`} className="bg-white border border-slate-100 rounded-lg p-2 h-9 flex flex-col justify-center">
                           <div className="w-10 h-1.5 bg-blue-100 rounded-full mb-1"></div>
                           <div className="w-14 h-1.5 bg-slate-100 rounded-full"></div>
                         </div>
                       ))}
-                      {[1, 2, 3, 4].map((i) => (
+                      {mockPreviewRows.map((i) => (
                         <div key={`1099-r-${i}`} className="bg-white border border-slate-100 rounded-lg p-2 h-9 flex flex-col justify-center">
                           <div className="w-16 h-1.5 bg-blue-100 rounded-full mb-1"></div>
                           <div className="w-8 h-1.5 bg-slate-100 rounded-full"></div>

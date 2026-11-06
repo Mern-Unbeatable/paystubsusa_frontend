@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Mail, Github, MessageSquare, Send } from "lucide-react";
+import contactInfo from "../data/contact/contactInfo.json";
+import faqs from "../data/contact/faqs.json";
 
 const ContactView = () => {
   const [formData, setFormData] = useState({
@@ -29,49 +31,7 @@ const ContactView = () => {
     }, 1000);
   };
 
-  const contactInfo = [
-    {
-      icon: <Mail className="h-6 w-6" />,
-      title: "Email",
-      info: "hello@reactboilerplate.dev",
-      description: "Send us an email anytime",
-    },
-    {
-      icon: <Github className="h-6 w-6" />,
-      title: "GitHub",
-      info: "github.com/reactboilerplate",
-      description: "Check out our open source code",
-    },
-    {
-      icon: <MessageSquare className="h-6 w-6" />,
-      title: "Community",
-      info: "Join our Discord",
-      description: "Connect with other developers",
-    },
-  ];
-
-  const faqs = [
-    {
-      question: "How do I get started with this boilerplate?",
-      answer:
-        "Clone the repository, install dependencies with npm install, and run npm run dev to start development.",
-    },
-    {
-      question: "Can I use this for commercial projects?",
-      answer:
-        "Yes! This boilerplate is completely free and open source. You can use it for any project, including commercial ones.",
-    },
-    {
-      question: "How do I customize the styling?",
-      answer:
-        "The boilerplate uses Tailwind CSS. You can customize the styling by modifying Tailwind classes or adding your own CSS.",
-    },
-    {
-      question: "Is TypeScript supported?",
-      answer:
-        "The boilerplate is TypeScript-ready. You can start using TypeScript by renaming files to .tsx and adding type definitions.",
-    },
-  ];
+  const ICON_MAP = { Github, Mail, MessageSquare };
 
   return (
     <div className="min-h-screen bg-white">
@@ -201,25 +161,31 @@ const ContactView = () => {
                   Other Ways to Reach Us
                 </h2>
                 <div className="mb-8 space-y-6">
-                  {contactInfo.map((info, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start space-x-4 rounded-lg bg-gray-50 p-4"
-                    >
-                      <div className="mt-1 text-blue-600">{info.icon}</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {info.title}
-                        </h3>
-                        <p className="font-mono text-sm text-gray-700">
-                          {info.info}
-                        </p>
-                        <p className="mt-1 text-sm text-gray-600">
-                          {info.description}
-                        </p>
+                  {contactInfo.map((info, index) => {
+                    const IconComponent = ICON_MAP[info.iconKey];
+
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-start space-x-4 rounded-lg bg-gray-50 p-4"
+                      >
+                        <div className="mt-1 text-blue-600">
+                          <IconComponent className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            {info.title}
+                          </h3>
+                          <p className="font-mono text-sm text-gray-700">
+                            {info.info}
+                          </p>
+                          <p className="mt-1 text-sm text-gray-600">
+                            {info.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* Response Time */}
