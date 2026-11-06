@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
-import { useAuth } from "../../hooks/useAuth";
-import logoImg from "../../assets/logo.png";
+import { useAuth } from "../../../hooks/useAuth";
+import logoImg from "../../../assets/logo.png";
 
 const RegisterView = () => {
   const navigate = useNavigate();

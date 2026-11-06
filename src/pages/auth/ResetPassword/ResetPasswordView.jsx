@@ -7,8 +7,8 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import logoImg from "../../assets/logo.png";
-import AuthInvoicePreview from "./components/AuthInvoicePreview";
+import logoImg from "../../../assets/logo.png";
+import AuthInvoicePreview from "../components/AuthInvoicePreview";
 
 const ResetPasswordView = () => {
   const [searchParams] = useSearchParams();

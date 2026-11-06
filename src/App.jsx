@@ -15,8 +15,8 @@ function App() {
 
   useEffect(() => {
     const preloadAuthRoutes = () => {
-      import("./pages/auth/LoginView");
-      import("./pages/auth/RegisterView");
+      import("./pages/auth/Login/LoginView");
+      import("./pages/auth/Register/RegisterView");
     };
 
     if (typeof window !== "undefined" && "requestIdleCallback" in window) {

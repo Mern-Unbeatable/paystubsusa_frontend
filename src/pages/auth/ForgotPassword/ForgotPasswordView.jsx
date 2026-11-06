@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
-import logoImg from "../../assets/logo.png";
-import AuthInvoicePreview from "./components/AuthInvoicePreview";
+import logoImg from "../../../assets/logo.png";
+import AuthInvoicePreview from "../components/AuthInvoicePreview";
 
 const ForgotPasswordView = () => {
   const navigate = useNavigate();

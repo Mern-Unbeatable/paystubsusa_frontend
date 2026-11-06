@@ -2,13 +2,29 @@
 import { lazy } from "react";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 
-const LoginView = lazy(() => import("../../pages/auth/LoginView"));
-const RegisterView = lazy(() => import("../../pages/auth/RegisterView"));
+const LoginView = lazy(
+  () =>
+    import("../../pages/auth").then((module) => ({
+      default: module.LoginView,
+    })),
+);
+const RegisterView = lazy(
+  () =>
+    import("../../pages/auth").then((module) => ({
+      default: module.RegisterView,
+    })),
+);
 const ForgotPasswordView = lazy(
-  () => import("../../pages/auth/ForgotPasswordView"),
+  () =>
+    import("../../pages/auth").then((module) => ({
+      default: module.ForgotPasswordView,
+    })),
 );
 const ResetPasswordView = lazy(
-  () => import("../../pages/auth/ResetPasswordView"),
+  () =>
+    import("../../pages/auth").then((module) => ({
+      default: module.ResetPasswordView,
+    })),
 );
 
 // Standalone (no RootLayout wrapper)

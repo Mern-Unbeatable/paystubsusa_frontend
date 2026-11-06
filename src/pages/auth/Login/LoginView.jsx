@@ -8,12 +8,12 @@ import {
   User,
   ShieldCheck,
 } from "lucide-react";
-import { useAuth } from "../../hooks/useAuth";
-import logoImg from "../../assets/logo.png";
-import { DEMO_CREDENTIALS } from "../../features/auth/auth.constants";
+import { useAuth } from "../../../hooks/useAuth";
+import logoImg from "../../../assets/logo.png";
+import { DEMO_CREDENTIALS } from "../../../features/auth/auth.constants";
 
 const AuthInvoicePreview = lazy(
-  () => import("./components/AuthInvoicePreview"),
+  () => import("../components/AuthInvoicePreview"),
 );
 
 const LoginView = () => {
