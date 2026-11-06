@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DocumentDetailsModal from './DocumentDetailsModal';
+import DocumentDetailsModal from '../../../customer/components/modals/DocumentDetailsModal';
 
 const AdminDocumentsView = () => {
   const [selectedDoc, setSelectedDoc] = useState(null);

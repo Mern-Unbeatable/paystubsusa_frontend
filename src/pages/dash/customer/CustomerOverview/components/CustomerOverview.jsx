@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import {
   FileText,
   LayoutGrid,
@@ -12,12 +12,11 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
-import DocumentDetailsModal from './DocumentDetailsModal';
-import DashboardHeader from './DashboardHeader';
-import DashboardTable, { DashboardStatusBadge } from './DashboardTable';
+import { DashboardHeader, DashboardTable } from "../../../../../Components/Dashboard";
+import { DashboardStatusBadge } from "../../../../../layouts";
+import DocumentDetailsModal from '../../components/modals/DocumentDetailsModal';
 
 const CustomerOverview = ({ setActiveTab }) => {
-  const navigate = useNavigate();
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadSuccess, setDownloadSuccess] = useState(null);
 
