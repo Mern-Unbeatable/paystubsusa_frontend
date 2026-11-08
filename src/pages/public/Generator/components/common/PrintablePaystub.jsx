@@ -38,7 +38,7 @@ const PrintablePaystub = ({ template, formData, calculations }) => {
               zoom: (DOCUMENT_PAGE.width - PRINT_MARGIN * 2) / VARIANT_TEMPLATE_WIDTH,
             }}
           >
-            <PaystubThumbnail template={template} data={data} />
+            <PaystubThumbnail template={template} data={data} framed={false} />
           </div>
         </div>
       )}

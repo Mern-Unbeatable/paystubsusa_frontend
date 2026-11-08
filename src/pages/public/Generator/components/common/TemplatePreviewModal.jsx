@@ -1,7 +1,7 @@
 import React, { useEffect, useId } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { PaystubThumbnail } from "./PaystubThumbnail";
+import TemplatePagePreview from "./TemplatePagePreview";
 import { useBodyScrollLock } from "../../../../../hooks/useBodyScrollLock";
 
 /** Full-size preview of a single template with a fixed header and action footer. */
@@ -51,7 +51,7 @@ const TemplatePreviewModal = ({ template, onClose, onUseTemplate }) => {
 
         {/* Content */}
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-6 py-5">
-          <PaystubThumbnail template={template} full />
+          <TemplatePagePreview template={template} />
         </div>
 
         {/* Footer */}

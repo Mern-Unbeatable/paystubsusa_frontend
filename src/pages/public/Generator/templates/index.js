@@ -2,7 +2,7 @@ export { default as TemplateDocument } from "./TemplateDocument";
 export { default as CompanyLogo } from "./CompanyLogo";
 export { buildPaystubDocument } from "./buildPaystubDocument";
 export { buildThumbnailData } from "./buildThumbnailData";
-export { SAMPLE_PAYSTUB_DOCUMENT } from "./samplePaystubDocument";
+export { SAMPLE_LOGO, SAMPLE_PAYSTUB_DOCUMENT } from "./samplePaystubDocument";
 
 export const DOCUMENT_PAGE = { width: 816, height: 1056 };
 
