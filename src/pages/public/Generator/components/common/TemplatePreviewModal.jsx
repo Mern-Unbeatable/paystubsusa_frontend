@@ -61,7 +61,7 @@ const TemplatePreviewModal = ({ template, onClose, onUseTemplate }) => {
             onClick={() => onUseTemplate(template.id)}
             className="w-full py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] active:bg-[#007cc7] text-white font-semibold text-[15px] shadow-sm transition cursor-pointer text-center"
           >
-            Use this template
+            Use This Template
           </button>
         </div>
       </div>

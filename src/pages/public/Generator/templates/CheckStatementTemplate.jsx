@@ -262,15 +262,14 @@ const CheckStatementTemplate = ({ data }) => {
         )}
       </div>
 
-      {/* Right column */}
-      <div style={at(487, 441, { width: 306 })}>
+      {/* Right column: a long address wraps and pushes the sections below it down */}
+      <div style={at(487, 441, { width: 306, height: 547, display: "flex", flexDirection: "column" })}>
         <SectionTitle>Employee Address</SectionTitle>
-        <Boxed style={{ height: ROW_HEIGHT, lineHeight: `${ROW_HEIGHT}px`, padding: "0 6px", whiteSpace: "nowrap", overflow: "hidden" }}>
+        <Boxed style={{ minHeight: ROW_HEIGHT, lineHeight: "16px", padding: "4px 6px 3px", overflowWrap: "anywhere" }}>
           {[employee.address, employee.cityLine].filter(Boolean).join(", ")}
         </Boxed>
-      </div>
 
-      <div style={at(487, 522, { width: 306 })}>
+        <div style={{ height: 32, flexShrink: 0 }} />
         <SectionTitle>Employee Payment Information</SectionTitle>
         <Boxed>
           {[
@@ -295,12 +294,11 @@ const CheckStatementTemplate = ({ data }) => {
             </div>
           ))}
         </Boxed>
-      </div>
 
-      <div style={at(487, 652, { width: 306 })}>
+        <div style={{ height: 33, flexShrink: 0 }} />
         <SectionTitle>Important Notes</SectionTitle>
+        <div style={{ marginTop: 7, flex: 1, minHeight: 0, background: "#dce7dd" }} />
       </div>
-      <div style={at(487, 684, { width: 306, height: 304, background: "#dce7dd" })} />
     </div>
   );
 };

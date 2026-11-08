@@ -45,7 +45,9 @@ const TemplateCard = ({
     </div>
 
     <div>
-      <div className={`flex items-center justify-between ${showSelectButton ? "mb-3" : ""}`}>
+      <div
+        className={`flex items-center justify-between ${showSelectButton ? "mb-3" : ""}`}
+      >
         <div>
           <h3 className="font-bold text-[#111827] text-[15px] leading-tight">
             {template.title}
@@ -84,7 +86,7 @@ const TemplateCard = ({
               : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300"
           }`}
         >
-          {isSelected ? "Selected" : "Select Template"}
+          {isSelected ? "Selected" : "Use this template"}
         </button>
       )}
     </div>

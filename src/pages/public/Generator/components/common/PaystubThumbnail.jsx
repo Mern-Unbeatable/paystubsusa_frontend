@@ -256,13 +256,13 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA }) =
           <p className="text-slate-400 text-[6px] uppercase font-semibold">
             Employee
           </p>
-          <p className="font-bold text-slate-800 text-[7px] truncate">
+          <p className="font-bold text-slate-800 text-[7px] wrap-anywhere">
             {stub.employee.name}
           </p>
-          <p className="text-slate-500 text-[6px] truncate">
+          <p className="text-slate-500 text-[6px] wrap-anywhere">
             {stub.employee.address}
           </p>
-          <p className="text-slate-500 text-[6px] truncate">
+          <p className="text-slate-500 text-[6px] wrap-anywhere">
             {stub.employee.cityStateZip}
           </p>
         </div>
