@@ -42,14 +42,18 @@ const ThumbnailCompany = ({ logo, dark = false, children }) => (
 );
 
 // Miniature rendered Paystub Document matching Figma
-export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA }) => {
+export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, framed = true }) => {
   if (hasTemplateDocument(template)) return <DocumentThumbnail template={template} full={full} />;
 
   const stub = data;
   const { headerVariant, netPayVariant, tableVariant } = template;
 
   return (
-    <div className="w-full bg-white border border-slate-200/80 rounded-md p-2.5 sm:p-3 text-[7.5px] leading-tight select-none shadow-[0_1px_3px_rgba(0,0,0,0.03)] font-sans">
+    <div
+      className={`w-full bg-white text-[7.5px] leading-tight select-none font-sans ${
+        framed ? "border border-slate-200/80 rounded-md p-2.5 sm:p-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)]" : ""
+      }`}
+    >
       {/* 1. Top Header Banner */}
       {headerVariant === "dark-full" && (
         <div className="bg-[#092258] text-white p-2 rounded flex justify-between items-center mb-2">
