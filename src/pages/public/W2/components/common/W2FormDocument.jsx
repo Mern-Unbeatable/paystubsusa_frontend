@@ -236,8 +236,8 @@ const W2FormDocument = ({ formData }) => (
     </div>
 
     {/* Bottom State Taxes (Boxes 15 - 20) */}
-    <div className="grid grid-cols-12 border-b border-slate-400 text-[7.5px] min-h-[24px]">
-      <div className="col-span-3 border-r border-slate-400 p-0.5">
+    <div className="grid grid-cols-6 border-b border-slate-400 text-[7.5px] min-h-[24px]">
+      <div className="border-r border-slate-400 p-0.5">
         <span className="text-[6.5px] text-slate-500 block">
           15 State / Employer's ID
         </span>
@@ -246,7 +246,7 @@ const W2FormDocument = ({ formData }) => (
           {formData.box15StateId || ""}
         </span>
       </div>
-      <div className="col-span-3 border-r border-slate-400 p-0.5">
+      <div className="border-r border-slate-400 p-0.5">
         <span className="text-[6.5px] text-slate-500 block">
           16 State wages
         </span>
@@ -254,7 +254,7 @@ const W2FormDocument = ({ formData }) => (
           ${formData.box16StateWages || "0.00"}
         </span>
       </div>
-      <div className="col-span-3 border-r border-slate-400 p-0.5">
+      <div className="border-r border-slate-400 p-0.5">
         <span className="text-[6.5px] text-slate-500 block">
           17 State income tax
         </span>
@@ -262,14 +262,30 @@ const W2FormDocument = ({ formData }) => (
           ${formData.box17StateTax || "0.00"}
         </span>
       </div>
-      <div className="col-span-3 p-0.5">
+      <div className="border-r border-slate-400 p-0.5">
         <span className="text-[6.5px] text-slate-500 block">
-          18 Local wages / 19 Tax
+          18 Local wages
         </span>
         <span className="text-slate-700 block text-right">
           {formData.box18LocalWages
             ? `$${formData.box18LocalWages}`
             : "—"}
+        </span>
+      </div>
+      <div className="border-r border-slate-400 p-0.5">
+        <span className="text-[6.5px] text-slate-500 block">
+          19 Local income tax
+        </span>
+        <span className="text-slate-700 block text-right">
+          {formData.box19LocalTax ? `$${formData.box19LocalTax}` : "—"}
+        </span>
+      </div>
+      <div className="p-0.5">
+        <span className="text-[6.5px] text-slate-500 block">
+          20 Locality name
+        </span>
+        <span className="text-slate-700 block text-right break-words">
+          {formData.box20Locality || "—"}
         </span>
       </div>
     </div>

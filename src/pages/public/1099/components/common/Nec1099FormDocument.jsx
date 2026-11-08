@@ -63,7 +63,9 @@ const Nec1099FormDocument = ({ formData }) => (
         {/* Account Number */}
         <div className="p-1 min-h-[22px]">
           <span className="text-[6.5px] text-slate-500 block">Account number (see instructions)</span>
-          <p className="text-[7.5px]">{formData.accountNumber || formData.recipientAccountNumber || ''}</p>
+          <p className="text-[7.5px]">
+            {[formData.accountNumber, formData.recipientAccountNumber].filter(Boolean).join(' / ')}
+          </p>
         </div>
       </div>
 
@@ -113,8 +115,10 @@ const Nec1099FormDocument = ({ formData }) => (
             <span className="text-[7.5px] font-semibold">{formData.stateTaxWithheld ? `$${formData.stateTaxWithheld}` : '—'}</span>
           </div>
           <div className="border-r border-slate-300 px-0.5">
-            <span className="text-slate-500 block">6 State no.</span>
-            <span className="text-[7.5px] truncate block">{formData.statePayerNo || '—'}</span>
+            <span className="text-slate-500 block">6 State/Payer's no.</span>
+            <span className="text-[7.5px] block break-words">
+              {[formData.stateReportingState, formData.statePayerNo].filter(Boolean).join(' / ') || '—'}
+            </span>
           </div>
           <div className="pl-0.5">
             <span className="text-slate-500 block">7 State income</span>
