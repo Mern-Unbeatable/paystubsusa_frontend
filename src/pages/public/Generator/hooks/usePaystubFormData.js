@@ -13,6 +13,7 @@ const DEFAULT_FORM_DATA = {
   companyState: "IA",
   companyZip: "50309",
   companyEin: "12-3456789",
+  companyPhone: "",
 
   // Step 2: Employee Information
   employeeName: "Jane Doe",

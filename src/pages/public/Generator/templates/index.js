@@ -1,8 +1,12 @@
 export { default as TemplateDocument } from "./TemplateDocument";
 export { buildPaystubDocument } from "./buildPaystubDocument";
+export { buildThumbnailData } from "./buildThumbnailData";
 export { SAMPLE_PAYSTUB_DOCUMENT } from "./samplePaystubDocument";
 
 export const DOCUMENT_PAGE = { width: 816, height: 1056 };
+
+// Design width of the variant templates (01–08); previews scale it to fit.
+export const VARIANT_TEMPLATE_WIDTH = 320;
 
 const DOCUMENT_KEYS = new Set(["earnings-statement", "check-statement"]);
 

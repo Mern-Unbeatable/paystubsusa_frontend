@@ -193,6 +193,20 @@ const PaystubDetailsForm = ({
                 </p>
               </div>
 
+              <div>
+                <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+                  Company Phone{" "}
+                  <span className="font-normal text-slate-400">(optional)</span>
+                </label>
+                <input
+                  type="tel"
+                  value={formData.companyPhone ?? ""}
+                  onChange={(e) => updateField("companyPhone", e.target.value)}
+                  placeholder="(555) 123-4567"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition"
+                />
+              </div>
+
               <div className="flex items-center justify-between pt-5 border-t border-slate-100">
                 <button
                   type="button"

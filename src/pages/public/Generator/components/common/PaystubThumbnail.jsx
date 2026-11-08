@@ -27,10 +27,26 @@ const DocumentThumbnail = ({ template, full }) => (
   </div>
 );
 
+// Company block: optional logo on the left, a divider, then the company details.
+const ThumbnailCompany = ({ logo, dark = false, children }) => (
+  <div className="flex items-center gap-1.5 min-w-0">
+    {logo && (
+      <>
+        <span className={`shrink-0 flex items-center ${dark ? "bg-white rounded-sm p-0.5" : ""}`}>
+          <img src={logo} alt="" className="h-6 w-auto max-w-10 object-contain" />
+        </span>
+        <span className={`self-stretch w-px shrink-0 ${dark ? "bg-white/40" : "bg-slate-300"}`} />
+      </>
+    )}
+    <div className="min-w-0">{children}</div>
+  </div>
+);
+
 // Miniature rendered Paystub Document matching Figma
-export const PaystubThumbnail = ({ template, full = false }) => {
+export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA }) => {
   if (hasTemplateDocument(template)) return <DocumentThumbnail template={template} full={full} />;
 
+  const stub = data;
   const { headerVariant, netPayVariant, tableVariant } = template;
 
   return (
@@ -39,23 +55,26 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "dark-full" && (
         <div className="bg-[#092258] text-white p-2 rounded flex justify-between items-center mb-2">
           <div>
-            <p className="font-bold text-[8.5px]">{STUB_DATA.company.name}</p>
-            <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.company.ein}
-            </p>
+            <ThumbnailCompany logo={stub.company.logo} dark>
+              <p className="font-bold text-[8.5px]">{stub.company.name}</p>
+              <p className="text-white/80 text-[6.5px]">
+                {stub.company.address}
+              </p>
+              <p className="text-white/80 text-[6.5px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-white/80 text-[6.5px]">
+                {stub.company.ein}
+              </p>
+              {stub.company.phone && <p className="text-white/80 text-[6.5px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="text-right">
             <p className="font-bold text-[8px] uppercase tracking-wider">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -64,23 +83,26 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "blue-full" && (
         <div className="bg-[#1E60F2] text-white p-2 rounded flex justify-between items-center mb-2">
           <div>
-            <p className="font-bold text-[8.5px]">{STUB_DATA.company.name}</p>
-            <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.company.ein}
-            </p>
+            <ThumbnailCompany logo={stub.company.logo} dark>
+              <p className="font-bold text-[8.5px]">{stub.company.name}</p>
+              <p className="text-white/80 text-[6.5px]">
+                {stub.company.address}
+              </p>
+              <p className="text-white/80 text-[6.5px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-white/80 text-[6.5px]">
+                {stub.company.ein}
+              </p>
+              {stub.company.phone && <p className="text-white/80 text-[6.5px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="text-right">
             <p className="font-bold text-[8px] uppercase tracking-wider">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-white/80 text-[6.5px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -89,25 +111,28 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "minimal-blue-line" && (
         <div className="border-b border-[#1E60F2] pb-1.5 mb-2 flex justify-between items-center">
           <div>
-            <p className="font-bold text-[#1E60F2] text-[8.5px]">
-              {STUB_DATA.company.name}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.ein}
-            </p>
+            <ThumbnailCompany logo={stub.company.logo}>
+              <p className="font-bold text-[#1E60F2] text-[8.5px]">
+                {stub.company.name}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.address}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.ein}
+              </p>
+              {stub.company.phone && <p className="text-slate-500 text-[6.5px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="text-right">
             <p className="font-bold text-slate-800 text-[8px]">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -116,25 +141,28 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "minimal-dark-line" && (
         <div className="border-b border-slate-800 pb-1.5 mb-2 flex justify-between items-center">
           <div>
-            <p className="font-bold text-slate-900 text-[8.5px]">
-              {STUB_DATA.company.name}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.ein}
-            </p>
+            <ThumbnailCompany logo={stub.company.logo}>
+              <p className="font-bold text-slate-900 text-[8.5px]">
+                {stub.company.name}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.address}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.ein}
+              </p>
+              {stub.company.phone && <p className="text-slate-500 text-[6.5px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="text-right">
             <p className="font-bold text-slate-800 text-[8px]">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -143,25 +171,28 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "boxed" && (
         <div className="border border-slate-200 p-1.5 rounded mb-2 flex justify-between items-center">
           <div>
-            <p className="font-bold text-[#1E60F2] text-[8px]">
-              {STUB_DATA.company.name}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.company.ein}
-            </p>
+            <ThumbnailCompany logo={stub.company.logo}>
+              <p className="font-bold text-[#1E60F2] text-[8px]">
+                {stub.company.name}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.address}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-slate-500 text-[6.5px]">
+                {stub.company.ein}
+              </p>
+              {stub.company.phone && <p className="text-slate-500 text-[6.5px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="text-right">
             <p className="font-bold text-slate-800 text-[7.5px]">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-slate-500 text-[6.5px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -170,21 +201,24 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "split-dark" && (
         <div className="flex justify-between items-stretch mb-2 overflow-hidden rounded">
           <div className="bg-[#092258] text-white p-1.5 w-[56%]">
-            <p className="font-bold text-[8px]">{STUB_DATA.company.name}</p>
-            <p className="text-white/80 text-[6px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-white/80 text-[6px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-white/80 text-[6px]">{STUB_DATA.company.ein}</p>
+            <ThumbnailCompany logo={stub.company.logo} dark>
+              <p className="font-bold text-[8px]">{stub.company.name}</p>
+              <p className="text-white/80 text-[6px]">
+                {stub.company.address}
+              </p>
+              <p className="text-white/80 text-[6px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-white/80 text-[6px]">{stub.company.ein}</p>
+              {stub.company.phone && <p className="text-white/80 text-[6px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="p-1.5 text-right w-[44%] flex flex-col justify-center">
             <p className="font-bold text-slate-800 text-[7.5px]">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-slate-500 text-[6px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -193,21 +227,24 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       {headerVariant === "split-blue" && (
         <div className="flex justify-between items-stretch mb-2 overflow-hidden rounded">
           <div className="bg-[#1E60F2] text-white p-1.5 w-[56%]">
-            <p className="font-bold text-[8px]">{STUB_DATA.company.name}</p>
-            <p className="text-white/80 text-[6px]">
-              {STUB_DATA.company.address}
-            </p>
-            <p className="text-white/80 text-[6px]">
-              {STUB_DATA.company.cityStateZip}
-            </p>
-            <p className="text-white/80 text-[6px]">{STUB_DATA.company.ein}</p>
+            <ThumbnailCompany logo={stub.company.logo} dark>
+              <p className="font-bold text-[8px]">{stub.company.name}</p>
+              <p className="text-white/80 text-[6px]">
+                {stub.company.address}
+              </p>
+              <p className="text-white/80 text-[6px]">
+                {stub.company.cityStateZip}
+              </p>
+              <p className="text-white/80 text-[6px]">{stub.company.ein}</p>
+              {stub.company.phone && <p className="text-white/80 text-[6px]">{stub.company.phone}</p>}
+            </ThumbnailCompany>
           </div>
           <div className="p-1.5 text-right w-[44%] flex flex-col justify-center">
             <p className="font-bold text-slate-800 text-[7.5px]">
-              {STUB_DATA.statement.title}
+              {stub.statement.title}
             </p>
             <p className="text-slate-500 text-[6px]">
-              {STUB_DATA.statement.payDate}
+              {stub.statement.payDate}
             </p>
           </div>
         </div>
@@ -221,13 +258,13 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             Employee
           </p>
           <p className="font-bold text-slate-800 text-[7px] truncate">
-            {STUB_DATA.employee.name}
+            {stub.employee.name}
           </p>
           <p className="text-slate-500 text-[6px] truncate">
-            {STUB_DATA.employee.address}
+            {stub.employee.address}
           </p>
           <p className="text-slate-500 text-[6px] truncate">
-            {STUB_DATA.employee.cityStateZip}
+            {stub.employee.cityStateZip}
           </p>
         </div>
 
@@ -237,13 +274,13 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             Pay Period
           </p>
           <p className="font-medium text-slate-800 text-[6.5px] truncate">
-            {STUB_DATA.payPeriod.dates}
+            {stub.payPeriod.dates}
           </p>
           <p className="text-slate-500 text-[6px] truncate">
-            {STUB_DATA.payPeriod.frequency}
+            {stub.payPeriod.frequency}
           </p>
           <p className="text-slate-500 text-[6px] truncate">
-            {STUB_DATA.payPeriod.id}
+            {stub.payPeriod.id}
           </p>
         </div>
 
@@ -259,7 +296,7 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             Net Pay
           </p>
           <p className="font-bold text-[9.5px] sm:text-[10.5px]">
-            {STUB_DATA.netPay}
+            {stub.netPay}
           </p>
         </div>
       </div>
@@ -283,7 +320,7 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             <span>AMOUNT</span>
           </div>
           <div className="space-y-0.5 py-1 text-[6.5px]">
-            {STUB_DATA.earnings.map((e, idx) => (
+            {stub.earnings.map((e, idx) => (
               <div key={idx} className="flex justify-between text-slate-600">
                 <span className="truncate">
                   {e.desc}{" "}
@@ -298,7 +335,7 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             ))}
             <div className="flex justify-between font-bold text-slate-900 border-t border-slate-100 pt-0.5 mt-0.5">
               <span>Gross Pay</span>
-              <span>{STUB_DATA.grossPay}</span>
+              <span>{stub.grossPay}</span>
             </div>
           </div>
         </div>
@@ -320,7 +357,7 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             <span>AMOUNT</span>
           </div>
           <div className="space-y-0.5 py-1 text-[6.5px]">
-            {STUB_DATA.taxes.map((t, idx) => (
+            {stub.taxes.map((t, idx) => (
               <div key={idx} className="flex justify-between text-slate-600">
                 <span className="truncate">{t.desc}</span>
                 <span className="font-medium text-slate-700">{t.amount}</span>
@@ -328,7 +365,7 @@ export const PaystubThumbnail = ({ template, full = false }) => {
             ))}
             <div className="flex justify-between font-bold text-slate-900 border-t border-slate-100 pt-0.5 mt-0.5">
               <span>Total Taxes</span>
-              <span>{STUB_DATA.totalTaxes}</span>
+              <span>{stub.totalTaxes}</span>
             </div>
           </div>
         </div>
@@ -338,17 +375,17 @@ export const PaystubThumbnail = ({ template, full = false }) => {
       <div className="border-t border-slate-150 pt-1 text-[6.5px] flex justify-between text-slate-500 font-medium">
         <span>
           Gross Pay:{" "}
-          <strong className="text-slate-800">{STUB_DATA.summary.gross}</strong>
+          <strong className="text-slate-800">{stub.summary.gross}</strong>
         </span>
         <span>
           Deductions:{" "}
           <strong className="text-slate-800">
-            {STUB_DATA.summary.deductions}
+            {stub.summary.deductions}
           </strong>
         </span>
         <span>
           Net Pay:{" "}
-          <strong className="text-slate-800">{STUB_DATA.summary.net}</strong>
+          <strong className="text-slate-800">{stub.summary.net}</strong>
         </span>
       </div>
     </div>

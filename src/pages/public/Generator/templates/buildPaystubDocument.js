@@ -14,7 +14,7 @@ const parseIsoDate = (iso) => {
 };
 
 // "2026-05-01" -> "05/01/2026"
-const formatDate = (iso) => {
+export const formatDate = (iso) => {
   const date = parseIsoDate(iso);
   if (!date) return iso || "";
   const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -103,6 +103,7 @@ export const buildPaystubDocument = (formData, calculations) => {
       address: formData.companyAddress,
       cityLine: joinCityLine(formData.companyCity, formData.companyState, formData.companyZip),
       ein: formData.companyEin,
+      phone: formData.companyPhone || "",
     },
     employee: {
       name: formData.employeeName,

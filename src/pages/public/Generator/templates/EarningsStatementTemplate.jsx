@@ -141,15 +141,26 @@ const EarningsStatementTemplate = ({ data }) => {
       </div>
 
       <div style={at(476, 43, { fontSize: 19, fontWeight: 700 })}>Earnings Statement</div>
-      <div style={company.logo ? at(668, 38) : at(675, 53)}>
-        <CompanyLogo src={company.logo} boxWidth={88} boxHeight={46} placeholderWidth={37} />
-      </div>
+      {!company.logo && (
+        <div style={at(675, 53)}>
+          <CompanyLogo placeholderWidth={37} />
+        </div>
+      )}
 
-      {/* Company */}
-      <div style={at(141, 88, { width: 300, fontWeight: 700, fontStyle: "italic", fontSize: 11.5, lineHeight: "15.5px" })}>
-        <div>{company.name}</div>
-        <div>{company.address}</div>
-        <div>{company.cityLine}</div>
+      {/* Company (an uploaded logo sits on the left, separated by a divider) */}
+      <div style={at(141, 88, { display: "flex", alignItems: "center", gap: 10 })}>
+        {company.logo && (
+          <>
+            <CompanyLogo src={company.logo} boxWidth={70} boxHeight={54} align="center" />
+            <div style={{ alignSelf: "stretch", width: 1, background: "#9a9a9a" }} />
+          </>
+        )}
+        <div style={{ width: company.logo ? 220 : 300, fontWeight: 700, fontStyle: "italic", fontSize: 11.5, lineHeight: "15.5px" }}>
+          <div>{company.name}</div>
+          <div>{company.address}</div>
+          <div>{company.cityLine}</div>
+          {company.phone && <div>{company.phone}</div>}
+        </div>
       </div>
 
       {/* Period */}
@@ -250,10 +261,12 @@ const EarningsStatementTemplate = ({ data }) => {
       <div style={company.logo ? at(64, 800) : at(80, 812)}>
         <CompanyLogo src={company.logo} boxWidth={100} boxHeight={60} placeholderWidth={46} align="center" />
       </div>
+      {company.logo && <div style={at(168, 798, { width: 1, height: 60, background: "#9a9a9a" })} />}
       <div style={at(176, 796, { fontSize: 11.5, lineHeight: "15.5px" })}>
         <div>{company.name}</div>
         <div>{company.address}</div>
         <div>{company.cityLine}</div>
+        {company.phone && <div>{company.phone}</div>}
       </div>
       <div style={at(474, 796, { fontSize: 11.5, lineHeight: "15.5px" })}>
         {[

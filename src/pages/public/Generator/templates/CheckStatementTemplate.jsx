@@ -149,12 +149,14 @@ const CheckStatementTemplate = ({ data }) => {
           <div style={company.logo ? at(18, 30) : at(22, 46)}>
             <CompanyLogo src={company.logo} boxWidth={82} boxHeight={66} placeholderWidth={64} align="center" />
           </div>
-          <div style={at(108, 14, { width: 420 })}>
+          {company.logo && <div style={at(103, 18, { width: 1, height: 78, background: "#8f8f7a" })} />}
+          <div style={at(company.logo ? 112 : 108, 14, { width: 420 })}>
             <div style={{ fontSize: 17.5, fontWeight: 700, lineHeight: "22px" }}>{company.name}</div>
             <div style={{ fontSize: 12, lineHeight: "16.5px" }}>
               <div>{company.address}</div>
               <div>{company.cityLine}</div>
               <div>EIN: {company.ein}</div>
+              {company.phone && <div>{company.phone}</div>}
             </div>
           </div>
 

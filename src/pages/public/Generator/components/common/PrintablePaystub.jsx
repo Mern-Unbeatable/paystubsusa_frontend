@@ -1,7 +1,16 @@
 import React, { useMemo } from "react";
 import { createPortal } from "react-dom";
-import PaystubDocumentPreview from "./PaystubDocumentPreview";
-import { TemplateDocument, buildPaystubDocument, hasTemplateDocument } from "../../templates";
+import { PaystubThumbnail } from "./PaystubThumbnail";
+import {
+  DOCUMENT_PAGE,
+  VARIANT_TEMPLATE_WIDTH,
+  TemplateDocument,
+  buildPaystubDocument,
+  buildThumbnailData,
+  hasTemplateDocument,
+} from "../../templates";
+
+const PRINT_MARGIN = 32;
 
 /**
  * Print-only copy of the paystub (hidden on screen, see `.paystub-print-root`
@@ -9,18 +18,28 @@ import { TemplateDocument, buildPaystubDocument, hasTemplateDocument } from "../
  */
 const PrintablePaystub = ({ template, formData, calculations }) => {
   const hasDocument = hasTemplateDocument(template);
-  const documentData = useMemo(
-    () => (hasDocument ? buildPaystubDocument(formData, calculations) : null),
+  const data = useMemo(
+    () =>
+      hasDocument
+        ? buildPaystubDocument(formData, calculations)
+        : buildThumbnailData(formData, calculations),
     [hasDocument, formData, calculations],
   );
 
   return createPortal(
     <div className="paystub-print-root" aria-hidden="true">
       {hasDocument ? (
-        <TemplateDocument template={template} data={documentData} />
+        <TemplateDocument template={template} data={data} />
       ) : (
-        <div style={{ width: 380, zoom: 1.9, padding: "16px 10px" }}>
-          <PaystubDocumentPreview formData={formData} calculations={calculations} />
+        <div style={{ padding: PRINT_MARGIN }}>
+          <div
+            style={{
+              width: VARIANT_TEMPLATE_WIDTH,
+              zoom: (DOCUMENT_PAGE.width - PRINT_MARGIN * 2) / VARIANT_TEMPLATE_WIDTH,
+            }}
+          >
+            <PaystubThumbnail template={template} data={data} />
+          </div>
         </div>
       )}
     </div>,
