@@ -67,52 +67,52 @@ const ADMIN_NAV_ITEMS = [
     path: "/admin/customers",
   },
   {
-    id: "documents",
-    label: "Documents",
-    icon: FileText,
-    path: "/admin/documents",
-  },
-  {
     id: "orders",
     label: "Orders",
     icon: ShoppingBag,
     path: "/admin/orders",
   },
   {
+    id: "documents",
+    label: "Documents",
+    icon: FileText,
+    path: "/admin/documents",
+  },
+  {
     id: "subscriptions",
-    label: "Subscription",
+    label: "Subscriptions",
     icon: Star,
     path: "/admin/subscriptions",
-  },
-  {
-    id: "templates",
-    label: "Document Template",
-    icon: LayoutTemplate,
-    path: "/admin/templates",
-  },
-  {
-    id: "pricing",
-    label: "Pricing Plan & Tag",
-    icon: Tag,
-    path: "/admin/pricing",
-  },
-  {
-    id: "profile",
-    label: "Profile",
-    icon: User,
-    path: "/admin/profile",
-  },
-  {
-    id: "users",
-    label: "Manage Users",
-    icon: Users,
-    path: "/admin/users",
   },
   {
     id: "transactions",
     label: "Transactions",
     icon: CreditCard,
     path: "/admin/transactions",
+  },
+  {
+    id: "templates",
+    label: "Templates",
+    icon: LayoutTemplate,
+    path: "/admin/templates",
+  },
+  {
+    id: "pricing",
+    label: "Pricing & Tags",
+    icon: Tag,
+    path: "/admin/pricing",
+  },
+  {
+    id: "users",
+    label: "Users",
+    icon: Users,
+    path: "/admin/users",
+  },
+  {
+    id: "profile",
+    label: "Profile",
+    icon: User,
+    path: "/admin/profile",
   },
 ];
 
