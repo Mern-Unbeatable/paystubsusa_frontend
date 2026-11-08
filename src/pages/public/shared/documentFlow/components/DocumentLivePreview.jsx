@@ -56,7 +56,7 @@ const DocumentLivePreview = ({ children }) => {
           style={{ transform: `scale(${zoomLevel / 100})` }}
         >
           {children}
-          <PreviewWatermark text="PREVIEW" />
+          <PreviewWatermark text="PREVIEW" fontWeight="bold" scale={1.6} />
         </div>
       </div>
 
