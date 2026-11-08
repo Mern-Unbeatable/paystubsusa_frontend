@@ -34,7 +34,7 @@ function App() {
     <>
       <RouterProvider router={router} />
       <Toaster
-        position="top-right"
+        position="bottom-right"
         toastOptions={{
           duration: 2600,
           style: {
