@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Lock, Mail } from 'lucide-react';
+import React, { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, Lock, Mail } from "lucide-react";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 30;
@@ -11,7 +11,7 @@ const Spinner = () => (
 
 const OtpInputs = ({ value, onChange, disabled }) => {
   const inputsRef = useRef([]);
-  const digits = Array.from({ length: OTP_LENGTH }, (_, i) => value[i] ?? '');
+  const digits = Array.from({ length: OTP_LENGTH }, (_, i) => value[i] ?? "");
 
   useEffect(() => {
     inputsRef.current[0]?.focus();
@@ -24,23 +24,23 @@ const OtpInputs = ({ value, onChange, disabled }) => {
   const setDigitAt = (index, digit) => {
     const next = [...digits];
     next[index] = digit;
-    onChange(next.join(''));
+    onChange(next.join(""));
   };
 
   const handlePasteValue = (index, pasted) => {
     const next = [...digits];
     pasted
       .slice(0, OTP_LENGTH - index)
-      .split('')
+      .split("")
       .forEach((digit, offset) => {
         next[index + offset] = digit;
       });
-    onChange(next.join(''));
+    onChange(next.join(""));
     focusAt(index + pasted.length);
   };
 
   const handleChange = (index, raw) => {
-    const typed = raw.replace(/\D/g, '');
+    const typed = raw.replace(/\D/g, "");
     if (!typed) return;
     if (typed.length > 1) {
       handlePasteValue(index, typed);
@@ -51,17 +51,17 @@ const OtpInputs = ({ value, onChange, disabled }) => {
   };
 
   const handleKeyDown = (index, e) => {
-    if (e.key === 'Backspace') {
+    if (e.key === "Backspace") {
       e.preventDefault();
       if (digits[index]) {
-        setDigitAt(index, '');
+        setDigitAt(index, "");
       } else {
-        setDigitAt(index - 1, '');
+        setDigitAt(index - 1, "");
         focusAt(index - 1);
       }
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === "ArrowLeft") {
       focusAt(index - 1);
-    } else if (e.key === 'ArrowRight') {
+    } else if (e.key === "ArrowRight") {
       focusAt(index + 1);
     }
   };
@@ -76,7 +76,7 @@ const OtpInputs = ({ value, onChange, disabled }) => {
           }}
           type="text"
           inputMode="numeric"
-          autoComplete={index === 0 ? 'one-time-code' : 'off'}
+          autoComplete={index === 0 ? "one-time-code" : "off"}
           maxLength={OTP_LENGTH}
           value={digit}
           disabled={disabled}
@@ -85,7 +85,7 @@ const OtpInputs = ({ value, onChange, disabled }) => {
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={(e) => {
             e.preventDefault();
-            const pasted = e.clipboardData.getData('text').replace(/\D/g, '');
+            const pasted = e.clipboardData.getData("text").replace(/\D/g, "");
             if (pasted) handlePasteValue(index, pasted);
           }}
           onFocus={(e) => e.target.select()}
@@ -103,16 +103,18 @@ const CheckoutSection = ({
   isProcessingPayment,
   onPay,
   onBack,
+  backLabel = "Back to package",
+  className = "max-w-xl mx-auto",
 }) => {
-  const [phase, setPhase] = useState('email'); // 'email' | 'otp'
+  const [phase, setPhase] = useState("email"); // 'email' | 'otp'
   const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [isSendingCode, setIsSendingCode] = useState(false);
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const [resendIn, setResendIn] = useState(0);
   const [emailTouched, setEmailTouched] = useState(false);
 
   const isEmailValid = EMAIL_PATTERN.test(email.trim());
-  const isOtpComplete = otp.replace(/\D/g, '').length === OTP_LENGTH;
+  const isOtpComplete = otp.replace(/\D/g, "").length === OTP_LENGTH;
 
   useEffect(() => {
     if (resendIn <= 0) return undefined;
@@ -135,14 +137,14 @@ const CheckoutSection = ({
     setEmailTouched(true);
     if (!isEmailValid || !agreedToTerms || isSendingCode) return;
     sendCode(() => {
-      setOtp('');
-      setPhase('otp');
+      setOtp("");
+      setPhase("otp");
     });
   };
 
   const handleResend = () => {
     if (resendIn > 0 || isSendingCode) return;
-    setOtp('');
+    setOtp("");
     sendCode();
   };
 
@@ -153,25 +155,23 @@ const CheckoutSection = ({
   };
 
   return (
-    <div className="animate-in fade-in-50 duration-200 max-w-xl mx-auto">
-      <div className="mb-4">
+    <div className={`animate-in fade-in-50 duration-200 ${className}`}>
+      {/* <div className="mb-4">
         <button
           type="button"
-          onClick={phase === 'otp' ? () => setPhase('email') : onBack}
+          onClick={phase === "otp" ? () => setPhase("email") : onBack}
           className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-[#1E60F2] hover:underline cursor-pointer mb-2"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>{phase === 'otp' ? 'Back to email' : 'Back to package'}</span>
+          <span>{phase === "otp" ? "Back to email" : backLabel}</span>
         </button>
-        <h2 className="text-2xl sm:text-[32px] font-bold text-[#092258] tracking-tight">
-          Checkout
-        </h2>
+
         <p className="text-slate-500 text-[14px] mt-1">
           No account needed — we'll send your documents to your email.
         </p>
-      </div>
+      </div> */}
 
-      {phase === 'email' && (
+      {phase === "email" && (
         <form
           onSubmit={handleSendCode}
           noValidate
@@ -181,9 +181,12 @@ const CheckoutSection = ({
             <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
               STEP 1 OF 2
             </p>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900">Enter your email</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+              Enter your email
+            </h3>
             <p className="text-slate-400 text-[13px] mt-0.5">
-              We&apos;ll send a {OTP_LENGTH}-digit verification code to this address.
+              We&apos;ll send a {OTP_LENGTH}-digit verification code to this
+              address.
             </p>
           </div>
 
@@ -204,12 +207,14 @@ const CheckoutSection = ({
               placeholder="Enter your email address here"
               className={`w-full px-3.5 py-2.5 rounded-lg bg-[#F0F6FF] border focus:bg-white text-[14px] text-slate-800 placeholder:text-slate-400 outline-none transition ${
                 emailTouched && !isEmailValid
-                  ? 'border-rose-300 focus:border-rose-400'
-                  : 'border-blue-100 focus:border-[#1E60F2]'
+                  ? "border-rose-300 focus:border-rose-400"
+                  : "border-blue-100 focus:border-[#1E60F2]"
               }`}
             />
             {emailTouched && !isEmailValid && (
-              <p className="text-[12px] text-rose-500 mt-1">Please enter a valid email address.</p>
+              <p className="text-[12px] text-rose-500 mt-1">
+                Please enter a valid email address.
+              </p>
             )}
           </div>
 
@@ -219,7 +224,9 @@ const CheckoutSection = ({
           >
             <div
               className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${
-                agreedToTerms ? 'bg-[#1E60F2] text-white' : 'border border-slate-300 bg-white'
+                agreedToTerms
+                  ? "bg-[#1E60F2] text-white"
+                  : "border border-slate-300 bg-white"
               }`}
             >
               {agreedToTerms && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -252,7 +259,7 @@ const CheckoutSection = ({
         </form>
       )}
 
-      {phase === 'otp' && (
+      {phase === "otp" && (
         <form
           onSubmit={handleVerifyAndPay}
           className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200"
@@ -261,13 +268,15 @@ const CheckoutSection = ({
             <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
               STEP 2 OF 2
             </p>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900">Enter verification code</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+              Enter verification code
+            </h3>
             <p className="text-slate-500 text-[13px] mt-0.5">
-              We sent a {OTP_LENGTH}-digit code to{' '}
-              <strong className="text-slate-800 break-all">{email}</strong>.{' '}
+              We sent a {OTP_LENGTH}-digit code to{" "}
+              <strong className="text-slate-800 break-all">{email}</strong>.{" "}
               <button
                 type="button"
-                onClick={() => setPhase('email')}
+                onClick={() => setPhase("email")}
                 className="text-[#1E60F2] font-semibold hover:underline cursor-pointer"
               >
                 Change
@@ -275,7 +284,11 @@ const CheckoutSection = ({
             </p>
           </div>
 
-          <OtpInputs value={otp} onChange={setOtp} disabled={isProcessingPayment} />
+          <OtpInputs
+            value={otp}
+            onChange={setOtp}
+            disabled={isProcessingPayment}
+          />
 
           <div className="flex items-center justify-between text-[13px]">
             <span className="text-slate-400">Didn&apos;t get the code?</span>
@@ -287,10 +300,10 @@ const CheckoutSection = ({
             >
               <Mail className="w-4 h-4" />
               {isSendingCode
-                ? 'Sending...'
+                ? "Sending..."
                 : resendIn > 0
                   ? `Resend code in ${resendIn}s`
-                  : 'Resend code'}
+                  : "Resend code"}
             </button>
           </div>
 

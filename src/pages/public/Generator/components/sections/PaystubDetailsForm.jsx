@@ -17,7 +17,11 @@ const PaystubDetailsForm = ({
   onContinueToPackage,
 }) => {
   const selectedTemplateId = template.id;
-  const [currentStep, setCurrentStep] = useState(initialStep);
+  const [currentStep, setStep] = useState(initialStep);
+  const setCurrentStep = (step) => {
+    setStep(step);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const openTemplatePicker = () => onChangeTemplate(currentStep);
   const {
     formData,
