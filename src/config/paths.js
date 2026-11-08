@@ -9,6 +9,9 @@ export const PATHS = {
     paystubSuccess:
       "/paystub-generator/:templateSlug/create/package/checkout/success",
     w2: "/w-2",
+    w2Preview: "/w-2/create/preview",
+    w2Checkout: "/w-2/create/checkout",
+    w2Success: "/w-2/create/success",
     nec1099: "/1099-nec",
     directDeposit: "/direct-deposit",
     pricing: "/pricing",
@@ -81,6 +84,14 @@ export const buildPaystubCheckoutPath = (templateId) =>
 
 export const buildPaystubSuccessPath = (templateId) =>
   fillTemplateSlug(PATHS.PUBLIC.paystubSuccess, templateId);
+
+export const W2_STEP_QUERY_PARAM = "step";
+
+// "/w-2?step=3" — the W-2 form keeps its current step in the URL.
+export const buildW2FormPath = (step) =>
+  step > 1
+    ? `${PATHS.PUBLIC.w2}?${new URLSearchParams({ [W2_STEP_QUERY_PARAM]: step })}`
+    : PATHS.PUBLIC.w2;
 
 // Legacy path -> canonical path. Rendered as <Navigate replace>.
 export const ALIASES = {
