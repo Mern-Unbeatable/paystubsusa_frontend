@@ -1,29 +1,47 @@
-import React, { useRef, useState } from "react";
+import React from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import GeneratorHeroSection from "./components/sections/GeneratorHeroSection";
 import TemplateSelectionSection from "./components/sections/TemplateSelectionSection";
-import PaystubGeneratorForm from "./components/sections/PaystubGeneratorForm";
+import {
+  TEMPLATE_QUERY_PARAM,
+  buildPaystubCreatePath,
+  fromTemplateSlug,
+  toTemplateSlug,
+} from "../../../config/paths";
+import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
+import { DEFAULT_TEMPLATE_ID, getTemplateById } from "./utils/templateUtils";
+import { LAST_TEMPLATE_STORAGE_KEY } from "./utils/generatorStorage";
 
 const GeneratorView = () => {
-  const [selectedTemplateId, setSelectedTemplateId] = useState("01");
-  const generatorFormRef = useRef(null);
-  const templateSectionRef = useRef(null);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [lastTemplateId, setLastTemplateId] = useSessionStorageState(
+    LAST_TEMPLATE_STORAGE_KEY,
+    DEFAULT_TEMPLATE_ID,
+  );
+
+  const queryTemplate = getTemplateById(
+    fromTemplateSlug(searchParams.get(TEMPLATE_QUERY_PARAM) ?? ""),
+  );
+  const selectedTemplateId =
+    queryTemplate?.id ??
+    getTemplateById(lastTemplateId)?.id ??
+    DEFAULT_TEMPLATE_ID;
 
   const handleSelectTemplate = (id) => {
-    setSelectedTemplateId(id);
-    // Smooth scroll down to generator form
-    setTimeout(() => {
-      generatorFormRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+    setLastTemplateId(id);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set(TEMPLATE_QUERY_PARAM, toTemplateSlug(id));
+        return next;
+      },
+      { replace: true },
+    );
   };
 
-  const handleChangeTemplate = () => {
-    templateSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+  const handleContinue = () => {
+    navigate(buildPaystubCreatePath(selectedTemplateId));
   };
 
   return (
@@ -32,24 +50,11 @@ const GeneratorView = () => {
       <GeneratorHeroSection />
 
       {/* 2. Choose Your Paystub Template Section */}
-      <div ref={templateSectionRef}>
-        <TemplateSelectionSection
-          selectedTemplateId={selectedTemplateId}
-          onSelectTemplate={handleSelectTemplate}
-        />
-      </div>
-
-      {/* 3. The 4-Step Interactive Paystub Generator Form & Live Preview */}
-      <div
-        ref={generatorFormRef}
-        id="generator-form"
-        className="w-full bg-[#F4F7FB] border-t border-slate-200/80 py-8 sm:py-14 scroll-mt-20"
-      >
-        <PaystubGeneratorForm
-          selectedTemplateId={selectedTemplateId}
-          onChangeTemplate={handleChangeTemplate}
-        />
-      </div>
+      <TemplateSelectionSection
+        selectedTemplateId={selectedTemplateId}
+        onSelectTemplate={handleSelectTemplate}
+        onContinue={handleContinue}
+      />
     </div>
   );
 };

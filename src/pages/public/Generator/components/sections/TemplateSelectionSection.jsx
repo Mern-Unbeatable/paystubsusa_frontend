@@ -336,6 +336,7 @@ export const PaystubThumbnail = ({ template }) => {
 const TemplateSelectionSection = ({
   selectedTemplateId = "01",
   onSelectTemplate,
+  onContinue,
 }) => {
   const [internalSelected, setInternalSelected] = useState(selectedTemplateId);
   const selectedTemplate = onSelectTemplate
@@ -348,6 +349,7 @@ const TemplateSelectionSection = ({
   };
 
   const [previewTemplate, setPreviewTemplate] = useState(null);
+  const closePreview = useCallback(() => setPreviewTemplate(null), []);
   const sectionRef = useRef(null);
 
   useEffect(() => {

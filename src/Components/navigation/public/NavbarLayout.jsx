@@ -47,7 +47,7 @@ const NavbarLayout = () => {
                 {navLinks.map((link) => {
                   const isActive =
                     link.href === '/paystub-generator'
-                      ? location.pathname === '/paystub-generator' || location.pathname === '/generator'
+                      ? location.pathname.startsWith('/paystub-generator') || location.pathname === '/generator'
                       : link.href === '/w-2'
                       ? location.pathname === '/w-2' || location.pathname === '/w2'
                       : link.href === '/1099-nec'

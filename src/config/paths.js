@@ -3,6 +3,11 @@ export const PATHS = {
   PUBLIC: {
     home: "/",
     paystubGenerator: "/paystub-generator",
+    paystubCreate: "/paystub-generator/:templateSlug/create",
+    paystubPackage: "/paystub-generator/:templateSlug/create/package",
+    paystubCheckout: "/paystub-generator/:templateSlug/create/package/checkout",
+    paystubSuccess:
+      "/paystub-generator/:templateSlug/create/package/checkout/success",
     w2: "/w-2",
     nec1099: "/1099-nec",
     directDeposit: "/direct-deposit",
@@ -41,6 +46,41 @@ export const PATHS = {
     profile: "/admin/profile",
   },
 };
+
+const TEMPLATE_SLUG_SUFFIX = "-template";
+
+// "02" -> "02-template"
+export const toTemplateSlug = (templateId) =>
+  `${templateId}${TEMPLATE_SLUG_SUFFIX}`;
+
+// "02-template" -> "02"; returns null when the slug is not in the expected format.
+export const fromTemplateSlug = (templateSlug = "") =>
+  templateSlug.endsWith(TEMPLATE_SLUG_SUFFIX)
+    ? templateSlug.slice(0, -TEMPLATE_SLUG_SUFFIX.length)
+    : null;
+
+export const TEMPLATE_QUERY_PARAM = "templateId";
+
+// "/paystub-generator?templateId=02-template"
+export const buildPaystubGeneratorPath = (templateId) =>
+  `${PATHS.PUBLIC.paystubGenerator}?${new URLSearchParams({
+    [TEMPLATE_QUERY_PARAM]: toTemplateSlug(templateId),
+  })}`;
+
+const fillTemplateSlug = (path, templateId) =>
+  path.replace(":templateSlug", encodeURIComponent(toTemplateSlug(templateId)));
+
+export const buildPaystubCreatePath = (templateId) =>
+  fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId);
+
+export const buildPaystubPackagePath = (templateId) =>
+  fillTemplateSlug(PATHS.PUBLIC.paystubPackage, templateId);
+
+export const buildPaystubCheckoutPath = (templateId) =>
+  fillTemplateSlug(PATHS.PUBLIC.paystubCheckout, templateId);
+
+export const buildPaystubSuccessPath = (templateId) =>
+  fillTemplateSlug(PATHS.PUBLIC.paystubSuccess, templateId);
 
 // Legacy path -> canonical path. Rendered as <Navigate replace>.
 export const ALIASES = {

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
-import avatarTest from "../../../assets/avatar_test.png";
 import { useAuth } from "../../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 import {
@@ -251,7 +250,6 @@ const UserSummaryCard = ({ role, user }) => {
           decoding="async"
           onError={(event) => {
             event.currentTarget.onerror = null;
-            event.currentTarget.src = avatarTest;
           }}
         />
         <span className="absolute bottom-0 right-0 w-1.5 h-1.5 bg-emerald-500 rounded-full ring-2 ring-white" />

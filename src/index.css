@@ -24,3 +24,37 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
+
+.paystub-print-root {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #ffffff;
+  }
+
+  body > *:not(.paystub-print-root) {
+    display: none !important;
+  }
+
+  .paystub-print-root {
+    display: block;
+    width: 816px;
+    /* 1px under Letter height so rounding never spills onto a blank 2nd page */
+    height: 1055px;
+    overflow: hidden;
+  }
+
+  .paystub-print-root,
+  .paystub-print-root * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
