@@ -13,7 +13,7 @@ import { DocumentDetailsModal } from "../components/modals";
 import {
   DashboardHeader,
   DashboardTable,
-} from "../../../../components/Dashboard";
+} from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 import categories from "../data/myDocuments/categories.json";
 import documents from "../data/myDocuments/documents.json";
@@ -240,7 +240,10 @@ const MyDocumentsView = () => {
           totalRecords: filteredDocs.length,
           label: `Page ${currentPage} of ${totalPages} - ${filteredDocs.length} matching records`,
           onPageChange: setCurrentPage,
-          pages: Array.from({ length: Math.min(totalPages, 3) }, (_, index) => index + 1),
+          pages: Array.from(
+            { length: Math.min(totalPages, 3) },
+            (_, index) => index + 1,
+          ),
         }}
       />
 

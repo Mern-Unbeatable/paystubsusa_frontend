@@ -3,7 +3,7 @@ import { Eye, Download, FileText } from "lucide-react";
 import {
   DashboardHeader,
   DashboardTable,
-} from "../../../../components/Dashboard";
+} from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 import documents from "../data/documents/documents.json";
 

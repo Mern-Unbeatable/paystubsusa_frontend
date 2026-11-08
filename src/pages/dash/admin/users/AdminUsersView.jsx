@@ -3,7 +3,7 @@ import { UserCog, ShieldCheck, Mail } from "lucide-react";
 import {
   DashboardHeader,
   DashboardTable,
-} from "../../../../components/Dashboard";
+} from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 import users from "../data/users/users.json";
 

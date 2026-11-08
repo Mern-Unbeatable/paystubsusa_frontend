@@ -19,12 +19,13 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+
 import chartAxisConfig from "../data/overview/chartAxisConfig.json";
 import documentBreakdown from "../data/overview/documentBreakdown.json";
-import kpiStats from "../data/overview/kpiStats.json";
 import recentActivities from "../data/overview/recentActivities.json";
 import recentOrders from "../data/overview/recentOrders.json";
 import revenueData from "../data/overview/revenueData.json";
+import kpiStats from "../data/overview/kpiStats.json";
 
 const ICON_MAP = {
   CreditCard,
@@ -74,7 +75,9 @@ const AdminOverviewView = () => {
               type="button"
               onClick={() => stat.path && navigate(stat.path)}
               className={`bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex items-center gap-3.5 shadow-xs hover:border-slate-300 hover:shadow-sm transition text-left ${
-                isClickable ? "cursor-pointer hover:border-blue-200" : "cursor-default"
+                isClickable
+                  ? "cursor-pointer hover:border-blue-200"
+                  : "cursor-default"
               }`}
             >
               <div
@@ -145,7 +148,11 @@ const AdminOverviewView = () => {
                     <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid vertical={false} stroke="#F1F5F9" strokeWidth={1} />
+                <CartesianGrid
+                  vertical={false}
+                  stroke="#F1F5F9"
+                  strokeWidth={1}
+                />
                 <XAxis
                   dataKey="month"
                   axisLine={false}
@@ -159,7 +166,9 @@ const AdminOverviewView = () => {
                   tick={{ fill: "#94A3B8", fontSize: 11 }}
                   domain={chartAxisConfig.domain}
                   ticks={chartAxisConfig.ticks}
-                  tickFormatter={(value) => (value === 0 ? "$0" : `$${value / 1000}k`)}
+                  tickFormatter={(value) =>
+                    value === 0 ? "$0" : `$${value / 1000}k`
+                  }
                   dx={-4}
                 />
                 <Tooltip content={<CustomTooltip />} />
@@ -193,8 +202,12 @@ const AdminOverviewView = () => {
               {documentBreakdown.map((doc) => (
                 <div key={doc.name}>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-600 font-medium">{doc.name}</span>
-                    <span className="text-slate-900 font-bold">{doc.count}</span>
+                    <span className="text-slate-600 font-medium">
+                      {doc.name}
+                    </span>
+                    <span className="text-slate-900 font-bold">
+                      {doc.count}
+                    </span>
                   </div>
                   <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1.5 overflow-hidden">
                     <div
@@ -248,13 +261,17 @@ const AdminOverviewView = () => {
                     key={order.id}
                     className="hover:bg-slate-50/60 transition group"
                   >
-                    <td className="py-3 font-semibold text-slate-700">{order.id}</td>
+                    <td className="py-3 font-semibold text-slate-700">
+                      {order.id}
+                    </td>
                     <td className="py-3 text-slate-600 font-medium">
                       {order.customer}
                     </td>
                     <td className="py-3 text-slate-600">{order.type}</td>
                     <td className="py-3 text-slate-400">{order.date}</td>
-                    <td className="py-3 font-bold text-slate-900">{order.amount}</td>
+                    <td className="py-3 font-bold text-slate-900">
+                      {order.amount}
+                    </td>
                     <td className="py-3">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
                         {order.status}
