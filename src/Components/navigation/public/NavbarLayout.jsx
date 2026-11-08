@@ -53,7 +53,7 @@ const NavbarLayout = () => {
                       : link.href === '/1099-nec'
                       ? location.pathname === '/1099-nec' || location.pathname.startsWith('/1099-nec/') || location.pathname === '/1099'
                       : link.href === '/direct-deposit'
-                      ? location.pathname === '/direct-deposit'
+                      ? location.pathname === '/direct-deposit' || location.pathname.startsWith('/direct-deposit/')
                       : link.href === '/pricing'
                       ? location.pathname === '/pricing'
                       : false;
