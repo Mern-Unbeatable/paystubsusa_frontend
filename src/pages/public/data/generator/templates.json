@@ -62,5 +62,17 @@
     "headerVariant": "split-blue",
     "netPayVariant": "blue",
     "tableVariant": "light-blue"
+  },
+  {
+    "id": "09",
+    "title": "Template 09",
+    "subtitle": "Statement layout",
+    "document": "earnings-statement"
+  },
+  {
+    "id": "10",
+    "title": "Template 10",
+    "subtitle": "Check layout",
+    "document": "check-statement"
   }
 ]

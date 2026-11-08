@@ -2,11 +2,36 @@
 import React, { lazy } from "react";
 import { HomeView } from "../../pages/public";
 import { createLazyRouteElement } from "./createLazyRouteElement";
+import { PATHS } from "../../config/paths";
 
 const GeneratorView = lazy(
   () =>
     import("../../pages/public").then((module) => ({
       default: module.GeneratorView,
+    })),
+);
+const PaystubCreateView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.PaystubCreateView,
+    })),
+);
+const PaystubPackageView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.PaystubPackageView,
+    })),
+);
+const PaystubCheckoutView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.PaystubCheckoutView,
+    })),
+);
+const PaystubSuccessView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.PaystubSuccessView,
     })),
 );
 const W2View = lazy(
@@ -53,6 +78,22 @@ export const publicRoutes = [
   {
     path: "paystub-generator",
     element: createLazyRouteElement(GeneratorView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubCreate,
+    element: createLazyRouteElement(PaystubCreateView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubPackage,
+    element: createLazyRouteElement(PaystubPackageView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubCheckout,
+    element: createLazyRouteElement(PaystubCheckoutView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubSuccess,
+    element: createLazyRouteElement(PaystubSuccessView),
   },
   { path: "w-2", element: createLazyRouteElement(W2View) },
   { path: "1099-nec", element: createLazyRouteElement(Tax1099View) },
