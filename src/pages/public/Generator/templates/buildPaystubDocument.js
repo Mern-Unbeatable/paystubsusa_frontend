@@ -1,5 +1,6 @@
 import { formatCurrency } from "../utils/formatCurrency";
 import { amountToCheckWords } from "../utils/numberToWords";
+import { toLogoSrc } from "../utils/readLogoFile";
 
 const PERIODS_PER_YEAR = {
   Weekly: 52,
@@ -98,7 +99,7 @@ export const buildPaystubDocument = (formData, calculations) => {
 
   return {
     company: {
-      logo: formData.companyLogo || null,
+      logo: toLogoSrc(formData.companyLogo),
       name: formData.companyName,
       address: formData.companyAddress,
       cityLine: joinCityLine(formData.companyCity, formData.companyState, formData.companyZip),

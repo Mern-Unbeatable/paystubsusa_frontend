@@ -3,6 +3,7 @@ import stubData from "../../../data/generator/templateStubData.json";
 import templates from "../../../data/generator/templates.json";
 import ScaledDocument from "./ScaledDocument";
 import {
+  CompanyLogo,
   DOCUMENT_PAGE,
   SAMPLE_PAYSTUB_DOCUMENT,
   TemplateDocument,
@@ -32,9 +33,7 @@ const ThumbnailCompany = ({ logo, dark = false, children }) => (
   <div className="flex items-center gap-1.5 min-w-0">
     {logo && (
       <>
-        <span className={`shrink-0 flex items-center ${dark ? "bg-white rounded-sm p-0.5" : ""}`}>
-          <img src={logo} alt="" className="h-6 w-auto max-w-10 object-contain" />
-        </span>
+        <CompanyLogo src={logo} boxWidth={40} boxHeight={24} shrink />
         <span className={`self-stretch w-px shrink-0 ${dark ? "bg-white/40" : "bg-slate-300"}`} />
       </>
     )}

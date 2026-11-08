@@ -1,9 +1,16 @@
 import React, { useId, useRef, useState } from "react";
 import { ImagePlus, Trash2, Upload } from "lucide-react";
-import { LOGO_ACCEPT, readLogoFile } from "../../utils/readLogoFile";
+import { LOGO_ACCEPT, readLogoFile, toLogoSrc } from "../../utils/readLogoFile";
+
+const TRANSPARENCY_GRID = {
+  backgroundColor: "#ffffff",
+  backgroundImage: "repeating-conic-gradient(#e2e8f0 0% 25%, transparent 0% 50%)",
+  backgroundSize: "12px 12px",
+};
 
 /** Optional company logo upload with drag & drop, preview, replace and remove. */
 const CompanyLogoField = ({ value, onChange }) => {
+  const logoSrc = toLogoSrc(value);
   const inputId = useId();
   const inputRef = useRef(null);
   const [error, setError] = useState("");
@@ -40,10 +47,14 @@ const CompanyLogoField = ({ value, onChange }) => {
         onChange={(e) => handleFile(e.target.files?.[0])}
       />
 
-      {value ? (
+      {logoSrc ? (
         <div className="flex items-center gap-4 p-3 rounded-lg border border-slate-200">
-          <div className="w-20 h-14 shrink-0 rounded-md border border-slate-100 bg-slate-50 flex items-center justify-center p-1.5">
-            <img src={value} alt="Company logo" className="max-w-full max-h-full object-contain" />
+          <div
+            className="w-20 h-14 shrink-0 rounded-md border border-slate-200 flex items-center justify-center p-1.5"
+            style={TRANSPARENCY_GRID}
+            title="Checkered areas are transparent"
+          >
+            <img src={logoSrc} alt="Company logo" className="max-w-full max-h-full object-contain" />
           </div>
           <div className="flex flex-wrap gap-2 ml-auto">
             <button
@@ -94,7 +105,7 @@ const CompanyLogoField = ({ value, onChange }) => {
             <span className="block text-[14px] font-medium text-slate-700">
               {isLoading ? "Processing logo…" : "Upload logo or drag & drop"}
             </span>
-            <span className="block text-[12px] text-slate-400">PNG, JPG, WebP or SVG · up to 5 MB</span>
+            <span className="block text-[12px] text-slate-400">PNG, JPG or JPEG · up to 5 MB · transparency is kept</span>
           </span>
         </button>
       )}

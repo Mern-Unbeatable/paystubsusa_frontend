@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import PreviewWatermark from "./PreviewWatermark";
 import ScaledDocument from "./ScaledDocument";
 import { PaystubThumbnail } from "./PaystubThumbnail";
 import {
@@ -22,7 +23,8 @@ const TemplateDocumentPreview = ({ template, formData, calculations }) => {
   );
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+    <div className="relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <PreviewWatermark />
       {hasDocument ? (
         <ScaledDocument width={DOCUMENT_PAGE.width} height={DOCUMENT_PAGE.height}>
           <TemplateDocument template={template} data={data} />

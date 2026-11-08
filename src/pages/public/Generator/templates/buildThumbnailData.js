@@ -1,5 +1,6 @@
 import { formatCurrency } from "../utils/formatCurrency";
 import { formatDate } from "./buildPaystubDocument";
+import { toLogoSrc } from "../utils/readLogoFile";
 
 const toNumber = (value) => parseFloat(value) || 0;
 const joinCityLine = (city, state, zip) =>
@@ -33,7 +34,7 @@ export const buildThumbnailData = (formData, calculations) => {
 
   return {
     company: {
-      logo: formData.companyLogo || null,
+      logo: toLogoSrc(formData.companyLogo),
       name: formData.companyName,
       address: formData.companyAddress,
       cityStateZip: joinCityLine(formData.companyCity, formData.companyState, formData.companyZip),
