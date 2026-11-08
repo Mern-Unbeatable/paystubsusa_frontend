@@ -64,6 +64,24 @@ const Tax1099View = lazy(
       default: module.Tax1099View,
     })),
 );
+const Nec1099PreviewView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.Nec1099PreviewView,
+    })),
+);
+const Nec1099CheckoutView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.Nec1099CheckoutView,
+    })),
+);
+const Nec1099SuccessView = lazy(
+  () =>
+    import("../../pages/public").then((module) => ({
+      default: module.Nec1099SuccessView,
+    })),
+);
 const DirectDepositView = lazy(
   () =>
     import("../../pages/public").then((module) => ({
@@ -126,7 +144,19 @@ export const publicRoutes = [
     path: PATHS.PUBLIC.w2Success,
     element: createLazyRouteElement(W2SuccessView),
   },
-  { path: "1099-nec", element: createLazyRouteElement(Tax1099View) },
+  { path: PATHS.PUBLIC.nec1099, element: createLazyRouteElement(Tax1099View) },
+  {
+    path: PATHS.PUBLIC.nec1099Preview,
+    element: createLazyRouteElement(Nec1099PreviewView),
+  },
+  {
+    path: PATHS.PUBLIC.nec1099Checkout,
+    element: createLazyRouteElement(Nec1099CheckoutView),
+  },
+  {
+    path: PATHS.PUBLIC.nec1099Success,
+    element: createLazyRouteElement(Nec1099SuccessView),
+  },
   {
     path: "direct-deposit",
     element: createLazyRouteElement(DirectDepositView),

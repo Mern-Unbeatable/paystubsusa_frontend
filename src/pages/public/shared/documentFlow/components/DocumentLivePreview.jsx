@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Lock, ZoomIn, ZoomOut } from "lucide-react";
-import W2FormDocument from "./W2FormDocument";
+import PreviewWatermark from "../../../Generator/components/common/PreviewWatermark";
 
 const MIN_ZOOM = 70;
 const MAX_ZOOM = 120;
 const ZOOM_STEP = 10;
 
-/** Live preview card with zoom controls around the rendered W-2. */
-const W2LivePreview = ({ formData }) => {
+/** Live preview card with zoom controls around the rendered form (`children`). */
+const DocumentLivePreview = ({ children }) => {
   const [zoomLevel, setZoomLevel] = useState(90);
 
   const handleZoom = (delta) =>
@@ -52,10 +52,11 @@ const W2LivePreview = ({ formData }) => {
       {/* Inner Preview Canvas (#F1F9FF matching Figma) */}
       <div className="p-4 sm:p-5 bg-[#F1F9FF] flex items-center justify-center overflow-x-auto min-h-[360px]">
         <div
-          className="transition-transform duration-200 origin-top shadow-md bg-white border border-slate-300 w-full max-w-[480px]"
+          className="relative transition-transform duration-200 origin-top shadow-md bg-white border border-slate-300 w-full max-w-[480px]"
           style={{ transform: `scale(${zoomLevel / 100})` }}
         >
-          <W2FormDocument formData={formData} />
+          {children}
+          <PreviewWatermark text="PREVIEW" />
         </div>
       </div>
 
@@ -68,4 +69,4 @@ const W2LivePreview = ({ formData }) => {
   );
 };
 
-export default W2LivePreview;
+export default DocumentLivePreview;

@@ -1,6 +1,5 @@
 import React from "react";
 import { Check, FileText } from "lucide-react";
-import { W2_PRICE_LABEL } from "../../utils/w2Flow";
 
 const FEATURES = [
   "Professionally formatted PDF",
@@ -8,7 +7,7 @@ const FEATURES = [
   "Copy sent to your email",
 ];
 
-const W2OrderSummary = ({ formData, className = "" }) => (
+const DocumentOrderSummary = ({ title, subtitle, priceLabel, className = "" }) => (
   <div
     className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden ${className}`}
   >
@@ -25,17 +24,15 @@ const W2OrderSummary = ({ formData, className = "" }) => (
           <FileText className="w-5 h-5 stroke-[2]" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-[15px] text-slate-900">
-            Form W-2 · Tax Year 2025
-          </p>
-          <p className="text-slate-500 text-[13px] mt-0.5 truncate">
-            {[formData.firstName, formData.lastName].filter(Boolean).join(" ") ||
-              "Employee"}
-            {formData.employerName ? ` · ${formData.employerName}` : ""}
-          </p>
+          <p className="font-semibold text-[15px] text-slate-900">{title}</p>
+          {subtitle && (
+            <p className="text-slate-500 text-[13px] mt-0.5 truncate">
+              {subtitle}
+            </p>
+          )}
         </div>
         <span className="font-semibold text-[15px] text-slate-900">
-          {W2_PRICE_LABEL}
+          {priceLabel}
         </span>
       </div>
 
@@ -54,7 +51,7 @@ const W2OrderSummary = ({ formData, className = "" }) => (
       <div className="space-y-2 text-[14px]">
         <div className="flex items-center justify-between">
           <span className="text-slate-500">Subtotal</span>
-          <span className="text-slate-700">{W2_PRICE_LABEL}</span>
+          <span className="text-slate-700">{priceLabel}</span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-slate-500">Taxes & fees</span>
@@ -72,11 +69,11 @@ const W2OrderSummary = ({ formData, className = "" }) => (
           <span className="text-[12px] text-slate-400">One-time payment</span>
         </div>
         <span className="font-bold text-secondary text-[28px] leading-none">
-          {W2_PRICE_LABEL}
+          {priceLabel}
         </span>
       </div>
     </div>
   </div>
 );
 
-export default W2OrderSummary;
+export default DocumentOrderSummary;

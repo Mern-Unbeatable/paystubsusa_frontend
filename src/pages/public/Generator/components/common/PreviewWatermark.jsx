@@ -20,6 +20,9 @@ const PreviewWatermark = ({ text = "PREVIEW ONLY" }) => {
 
   const diagonal = size ? Math.hypot(size.width, size.height) : 0;
   const angle = size ? (Math.atan2(size.height, size.width) * 180) / Math.PI : 0;
+  const fontSize = size ? Math.min(diagonal * 0.1, Math.min(size.width, size.height) * 0.2) : 0;
+  // Never stretch short words beyond their natural Arial width (~0.6em per glyph).
+  const textLength = Math.min(diagonal * 0.72, fontSize * 0.6 * text.length);
 
   return (
     <div ref={ref} aria-hidden="true" className="absolute inset-0 z-10 pointer-events-none select-none overflow-hidden">
@@ -31,9 +34,9 @@ const PreviewWatermark = ({ text = "PREVIEW ONLY" }) => {
             transform={`rotate(${-angle} ${size.width / 2} ${size.height / 2})`}
             textAnchor="middle"
             dominantBaseline="central"
-            textLength={diagonal * 0.72}
+            textLength={textLength}
             lengthAdjust="spacingAndGlyphs"
-            fontSize={Math.min(diagonal * 0.1, Math.min(size.width, size.height) * 0.2)}
+            fontSize={fontSize}
             fontFamily="Arial, Helvetica, sans-serif"
             fill="rgba(15, 23, 42, 0.22)"
           >
