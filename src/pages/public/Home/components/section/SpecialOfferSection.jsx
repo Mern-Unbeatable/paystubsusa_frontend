@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useEffect, useRef } from "react";
+import { ArrowRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,17 +10,17 @@ const SpecialOfferSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.offer-card-box', {
+      gsap.from(".offer-card-box", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 82%',
+          start: "top 82%",
           once: true,
         },
         y: 40,
         opacity: 0,
         scale: 0.98,
         duration: 0.85,
-        ease: 'power3.out',
+        ease: "power3.out",
       });
     }, sectionRef);
 
@@ -28,13 +28,14 @@ const SpecialOfferSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#EBF1F8] py-14 sm:py-18 lg:py-20">
+    <section
+      ref={sectionRef}
+      className="w-full bg-[#EBF1F8] py-14 sm:py-18 lg:py-20"
+    >
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
-        
         {/* Prominent Elevated Offer Container */}
-        <div className="offer-card-box max-w-4xl mx-auto bg-white rounded-[28px] p-8 sm:p-12 shadow-[0_12px_45px_rgba(0,0,0,0.06)] border border-slate-100/80">
+        <div className="offer-card-box max-w-7xl mx-auto bg-white rounded-[28px] p-8 sm:p-12 shadow-sm border border-slate-100/80">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            
             {/* Left Content */}
             <div className="md:col-span-7 flex flex-col items-start">
               {/* Discount Tag */}
@@ -44,7 +45,7 @@ const SpecialOfferSection = () => {
 
               {/* Headline */}
               <h3 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-slate-900 tracking-tight leading-tight">
-                Get More Paystubs. Save More.
+                Get More Paystubs & Save More.
               </h3>
 
               {/* Price Callout */}
@@ -75,15 +76,14 @@ const SpecialOfferSection = () => {
             {/* Right: Stacked Paystub Document Cards Preview */}
             <div className="md:col-span-5 flex items-center justify-center pt-4 md:pt-0">
               <div className="relative w-64 h-52 flex items-center justify-center">
-                
                 {/* 3rd Card in stack (backmost) */}
-                <div 
+                <div
                   className="absolute w-56 h-40 bg-white/60 border border-slate-200/60 rounded-2xl shadow-sm rotate-6 translate-x-3 translate-y-3 pointer-events-none"
                   aria-hidden="true"
                 />
 
                 {/* 2nd Card in stack (middle) */}
-                <div 
+                <div
                   className="absolute w-56 h-40 bg-white/80 border border-slate-200/80 rounded-2xl shadow-md rotate-3 translate-x-1.5 translate-y-1.5 pointer-events-none"
                   aria-hidden="true"
                 />
@@ -104,11 +104,15 @@ const SpecialOfferSection = () => {
                   <div className="py-2.5 space-y-1.5 text-[14px]">
                     <div className="flex justify-between text-slate-500">
                       <span>Gross Pay</span>
-                      <span className="font-semibold text-slate-800">$2,670.00</span>
+                      <span className="font-semibold text-slate-800">
+                        $2,670.00
+                      </span>
                     </div>
                     <div className="flex justify-between text-slate-500">
                       <span>Deductions</span>
-                      <span className="font-semibold text-rose-500">-$497.96</span>
+                      <span className="font-semibold text-rose-500">
+                        -$497.96
+                      </span>
                     </div>
                   </div>
 
@@ -125,13 +129,10 @@ const SpecialOfferSection = () => {
                     <div className="w-2/3 h-full bg-secondary rounded-full"></div>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
-
       </div>
     </section>
   );

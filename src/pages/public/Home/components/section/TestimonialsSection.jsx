@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
-import { Star, ArrowLeft, ArrowRight } from 'lucide-react';
-import gsap from 'gsap';
-import ratingStars from '../../../data/home/ratingStars.json';
-import testimonials from '../../../data/home/testimonials.json';
+import React, { useState, useRef } from "react";
+import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import gsap from "gsap";
+import ratingStars from "../../../data/home/ratingStars.json";
+import testimonials from "../../../data/home/testimonials.json";
 
 const TestimonialsSection = () => {
   // Exactly the 3 cards from the Figma design
@@ -14,26 +14,26 @@ const TestimonialsSection = () => {
     if (isAnimating.current) return;
     isAnimating.current = true;
 
-    gsap.to('.testimonial-card', {
+    gsap.to(".testimonial-card", {
       x: -24,
       opacity: 0.6,
       duration: 0.22,
-      ease: 'power2.in',
+      ease: "power2.in",
       onComplete: () => {
         setCards((prev) => [prev[1], prev[2], prev[0]]);
         gsap.fromTo(
-          '.testimonial-card',
+          ".testimonial-card",
           { x: 24, opacity: 0.6 },
           {
             x: 0,
             opacity: 1,
             duration: 0.28,
-            ease: 'power2.out',
-            clearProps: 'transform',
+            ease: "power2.out",
+            clearProps: "transform",
             onComplete: () => {
               isAnimating.current = false;
             },
-          }
+          },
         );
       },
     });
@@ -43,26 +43,26 @@ const TestimonialsSection = () => {
     if (isAnimating.current) return;
     isAnimating.current = true;
 
-    gsap.to('.testimonial-card', {
+    gsap.to(".testimonial-card", {
       x: 24,
       opacity: 0.6,
       duration: 0.22,
-      ease: 'power2.in',
+      ease: "power2.in",
       onComplete: () => {
         setCards((prev) => [prev[2], prev[0], prev[1]]);
         gsap.fromTo(
-          '.testimonial-card',
+          ".testimonial-card",
           { x: -24, opacity: 0.6 },
           {
             x: 0,
             opacity: 1,
             duration: 0.28,
-            ease: 'power2.out',
-            clearProps: 'transform',
+            ease: "power2.out",
+            clearProps: "transform",
             onComplete: () => {
               isAnimating.current = false;
             },
-          }
+          },
         );
       },
     });
@@ -71,23 +71,22 @@ const TestimonialsSection = () => {
   return (
     <section className="w-full bg-white py-16 sm:py-24 select-none overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
-        
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1E232A] tracking-wider uppercase">
-            WHAT OUR CLIENTS SAY
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-wider">
+            What Our Clients Say
           </h2>
           <p className="mt-3 text-slate-500 text-[14px] leading-relaxed font-normal max-w-lg mx-auto">
-            Community development is often linked with community work or community planning, and may involve stakeholders, foundations,
+            Community development is often linked with community work or
+            community planning, and may involve stakeholders, foundations,
           </p>
         </div>
 
         {/* Testimonials Stage Container */}
-        <div className="relative max-w-[960px] mx-auto pt-10 pb-12">
-          
+        <div className="relative max-w-7xl mx-auto pt-10 pb-12">
           {/* Exact Figma Single Solid Gray Backdrop Behind Cards */}
           <div
-            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[84%] max-w-[760px] bg-[#ECECEC] z-0 pointer-events-none"
+            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[84%] max-w-[960px] border border-slate-200 rounded-2xl bg-primary z-0 pointer-events-none"
             aria-hidden="true"
           />
 
@@ -98,10 +97,10 @@ const TestimonialsSection = () => {
               return (
                 <div
                   key={card.id}
-                  className={`testimonial-card bg-white p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 ${
+                  className={`testimonial-card border border-slate-200 rounded-2xl bg-white p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 ${
                     isCenter
-                      ? 'shadow-[0_16px_32px_rgba(0,0,0,0.12)] z-20'
-                      : 'shadow-xs z-10'
+                      ? "shadow-[0_16px_32px_rgba(0,0,0,0.12)] z-20"
+                      : "shadow-xs z-10"
                   }`}
                 >
                   <div>
@@ -156,9 +155,7 @@ const TestimonialsSection = () => {
               </button>
             </div>
           </div>
-
         </div>
-
       </div>
     </section>
   );

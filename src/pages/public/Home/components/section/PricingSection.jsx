@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Sparkles, ShieldCheck, ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import oneTimeItems from "../../../data/home/pricingOneTimeItems.json";
@@ -45,48 +45,69 @@ const PricingSection = () => {
     <section
       id="pricing"
       ref={sectionRef}
-      className="w-full bg-white py-16 sm:py-20 lg:py-24"
+      className="relative w-full overflow-hidden bg-white py-16 sm:py-20 lg:py-28"
     >
-      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
+      {/* Ambient accents */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 top-20 h-[380px] w-[380px] rounded-full bg-secondary/[0.07] blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full bg-blue-300/10 blur-3xl"
+      />
+
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="pricing-header text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 text-secondary font-semibold text-[14px] tracking-widest uppercase mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>
-            <span>PRICING</span>
+        <div className="pricing-header mx-auto mb-14 max-w-2xl text-center sm:mb-18">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-secondary/20 bg-secondary/5 px-3.5 py-1.5 text-secondary">
+            <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+              Pricing
+            </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 tracking-tight leading-tight">
-            Simple Pricing for Every Need
+          <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[44px]">
+            Simple Pricing for{" "}
+            <span className="bg-gradient-to-r from-secondary to-blue-400 bg-clip-text text-transparent">
+              Every Need
+            </span>
           </h2>
 
-          <p className="mt-3 text-slate-600 text-base sm:text-[17px] font-normal leading-relaxed">
+          <p className="mx-auto mt-4 max-w-xl text-base font-normal leading-relaxed text-slate-600 sm:text-[17px]">
             Choose between a one-time purchase or unlimited monthly access.
           </p>
         </div>
 
-        {/* Pricing Cards Grid */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* Card 1: One-Time Purchase */}
-          <div className="pricing-card lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+        {/* Pricing Cards */}
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-stretch gap-8 lg:grid-cols-12">
+          {/* ── Card 1: One-Time Purchase ── */}
+          <div className="pricing-card group relative flex flex-col justify-between rounded-3xl border border-slate-200/90 bg-white p-8 shadow-[0_4px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_24px_50px_-24px_rgba(15,23,42,0.16)] sm:p-10 lg:col-span-7">
             <div>
-              <h3 className="font-bold text-xl sm:text-2xl text-slate-900 tracking-tight">
-                One-Time Purchase
-              </h3>
-              <p className="text-slate-500 text-sm mt-1 mb-8 font-normal">
-                Pay only for what you need.
+              <div className="mb-2 flex items-center gap-2">
+                <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                  One-Time Purchase
+                </h3>
+              </div>
+              <p className="mb-8 text-sm font-normal text-slate-500">
+                Pay only for what you need — no commitment.
               </p>
 
-              {/* Price Rows */}
-              <div className="space-y-4">
-                {oneTimeItems.map((item) => (
+              {/* Price rows */}
+              <div className="overflow-hidden rounded-2xl border border-slate-100">
+                {oneTimeItems.map((item, i) => (
                   <div
                     key={item.name}
-                    className="flex items-center justify-between py-2 text-sm sm:text-[15px]"
+                    className={`flex items-center justify-between px-4 py-3.5 text-sm transition-colors duration-150 hover:bg-slate-50 sm:text-[15px] ${
+                      i !== oneTimeItems.length - 1
+                        ? "border-b border-slate-100"
+                        : ""
+                    }`}
                   >
-                    <span className="text-slate-700 font-medium">
+                    <span className="font-medium text-slate-700">
                       {item.name}
                     </span>
-                    <span className="text-slate-900 font-bold tracking-tight">
+                    <span className="font-bold tracking-tight text-slate-900">
                       {item.price}
                     </span>
                   </div>
@@ -94,60 +115,78 @@ const PricingSection = () => {
               </div>
             </div>
 
-            {/* Bottom Button */}
-            <div className="mt-8 pt-4">
+            {/* CTA */}
+            <div className="mt-8">
               <button
                 type="button"
-                className="w-full border border-secondary text-secondary hover:bg-secondary/5 font-semibold text-[15px] py-3.5 px-6 rounded-xl transition-all duration-200 cursor-pointer shadow-xs active:scale-[0.99]"
+                className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-xl border border-secondary bg-white px-6 py-3.5 text-[15px] font-semibold text-secondary transition-all duration-200 hover:bg-secondary/5 active:scale-[0.99]"
               >
-                Generate Paystub
+                <span>Generate Paystub</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
               </button>
             </div>
           </div>
 
-          {/* Card 2: Unlimited Monthly Subscription (Featured) */}
-          <div className="pricing-card lg:col-span-5 relative bg-white rounded-3xl p-8 sm:p-10 border-2 border-secondary shadow-[0_8px_30px_rgba(0,155,251,0.12)] flex flex-col justify-between">
-            {/* Best Value Pill Badge */}
-            <div className="absolute -top-3.5 right-8 bg-secondary text-white text-[14px] font-semibold px-3.5 py-1 rounded-full shadow-sm">
-              Best value
-            </div>
+          {/* ── Card 2: Featured Subscription ── */}
+          <div className="pricing-card relative lg:col-span-5">
+            {/* Gradient border wrapper */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-secondary to-blue-400 opacity-100 [mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] p-px [mask-composite:exclude] [-webkit-mask-composite:xor]" />
 
-            <div>
-              <h3 className="font-bold text-xl sm:text-2xl text-slate-900 tracking-tight">
-                Unlimited Monthly Subscription
-              </h3>
-
-              {/* Price display */}
-              <div className="mt-4 mb-6 flex items-baseline gap-1.5">
-                <span className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
-                  $199
-                </span>
-                <span className="text-slate-500 text-sm font-medium">
-                  / month
-                </span>
+            <div className="relative flex h-full flex-col justify-between border border-slate-200 rounded-3xl bg-white p-8 shadow-[0_20px_50px_-24px_rgba(0,155,251,0.45)] sm:p-10">
+              {/* Best value badge */}
+              <div className="absolute -top-3.5 right-8 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3.5 py-1 text-[12px] font-semibold text-white shadow-md shadow-secondary/30">
+                <Sparkles className="h-3.5 w-3.5" />
+                Best Value
               </div>
 
-              {/* Features checkmarks list */}
-              <div className="space-y-3.5 mb-8">
-                {subscriptionFeatures.map((feat) => (
-                  <div key={feat} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-600 text-sm sm:text-[15px] leading-snug">
-                      {feat}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+              <div className="relative">
+                <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                  Unlimited Monthly Subscription
+                </h3>
+                <p className="mt-1 text-sm font-normal text-slate-500">
+                  Unlimited documents, one flat price.
+                </p>
 
-            {/* Bottom Button */}
-            <div className="mt-4">
-              <button
-                type="button"
-                className="w-full bg-secondary hover:bg-[#008be0] active:scale-[0.99] text-white font-semibold text-[15px] py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-center"
-              >
-                Get Unlimited Access
-              </button>
+                {/* Price */}
+                <div className="mt-5 mb-6 flex items-baseline gap-1.5">
+                  <span className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+                    $199
+                  </span>
+                  <span className="text-sm font-medium text-slate-500">
+                    / month
+                  </span>
+                </div>
+
+                {/* Divider */}
+                <div className="mb-6 h-px w-full bg-gradient-to-r from-secondary/30 via-slate-200 to-transparent" />
+
+                {/* Feature list */}
+                <div className="mb-8 space-y-3.5">
+                  {subscriptionFeatures.map((feat) => (
+                    <div key={feat} className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-secondary" />
+                      <span className="text-sm leading-snug text-slate-600 sm:text-[15px]">
+                        {feat}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="relative mt-2">
+                <button
+                  type="button"
+                  className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3.5 text-[15px] font-semibold text-white shadow-md shadow-secondary/25 transition-all duration-200 hover:bg-[#008be0] hover:shadow-lg hover:shadow-secondary/30 active:scale-[0.99]"
+                >
+                  <span>Get Unlimited Access</span>
+                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                </button>
+                <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-slate-500">
+                  <ShieldCheck className="h-3.5 w-3.5 text-secondary" />
+                  Cancel anytime · No hidden fees
+                </p>
+              </div>
             </div>
           </div>
         </div>
