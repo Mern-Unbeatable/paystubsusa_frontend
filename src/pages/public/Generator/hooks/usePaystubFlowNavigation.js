@@ -29,6 +29,8 @@ export function usePaystubFlowNavigation(templateId) {
       navigate(buildPaystubCreatePath(templateId), {
         state: { step: PAYSTUB_FORM_STEPS.REVIEW },
       }),
+    onBackToFormStep: (step) =>
+      navigate(buildPaystubCreatePath(templateId), { state: { step } }),
     onContinueToCheckout: () => navigate(buildPaystubCheckoutPath(templateId)),
     onBackToPackage: () => navigate(buildPaystubPackagePath(templateId)),
     onPaymentSuccess: () => {

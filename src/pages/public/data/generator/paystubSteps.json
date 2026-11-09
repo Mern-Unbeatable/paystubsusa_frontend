@@ -2,5 +2,7 @@
   { "num": 1, "label": "Employer Information" },
   { "num": 2, "label": "Employee Information" },
   { "num": 3, "label": "Pay Details" },
-  { "num": 4, "label": "Review Paystub" }
+  { "num": 4, "label": "Review Paystub" },
+  { "num": 5, "label": "Package" },
+  { "num": 6, "label": "Checkout" }
 ]

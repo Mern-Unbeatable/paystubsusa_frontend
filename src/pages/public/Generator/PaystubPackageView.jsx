@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PaystubFlowPage from "./components/common/PaystubFlowPage";
 import TemplateSelectionModal from "./components/common/TemplateSelectionModal";
 import PackageSelectionSection from "./components/sections/PackageSelectionSection";
+import PaystubStepper from "./components/common/PaystubStepper";
+import { PAYSTUB_PAGE_STEPS } from "./utils/paystubFlow";
 import { usePaystubFormData } from "./hooks/usePaystubFormData";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";
 import { usePaystubFlowNavigation } from "./hooks/usePaystubFlowNavigation";
@@ -9,12 +11,13 @@ import { usePaystubFlowNavigation } from "./hooks/usePaystubFlowNavigation";
 const PaystubPackageContent = ({ template }) => {
   const { formData, calculations } = usePaystubFormData();
   const order = usePaystubOrder();
-  const { onBackToReview, onSwitchTemplate, onContinueToCheckout } =
+  const { onBackToReview, onBackToFormStep, onSwitchTemplate, onContinueToCheckout } =
     usePaystubFlowNavigation(template.id);
   const [isTemplateModalOpen, setTemplateModalOpen] = useState(false);
 
   return (
     <>
+      <PaystubStepper currentStep={PAYSTUB_PAGE_STEPS.PACKAGE} onStepClick={onBackToFormStep} />
       <PackageSelectionSection
         template={template}
         formData={formData}
