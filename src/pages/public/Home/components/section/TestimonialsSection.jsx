@@ -70,7 +70,7 @@ const TestimonialsSection = () => {
 
   return (
     <section className="w-full bg-white py-16 sm:py-24 select-none overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">

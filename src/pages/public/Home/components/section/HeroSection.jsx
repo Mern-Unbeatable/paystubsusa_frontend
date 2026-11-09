@@ -49,7 +49,7 @@ const HeroSection = () => {
         aria-hidden="true"
       />
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-end min-h-[560px] lg:min-h-[620px] xl:min-h-[680px]">
           
           {/* Left Column: Heading, Subtitle & Action CTAs */}

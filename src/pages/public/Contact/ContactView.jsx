@@ -37,7 +37,7 @@ const ContactView = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-blue-50 to-white py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
               Get In Touch
@@ -52,7 +52,7 @@ const ContactView = () => {
 
       {/* Contact Form and Info */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-12 lg:grid-cols-2">
               {/* Contact Form */}
@@ -207,7 +207,7 @@ const ContactView = () => {
 
       {/* FAQ Section */}
       <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
           <div className="mx-auto max-w-4xl">
             <div className="mb-12 text-center">
               <h2 className="mb-4 text-3xl font-bold text-gray-900">

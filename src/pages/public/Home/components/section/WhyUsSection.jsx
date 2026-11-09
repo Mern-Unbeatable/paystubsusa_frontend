@@ -44,7 +44,7 @@ const WhyUsSection = () => {
 
   return (
     <section ref={sectionRef} className="w-full bg-[#EBF1F8] py-16 sm:py-20 lg:py-24 border-t border-slate-100">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         
         {/* Header */}
         <div className="why-header text-center max-w-2xl mx-auto mb-12 sm:mb-16">

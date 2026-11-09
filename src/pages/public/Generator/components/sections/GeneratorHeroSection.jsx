@@ -69,7 +69,7 @@ const GeneratorHeroSection = () => {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
         {/* Eyebrow Tag */}
         <p
           ref={eyebrowRef}

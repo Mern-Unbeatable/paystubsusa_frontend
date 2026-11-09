@@ -12,7 +12,7 @@ const AboutView = () => {
   };
   return (
     <div className="min-h-screen bg-[#FBFBFA] py-16 sm:py-24">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         {/* Main 2-Column Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           {/* Left Column: Hero Copy & CTA */}

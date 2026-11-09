@@ -8,8 +8,8 @@ const PricingCardsSection = () => {
   const [billingType, setBillingType] = useState("one-time"); // 'one-time' | 'monthly'
 
   return (
-    <section className="w-full bg-[#F7FAFF] pt-2 pb-24 px-4 sm:px-6 lg:px-8 border-t border-slate-100">
-      <div className="max-w-[1240px] mx-auto space-y-10 sm:space-y-12">
+    <section className="w-full bg-[#F7FAFF] pt-2 pb-24 border-t border-slate-100">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 space-y-10 sm:space-y-12">
         {/* Top Dark Navy Special Offer Banner */}
         <div className="w-full bg-[#172E57] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden shadow-md">
           <div className="flex items-center gap-5 sm:gap-6 z-10">

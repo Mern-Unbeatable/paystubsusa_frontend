@@ -84,7 +84,7 @@ const FindPaystubsContent = () => {
 
   return (
     <div className="w-full">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-8">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         {/* Top: Welcome Back Access Form (guests only) */}
         {!isAuthenticated && (
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-8">

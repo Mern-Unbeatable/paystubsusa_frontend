@@ -398,7 +398,7 @@ const NavbarLayout = () => {
       {/* Main Navbar - Sticky pinned to top */}
       <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-50 shadow transition-all">
         <nav className="w-full">
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-8">
+          <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
             <div className="flex items-center justify-between h-20 sm:h-24">
               {/* Logo - Exactly matching Footer Logo size */}
               <div className="flex-shrink-0 flex items-center">

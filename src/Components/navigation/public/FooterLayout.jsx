@@ -6,7 +6,7 @@ import { FaLinkedinIn, FaInstagram, FaFacebookF } from 'react-icons/fa';
 const FooterLayout = () => {
   return (
     <footer className="w-full bg-[#F8FAFC] border-t border-slate-100">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-16 sm:py-20">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-16 sm:py-20">
         
         {/* Exact 4-Column Layout from Figma */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
