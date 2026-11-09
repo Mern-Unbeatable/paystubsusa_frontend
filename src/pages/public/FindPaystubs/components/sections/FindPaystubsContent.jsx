@@ -18,6 +18,7 @@ import paginationConfig from "../../../data/findPaystubs/pagination.json";
 import sortOptions from "../../../data/findPaystubs/sortOptions.json";
 import tabs from "../../../data/findPaystubs/tabs.json";
 import { useAuth } from "../../../../../hooks/useAuth";
+import findPaystubsIllustration from "../../../../../assets/find-paystubs-illustration.png";
 
 const FindPaystubsContent = () => {
   const { isAuthenticated } = useAuth();
@@ -83,11 +84,11 @@ const FindPaystubsContent = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
+    <div className="w-full py-10 sm:py-16 border-t border-slate-200/80">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 space-y-8 sm:space-y-10">
         {/* Top: Welcome Back Access Form (guests only) */}
         {!isAuthenticated && (
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-8">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="max-w-xl">
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Welcome Back
@@ -141,6 +142,15 @@ const FindPaystubsContent = () => {
                 </div>
               </form>
             </div>
+
+            <div className="hidden lg:flex items-center justify-center">
+              <img
+                src={findPaystubsIllustration}
+                alt="Person on a laptop accessing secure paystub documents by email"
+                className="w-full max-w-md h-auto select-none"
+                draggable={false}
+              />
+            </div>
           </div>
         )}
 
@@ -162,7 +172,7 @@ const FindPaystubsContent = () => {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm hover:shadow active:scale-98 whitespace-nowrap self-start sm:self-auto"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Create a Document</span>
+              <span>Generate Paystub</span>
             </Link>
           </div>
 

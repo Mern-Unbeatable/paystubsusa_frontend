@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { CheckCircle2 } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import oneTimeItems from '../../../data/home/pricingOneTimeItems.json';
-import subscriptionFeatures from '../../../data/home/pricingSubscriptionFeatures.json';
+import React, { useEffect, useRef } from "react";
+import { CheckCircle2 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import oneTimeItems from "../../../data/home/pricingOneTimeItems.json";
+import subscriptionFeatures from "../../../data/home/pricingSubscriptionFeatures.json";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,29 +12,29 @@ const PricingSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.pricing-header', {
+      gsap.from(".pricing-header", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 85%',
+          start: "top 85%",
           once: true,
         },
         y: 30,
         opacity: 0,
         duration: 0.75,
-        ease: 'power3.out',
+        ease: "power3.out",
       });
 
-      gsap.from('.pricing-card', {
+      gsap.from(".pricing-card", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 78%',
+          start: "top 78%",
           once: true,
         },
         y: 40,
         opacity: 0,
         stagger: 0.16,
         duration: 0.85,
-        ease: 'power3.out',
+        ease: "power3.out",
       });
     }, sectionRef);
 
@@ -42,20 +42,23 @@ const PricingSection = () => {
   }, []);
 
   return (
-    <section id="pricing" ref={sectionRef} className="w-full bg-white py-16 sm:py-20 lg:py-24">
+    <section
+      id="pricing"
+      ref={sectionRef}
+      className="w-full bg-white py-16 sm:py-20 lg:py-24"
+    >
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
-        
         {/* Section Header */}
         <div className="pricing-header text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 text-secondary font-semibold text-[14px] tracking-widest uppercase mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span>
             <span>PRICING</span>
           </div>
-          
+
           <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 tracking-tight leading-tight">
             Simple Pricing for Every Need
           </h2>
-          
+
           <p className="mt-3 text-slate-600 text-base sm:text-[17px] font-normal leading-relaxed">
             Choose between a one-time purchase or unlimited monthly access.
           </p>
@@ -63,7 +66,6 @@ const PricingSection = () => {
 
         {/* Pricing Cards Grid */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           {/* Card 1: One-Time Purchase */}
           <div className="pricing-card lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-sm flex flex-col justify-between">
             <div>
@@ -81,8 +83,12 @@ const PricingSection = () => {
                     key={item.name}
                     className="flex items-center justify-between py-2 text-sm sm:text-[15px]"
                   >
-                    <span className="text-slate-700 font-medium">{item.name}</span>
-                    <span className="text-slate-900 font-bold tracking-tight">{item.price}</span>
+                    <span className="text-slate-700 font-medium">
+                      {item.name}
+                    </span>
+                    <span className="text-slate-900 font-bold tracking-tight">
+                      {item.price}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -94,7 +100,7 @@ const PricingSection = () => {
                 type="button"
                 className="w-full border border-secondary text-secondary hover:bg-secondary/5 font-semibold text-[15px] py-3.5 px-6 rounded-xl transition-all duration-200 cursor-pointer shadow-xs active:scale-[0.99]"
               >
-                Create a Document
+                Generate Paystub
               </button>
             </div>
           </div>
@@ -144,9 +150,7 @@ const PricingSection = () => {
               </button>
             </div>
           </div>
-
         </div>
-
       </div>
     </section>
   );

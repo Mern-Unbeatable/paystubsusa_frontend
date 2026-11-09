@@ -322,7 +322,7 @@ const MobileNavDrawer = ({
                 onClick={onClose}
                 className="block w-full text-center font-semibold text-white bg-secondary py-2.5 rounded-lg shadow-sm hover:bg-[#0089e0] transition text-[14px]"
               >
-                Create Paystub
+                Generate Paystub
               </Link>
               <button
                 type="button"
@@ -348,7 +348,7 @@ const MobileNavDrawer = ({
                 onClick={onClose}
                 className="block w-full text-center font-semibold text-white bg-secondary py-2.5 rounded-lg shadow-sm hover:bg-[#0089e0] transition text-[14px]"
               >
-                Create Paystub
+                Generate
               </Link>
             </>
           )}
@@ -473,7 +473,7 @@ const NavbarLayout = () => {
                   to="/paystub-generator"
                   className="text-[14px] font-semibold text-white bg-secondary hover:bg-[#0089e0] px-5 py-2.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 inline-block text-center"
                 >
-                  Create Paystub
+                  Generate Paystub
                 </Link>
               </div>
 
