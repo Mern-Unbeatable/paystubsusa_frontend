@@ -63,15 +63,14 @@ const WhyUsSection = () => {
           </div>
 
           <h2 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-[44px]">
-            Why Choose{" "}
-            <span className="bg-gradient-to-r from-secondary to-blue-200 bg-clip-text text-transparent">
-              Paystubs USA
-            </span>
+            Why Choose Paystubs USA
           </h2>
 
           <p className="mx-auto mt-4 max-w-xl text-base font-normal leading-relaxed text-blue-100/75 sm:text-[17px]">
-            A focused, dependable way to create the documents your business
-            needs.
+            We're not just a tool—we're your trusted partner in payroll
+            compliance. Our platform is designed to make generating accurate pay
+            stubs easy, so you can focus on what matters most: growing your
+            business.
           </p>
         </div>
 
