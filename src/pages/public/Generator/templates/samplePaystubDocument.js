@@ -47,9 +47,4 @@ export const SAMPLE_LOGO = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="72" viewBox="0 0 50 36" fill="none" stroke="#1E8BE6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h22c8 0 14 6 14 14s-6 14-14 14H20l-3 4H7l3-4"/><path d="M6 11h24M3 18h27M8 25h14"/></svg>'
 )}`;
 
-const sampleDocument = buildPaystubDocument(SAMPLE_FORM_DATA, SAMPLE_CALCULATIONS);
-
-export const SAMPLE_PAYSTUB_DOCUMENT = {
-  ...sampleDocument,
-  company: { ...sampleDocument.company, logo: SAMPLE_LOGO },
-};
+export const SAMPLE_PAYSTUB_DOCUMENT = buildPaystubDocument(SAMPLE_FORM_DATA, SAMPLE_CALCULATIONS);
