@@ -72,16 +72,6 @@ const DocumentsSection = () => {
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-[#EBF1F8] py-16 sm:py-20 lg:py-28"
     >
-      {/* Soft ambient blobs */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-secondary/10 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-blue-300/20 blur-3xl"
-      />
-
       <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="docs-header mx-auto mb-14 max-w-2xl text-center sm:mb-18">
