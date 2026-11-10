@@ -5,6 +5,7 @@ import logoImg from "../../../assets/logo.png";
 import AuthInvoicePreview from "../components/AuthInvoicePreview";
 import { useAuth } from "../../../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
+import { PATHS } from "../../../config/paths";
 
 const ForgotPasswordView = () => {
   const { forgotPassword } = useAuth();
@@ -60,7 +61,7 @@ const ForgotPasswordView = () => {
 
         <div className="w-full max-w-sm mx-auto my-auto py-6">
           <Link
-            to="/login"
+            to={PATHS.AUTH.login}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group mb-6"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
@@ -155,7 +156,7 @@ const ForgotPasswordView = () => {
             <p className="text-xs text-slate-500">
               Remember your password?{" "}
               <Link
-                to="/login"
+                to={PATHS.AUTH.login}
                 className="font-semibold text-secondary hover:underline"
               >
                 Sign In

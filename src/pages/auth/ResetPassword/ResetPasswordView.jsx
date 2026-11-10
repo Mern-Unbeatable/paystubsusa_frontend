@@ -11,6 +11,7 @@ import logoImg from "../../../assets/logo.png";
 import AuthInvoicePreview from "../components/AuthInvoicePreview";
 import { useAuth } from "../../../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
+import { PATHS } from "../../../config/paths";
 
 const MISSING_TOKEN_MESSAGE =
   "This reset link is invalid. Please request a new one.";
@@ -80,7 +81,7 @@ const ResetPasswordView = () => {
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
         <div className="w-full flex items-center justify-end">
           <Link
-            to="/login"
+            to={PATHS.AUTH.login}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
@@ -117,7 +118,7 @@ const ResetPasswordView = () => {
                   {error}
                   {tokenInvalid && (
                     <Link
-                      to="/forgot-password"
+                      to={PATHS.AUTH.forgotPassword}
                       className="block mt-1 text-secondary hover:underline"
                     >
                       Request a new reset link
@@ -217,7 +218,7 @@ const ResetPasswordView = () => {
 
               <div className="pt-2">
                 <Link
-                  to="/login"
+                  to={PATHS.AUTH.login}
                   className="w-full py-3 px-4 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm hover:shadow active:scale-98 flex items-center justify-center gap-2"
                 >
                   <span>Sign In with New Password</span>
@@ -231,7 +232,7 @@ const ResetPasswordView = () => {
             <p className="text-xs text-slate-500">
               Remember your password?{" "}
               <Link
-                to="/login"
+                to={PATHS.AUTH.login}
                 className="font-semibold text-secondary hover:underline"
               >
                 Sign In

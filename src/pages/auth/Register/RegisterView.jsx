@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
 import AuthIllustrationPanel from "../components/AuthIllustrationPanel";
 import { getErrorMessage } from "../../../api/errorNormalizer";
+import { PATHS } from "../../../config/paths";
 
 const RegisterView = () => {
+  const navigate = useNavigate();
   const { register, loading } = useAuth();
+  const submittingRef = useRef(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,9 +44,16 @@ const RegisterView = () => {
       return;
     }
 
+    // The disabled button only applies after a re-render; this blocks a fast double click.
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
     try {
-      // RequireGuest sends the new (unverified) customer to /verify-email.
       await register({ name: fullName.trim(), email, password });
+      // Replace: going Back must not land on a guest-only page that would bounce forward again.
+      // flushSync: the store update has already swapped this page for RequireGuest's empty
+      // <Navigate>; a transition-scheduled route change would let that blank frame paint.
+      navigate(PATHS.AUTH.verifyEmail, { replace: true, flushSync: true });
       toast.success(
         "Account created. Check your email for a verification code.",
         {
@@ -52,6 +62,8 @@ const RegisterView = () => {
       );
     } catch (error) {
       setFormError(getErrorMessage(error, "Unable to create your account."));
+    } finally {
+      submittingRef.current = false;
     }
   };
 
@@ -220,7 +232,7 @@ const RegisterView = () => {
           <div className="mt-5 text-center text-xs text-slate-500">
             <span>Already have an account? </span>
             <Link
-              to="/login"
+              to={PATHS.AUTH.login}
               className="font-semibold text-secondary hover:underline"
             >
               Sign in

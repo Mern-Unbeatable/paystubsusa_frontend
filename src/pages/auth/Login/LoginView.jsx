@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
 import { getErrorMessage } from "../../../api/errorNormalizer";
+import { PATHS } from "../../../config/paths";
 
 import AuthInvoicePreview from "../components/AuthInvoicePreview";
 
@@ -111,7 +112,7 @@ const LoginView = () => {
                   Password
                 </label>
                 <Link
-                  to="/forgot-password"
+                  to={PATHS.AUTH.forgotPassword}
                   className="text-xs font-medium text-secondary hover:underline"
                 >
                   Forgot password?
@@ -177,7 +178,7 @@ const LoginView = () => {
           <div className="mt-5 text-center text-xs text-slate-500">
             <span>Don't have an account? </span>
             <Link
-              to="/register"
+              to={PATHS.AUTH.register}
               className="font-semibold text-secondary hover:underline"
             >
               Create an account

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
 import { useAuth } from "../../../hooks/useAuth";
+import { PATHS } from "../../../config/paths";
 import { toast } from "react-hot-toast";
 import {
   LayoutGrid,
@@ -294,13 +295,13 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
 
     try {
       await logout();
-      navigate("/login");
+      navigate(PATHS.AUTH.login);
     } catch (error) {
       toast.error(extractErrorMessage(error), {
         id: "dashboard-logout-error",
         duration: 2800,
       });
-      navigate("/login");
+      navigate(PATHS.AUTH.login);
     } finally {
       setIsLoggingOut(false);
     }

@@ -10,7 +10,7 @@ import { publicRoutes } from "./publicRoutes";
 import { authRoutes, resetPasswordRoute, verifyEmailRoute } from "./authRoutes";
 import { customerRoutes } from "./customerRoutes";
 import { adminRoutes } from "./adminRoutes";
-import { ALIASES } from "../../config/paths";
+import { ALIASES, PATHS } from "../../config/paths";
 
 const redirectRoutes = Object.entries(ALIASES).map(([from, to]) => ({
   path: from,
@@ -24,11 +24,25 @@ export const routeConfig = [
     children: publicRoutes,
   },
   {
-    element: React.createElement(RequireGuest),
+    // One AuthLayout for every /auth page, so register -> verify-email swaps only the page
+    // (guards are pathless siblings underneath it) instead of remounting the whole tree.
+    path: PATHS.AUTH.root,
+    element: React.createElement(AuthLayout),
     children: [
       {
-        element: React.createElement(AuthLayout),
+        index: true,
+        element: React.createElement(Navigate, {
+          to: PATHS.AUTH.login,
+          replace: true,
+        }),
+      },
+      {
+        element: React.createElement(RequireGuest),
         children: authRoutes,
+      },
+      {
+        element: React.createElement(RequireAuth),
+        children: [verifyEmailRoute],
       },
     ],
   },
@@ -39,10 +53,6 @@ export const routeConfig = [
   {
     element: React.createElement(RequireAuth),
     children: [
-      {
-        element: React.createElement(AuthLayout),
-        children: [verifyEmailRoute],
-      },
       {
         element: React.createElement(RequireCustomer),
         children: customerRoutes,

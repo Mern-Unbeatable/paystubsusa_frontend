@@ -337,7 +337,7 @@ const MobileNavDrawer = ({
           ) : (
             <>
               <Link
-                to="/login"
+                to={PATHS.AUTH.login}
                 onClick={onClose}
                 className="block w-full text-center font-medium text-secondary border border-secondary py-2.5 rounded-lg hover:bg-secondary/5 transition text-[14px]"
               >
@@ -458,9 +458,9 @@ const NavbarLayout = () => {
                   />
                 ) : (
                   <Link
-                    to="/login"
+                    to={PATHS.AUTH.login}
                     className={`text-[14px] font-medium border px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-xs ${
-                      location.pathname === "/login" ||
+                      location.pathname === PATHS.AUTH.login ||
                       location.pathname === "/signin"
                         ? "bg-secondary text-white border-secondary"
                         : "text-secondary hover:text-white border-secondary hover:bg-secondary"

@@ -25,11 +25,13 @@ export const PATHS = {
     about: "/about",
   },
   AUTH: {
-    login: "/login",
-    register: "/register",
-    forgotPassword: "/forgot-password",
+    root: "/auth",
+    login: "/auth/login",
+    register: "/auth/register",
+    forgotPassword: "/auth/forgot-password",
+    verifyEmail: "/auth/register/verify-email",
+    // Must match the link the API emails (`${APP_URL}/reset-password?token=…`).
     resetPassword: "/reset-password",
-    verifyEmail: "/verify-email",
   },
   CUSTOMER: {
     dashboard: "/customer/overview",
@@ -99,6 +101,10 @@ export const ALIASES = {
   1099: PATHS.PUBLIC.nec1099,
   "find-your-paystubs": PATHS.PUBLIC.findPaystubs,
   "about-us": PATHS.PUBLIC.about,
+  "/login": PATHS.AUTH.login,
+  "/register": PATHS.AUTH.register,
+  "/forgot-password": PATHS.AUTH.forgotPassword,
+  "/verify-email": PATHS.AUTH.verifyEmail,
   signin: PATHS.AUTH.login,
   signup: PATHS.AUTH.register,
   forgot: PATHS.AUTH.forgotPassword,
