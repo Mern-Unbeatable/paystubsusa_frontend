@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router";
 import logoImg from "../../../assets/logo.png";
 
-const AuthForgotPasswordIllustration = () => {
+/** Left panel for the forgot/reset password pages; `badge` is "key" or "check". */
+const AuthPasswordIllustration = ({ title, subtitle, chips = [], badge = "key" }) => {
   return (
     <div className="w-full h-full min-h-screen bg-gradient-to-b from-slate-50 via-sky-50/40 to-slate-100/60 p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-center relative overflow-hidden select-none border-r border-slate-200/60">
       <div
@@ -25,18 +26,16 @@ const AuthForgotPasswordIllustration = () => {
           />
         </Link>
         <h2 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">
-          Locked Out? No Problem.
+          {title}
         </h2>
-        <p className="mt-1 text-xs text-slate-500">
-          We'll email you a secure link to set a new one
-        </p>
+        <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
       </div>
 
       <svg
         viewBox="0 0 420 340"
         className="relative z-10 w-full max-w-[400px] h-auto"
         role="img"
-        aria-label="Padlock in front of a password reset email, with a key"
+        aria-label={`Padlock in front of a password reset email, with a ${badge === "check" ? "check mark" : "key"}`}
       >
         <defs>
           <linearGradient id="fp-lock" x1="0" y1="0" x2="0" y2="1">
@@ -98,23 +97,32 @@ const AuthForgotPasswordIllustration = () => {
           <circle cx="318" cy="246" r="34" fill="url(#fp-badge)" />
         </g>
         <circle cx="318" cy="246" r="34" fill="none" stroke="#ffffff" strokeWidth="4" />
-        <circle cx="306" cy="246" r="9" fill="none" stroke="#ffffff" strokeWidth="5" />
-        <path
-          d="M315 246 h20 m-6 0 v8 m-7 -8 v6"
-          fill="none"
-          stroke="#ffffff"
-          strokeWidth="5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        {badge === "check" ? (
+          <path d="M303 246 l10 10 20 -21" fill="none" stroke="#ffffff" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+        ) : (
+          <>
+            <circle cx="306" cy="246" r="9" fill="none" stroke="#ffffff" strokeWidth="5" />
+            <path
+              d="M315 246 h20 m-6 0 v8 m-7 -8 v6"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </>
+        )}
       </svg>
 
-      <div className="relative z-10 mt-8 flex flex-wrap justify-center gap-2 text-[11px] font-medium text-slate-500">
-        <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">Secure reset link</span>
-        <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">Valid for 30 minutes</span>
-      </div>
+      {chips.length > 0 && (
+        <div className="relative z-10 mt-8 flex flex-wrap justify-center gap-2 text-[11px] font-medium text-slate-500">
+          {chips.map((chip) => (
+            <span key={chip} className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">{chip}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default AuthForgotPasswordIllustration;
+export default AuthPasswordIllustration;
