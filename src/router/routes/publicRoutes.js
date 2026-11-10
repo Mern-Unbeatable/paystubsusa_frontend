@@ -4,125 +4,105 @@ import { HomeView } from "../../pages/public";
 import { createLazyRouteElement } from "./createLazyRouteElement";
 import { PATHS } from "../../config/paths";
 
-const GeneratorView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.GeneratorView,
-    })),
+const GeneratorView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.GeneratorView,
+  })),
 );
-const PaystubCreateView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.PaystubCreateView,
-    })),
+const PaystubCreateView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.PaystubCreateView,
+  })),
 );
-const PaystubPackageView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.PaystubPackageView,
-    })),
+const PaystubPackageView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.PaystubPackageView,
+  })),
 );
-const PaystubCheckoutView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.PaystubCheckoutView,
-    })),
+const PaystubCheckoutView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.PaystubCheckoutView,
+  })),
 );
-const PaystubSuccessView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.PaystubSuccessView,
-    })),
+const PaystubSuccessView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.PaystubSuccessView,
+  })),
 );
-const W2View = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.W2View,
-    })),
+const W2View = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.W2View,
+  })),
 );
-const W2PreviewView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.W2PreviewView,
-    })),
+const W2PreviewView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.W2PreviewView,
+  })),
 );
-const W2CheckoutView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.W2CheckoutView,
-    })),
+const W2CheckoutView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.W2CheckoutView,
+  })),
 );
-const W2SuccessView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.W2SuccessView,
-    })),
+const W2SuccessView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.W2SuccessView,
+  })),
 );
-const Tax1099View = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.Tax1099View,
-    })),
+const Tax1099View = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.Tax1099View,
+  })),
 );
-const Nec1099PreviewView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.Nec1099PreviewView,
-    })),
+const Nec1099PreviewView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.Nec1099PreviewView,
+  })),
 );
-const Nec1099CheckoutView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.Nec1099CheckoutView,
-    })),
+const Nec1099CheckoutView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.Nec1099CheckoutView,
+  })),
 );
-const Nec1099SuccessView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.Nec1099SuccessView,
-    })),
+const Nec1099SuccessView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.Nec1099SuccessView,
+  })),
 );
-const DirectDepositView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.DirectDepositView,
-    })),
+const DirectDepositView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.DirectDepositView,
+  })),
 );
-const DirectDepositPreviewView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.DirectDepositPreviewView,
-    })),
+const DirectDepositPreviewView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.DirectDepositPreviewView,
+  })),
 );
-const DirectDepositCheckoutView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.DirectDepositCheckoutView,
-    })),
+const DirectDepositCheckoutView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.DirectDepositCheckoutView,
+  })),
 );
-const DirectDepositSuccessView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.DirectDepositSuccessView,
-    })),
+const DirectDepositSuccessView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.DirectDepositSuccessView,
+  })),
 );
-const PricingView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.PricingView,
-    })),
+const PricingView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.PricingView,
+  })),
 );
-const FindPaystubsView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.FindPaystubsView,
-    })),
+const FindPaystubsView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.FindPaystubsView,
+  })),
 );
-const AboutView = lazy(
-  () =>
-    import("../../pages/public").then((module) => ({
-      default: module.AboutView,
-    })),
+const AboutView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.AboutView,
+  })),
 );
 const NotFound = lazy(() => import("../../pages/error/NotFound"));
 

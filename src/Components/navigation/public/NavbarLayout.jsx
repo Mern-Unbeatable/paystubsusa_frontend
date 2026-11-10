@@ -88,11 +88,11 @@ const UserAvatar = ({ user, size = "w-9 h-9 text-[13px]" }) =>
       className={`${size} shrink-0 rounded-full object-cover ring-2 ring-white`}
     />
   ) : (
-  <span
-    className={`${size} shrink-0 rounded-full bg-secondary/10 text-secondary font-bold inline-flex items-center justify-center ring-2 ring-white`}
-  >
-    {getInitials(user?.name || user?.email)}
-  </span>
+    <span
+      className={`${size} shrink-0 rounded-full bg-secondary/10 text-secondary font-bold inline-flex items-center justify-center ring-2 ring-white`}
+    >
+      {getInitials(user?.name || user?.email)}
+    </span>
   );
 
 const AccountLinkItem = ({ link, onClick, className }) => {

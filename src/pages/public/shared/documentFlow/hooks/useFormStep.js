@@ -35,9 +35,12 @@ export function useFormStep(flow) {
         ? setFormStep(currentStep + 1)
         : onContinueToPreview(),
     handleBack: () => {
-      if (currentStep > DOCUMENT_STEPS.FIRST_FORM_STEP) setFormStep(currentStep - 1);
+      if (currentStep > DOCUMENT_STEPS.FIRST_FORM_STEP)
+        setFormStep(currentStep - 1);
     },
     onStepClick: (step) =>
-      step <= DOCUMENT_STEPS.LAST_FORM_STEP ? setFormStep(step) : goToStep(step),
+      step <= DOCUMENT_STEPS.LAST_FORM_STEP
+        ? setFormStep(step)
+        : goToStep(step),
   };
 }

@@ -11,7 +11,10 @@ const DocumentSuccessContent = ({ flow, formData }) => {
   const { Document } = flow;
 
   return (
-    <DocumentFlowLayout steps={flow.steps} currentStep={DOCUMENT_STEPS.CHECKOUT}>
+    <DocumentFlowLayout
+      steps={flow.steps}
+      currentStep={DOCUMENT_STEPS.CHECKOUT}
+    >
       <DocumentPaymentSuccess
         documentLabel={flow.documentLabel}
         recipientName={flow.getRecipientName(formData)}

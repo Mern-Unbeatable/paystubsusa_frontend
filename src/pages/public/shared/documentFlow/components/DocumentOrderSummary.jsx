@@ -7,7 +7,12 @@ const FEATURES = [
   "Copy sent to your email",
 ];
 
-const DocumentOrderSummary = ({ title, subtitle, priceLabel, className = "" }) => (
+const DocumentOrderSummary = ({
+  title,
+  subtitle,
+  priceLabel,
+  className = "",
+}) => (
   <div
     className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden ${className}`}
   >

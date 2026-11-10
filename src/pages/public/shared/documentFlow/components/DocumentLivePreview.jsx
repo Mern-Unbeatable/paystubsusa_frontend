@@ -11,7 +11,9 @@ const DocumentLivePreview = ({ children }) => {
   const [zoomLevel, setZoomLevel] = useState(90);
 
   const handleZoom = (delta) =>
-    setZoomLevel((prev) => Math.min(Math.max(prev + delta, MIN_ZOOM), MAX_ZOOM));
+    setZoomLevel((prev) =>
+      Math.min(Math.max(prev + delta, MIN_ZOOM), MAX_ZOOM),
+    );
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
