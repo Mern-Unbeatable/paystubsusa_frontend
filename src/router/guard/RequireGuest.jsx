@@ -4,8 +4,9 @@ import { PATHS } from "../../config/paths";
 import { getSafeRedirectPath } from "../routes/safeRedirect";
 
 /**
- * Sends signed-in users away from guest pages (also the post-login redirect). Register
- * navigates itself, but only ever to the same verify-email target this would pick.
+ * Sends signed-in users away from guest pages (also the post-login redirect). Verification
+ * is offered only right after registering (Register navigates there itself); a later login
+ * of an unverified user goes straight to the dashboard, where Profile offers verification.
  */
 export default function RequireGuest() {
   const { user, initializing } = useAuth();
@@ -14,10 +15,12 @@ export default function RequireGuest() {
   if (user) {
     const from = location.state?.from;
     const intended = from ? `${from.pathname}${from.search || ""}` : null;
+    const justRegistered =
+      location.pathname === PATHS.AUTH.register && user.emailVerified === false;
     const fallback =
       user.role === "admin"
         ? PATHS.ADMIN.dashboard
-        : user.emailVerified === false
+        : justRegistered
           ? PATHS.AUTH.verifyEmail
           : PATHS.CUSTOMER.dashboard;
     return <Navigate to={getSafeRedirectPath(intended, fallback)} replace />;
