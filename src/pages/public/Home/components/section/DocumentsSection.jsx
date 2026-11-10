@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { ArrowRight, ArrowUpRight, Check, ShieldCheck } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router";
+import { PATHS } from "../../../../../config/paths";
 import mockPreviewRows from "../../../data/home/mockPreviewRows.json";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -69,8 +71,9 @@ const DocumentsSection = () => {
 
   return (
     <section
+      id="documents"
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-[#EBF1F8] py-16 sm:py-20 lg:py-28"
+      className="relative w-full scroll-mt-20 overflow-hidden bg-[#EBF1F8] py-16 sm:py-20 lg:py-28"
     >
       <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -245,13 +248,13 @@ const DocumentsSection = () => {
 
             {/* CTA */}
             <div className="relative mt-6">
-              <button
-                type="button"
+              <Link
+                to={PATHS.PUBLIC.paystubGenerator}
                 className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-[14px] font-semibold text-[#1d63ff] shadow-lg shadow-black/10 transition-all duration-200 hover:bg-slate-50 hover:shadow-black/20 sm:w-auto"
               >
                 <span>Create Paystub</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
-              </button>
+              </Link>
               <p className="mt-3 text-[12px] text-blue-100/70">
                 No sign-up required · Ready in minutes
               </p>
@@ -270,7 +273,7 @@ const DocumentsSection = () => {
                   tag: "Wage & Tax",
                   form: "W-2",
                   cta: "Create W-2",
-                  href: "#w2",
+                  href: PATHS.PUBLIC.w2,
                 },
                 {
                   key: "1099",
@@ -279,7 +282,7 @@ const DocumentsSection = () => {
                   tag: "Nonemployee",
                   form: "1099-NEC",
                   cta: "Create 1099",
-                  href: "#1099",
+                  href: PATHS.PUBLIC.nec1099,
                 },
               ].map((card) => (
                 <div
@@ -328,13 +331,13 @@ const DocumentsSection = () => {
                   </div>
 
                   <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-                    <a
-                      href={card.href}
+                    <Link
+                      to={card.href}
                       className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-secondary hover:underline"
                     >
                       <span>{card.cta}</span>
                       <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </a>
+                    </Link>
                   </div>
 
                   {/* Hover accent */}
@@ -384,13 +387,13 @@ const DocumentsSection = () => {
                 <h4 className="text-lg font-bold text-slate-900">
                   Direct Deposit Slip
                 </h4>
-                <a
-                  href="#direct-deposit"
+                <Link
+                  to={PATHS.PUBLIC.directDeposit}
                   className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-secondary hover:underline"
                 >
                   <span>Create Slip</span>
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                </Link>
               </div>
 
               {/* Hover accent */}

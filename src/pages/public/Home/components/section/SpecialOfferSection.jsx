@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router";
+import { PATHS } from "../../../../../config/paths";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,13 +66,13 @@ const SpecialOfferSection = () => {
               </p>
 
               {/* CTA Button */}
-              <a
-                href="#get-3-paystubs"
+              <Link
+                to={PATHS.PUBLIC.paystubGenerator}
                 className="inline-flex items-center gap-2 bg-secondary hover:bg-[#008be0] active:scale-[0.98] text-white font-semibold text-[15px] px-6 py-3.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
               >
                 <span>Get 3 Paystubs</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </a>
+              </Link>
             </div>
 
             {/* Right: Stacked Paystub Document Cards Preview */}
