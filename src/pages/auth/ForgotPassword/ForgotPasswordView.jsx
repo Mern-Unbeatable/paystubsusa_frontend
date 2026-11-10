@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
-import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
+import { ArrowRight, CheckCircle2, Mail } from "lucide-react";
+import toast from "react-hot-toast";
 import logoImg from "../../../assets/logo.png";
 import AuthInvoicePreview from "../components/AuthInvoicePreview";
 import { useAuth } from "../../../hooks/useAuth";
@@ -12,18 +13,12 @@ const ForgotPasswordView = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
 
     if (!email) {
-      setError("Please enter your email address");
+      toast.error("Please enter your email address", { id: "forgot-password" });
       return;
     }
 
@@ -32,8 +27,9 @@ const ForgotPasswordView = () => {
       // The API answers 202 whether or not the account exists (no account enumeration).
       await forgotPassword(email.trim());
       setSubmitted(true);
+      toast.success("Reset link sent. Check your inbox.", { id: "forgot-password" });
     } catch (err) {
-      setError(getErrorMessage(err, "Unable to send reset instructions."));
+      toast.error(getErrorMessage(err, "Unable to send reset instructions."), { id: "forgot-password" });
     } finally {
       setLoading(false);
     }
@@ -60,14 +56,6 @@ const ForgotPasswordView = () => {
         </div>
 
         <div className="w-full max-w-sm mx-auto my-auto py-6">
-          <Link
-            to={PATHS.AUTH.login}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group mb-6"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>Back to Sign In</span>
-          </Link>
-
           {!submitted ? (
             <>
               <div className="mb-6">
@@ -78,12 +66,6 @@ const ForgotPasswordView = () => {
                   Enter your email and we&apos;ll send reset instructions.
                 </p>
               </div>
-
-              {error && (
-                <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 text-center">
-                  {error}
-                </div>
-              )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -121,20 +103,36 @@ const ForgotPasswordView = () => {
             </>
           ) : (
             <div className="space-y-5 animate-in fade-in duration-300">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 mb-2">
-                <CheckCircle2 className="w-6 h-6" />
-              </div>
-
               <div>
-                <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                <h2 className="text-2xl text-center font-extrabold text-slate-900 tracking-tight">
                   Check your inbox
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
-                  If an account exists for{" "}
-                  <span className="font-semibold text-slate-800">{email}</span>,
-                  we sent a link to reset your password. The link expires soon,
-                  so use it right away.
-                </p>
+
+                {/* Trust hint */}
+                <div className="mt-8 flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-slate-700">
+                      We sent a link to reset your password this
+                    </p>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">
+                      <span className="font-semibold text-secondary">
+                        {email}
+                      </span>{" "}
+                      address.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex items-start gap-3 p-3.5 rounded-xl bg-red-50 border border-red-200">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-red-600 mt-0.5 leading-relaxed">
+                      The link expires soon, so use it right away.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="pt-2 space-y-3">
@@ -144,7 +142,7 @@ const ForgotPasswordView = () => {
                     setSubmitted(false);
                     setEmail("");
                   }}
-                  className="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold text-xs transition cursor-pointer"
+                  className="w-full py-2.5 px-4 bg-secondary hover:bg-[#0089e0] text-white rounded-xl border border-slate-200  font-semibold text-xs transition cursor-pointer"
                 >
                   Didn&apos;t receive email? Try another
                 </button>

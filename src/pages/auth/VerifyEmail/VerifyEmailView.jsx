@@ -17,8 +17,6 @@ const VerifyEmailView = () => {
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
-  const [error, setError] = useState("");
-
   const dashboard =
     user?.role === "admin" ? PATHS.ADMIN.dashboard : PATHS.CUSTOMER.dashboard;
 
@@ -32,12 +30,13 @@ const VerifyEmailView = () => {
     return <Navigate to={dashboard} replace />;
   }
 
+  const showError = (message) => toast.error(message, { id: "verify-email" });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
 
     if (!/^\d{6}$/.test(code)) {
-      setError("Enter the 6-digit code from your email");
+      showError("Enter the 6-digit code from your email");
       return;
     }
 
@@ -46,14 +45,13 @@ const VerifyEmailView = () => {
       await verifyEmail(code);
       toast.success("Email verified!", { id: "email-verified" });
     } catch (err) {
-      setError(getErrorMessage(err, "Unable to verify your email."));
+      showError(getErrorMessage(err, "Unable to verify your email."));
     } finally {
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
-    setError("");
     setResending(true);
     try {
       await resendVerification();
@@ -62,7 +60,7 @@ const VerifyEmailView = () => {
       toast.success("A new code is on its way.", { id: "verification-resent" });
     } catch (err) {
       if (err?.code === "RESEND_COOLDOWN") setCooldown(RESEND_COOLDOWN_SECONDS);
-      setError(getErrorMessage(err, "Unable to send a new code."));
+      showError(getErrorMessage(err, "Unable to send a new code."));
     } finally {
       setResending(false);
     }
@@ -113,12 +111,6 @@ const VerifyEmailView = () => {
               </p>
             </div>
           </div>
-
-          {error && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 text-center">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

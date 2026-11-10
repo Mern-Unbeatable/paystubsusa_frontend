@@ -18,29 +18,28 @@ const RegisterView = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
-  const [errorMessage, setFormError] = useState("");
+  const showError = (message) => toast.error(message, { id: "register" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError("");
 
     if (!fullName.trim()) {
-      setFormError("Please enter your full name");
+      showError("Please enter your full name");
       return;
     }
 
     if (password.length < 8) {
-      setFormError("Password must be at least 8 characters");
+      showError("Password must be at least 8 characters");
       return;
     }
 
     if (password !== confirmPassword) {
-      setFormError("Passwords do not match");
+      showError("Passwords do not match");
       return;
     }
 
     if (!agreed) {
-      setFormError("Please accept the Terms & Conditions");
+      showError("Please accept the Terms & Conditions");
       return;
     }
 
@@ -61,7 +60,7 @@ const RegisterView = () => {
         },
       );
     } catch (error) {
-      setFormError(getErrorMessage(error, "Unable to create your account."));
+      showError(getErrorMessage(error, "Unable to create your account."));
     } finally {
       submittingRef.current = false;
     }
@@ -105,12 +104,6 @@ const RegisterView = () => {
               Start creating and sending professional invoices in seconds.
             </p>
           </div>
-
-          {errorMessage && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 text-center">
-              {errorMessage}
-            </div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-3.5">
