@@ -4,6 +4,8 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  reloadUser,
+  updateProfile,
   verifyEmail,
 } from "./authThunks";
 
@@ -69,11 +71,6 @@ const authSlice = createSlice({
         state.status = "unauthenticated";
         state.error = action.payload || null;
       })
-      .addCase(verifyEmail.fulfilled, (state, action) => {
-        if (action.payload?.user) {
-          state.user = action.payload.user;
-        }
-      })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
@@ -89,6 +86,14 @@ const authSlice = createSlice({
         state.status = "unauthenticated";
         state.error = action.payload || null;
       })
+      .addMatcher(
+        isAnyOf(verifyEmail.fulfilled, updateProfile.fulfilled, reloadUser.fulfilled),
+        (state, action) => {
+          if (action.payload?.user) {
+            state.user = action.payload.user;
+          }
+        },
+      )
       .addMatcher(
         isAnyOf(
           bootstrapAuth.pending,

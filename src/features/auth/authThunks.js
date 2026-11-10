@@ -74,6 +74,29 @@ export const bootstrapAuth = createAsyncThunk(
   },
 );
 
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (changes, { rejectWithValue, signal }) => {
+    try {
+      return await authService.updateProfile(changes, { signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
+
+/** Re-reads the signed-in user from the API, the source of truth for account state. */
+export const reloadUser = createAsyncThunk(
+  "auth/reloadUser",
+  async (_, { rejectWithValue, signal }) => {
+    try {
+      return await authService.reloadUser({ signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
+
 export const verifyEmail = createAsyncThunk(
   "auth/verifyEmail",
   async (code, { rejectWithValue, signal }) => {

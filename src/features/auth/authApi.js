@@ -134,6 +134,28 @@ export async function resendVerificationApi(options = {}) {
   return response.data?.data?.resendAvailableAt || null;
 }
 
+/** Only `name` and `phone` are editable; email changes are not supported by the API. */
+export async function updateProfileApi(changes, options = {}) {
+  const response = await httpClient.patch(
+    API_ENDPOINTS.ACCOUNT.PROFILE,
+    changes,
+    options,
+  );
+  return { user: resolveUserPayload(response.data) };
+}
+
+/** The API keeps the current session and signs out every other one. */
+export async function changePasswordApi(
+  { currentPassword, newPassword },
+  options = {},
+) {
+  await httpClient.post(
+    API_ENDPOINTS.ACCOUNT.PASSWORD,
+    { currentPassword, newPassword },
+    options,
+  );
+}
+
 export async function verifyEmailApi(code, options = {}) {
   const response = await httpClient.post(
     API_ENDPOINTS.AUTH.VERIFY_EMAIL,

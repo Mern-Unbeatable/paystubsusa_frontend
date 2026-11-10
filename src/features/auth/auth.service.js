@@ -2,6 +2,7 @@ import { refreshSession } from "../../api/axiosInstance";
 import { normalizeHttpError } from "../../api/errorNormalizer";
 import { clearAccessToken, getAccessToken } from "../../api/tokenManager";
 import {
+  changePasswordApi,
   forgotPasswordApi,
   loginApi,
   logoutApi,
@@ -9,6 +10,7 @@ import {
   resendVerificationApi,
   resetPasswordApi,
   restoreSessionApi,
+  updateProfileApi,
   verifyEmailApi,
 } from "./authApi";
 
@@ -50,4 +52,7 @@ export const authService = {
   resetPassword: resetPasswordApi,
   resendVerification: resendVerificationApi,
   verifyEmail: verifyEmailApi,
+  reloadUser: restoreSessionApi,
+  updateProfile: updateProfileApi,
+  changePassword: changePasswordApi,
 };

@@ -13,6 +13,10 @@ export const API_ENDPOINTS = Object.freeze({
     RESEND_VERIFICATION: "/auth/email/verification",
     VERIFY_EMAIL: "/auth/email/verify",
   }),
+  ACCOUNT: Object.freeze({
+    PROFILE: "/me",
+    PASSWORD: "/me/password",
+  }),
   USERS: Object.freeze({
     LIST: "/users",
     DETAILS: (id) => buildResourcePath("users", id),

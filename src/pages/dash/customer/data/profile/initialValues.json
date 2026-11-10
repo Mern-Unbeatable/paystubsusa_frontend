@@ -1,8 +1,0 @@
-{
-  "name": "John Doe",
-  "phone": "01780053624",
-  "email": "admin@johnindustries.com",
-  "currentPassword": "password123",
-  "newPassword": "newpassword123",
-  "confirmPassword": "newpassword123"
-}

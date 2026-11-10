@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router";
 import { ArrowLeft, ArrowRight, MailCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import logoImg from "../../../assets/logo.png";
-import AuthInvoicePreview from "../components/AuthInvoicePreview";
+import AuthVerifyEmailIllustration from "../components/AuthVerifyEmailIllustration";
 import { useAuth } from "../../../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 import { PATHS } from "../../../config/paths";
@@ -69,7 +69,7 @@ const VerifyEmailView = () => {
   return (
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
       <div className="hidden lg:block w-full h-full">
-        <AuthInvoicePreview />
+        <AuthVerifyEmailIllustration />
       </div>
 
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">

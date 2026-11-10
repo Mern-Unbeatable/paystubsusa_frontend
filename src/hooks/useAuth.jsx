@@ -12,6 +12,8 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  reloadUser as reloadUserThunk,
+  updateProfile as updateProfileThunk,
   verifyEmail as verifyEmailThunk,
 } from "../features/auth/authThunks";
 
@@ -40,6 +42,16 @@ export function useAuth() {
     [dispatch],
   );
 
+  const updateProfile = useCallback(
+    (changes) => dispatch(updateProfileThunk(changes)).unwrap(),
+    [dispatch],
+  );
+
+  const reloadUser = useCallback(
+    () => dispatch(reloadUserThunk()).unwrap(),
+    [dispatch],
+  );
+
   return {
     user,
     loading,
@@ -52,6 +64,9 @@ export function useAuth() {
     register,
     logout,
     verifyEmail,
+    updateProfile,
+    reloadUser,
+    changePassword: authService.changePassword,
     forgotPassword: authService.forgotPassword,
     resetPassword: authService.resetPassword,
     resendVerification: authService.resendVerification,
