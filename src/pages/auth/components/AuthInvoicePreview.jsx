@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
+import logoImg from "../../../assets/logo.png";
 
 const AuthInvoicePreview = () => {
   return (
@@ -15,6 +17,15 @@ const AuthInvoicePreview = () => {
 
       {/* Header */}
       <div className="relative z-10 text-center mb-6 max-w-sm">
+        <Link to="/" className="inline-block mb-4">
+          <img
+            src={logoImg}
+            alt="Logo"
+            className="h-10 w-auto object-contain"
+            loading="eager"
+            decoding="async"
+          />
+        </Link>
         <h2 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">
           Official Invoice Preview
         </h2>
@@ -32,10 +43,14 @@ const AuthInvoicePreview = () => {
               <div className="w-4 h-4 border-2 border-[#FFC711] rotate-45 flex items-center justify-center">
                 <div className="w-1.5 h-1.5 bg-[#FFC711]" />
               </div>
-              <span className="font-bold text-slate-800 text-[10.5px] tracking-tight">Brand Name</span>
+              <span className="font-bold text-slate-800 text-[10.5px] tracking-tight">
+                Brand Name
+              </span>
             </div>
             <div className="text-right">
-              <span className="text-sm font-extrabold text-slate-900 tracking-wider">INVOICE</span>
+              <span className="text-sm font-extrabold text-slate-900 tracking-wider">
+                INVOICE
+              </span>
               <div className="h-1.5 w-full bg-[#FFC711] mt-0.5" />
             </div>
           </div>
@@ -43,19 +58,25 @@ const AuthInvoicePreview = () => {
           {/* Recipient & Invoice Info */}
           <div className="grid grid-cols-2 gap-4 py-3.5 text-slate-600 text-[8px]">
             <div>
-              <span className="font-bold text-slate-800 text-[8.5px] block mb-0.5">Invoice to:</span>
+              <span className="font-bold text-slate-800 text-[8.5px] block mb-0.5">
+                Invoice to:
+              </span>
               <p className="font-semibold text-slate-700">Dayana Clark</p>
               <p className="text-slate-500 text-[7.5px] leading-snug">
-                24 Dummy Street Area,<br />Location, Lorem Ipsum,<br />47000000
+                24 Dummy Street Area,
+                <br />
+                Location, Lorem Ipsum,
+                <br />
+                47000000
               </p>
             </div>
             <div className="text-right space-y-1">
               <div>
-                <span className="font-bold text-slate-700">Invoice#</span>{' '}
+                <span className="font-bold text-slate-700">Invoice#</span>{" "}
                 <span className="text-slate-500 font-mono">10148</span>
               </div>
               <div>
-                <span className="font-bold text-slate-700">Date</span>{' '}
+                <span className="font-bold text-slate-700">Date</span>{" "}
                 <span className="text-slate-500">01 / 03 / 2025</span>
               </div>
             </div>
@@ -79,28 +100,42 @@ const AuthInvoicePreview = () => {
                   <td className="py-1.5 px-2 font-medium">Lorem Ipsum Dolor</td>
                   <td className="py-1.5 px-2 text-right">$50.00</td>
                   <td className="py-1.5 px-2 text-center">1</td>
-                  <td className="py-1.5 px-2 text-right font-semibold">$50.00</td>
+                  <td className="py-1.5 px-2 text-right font-semibold">
+                    $50.00
+                  </td>
                 </tr>
                 <tr>
                   <td className="py-1.5 px-2 text-slate-500">2</td>
-                  <td className="py-1.5 px-2 font-medium">Pellentesque id neque ligula</td>
+                  <td className="py-1.5 px-2 font-medium">
+                    Pellentesque id neque ligula
+                  </td>
                   <td className="py-1.5 px-2 text-right">$20.00</td>
                   <td className="py-1.5 px-2 text-center">3</td>
-                  <td className="py-1.5 px-2 text-right font-semibold">$60.00</td>
+                  <td className="py-1.5 px-2 text-right font-semibold">
+                    $60.00
+                  </td>
                 </tr>
                 <tr>
                   <td className="py-1.5 px-2 text-slate-500">3</td>
-                  <td className="py-1.5 px-2 font-medium">Interdum et malesuada fames</td>
+                  <td className="py-1.5 px-2 font-medium">
+                    Interdum et malesuada fames
+                  </td>
                   <td className="py-1.5 px-2 text-right">$15.00</td>
                   <td className="py-1.5 px-2 text-center">2</td>
-                  <td className="py-1.5 px-2 text-right font-semibold">$30.00</td>
+                  <td className="py-1.5 px-2 text-right font-semibold">
+                    $30.00
+                  </td>
                 </tr>
                 <tr>
                   <td className="py-1.5 px-2 text-slate-500">4</td>
-                  <td className="py-1.5 px-2 font-medium">Vivamus volutpat faucibus</td>
+                  <td className="py-1.5 px-2 font-medium">
+                    Vivamus volutpat faucibus
+                  </td>
                   <td className="py-1.5 px-2 text-right">$80.00</td>
                   <td className="py-1.5 px-2 text-center">1</td>
-                  <td className="py-1.5 px-2 text-right font-semibold">$80.00</td>
+                  <td className="py-1.5 px-2 text-right font-semibold">
+                    $80.00
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -109,9 +144,13 @@ const AuthInvoicePreview = () => {
           {/* Totals & Notes */}
           <div className="grid grid-cols-2 gap-4 mt-3 pt-2.5 text-[7.5px] border-t border-slate-100">
             <div className="space-y-1 text-slate-500 leading-snug">
-              <p className="font-semibold text-slate-800">Thank you for your business</p>
+              <p className="font-semibold text-slate-800">
+                Thank you for your business
+              </p>
               <p>
-                <strong className="text-slate-700">Terms &amp; Conditions:</strong>
+                <strong className="text-slate-700">
+                  Terms &amp; Conditions:
+                </strong>
                 <br />
                 Viverra dignissim pretium scelerisque.
               </p>

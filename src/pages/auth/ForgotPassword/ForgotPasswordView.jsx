@@ -45,28 +45,27 @@ const ForgotPasswordView = () => {
       </div>
 
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
-        <div className="w-full flex items-center justify-end">
+        {/* Top Header: Logo (mobile only; desktop shows it in the left panel) */}
+        <div className="w-full flex items-center justify-between lg:justify-end">
+          <Link to="/" className="inline-block lg:hidden">
+            <img
+              src={logoImg}
+              alt="Logo"
+              className="h-10 w-auto object-contain"
+              loading="eager"
+              decoding="async"
+            />
+          </Link>
+        </div>
+
+        <div className="w-full max-w-sm mx-auto my-auto py-6">
           <Link
             to="/login"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group mb-6"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Back to Sign In</span>
           </Link>
-        </div>
-
-        <div className="w-full max-w-sm mx-auto my-auto py-8">
-          <div className="mb-6">
-            <Link to="/" className="inline-block">
-              <img
-                src={logoImg}
-                alt="Logo"
-                className="h-10 w-auto object-contain"
-                loading="eager"
-                decoding="async"
-              />
-            </Link>
-          </div>
 
           {!submitted ? (
             <>

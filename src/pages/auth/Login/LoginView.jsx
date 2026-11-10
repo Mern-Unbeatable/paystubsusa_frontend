@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Link } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
@@ -6,9 +6,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 
-const AuthInvoicePreview = lazy(
-  () => import("../components/AuthInvoicePreview"),
-);
+import AuthInvoicePreview from "../components/AuthInvoicePreview";
 
 const LoginView = () => {
   const { login, loading } = useAuth();
@@ -34,7 +32,9 @@ const LoginView = () => {
         id: "login-success",
       });
     } catch (error) {
-      setFormError(getErrorMessage(error, "Unable to sign in. Please try again."));
+      setFormError(
+        getErrorMessage(error, "Unable to sign in. Please try again."),
+      );
     }
   };
 
@@ -42,19 +42,26 @@ const LoginView = () => {
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
       {/* Left Column: Interactive Invoice Preview Showcase (50% width) */}
       <div className="hidden lg:block w-full h-full">
-        <Suspense
-          fallback={
-            <div className="w-full h-full min-h-screen bg-slate-100 animate-pulse" />
-          }
-        >
-          <AuthInvoicePreview />
-        </Suspense>
+        <AuthInvoicePreview />
       </div>
 
       {/* Right Column: Clean Authentication Form (50% width) */}
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
-        {/* Top Header / Back Button */}
-        <div className="w-full flex items-center justify-end">
+        {/* Top Header: Logo (mobile only; desktop shows it in the left panel) */}
+        <div className="w-full flex items-center justify-between lg:justify-end">
+          <Link to="/" className="inline-block lg:hidden">
+            <img
+              src={logoImg}
+              alt="Logo"
+              className="h-10 w-auto object-contain"
+              loading="eager"
+              decoding="async"
+            />
+          </Link>
+        </div>
+
+        {/* Form Body Container */}
+        <div className="w-full max-w-sm mx-auto my-auto py-6">
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group"
@@ -62,25 +69,9 @@ const LoginView = () => {
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Back to Home</span>
           </Link>
-        </div>
-
-        {/* Form Body Container */}
-        <div className="w-full max-w-sm mx-auto my-auto py-8">
-          {/* Logo */}
-          <div className="mb-6">
-            <Link to="/" className="inline-block">
-              <img
-                src={logoImg}
-                alt="Logo"
-                className="h-10 w-auto object-contain"
-                loading="eager"
-                decoding="async"
-              />
-            </Link>
-          </div>
 
           {/* Heading */}
-          <div className="mb-6">
+          <div className="my-6">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Sign In
             </h1>

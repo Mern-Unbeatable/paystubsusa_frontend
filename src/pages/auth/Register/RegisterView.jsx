@@ -4,7 +4,7 @@ import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
-import registerIllustration from "../../../assets/find-paystubs-illustration.png";
+import AuthIllustrationPanel from "../components/AuthIllustrationPanel";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 
 const RegisterView = () => {
@@ -57,37 +57,8 @@ const RegisterView = () => {
 
   return (
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
-      {/* Left Column: Illustration (desktop only, same backdrop as the login preview) */}
-      <div className="hidden lg:flex w-full h-full min-h-screen bg-gradient-to-b from-slate-50 via-sky-50/40 to-slate-100/60 p-8 lg:p-14 flex-col justify-center items-center relative overflow-hidden border-r border-slate-200/60">
-        <div className="absolute top-1/4 -left-20 w-72 h-72 rounded-full bg-blue-100/40 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 -right-20 w-72 h-72 rounded-full bg-sky-100/50 blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 text-center mb-8 max-w-sm">
-          <Link to="/" className="mb-4 block mx-auto w-fit">
-            <img
-              src={logoImg}
-              alt="Logo"
-              className="h-10 w-auto object-contain"
-              loading="eager"
-              decoding="async"
-            />
-          </Link>
-          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            Your paystubs, secured
-          </h2>
-          {/* <p className="text-sm text-slate-500 mt-1.5">
-            Create an account to generate, store and download your documents
-            anytime.
-          </p> */}
-        </div>
-        <img
-          src={registerIllustration}
-          alt=""
-          className="relative z-10 w-full max-w-md h-auto object-contain mix-blend-multiply"
-          loading="eager"
-          decoding="async"
-        />
-      </div>
+      {/* Left Column: Illustration (desktop only) */}
+      <AuthIllustrationPanel title="Your paystubs, secured" />
 
       {/* Right Column: Clean Registration Form (50% width) */}
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
