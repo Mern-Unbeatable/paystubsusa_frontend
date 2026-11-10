@@ -7,6 +7,7 @@ import AuthInvoicePreview from "../components/AuthInvoicePreview";
 import { useAuth } from "../../../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 import { PATHS } from "../../../config/paths";
+import { CheckCircle2 } from "lucide-react";
 
 const RESEND_COOLDOWN_SECONDS = 30;
 
@@ -20,10 +21,6 @@ const VerifyEmailView = () => {
 
   const dashboard =
     user?.role === "admin" ? PATHS.ADMIN.dashboard : PATHS.CUSTOMER.dashboard;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   useEffect(() => {
     if (cooldown <= 0) return undefined;
@@ -99,20 +96,22 @@ const VerifyEmailView = () => {
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Skip for now</span>
           </Link>
-
-          <div className="w-12 h-12 rounded-2xl bg-sky-50 text-secondary flex items-center justify-center border border-sky-100 mb-4">
-            <MailCheck className="w-6 h-6" />
-          </div>
-
           <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Verify your email
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              Verify Your Email
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              We sent a 6-digit code to{" "}
-              <span className="font-semibold text-slate-800">{user?.email}</span>.
-              You need a verified email to place orders.
-            </p>
+
+            {/* Trust hint */}
+            <div className="mt-8 flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <MailCheck className="w-12 h-12 text-secondary" />
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                We sent a 6-digit code to your email address{" "}
+                <span className="font-semibold text-secondary">
+                  {user?.email}
+                </span>
+                . You need a verified email to place orders.
+              </p>
+            </div>
           </div>
 
           {error && (
