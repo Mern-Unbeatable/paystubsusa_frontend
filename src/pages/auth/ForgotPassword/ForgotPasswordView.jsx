@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { ArrowRight, CheckCircle2, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 import logoImg from "../../../assets/logo.png";
-import AuthForgotPasswordIllustration from "../components/AuthForgotPasswordIllustration";
+import AuthPasswordIllustration from "../components/AuthPasswordIllustration";
 import { useAuth } from "../../../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 import { PATHS } from "../../../config/paths";
@@ -38,7 +38,11 @@ const ForgotPasswordView = () => {
   return (
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
       <div className="hidden lg:block w-full h-full">
-        <AuthForgotPasswordIllustration />
+        <AuthPasswordIllustration
+          title="Locked Out? No Problem."
+          subtitle="We'll email you a secure link to set a new one"
+          chips={["Secure reset link", "Valid for 30 minutes"]}
+        />
       </div>
 
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
