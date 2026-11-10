@@ -7,16 +7,19 @@ const STATUS_MESSAGES = {
   500: "A server error occurred. Please try again later.",
 };
 
+// The API's 4xx messages are written for end users; 5xx messages never are.
 function getSafeMessage(status, serverMessage) {
-  if (STATUS_MESSAGES[status]) {
-    return STATUS_MESSAGES[status];
-  }
-
   if (status && status < 500 && typeof serverMessage === "string") {
     return serverMessage;
   }
 
-  return DEFAULT_ERROR_MESSAGE;
+  return STATUS_MESSAGES[status] || DEFAULT_ERROR_MESSAGE;
+}
+
+/** First field-level message if the API sent one, else the general message. */
+export function getErrorMessage(error, fallback = DEFAULT_ERROR_MESSAGE) {
+  const fieldMessage = Object.values(error?.fieldErrors || {}).flat()[0];
+  return fieldMessage || error?.message || fallback;
 }
 
 function extractFieldErrors(errorData) {

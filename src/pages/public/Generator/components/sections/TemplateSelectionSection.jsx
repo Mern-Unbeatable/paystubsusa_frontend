@@ -50,7 +50,7 @@ const TemplateSelectionSection = ({
       ref={sectionRef}
       className="w-full bg-[#F0F5FA] py-14 sm:py-20 select-none border-t border-slate-200/60"
     >
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         {/* Section Header matching Figma */}
         <div className="mb-10 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#092258] tracking-tight">

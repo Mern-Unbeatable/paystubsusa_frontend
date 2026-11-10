@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
 import { useAuth } from "../../../hooks/useAuth";
+import { PATHS } from "../../../config/paths";
+import { ENV_CONFIG } from "../../../config/env";
 import { toast } from "react-hot-toast";
 import {
   LayoutGrid,
@@ -237,7 +239,9 @@ const extractErrorMessage = (error) => {
 const UserSummaryCard = ({ role, user }) => {
   const userName = resolveUserName(user, role);
   const userRole = resolveUserRole(user, role);
-  const avatarUrl = DUMMY_AVATAR_URL;
+  const avatarUrl = user?.avatarUrl
+    ? `${ENV_CONFIG.apiBaseUrl}${user.avatarUrl}`
+    : DUMMY_AVATAR_URL;
 
   return (
     <div className="p-2.5 rounded bg-slate-50/80 border border-slate-100 flex items-center gap-3">
@@ -294,13 +298,13 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
 
     try {
       await logout();
-      navigate("/login");
+      navigate(PATHS.AUTH.login);
     } catch (error) {
       toast.error(extractErrorMessage(error), {
         id: "dashboard-logout-error",
         duration: 2800,
       });
-      navigate("/login");
+      navigate(PATHS.AUTH.login);
     } finally {
       setIsLoggingOut(false);
     }

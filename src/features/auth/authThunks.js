@@ -74,24 +74,58 @@ export const bootstrapAuth = createAsyncThunk(
   },
 );
 
-export const loginAsDemoUser = createAsyncThunk(
-  "auth/loginAsDemoUser",
-  async (userKey, { rejectWithValue }) => {
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (changes, { rejectWithValue, signal }) => {
     try {
-      return await authService.loginAsDemoUser(userKey);
+      return await authService.updateProfile(changes, { signal });
     } catch (error) {
       return rejectWithValue(normalizeThunkError(error));
     }
   },
-  {
-    condition: (_, { getState }) => {
-      const authState = getState()?.auth;
+);
 
-      if (!authState) {
-        return true;
-      }
+export const uploadAvatar = createAsyncThunk(
+  "auth/uploadAvatar",
+  async (file, { rejectWithValue, signal }) => {
+    try {
+      return await authService.uploadAvatar(file, { signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
 
-      return authState.loading !== true;
-    },
+export const removeAvatar = createAsyncThunk(
+  "auth/removeAvatar",
+  async (_, { rejectWithValue, signal }) => {
+    try {
+      return await authService.removeAvatar({ signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
+
+/** Re-reads the signed-in user from the API, the source of truth for account state. */
+export const reloadUser = createAsyncThunk(
+  "auth/reloadUser",
+  async (_, { rejectWithValue, signal }) => {
+    try {
+      return await authService.reloadUser({ signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
+
+export const verifyEmail = createAsyncThunk(
+  "auth/verifyEmail",
+  async (code, { rejectWithValue, signal }) => {
+    try {
+      return await authService.verifyEmail(code, { signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
   },
 );

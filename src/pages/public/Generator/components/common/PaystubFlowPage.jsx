@@ -26,7 +26,7 @@ const PaystubFlowPage = ({ children }) => {
 
   return (
     <div className="w-full min-h-screen bg-[#F4F7FB] border-t border-slate-200/80 py-8 sm:py-14">
-      <div className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-0 sm:py-12 select-none">
+      <div className="w-full max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-0 sm:py-12 select-none">
         {children(template)}
       </div>
     </div>

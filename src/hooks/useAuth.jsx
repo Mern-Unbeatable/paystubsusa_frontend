@@ -7,11 +7,16 @@ import {
   selectAuthUser,
   selectIsAuthenticated,
 } from "../features/auth/authSelectors";
+import { authService } from "../features/auth/auth.service";
 import {
-  loginAsDemoUser,
   loginUser,
   logoutUser,
   registerUser,
+  reloadUser as reloadUserThunk,
+  removeAvatar as removeAvatarThunk,
+  updateProfile as updateProfileThunk,
+  uploadAvatar as uploadAvatarThunk,
+  verifyEmail as verifyEmailThunk,
 } from "../features/auth/authThunks";
 
 export function useAuth() {
@@ -32,22 +37,52 @@ export function useAuth() {
     [dispatch],
   );
 
-  const loginAs = useCallback(
-    (userKey) => dispatch(loginAsDemoUser(userKey)).unwrap(),
+  const logout = useCallback(() => dispatch(logoutUser()).unwrap(), [dispatch]);
+
+  const verifyEmail = useCallback(
+    (code) => dispatch(verifyEmailThunk(code)).unwrap(),
     [dispatch],
   );
 
-  const logout = useCallback(() => dispatch(logoutUser()).unwrap(), [dispatch]);
+  const updateProfile = useCallback(
+    (changes) => dispatch(updateProfileThunk(changes)).unwrap(),
+    [dispatch],
+  );
+
+  const reloadUser = useCallback(
+    () => dispatch(reloadUserThunk()).unwrap(),
+    [dispatch],
+  );
+
+  const uploadAvatar = useCallback(
+    (file) => dispatch(uploadAvatarThunk(file)).unwrap(),
+    [dispatch],
+  );
+
+  const removeAvatar = useCallback(
+    () => dispatch(removeAvatarThunk()).unwrap(),
+    [dispatch],
+  );
 
   return {
     user,
     loading,
     status,
+    // True until the first session restore settles; guards wait on this, not on `loading`.
+    initializing: status === "idle" || status === "bootstrapping",
     error,
     isAuthenticated,
     login,
     register,
-    loginAs,
     logout,
+    verifyEmail,
+    updateProfile,
+    reloadUser,
+    uploadAvatar,
+    removeAvatar,
+    changePassword: authService.changePassword,
+    forgotPassword: authService.forgotPassword,
+    resetPassword: authService.resetPassword,
+    resendVerification: authService.resendVerification,
   };
 }

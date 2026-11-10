@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import heroImg from '../../../../../assets/herosection.png';
 import gsap from 'gsap';
+import { Link } from 'react-router';
+import { PATHS } from '../../../../../config/paths';
 
 const HeroSection = () => {
   const sectionRef = useRef(null);
@@ -49,7 +51,7 @@ const HeroSection = () => {
         aria-hidden="true"
       />
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-end min-h-[560px] lg:min-h-[620px] xl:min-h-[680px]">
           
           {/* Left Column: Heading, Subtitle & Action CTAs */}
@@ -66,19 +68,19 @@ const HeroSection = () => {
 
             {/* CTAs */}
             <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
-              <button
-                type="button"
+              <Link
+                to={PATHS.PUBLIC.paystubGenerator}
                 className="hero-btn bg-secondary hover:bg-[#008be0] active:scale-[0.98] text-white font-semibold text-[15px] px-6 py-3.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-center min-w-[155px]"
               >
                 Create Paystub
-              </button>
+              </Link>
               
-              <button
-                type="button"
+              <a
+                href="#documents"
                 className="hero-btn border border-white/40 hover:border-white hover:bg-white/10 active:scale-[0.98] text-white font-semibold text-[15px] px-6 py-3.5 rounded-lg bg-white/5 transition-all duration-200 cursor-pointer text-center min-w-[165px]"
               >
                 Explore Document
-              </button>
+              </a>
             </div>
           </div>
 

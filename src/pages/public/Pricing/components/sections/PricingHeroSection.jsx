@@ -26,7 +26,7 @@ const PricingHeroSection = () => {
         aria-hidden="true"
       />
 
-      <div ref={heroRef} className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <div ref={heroRef} className="relative z-10 max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
         {/* Category Pill Tag */}
         <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] text-secondary uppercase mb-3.5">
           CLEAR, FLEXIBLE PRICING

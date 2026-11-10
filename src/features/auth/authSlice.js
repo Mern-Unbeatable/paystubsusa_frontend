@@ -1,10 +1,14 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {
   bootstrapAuth,
-  loginAsDemoUser,
   loginUser,
   logoutUser,
   registerUser,
+  reloadUser,
+  removeAvatar,
+  updateProfile,
+  uploadAvatar,
+  verifyEmail,
 } from "./authThunks";
 
 const initialState = {
@@ -25,6 +29,7 @@ const authSlice = createSlice({
     },
     forceLogout(state, action) {
       state.user = null;
+      state.isAuthenticated = false;
       state.loading = false;
       state.status = "unauthenticated";
       state.error = null;
@@ -85,10 +90,23 @@ const authSlice = createSlice({
       })
       .addMatcher(
         isAnyOf(
+          verifyEmail.fulfilled,
+          updateProfile.fulfilled,
+          reloadUser.fulfilled,
+          uploadAvatar.fulfilled,
+          removeAvatar.fulfilled,
+        ),
+        (state, action) => {
+          if (action.payload?.user) {
+            state.user = action.payload.user;
+          }
+        },
+      )
+      .addMatcher(
+        isAnyOf(
           bootstrapAuth.pending,
           loginUser.pending,
           registerUser.pending,
-          loginAsDemoUser.pending,
           logoutUser.pending,
         ),
         (state) => {
@@ -98,11 +116,7 @@ const authSlice = createSlice({
         },
       )
       .addMatcher(
-        isAnyOf(
-          loginUser.fulfilled,
-          registerUser.fulfilled,
-          loginAsDemoUser.fulfilled,
-        ),
+        isAnyOf(loginUser.fulfilled, registerUser.fulfilled),
         (state, action) => {
           state.user = action.payload?.user || null;
           state.isAuthenticated = Boolean(action.payload?.user);
@@ -115,11 +129,7 @@ const authSlice = createSlice({
         },
       )
       .addMatcher(
-        isAnyOf(
-          loginUser.rejected,
-          registerUser.rejected,
-          loginAsDemoUser.rejected,
-        ),
+        isAnyOf(loginUser.rejected, registerUser.rejected),
         (state, action) => {
           state.loading = false;
           state.status = "unauthenticated";

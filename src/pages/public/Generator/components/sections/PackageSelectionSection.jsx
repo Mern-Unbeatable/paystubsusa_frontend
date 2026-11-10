@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Check, Minus, Plus } from 'lucide-react';
+import { Check, Minus, Plus } from 'lucide-react';
 import TemplateDocumentPreview from '../common/TemplateDocumentPreview';
 import { formatCurrency } from '../../utils/formatCurrency';
 
@@ -29,16 +29,7 @@ const PackageSelectionSection = ({
             {/* Left Column: Package Options */}
             <div className="lg:col-span-7 space-y-6">
               
-              {/* Back to review link */}
               <div>
-                <button
-                  type="button"
-                  onClick={onBackToReview}
-                  className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-[#1E60F2] hover:underline cursor-pointer mb-3"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Back to review</span>
-                </button>
                 <h2 className="text-2xl sm:text-[32px] font-bold text-[#092258] tracking-tight">
                   Choose your package
                 </h2>
@@ -138,8 +129,15 @@ const PackageSelectionSection = ({
                 </div>
               </div>
 
-              {/* Continue Button */}
-              <div>
+              {/* Actions: Back (left), Continue (right) */}
+              <div className="flex items-center justify-between pt-5 border-t border-slate-200/80">
+                <button
+                  type="button"
+                  onClick={onBackToReview}
+                  className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer"
+                >
+                  &lt; Back
+                </button>
                 <button
                   type="button"
                   onClick={onContinueToCheckout}
@@ -154,7 +152,18 @@ const PackageSelectionSection = ({
 
             {/* Right Column: Order Summary Card */}
             <div className="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm sticky top-24">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Order summary</h3>
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <h3 className="text-xl font-bold text-slate-900">Order summary</h3>
+                {onChangeTemplate && (
+                  <button
+                    type="button"
+                    onClick={onChangeTemplate}
+                    className="text-[#1E60F2] text-[13px] font-semibold hover:underline cursor-pointer"
+                  >
+                    Change Template
+                  </button>
+                )}
+              </div>
 
               {/* Paystub Document Thumbnail */}
               <div className="mb-5 overflow-hidden">
@@ -165,18 +174,7 @@ const PackageSelectionSection = ({
               <div className="space-y-3 pt-2 text-[14px]">
                 <div className="flex items-center justify-between text-slate-500">
                   <span>Template</span>
-                  <span className="flex items-center gap-3">
-                    <span className="font-bold text-slate-800">{template.title}</span>
-                    {onChangeTemplate && (
-                      <button
-                        type="button"
-                        onClick={onChangeTemplate}
-                        className="text-[#1E60F2] text-[13px] font-medium hover:underline cursor-pointer"
-                      >
-                        Change
-                      </button>
-                    )}
-                  </span>
+                  <span className="font-bold text-slate-800">{template.title}</span>
                 </div>
                 <div className="flex items-center justify-between text-slate-500">
                   <span>Package</span>

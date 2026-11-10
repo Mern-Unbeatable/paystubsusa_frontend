@@ -9,7 +9,8 @@ import { W2_FLOW } from "../../utils/w2Flow";
 /** Form steps 1-3 of the W-2 flow; the current step lives in `?step=`. */
 const W2GeneratorForm = () => {
   const { formData, updateField: handleInputChange } = useW2FormData();
-  const { currentStep, handleNext, handleBack, onStepClick } = useFormStep(W2_FLOW);
+  const { currentStep, handleNext, handleBack, onStepClick } =
+    useFormStep(W2_FLOW);
 
   return (
     <DocumentFormLayout
@@ -91,9 +92,7 @@ const W2GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.city}
-                onChange={(e) =>
-                  handleInputChange("city", e.target.value)
-                }
+                onChange={(e) => handleInputChange("city", e.target.value)}
                 placeholder="City"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -106,9 +105,7 @@ const W2GeneratorForm = () => {
               <div className="relative">
                 <select
                   value={formData.state}
-                  onChange={(e) =>
-                    handleInputChange("state", e.target.value)
-                  }
+                  onChange={(e) => handleInputChange("state", e.target.value)}
                   className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                 >
                   <option value="">Select</option>
@@ -129,9 +126,7 @@ const W2GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.zipCode}
-                onChange={(e) =>
-                  handleInputChange("zipCode", e.target.value)
-                }
+                onChange={(e) => handleInputChange("zipCode", e.target.value)}
                 placeholder="Zip Code"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -214,9 +209,7 @@ const W2GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.firstName}
-                onChange={(e) =>
-                  handleInputChange("firstName", e.target.value)
-                }
+                onChange={(e) => handleInputChange("firstName", e.target.value)}
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -248,9 +241,7 @@ const W2GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.lastName}
-                onChange={(e) =>
-                  handleInputChange("lastName", e.target.value)
-                }
+                onChange={(e) => handleInputChange("lastName", e.target.value)}
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -379,9 +370,7 @@ const W2GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.box1Wages}
-                onChange={(e) =>
-                  handleInputChange("box1Wages", e.target.value)
-                }
+                onChange={(e) => handleInputChange("box1Wages", e.target.value)}
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -410,10 +399,7 @@ const W2GeneratorForm = () => {
                 type="text"
                 value={formData.box3SocialSecurityWages}
                 onChange={(e) =>
-                  handleInputChange(
-                    "box3SocialSecurityWages",
-                    e.target.value,
-                  )
+                  handleInputChange("box3SocialSecurityWages", e.target.value)
                 }
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
@@ -427,10 +413,7 @@ const W2GeneratorForm = () => {
                 type="text"
                 value={formData.box4SocialSecurityTax}
                 onChange={(e) =>
-                  handleInputChange(
-                    "box4SocialSecurityTax",
-                    e.target.value,
-                  )
+                  handleInputChange("box4SocialSecurityTax", e.target.value)
                 }
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
@@ -476,10 +459,7 @@ const W2GeneratorForm = () => {
                 type="text"
                 value={formData.box7SocialSecurityTips}
                 onChange={(e) =>
-                  handleInputChange(
-                    "box7SocialSecurityTips",
-                    e.target.value,
-                  )
+                  handleInputChange("box7SocialSecurityTips", e.target.value)
                 }
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
@@ -509,10 +489,7 @@ const W2GeneratorForm = () => {
                 type="text"
                 value={formData.box10DependentCare}
                 onChange={(e) =>
-                  handleInputChange(
-                    "box10DependentCare",
-                    e.target.value,
-                  )
+                  handleInputChange("box10DependentCare", e.target.value)
                 }
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
@@ -526,10 +503,7 @@ const W2GeneratorForm = () => {
                 type="text"
                 value={formData.box11NonqualifiedPlans}
                 onChange={(e) =>
-                  handleInputChange(
-                    "box11NonqualifiedPlans",
-                    e.target.value,
-                  )
+                  handleInputChange("box11NonqualifiedPlans", e.target.value)
                 }
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
@@ -544,10 +518,7 @@ const W2GeneratorForm = () => {
               id="box13-statutory"
               checked={formData.box13StatutoryEmployee}
               onChange={(e) =>
-                handleInputChange(
-                  "box13StatutoryEmployee",
-                  e.target.checked,
-                )
+                handleInputChange("box13StatutoryEmployee", e.target.checked)
               }
               className="w-4 h-4 rounded text-secondary border-slate-300 focus:ring-secondary cursor-pointer"
             />
@@ -568,9 +539,7 @@ const W2GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.box12Code}
-                onChange={(e) =>
-                  handleInputChange("box12Code", e.target.value)
-                }
+                onChange={(e) => handleInputChange("box12Code", e.target.value)}
                 placeholder="DD"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -604,9 +573,7 @@ const W2GeneratorForm = () => {
               </div>
               <button
                 type="button"
-                onClick={() =>
-                  alert("Additional state reporting added.")
-                }
+                onClick={() => alert("Additional state reporting added.")}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 hover:border-secondary text-slate-700 hover:text-secondary text-[13px] font-medium transition cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[2.5]" />

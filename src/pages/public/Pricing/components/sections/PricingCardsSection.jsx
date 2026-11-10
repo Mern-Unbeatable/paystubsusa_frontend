@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router";
 import { Check, ChevronRight } from "lucide-react";
 import monthlyFeatures from "../../../data/pricing/monthlyFeatures.json";
 import oneTimeCards from "../../../data/pricing/oneTimeCards.json";
 
-const PricingCardsSection = () => {
-  const [billingType, setBillingType] = useState("one-time"); // 'one-time' | 'monthly'
+const PricingCardsSection = ({ billingType, onBillingChange }) => {
 
   return (
-    <section className="w-full bg-[#F7FAFF] pt-2 pb-24 px-4 sm:px-6 lg:px-8 border-t border-slate-100">
-      <div className="max-w-[1240px] mx-auto space-y-10 sm:space-y-12">
+    <section className="w-full bg-[#F7FAFF] pt-2 pb-24 border-t border-slate-100">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 space-y-10 sm:space-y-12">
         {/* Top Dark Navy Special Offer Banner */}
         <div className="w-full bg-[#172E57] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden shadow-md">
           <div className="flex items-center gap-5 sm:gap-6 z-10">
@@ -52,7 +51,7 @@ const PricingCardsSection = () => {
           <div className="bg-[#EAF2FA] p-1 sm:p-1.5 rounded-xl inline-flex gap-1 border border-slate-200/60 shadow-xs">
             <button
               type="button"
-              onClick={() => setBillingType("one-time")}
+              onClick={() => onBillingChange("one-time")}
               className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                 billingType === "one-time"
                   ? "bg-white text-secondary shadow-xs"
@@ -63,7 +62,7 @@ const PricingCardsSection = () => {
             </button>
             <button
               type="button"
-              onClick={() => setBillingType("monthly")}
+              onClick={() => onBillingChange("monthly")}
               className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                 billingType === "monthly"
                   ? "bg-white text-secondary shadow-xs"

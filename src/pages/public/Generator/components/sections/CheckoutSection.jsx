@@ -259,6 +259,19 @@ const CheckoutSection = ({
         </form>
       )}
 
+      {phase === "email" && onBack && (
+        <div className="mt-5">
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label={backLabel}
+            className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer"
+          >
+            &lt; Back
+          </button>
+        </div>
+      )}
+
       {phase === "otp" && (
         <form
           onSubmit={handleVerifyAndPay}

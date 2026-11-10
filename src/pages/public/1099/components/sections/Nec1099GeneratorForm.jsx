@@ -45,7 +45,7 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.payerName}
-              onChange={(e) => handleInputChange('payerName', e.target.value)}
+              onChange={(e) => handleInputChange("payerName", e.target.value)}
               placeholder="Payer Name"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -59,7 +59,9 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.streetAddress}
-              onChange={(e) => handleInputChange('streetAddress', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("streetAddress", e.target.value)
+              }
               placeholder="Street Address"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -74,7 +76,7 @@ const Nec1099GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.city}
-                onChange={(e) => handleInputChange('city', e.target.value)}
+                onChange={(e) => handleInputChange("city", e.target.value)}
                 placeholder="City"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -87,7 +89,7 @@ const Nec1099GeneratorForm = () => {
               <div className="relative">
                 <select
                   value={formData.state}
-                  onChange={(e) => handleInputChange('state', e.target.value)}
+                  onChange={(e) => handleInputChange("state", e.target.value)}
                   className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                 >
                   <option value="">Select</option>
@@ -108,7 +110,7 @@ const Nec1099GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.zipCode}
-                onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                onChange={(e) => handleInputChange("zipCode", e.target.value)}
                 placeholder="Zip Code"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -123,7 +125,7 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.payerTin}
-              onChange={(e) => handleInputChange('payerTin', e.target.value)}
+              onChange={(e) => handleInputChange("payerTin", e.target.value)}
               placeholder="12-3456789"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -142,7 +144,9 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.accountNumber}
-              onChange={(e) => handleInputChange('accountNumber', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("accountNumber", e.target.value)
+              }
               placeholder="Account Number"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -188,7 +192,9 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.recipientName}
-              onChange={(e) => handleInputChange('recipientName', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("recipientName", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -202,7 +208,9 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.recipientStreetAddress}
-              onChange={(e) => handleInputChange('recipientStreetAddress', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("recipientStreetAddress", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -217,7 +225,9 @@ const Nec1099GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.recipientCity}
-                onChange={(e) => handleInputChange('recipientCity', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("recipientCity", e.target.value)
+                }
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -230,7 +240,9 @@ const Nec1099GeneratorForm = () => {
               <div className="relative">
                 <select
                   value={formData.recipientState}
-                  onChange={(e) => handleInputChange('recipientState', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("recipientState", e.target.value)
+                  }
                   className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                 >
                   <option value="">Select</option>
@@ -251,7 +263,9 @@ const Nec1099GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.recipientZipCode}
-                onChange={(e) => handleInputChange('recipientZipCode', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("recipientZipCode", e.target.value)
+                }
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -266,7 +280,9 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.recipientTin}
-              onChange={(e) => handleInputChange('recipientTin', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("recipientTin", e.target.value)
+              }
               placeholder="..-......."
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -285,7 +301,9 @@ const Nec1099GeneratorForm = () => {
             <input
               type="text"
               value={formData.recipientAccountNumber}
-              onChange={(e) => handleInputChange('recipientAccountNumber', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("recipientAccountNumber", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -325,7 +343,8 @@ const Nec1099GeneratorForm = () => {
                 Compensation details
               </h2>
               <p className="text-slate-400 text-[14px] mt-0.5">
-                Enter values from your records. We do not calculate tax liability.
+                Enter values from your records. We do not calculate tax
+                liability.
               </p>
             </div>
           </div>
@@ -343,7 +362,9 @@ const Nec1099GeneratorForm = () => {
                 <input
                   type="text"
                   value={formData.box1NonemployeeComp}
-                  onChange={(e) => handleInputChange('box1NonemployeeComp', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("box1NonemployeeComp", e.target.value)
+                  }
                   placeholder=""
                   className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
                 />
@@ -361,7 +382,12 @@ const Nec1099GeneratorForm = () => {
                 <input
                   type="text"
                   value={formData.box3ExcessGoldenParachute}
-                  onChange={(e) => handleInputChange('box3ExcessGoldenParachute', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "box3ExcessGoldenParachute",
+                      e.target.value,
+                    )
+                  }
                   placeholder=""
                   className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
                 />
@@ -381,7 +407,9 @@ const Nec1099GeneratorForm = () => {
               <input
                 type="text"
                 value={formData.box4FederalTax}
-                onChange={(e) => handleInputChange('box4FederalTax', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("box4FederalTax", e.target.value)
+                }
                 placeholder=""
                 className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -394,10 +422,15 @@ const Nec1099GeneratorForm = () => {
               type="checkbox"
               id="box2-direct-sales"
               checked={formData.box2DirectSales}
-              onChange={(e) => handleInputChange('box2DirectSales', e.target.checked)}
+              onChange={(e) =>
+                handleInputChange("box2DirectSales", e.target.checked)
+              }
               className="w-4 h-4 rounded text-secondary border-slate-300 focus:ring-secondary cursor-pointer"
             />
-            <label htmlFor="box2-direct-sales" className="text-[14px] text-slate-800 font-medium cursor-pointer select-none">
+            <label
+              htmlFor="box2-direct-sales"
+              className="text-[14px] text-slate-800 font-medium cursor-pointer select-none"
+            >
               Box 2 – Payer made direct sales of $5,000 or more
             </label>
           </div>
@@ -415,7 +448,7 @@ const Nec1099GeneratorForm = () => {
               </div>
               <button
                 type="button"
-                onClick={() => alert('Additional state reporting added.')}
+                onClick={() => alert("Additional state reporting added.")}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 hover:border-secondary text-slate-700 hover:text-secondary text-[13px] font-medium transition cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -431,7 +464,9 @@ const Nec1099GeneratorForm = () => {
                 <div className="relative">
                   <select
                     value={formData.stateReportingState}
-                    onChange={(e) => handleInputChange('stateReportingState', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("stateReportingState", e.target.value)
+                    }
                     className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                   >
                     <option value="">Select</option>
@@ -456,7 +491,9 @@ const Nec1099GeneratorForm = () => {
                   <input
                     type="text"
                     value={formData.stateTaxWithheld}
-                    onChange={(e) => handleInputChange('stateTaxWithheld', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("stateTaxWithheld", e.target.value)
+                    }
                     placeholder=""
                     className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
                   />
@@ -474,7 +511,9 @@ const Nec1099GeneratorForm = () => {
                   <input
                     type="text"
                     value={formData.statePayerNo}
-                    onChange={(e) => handleInputChange('statePayerNo', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("statePayerNo", e.target.value)
+                    }
                     placeholder=""
                     className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
                   />

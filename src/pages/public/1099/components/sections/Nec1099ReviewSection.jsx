@@ -58,25 +58,51 @@ const Nec1099ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
 
     <ReviewCard title="Recipient Details" onEdit={() => onEdit(2)}>
       <ReviewRow label="Recipient Name" value={formData.recipientName} />
-      <ReviewRow label="Street Address" value={formData.recipientStreetAddress} />
+      <ReviewRow
+        label="Street Address"
+        value={formData.recipientStreetAddress}
+      />
       <ReviewRow label="City" value={formData.recipientCity} />
       <ReviewRow label="State" value={formData.recipientState} />
       <ReviewRow label="ZIP Code" value={formData.recipientZipCode} />
       <ReviewRow label="Recipient TIN" value={formData.recipientTin} />
-      <ReviewRow label="Account Number" value={formData.recipientAccountNumber} />
+      <ReviewRow
+        label="Account Number"
+        value={formData.recipientAccountNumber}
+      />
     </ReviewCard>
 
     <ReviewCard title="Compensation Details" onEdit={() => onEdit(3)}>
-      <ReviewRow label="Box 1 Compensation" value={formatMoney(formData.box1NonemployeeComp)} />
-      <ReviewRow label="Box 2 Direct Sales" value={formData.box2DirectSales ? "Yes ($5,000+)" : "No"} />
-      <ReviewRow label="Box 3 Golden Parachute" value={formatMoney(formData.box3ExcessGoldenParachute)} />
-      <ReviewRow label="Box 4 Federal Tax" value={formatMoney(formData.box4FederalTax)} />
-      <ReviewRow label="Box 5 State Tax" value={formatMoney(formData.stateTaxWithheld)} />
+      <ReviewRow
+        label="Box 1 Compensation"
+        value={formatMoney(formData.box1NonemployeeComp)}
+      />
+      <ReviewRow
+        label="Box 2 Direct Sales"
+        value={formData.box2DirectSales ? "Yes ($5,000+)" : "No"}
+      />
+      <ReviewRow
+        label="Box 3 Golden Parachute"
+        value={formatMoney(formData.box3ExcessGoldenParachute)}
+      />
+      <ReviewRow
+        label="Box 4 Federal Tax"
+        value={formatMoney(formData.box4FederalTax)}
+      />
+      <ReviewRow
+        label="Box 5 State Tax"
+        value={formatMoney(formData.stateTaxWithheld)}
+      />
       <ReviewRow
         label="Box 6 State / Payer No."
-        value={[formData.stateReportingState, formData.statePayerNo].filter(Boolean).join(" / ")}
+        value={[formData.stateReportingState, formData.statePayerNo]
+          .filter(Boolean)
+          .join(" / ")}
       />
-      <ReviewRow label="Box 7 State Income" value={formatMoney(formData.stateIncome)} />
+      <ReviewRow
+        label="Box 7 State Income"
+        value={formatMoney(formData.stateIncome)}
+      />
     </ReviewCard>
 
     {/* Actions: < Back (left), Continue to Checkout > (right) */}

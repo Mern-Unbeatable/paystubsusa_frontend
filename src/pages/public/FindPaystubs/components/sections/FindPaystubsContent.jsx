@@ -1,33 +1,37 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router';
-import { 
-  Search, 
-  ChevronDown, 
-  Eye, 
-  Download, 
-  FileText, 
-  Plus, 
+import React, { useState, useMemo } from "react";
+import { Link } from "react-router";
+import {
+  Search,
+  ChevronDown,
+  Eye,
+  Download,
+  FileText,
+  Plus,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
   X,
-  Printer
-} from 'lucide-react';
-import documents from '../../../data/findPaystubs/documents.json';
-import paginationConfig from '../../../data/findPaystubs/pagination.json';
-import sortOptions from '../../../data/findPaystubs/sortOptions.json';
-import tabs from '../../../data/findPaystubs/tabs.json';
+  Printer,
+} from "lucide-react";
+import documents from "../../../data/findPaystubs/documents.json";
+import paginationConfig from "../../../data/findPaystubs/pagination.json";
+import sortOptions from "../../../data/findPaystubs/sortOptions.json";
+import tabs from "../../../data/findPaystubs/tabs.json";
+import { useAuth } from "../../../../../hooks/useAuth";
+import findPaystubsIllustration from "../../../../../assets/find-paystubs-illustration.png";
 
 const FindPaystubsContent = () => {
+  const { isAuthenticated } = useAuth();
+
   // Login form states
-  const [email, setEmail] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
+  const [email, setEmail] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [, setIsLoggedIn] = useState(true); // Default true so user sees dashboard matching screenshot!
 
   // Filters and table states
-  const [activeTab, setActiveTab] = useState('All Documents');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
+  const [activeTab, setActiveTab] = useState("All Documents");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [previewDoc, setPreviewDoc] = useState(null);
 
@@ -35,36 +39,43 @@ const FindPaystubsContent = () => {
 
   // Filtering and Sorting logic
   const filteredDocuments = useMemo(() => {
-    return documents.filter((doc) => {
-      // Tab filter
-      if (activeTab === 'Paystubs' && doc.type !== 'Paystub') return false;
-      if (activeTab === 'W-2' && doc.type !== 'W-2') return false;
-      if (activeTab === '1099-NEC' && doc.type !== '1099-NEC') return false;
-      if (activeTab === 'Direct Deposit Slip' && doc.type !== 'Direct Deposit Slip') return false;
+    return documents
+      .filter((doc) => {
+        // Tab filter
+        if (activeTab === "Paystubs" && doc.type !== "Paystub") return false;
+        if (activeTab === "W-2" && doc.type !== "W-2") return false;
+        if (activeTab === "1099-NEC" && doc.type !== "1099-NEC") return false;
+        if (
+          activeTab === "Direct Deposit Slip" &&
+          doc.type !== "Direct Deposit Slip"
+        )
+          return false;
 
-      // Search query filter
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
-        const matchName = doc.name.toLowerCase().includes(query);
-        const matchId = doc.id.toLowerCase().includes(query);
-        const matchEmployer = doc.employer.toLowerCase().includes(query);
-        const matchEmployee = doc.employee.toLowerCase().includes(query);
-        if (!matchName && !matchId && !matchEmployer && !matchEmployee) return false;
-      }
+        // Search query filter
+        if (searchQuery.trim()) {
+          const query = searchQuery.toLowerCase();
+          const matchName = doc.name.toLowerCase().includes(query);
+          const matchId = doc.id.toLowerCase().includes(query);
+          const matchEmployer = doc.employer.toLowerCase().includes(query);
+          const matchEmployee = doc.employee.toLowerCase().includes(query);
+          if (!matchName && !matchId && !matchEmployer && !matchEmployee)
+            return false;
+        }
 
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === 'newest') return new Date(b.date) - new Date(a.date);
-      if (sortBy === 'oldest') return new Date(a.date) - new Date(b.date);
-      if (sortBy === 'name') return a.name.localeCompare(b.name);
-      return 0;
-    });
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortBy === "newest") return new Date(b.date) - new Date(a.date);
+        if (sortBy === "oldest") return new Date(a.date) - new Date(b.date);
+        if (sortBy === "name") return a.name.localeCompare(b.name);
+        return 0;
+      });
   }, [activeTab, searchQuery, sortBy]);
 
   const totalPages = Math.ceil(filteredDocuments.length / ITEMS_PER_PAGE) || 1;
   const paginatedDocs = filteredDocuments.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handleTabChange = (tab) => {
@@ -73,63 +84,75 @@ const FindPaystubsContent = () => {
   };
 
   return (
-    <div className="w-full bg-[#F7FAFF] min-h-screen py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[1240px] mx-auto space-y-12">
-        {/* Top: Welcome Back Access Form */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-8">
-          <div className="max-w-xl">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Welcome Back
-            </h1>
-            <p className="text-sm text-slate-500 mt-1.5 mb-6">
-              Enter the email address you used when creating your documents to access your dashboard.
-            </p>
+    <div className="w-full py-10 sm:py-16 border-t border-slate-200/80">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 space-y-8 sm:space-y-10">
+        {/* Top: Welcome Back Access Form (guests only) */}
+        {!isAuthenticated && (
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="max-w-xl">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Welcome Back
+              </h1>
+              <p className="text-sm text-slate-500 mt-1.5 mb-6">
+                Enter the email address you used when creating your documents to
+                access your dashboard.
+              </p>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setIsLoggedIn(true);
-              }}
-              className="space-y-4"
-            >
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition"
-                />
-              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setIsLoggedIn(true);
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Verification Code
-                </label>
-                <input
-                  type="text"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  placeholder="0 0 0 0 0 0"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 tracking-widest font-mono focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition"
-                />
-              </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Verification Code
+                  </label>
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    placeholder="0 0 0 0 0 0"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 tracking-widest font-mono focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition"
+                  />
+                </div>
 
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm hover:shadow active:scale-98 cursor-pointer"
-                >
-                  <span>Continue</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </form>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm hover:shadow active:scale-98 cursor-pointer"
+                  >
+                    <span>Continue</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div className="hidden lg:flex items-center justify-center">
+              <img
+                src={findPaystubsIllustration}
+                alt="Person on a laptop accessing secure paystub documents by email"
+                className="w-full max-w-md h-auto select-none"
+                draggable={false}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Bottom: My Documents Section */}
         <div className="space-y-6">
@@ -149,7 +172,7 @@ const FindPaystubsContent = () => {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm hover:shadow active:scale-98 whitespace-nowrap self-start sm:self-auto"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Create a Document</span>
+              <span>Generate Paystub</span>
             </Link>
           </div>
 
@@ -166,8 +189,8 @@ const FindPaystubsContent = () => {
                     onClick={() => handleTabChange(tab)}
                     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-secondary text-white shadow-xs'
-                        : 'bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        ? "bg-secondary text-white shadow-xs"
+                        : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     }`}
                   >
                     {tab}
@@ -212,8 +235,12 @@ const FindPaystubsContent = () => {
 
             {/* Table Header Description */}
             <div className="px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-800">All Documents</h3>
-              <p className="text-xs text-slate-500">Your latest generated documents</p>
+              <h3 className="text-sm font-bold text-slate-800">
+                All Documents
+              </h3>
+              <p className="text-xs text-slate-500">
+                Your latest generated documents
+              </p>
             </div>
 
             {/* Documents Table */}
@@ -258,9 +285,7 @@ const FindPaystubsContent = () => {
                         </td>
 
                         {/* Created Date */}
-                        <td className="py-4 px-6 text-slate-500">
-                          {doc.date}
-                        </td>
+                        <td className="py-4 px-6 text-slate-500">{doc.date}</td>
 
                         {/* Status */}
                         <td className="py-4 px-6">
@@ -297,7 +322,10 @@ const FindPaystubsContent = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="py-12 text-center text-slate-400">
+                      <td
+                        colSpan={5}
+                        className="py-12 text-center text-slate-400"
+                      >
                         No documents found matching your criteria.
                       </td>
                     </tr>
@@ -309,7 +337,8 @@ const FindPaystubsContent = () => {
             {/* Pagination Row */}
             <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-xs text-slate-500">
-                Page {currentPage} of {totalPages} ({filteredDocuments.length} matching records)
+                Page {currentPage} of {totalPages} ({filteredDocuments.length}{" "}
+                matching records)
               </span>
 
               <div className="flex items-center gap-1.5">
@@ -322,25 +351,29 @@ const FindPaystubsContent = () => {
                   Previous
                 </button>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    type="button"
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-8 h-8 rounded-lg text-xs font-semibold transition ${
-                      currentPage === page
-                        ? 'bg-secondary text-white shadow-xs'
-                        : 'border border-slate-200 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      type="button"
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-8 h-8 rounded-lg text-xs font-semibold transition ${
+                        currentPage === page
+                          ? "bg-secondary text-white shadow-xs"
+                          : "border border-slate-200 text-slate-600 hover:bg-slate-100"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
 
                 <button
                   type="button"
                   disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
                   className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
                   Next
@@ -380,10 +413,14 @@ const FindPaystubsContent = () => {
                     <div className="w-3.5 h-3.5 border-2 border-[#FFC711] rotate-45 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 bg-[#FFC711]" />
                     </div>
-                    <span className="font-bold text-slate-800 text-[10px] tracking-tight">Brand Name</span>
+                    <span className="font-bold text-slate-800 text-[10px] tracking-tight">
+                      Brand Name
+                    </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm font-extrabold text-slate-900 tracking-wider">INVOICE</span>
+                    <span className="text-sm font-extrabold text-slate-900 tracking-wider">
+                      INVOICE
+                    </span>
                     <div className="h-1 w-full bg-[#FFC711] mt-0.5" />
                   </div>
                 </div>
@@ -391,17 +428,25 @@ const FindPaystubsContent = () => {
                 {/* Recipient and Meta Info */}
                 <div className="grid grid-cols-2 gap-4 py-3 text-slate-600 text-[8px]">
                   <div>
-                    <span className="font-bold text-slate-800 text-[8.5px] block mb-0.5">Invoice to:</span>
+                    <span className="font-bold text-slate-800 text-[8.5px] block mb-0.5">
+                      Invoice to:
+                    </span>
                     <p className="font-semibold text-slate-700">Dayana Clark</p>
-                    <p className="text-slate-500 text-[7.5px] leading-snug">24 Dummy Street Area,<br />Location, Lorem Ipsum,<br />47000000</p>
+                    <p className="text-slate-500 text-[7.5px] leading-snug">
+                      24 Dummy Street Area,
+                      <br />
+                      Location, Lorem Ipsum,
+                      <br />
+                      47000000
+                    </p>
                   </div>
                   <div className="text-right space-y-0.5">
                     <div>
-                      <span className="font-bold text-slate-700">Invoice#</span>{' '}
+                      <span className="font-bold text-slate-700">Invoice#</span>{" "}
                       <span className="text-slate-500 font-mono">10148</span>
                     </div>
                     <div>
-                      <span className="font-bold text-slate-700">Date</span>{' '}
+                      <span className="font-bold text-slate-700">Date</span>{" "}
                       <span className="text-slate-500">01 / 03 / 2025</span>
                     </div>
                   </div>
@@ -422,31 +467,47 @@ const FindPaystubsContent = () => {
                     <tbody className="divide-y divide-slate-100 text-slate-700 text-[7.5px]">
                       <tr>
                         <td className="py-1 px-1.5 text-slate-500">1</td>
-                        <td className="py-1 px-1.5 font-medium">Lorem Ipsum Dolor</td>
+                        <td className="py-1 px-1.5 font-medium">
+                          Lorem Ipsum Dolor
+                        </td>
                         <td className="py-1 px-1.5 text-right">$50.00</td>
                         <td className="py-1 px-1.5 text-center">1</td>
-                        <td className="py-1 px-1.5 text-right font-medium">$50.00</td>
+                        <td className="py-1 px-1.5 text-right font-medium">
+                          $50.00
+                        </td>
                       </tr>
                       <tr>
                         <td className="py-1 px-1.5 text-slate-500">2</td>
-                        <td className="py-1 px-1.5 font-medium">Pellentesque id neque ligula</td>
+                        <td className="py-1 px-1.5 font-medium">
+                          Pellentesque id neque ligula
+                        </td>
                         <td className="py-1 px-1.5 text-right">$20.00</td>
                         <td className="py-1 px-1.5 text-center">3</td>
-                        <td className="py-1 px-1.5 text-right font-medium">$60.00</td>
+                        <td className="py-1 px-1.5 text-right font-medium">
+                          $60.00
+                        </td>
                       </tr>
                       <tr>
                         <td className="py-1 px-1.5 text-slate-500">3</td>
-                        <td className="py-1 px-1.5 font-medium">Interdum et malesuada fames</td>
+                        <td className="py-1 px-1.5 font-medium">
+                          Interdum et malesuada fames
+                        </td>
                         <td className="py-1 px-1.5 text-right">$15.00</td>
                         <td className="py-1 px-1.5 text-center">2</td>
-                        <td className="py-1 px-1.5 text-right font-medium">$30.00</td>
+                        <td className="py-1 px-1.5 text-right font-medium">
+                          $30.00
+                        </td>
                       </tr>
                       <tr>
                         <td className="py-1 px-1.5 text-slate-500">4</td>
-                        <td className="py-1 px-1.5 font-medium">Vivamus volutpat faucibus</td>
+                        <td className="py-1 px-1.5 font-medium">
+                          Vivamus volutpat faucibus
+                        </td>
                         <td className="py-1 px-1.5 text-right">$80.00</td>
                         <td className="py-1 px-1.5 text-center">1</td>
-                        <td className="py-1 px-1.5 text-right font-medium">$80.00</td>
+                        <td className="py-1 px-1.5 text-right font-medium">
+                          $80.00
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -455,18 +516,39 @@ const FindPaystubsContent = () => {
                 {/* Totals & Notes Section */}
                 <div className="grid grid-cols-2 gap-4 mt-3 pt-2 text-[7.5px] border-t border-slate-100">
                   <div className="space-y-1 text-slate-500 leading-snug">
-                    <p className="font-semibold text-slate-800">Thank you for your business</p>
-                    <p><strong className="text-slate-700">Terms & Conditions:</strong><br />Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Viverra dignissim pretium scelerisque.</p>
-                    <p><strong className="text-slate-700">Payment Info:</strong><br />Account No: 0000 0000 0000<br />A/C Name: Name Here<br />Bank Details: Bank Name Here</p>
+                    <p className="font-semibold text-slate-800">
+                      Thank you for your business
+                    </p>
+                    <p>
+                      <strong className="text-slate-700">
+                        Terms & Conditions:
+                      </strong>
+                      <br />
+                      Lorem Ipsum dolor sit amet, consectetur adipiscing elit.
+                      Viverra dignissim pretium scelerisque.
+                    </p>
+                    <p>
+                      <strong className="text-slate-700">Payment Info:</strong>
+                      <br />
+                      Account No: 0000 0000 0000
+                      <br />
+                      A/C Name: Name Here
+                      <br />
+                      Bank Details: Bank Name Here
+                    </p>
                   </div>
                   <div className="space-y-1">
                     <div className="flex justify-between text-slate-600 px-1">
                       <span>Sub Total:</span>
-                      <span className="font-semibold text-slate-800">$220.00</span>
+                      <span className="font-semibold text-slate-800">
+                        $220.00
+                      </span>
                     </div>
                     <div className="flex justify-between text-slate-600 px-1">
                       <span>Tax:</span>
-                      <span className="font-semibold text-slate-800">0.00%</span>
+                      <span className="font-semibold text-slate-800">
+                        0.00%
+                      </span>
                     </div>
                     <div className="bg-[#FFC711] text-slate-900 font-extrabold px-2 py-1 rounded-xs flex justify-between text-[8.5px] mt-1 shadow-xs">
                       <span>Total:</span>
@@ -474,7 +556,9 @@ const FindPaystubsContent = () => {
                     </div>
                     <div className="pt-3 text-center">
                       <div className="border-b border-slate-300 w-24 mx-auto mb-0.5" />
-                      <span className="text-[7px] text-slate-400 uppercase tracking-wider block">Authorized Sign</span>
+                      <span className="text-[7px] text-slate-400 uppercase tracking-wider block">
+                        Authorized Sign
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -542,7 +626,9 @@ const FindPaystubsContent = () => {
               <button
                 type="button"
                 onClick={() => {
-                  alert(`Downloading ${previewDoc.name} (${previewDoc.id}) PDF...`);
+                  alert(
+                    `Downloading ${previewDoc.name} (${previewDoc.id}) PDF...`,
+                  );
                   setPreviewDoc(null);
                 }}
                 className="px-6 py-2.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm inline-flex items-center gap-2 active:scale-98 cursor-pointer"

@@ -1,6 +1,10 @@
 // router/routes/authRoutes.js
-import { lazy } from "react";
+import React, { lazy } from "react";
 import { createLazyRouteElement } from "./createLazyRouteElement";
+import { PATHS } from "../../config/paths";
+// Eager: register navigates here the moment the API answers, and a lazy chunk would flash
+// a loading fallback in between.
+import VerifyEmailView from "../../pages/auth/VerifyEmail/VerifyEmailView";
 
 const LoginView = lazy(
   () =>
@@ -27,26 +31,32 @@ const ResetPasswordView = lazy(
     })),
 );
 
-// Standalone (no RootLayout wrapper)
+// Children of /auth (AuthLayout). Guest-only.
 export const authRoutes = [
   {
-    path: "/login",
+    path: PATHS.AUTH.login,
     element: createLazyRouteElement(LoginView, { compactFallback: true }),
   },
   {
-    path: "/register",
+    path: PATHS.AUTH.register,
     element: createLazyRouteElement(RegisterView, { compactFallback: true }),
   },
   {
-    path: "/forgot-password",
+    path: PATHS.AUTH.forgotPassword,
     element: createLazyRouteElement(ForgotPasswordView, {
       compactFallback: true,
     }),
   },
-  {
-    path: "/reset-password",
-    element: createLazyRouteElement(ResetPasswordView, {
-      compactFallback: true,
-    }),
-  },
 ];
+
+// Child of /auth. Signed-in users only (the API verifies the code against the current session).
+export const verifyEmailRoute = {
+  path: PATHS.AUTH.verifyEmail,
+  element: React.createElement(VerifyEmailView),
+};
+
+// Opened from an email link, so it must work whether or not someone is signed in.
+export const resetPasswordRoute = {
+  path: PATHS.AUTH.resetPassword,
+  element: createLazyRouteElement(ResetPasswordView, { compactFallback: true }),
+};

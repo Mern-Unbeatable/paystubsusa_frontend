@@ -7,11 +7,14 @@ const DocumentStepper = ({ steps, currentStep, onStepClick }) => {
 
   return (
     <div className="mb-10 sm:mb-14">
-      <div className="relative max-w-4xl mx-auto">
+      <div className="relative w-full">
         {/* Connecting Line behind circles */}
         <div
           className="absolute top-4 h-[1.5px] bg-slate-200 -z-0"
-          style={{ left: `${50 / steps.length}%`, right: `${50 / steps.length}%` }}
+          style={{
+            left: `${50 / steps.length}%`,
+            right: `${50 / steps.length}%`,
+          }}
           aria-hidden="true"
         >
           <div

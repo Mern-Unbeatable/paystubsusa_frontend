@@ -3,7 +3,13 @@ import DocumentFlowLayout from "./DocumentFlowLayout";
 import DocumentLivePreview from "./DocumentLivePreview";
 
 /** Form steps 1-3: form card on the left, sticky live preview on the right. */
-const DocumentFormLayout = ({ flow, formData, currentStep, onStepClick, children }) => {
+const DocumentFormLayout = ({
+  flow,
+  formData,
+  currentStep,
+  onStepClick,
+  children,
+}) => {
   const { Document } = flow;
 
   return (

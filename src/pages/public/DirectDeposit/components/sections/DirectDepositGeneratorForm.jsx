@@ -9,7 +9,8 @@ import { DIRECT_DEPOSIT_FLOW } from "../../utils/directDepositFlow";
 
 /** Form steps 1-3 of the direct deposit flow; the current step lives in `?step=`. */
 const DirectDepositGeneratorForm = () => {
-  const { formData, updateField: handleInputChange } = useDirectDepositFormData();
+  const { formData, updateField: handleInputChange } =
+    useDirectDepositFormData();
   const { currentStep, handleNext, handleBack, onStepClick } =
     useFormStep(DIRECT_DEPOSIT_FLOW);
 
@@ -46,7 +47,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.employerName}
-              onChange={(e) => handleInputChange('employerName', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("employerName", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -60,7 +63,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.streetAddress}
-              onChange={(e) => handleInputChange('streetAddress', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("streetAddress", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -75,7 +80,7 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.city}
-                onChange={(e) => handleInputChange('city', e.target.value)}
+                onChange={(e) => handleInputChange("city", e.target.value)}
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -88,7 +93,7 @@ const DirectDepositGeneratorForm = () => {
               <div className="relative">
                 <select
                   value={formData.state}
-                  onChange={(e) => handleInputChange('state', e.target.value)}
+                  onChange={(e) => handleInputChange("state", e.target.value)}
                   className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                 >
                   <option value="">Select</option>
@@ -109,7 +114,7 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.zipCode}
-                onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                onChange={(e) => handleInputChange("zipCode", e.target.value)}
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -129,7 +134,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.employerContact}
-              onChange={(e) => handleInputChange('employerContact', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("employerContact", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -175,7 +182,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.employeeName}
-              onChange={(e) => handleInputChange('employeeName', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("employeeName", e.target.value)
+              }
               placeholder="Employee Full Name"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -189,7 +198,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.employeeAddress}
-              onChange={(e) => handleInputChange('employeeAddress', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("employeeAddress", e.target.value)
+              }
               placeholder="Street Address"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -204,7 +215,9 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.employeeCity}
-                onChange={(e) => handleInputChange('employeeCity', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("employeeCity", e.target.value)
+                }
                 placeholder="City"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -217,7 +230,9 @@ const DirectDepositGeneratorForm = () => {
               <div className="relative">
                 <select
                   value={formData.employeeState}
-                  onChange={(e) => handleInputChange('employeeState', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("employeeState", e.target.value)
+                  }
                   className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                 >
                   <option value="">Select</option>
@@ -238,7 +253,9 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.employeeZipCode}
-                onChange={(e) => handleInputChange('employeeZipCode', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("employeeZipCode", e.target.value)
+                }
                 placeholder="ZIP Code"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -258,7 +275,7 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.employeeId}
-              onChange={(e) => handleInputChange('employeeId', e.target.value)}
+              onChange={(e) => handleInputChange("employeeId", e.target.value)}
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -307,7 +324,8 @@ const DirectDepositGeneratorForm = () => {
           <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-start gap-3 text-amber-800">
             <ShieldAlert className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5 stroke-[2]" />
             <p className="text-[13.5px] font-normal leading-relaxed">
-              This document is not a bank-issued record or proof of a completed transaction.
+              This document is not a bank-issued record or proof of a completed
+              transaction.
             </p>
           </div>
 
@@ -320,7 +338,9 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.depositDate}
-                onChange={(e) => handleInputChange('depositDate', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("depositDate", e.target.value)
+                }
                 placeholder="MM/DD/YY"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -333,7 +353,7 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.payPeriod}
-                onChange={(e) => handleInputChange('payPeriod', e.target.value)}
+                onChange={(e) => handleInputChange("payPeriod", e.target.value)}
                 placeholder="May 1 – May 15, 2025"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -349,7 +369,9 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.paymentReference}
-                onChange={(e) => handleInputChange('paymentReference', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("paymentReference", e.target.value)
+                }
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -367,7 +389,7 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.bankName}
-                onChange={(e) => handleInputChange('bankName', e.target.value)}
+                onChange={(e) => handleInputChange("bankName", e.target.value)}
                 placeholder=""
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -382,7 +404,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.accountHolderName}
-              onChange={(e) => handleInputChange('accountHolderName', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("accountHolderName", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />
@@ -397,7 +421,9 @@ const DirectDepositGeneratorForm = () => {
               <div className="relative">
                 <select
                   value={formData.accountType}
-                  onChange={(e) => handleInputChange('accountType', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("accountType", e.target.value)
+                  }
                   className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all pr-10 cursor-pointer"
                 >
                   {accountTypeOptions.map((option) => (
@@ -417,7 +443,9 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.accountNumber}
-                onChange={(e) => handleInputChange('accountNumber', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("accountNumber", e.target.value)
+                }
                 placeholder="•••• 0000"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -430,7 +458,9 @@ const DirectDepositGeneratorForm = () => {
               <input
                 type="text"
                 value={formData.depositAmount}
-                onChange={(e) => handleInputChange('depositAmount', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("depositAmount", e.target.value)
+                }
                 placeholder="$0.00"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
               />
@@ -450,7 +480,9 @@ const DirectDepositGeneratorForm = () => {
             <input
               type="text"
               value={formData.paymentDescription}
-              onChange={(e) => handleInputChange('paymentDescription', e.target.value)}
+              onChange={(e) =>
+                handleInputChange("paymentDescription", e.target.value)
+              }
               placeholder=""
               className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-[14.5px] placeholder-slate-400 focus:outline-hidden focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
             />

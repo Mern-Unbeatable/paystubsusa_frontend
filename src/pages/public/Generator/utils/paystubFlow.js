@@ -13,6 +13,12 @@ export const PAYSTUB_FORM_STEPS = {
   REVIEW: 4,
 };
 
+/** Stepper positions of the pages that follow the details form. */
+export const PAYSTUB_PAGE_STEPS = {
+  PACKAGE: 5,
+  CHECKOUT: 6,
+};
+
 const FLOW_ROUTES = [
   { path: PATHS.PUBLIC.paystubSuccess, buildPath: buildPaystubSuccessPath },
   { path: PATHS.PUBLIC.paystubCheckout, buildPath: buildPaystubCheckoutPath },

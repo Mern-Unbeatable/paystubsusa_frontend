@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { ChevronDown, Trash2, Lock } from "lucide-react";
 import payFrequencyOptions from "../../../data/generator/payFrequencyOptions.json";
-import stepsList from "../../../data/generator/paystubSteps.json";
 import US_STATES from "../../../data/shared/usStates.json";
 import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
 import CompanyLogoField from "../common/CompanyLogoField";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
+import PaystubStepper from "../common/PaystubStepper";
 
 const PaystubDetailsForm = ({
   template,
@@ -39,44 +39,7 @@ const PaystubDetailsForm = ({
 
   return (
     <>
-      {/* 4-Step Progress Indicator Header */}
-      <div className="mb-10 sm:mb-12">
-        <div className="grid grid-cols-4 gap-1.5 sm:gap-4 border-b border-slate-200/80 pb-3">
-          {stepsList.map((step) => {
-            const isActive = currentStep === step.num;
-            const isCompleted = currentStep > step.num;
-
-            return (
-              <div
-                key={step.num}
-                onClick={() => setCurrentStep(step.num)}
-                className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 pb-2.5 relative cursor-pointer transition-colors min-w-0 ${
-                  isActive || isCompleted
-                    ? "text-slate-900 font-semibold"
-                    : "text-slate-400 font-medium"
-                }`}
-              >
-                <div
-                  className={`w-6 h-6 shrink-0 rounded-full flex items-center justify-center text-[12px] font-bold border transition-colors ${
-                    isActive || isCompleted
-                      ? "border-[#1E60F2] text-[#1E60F2] bg-blue-50/60"
-                      : "border-slate-300 text-slate-400 bg-white"
-                  }`}
-                >
-                  {step.num}
-                </div>
-                <span className="text-[11px] leading-tight text-center sm:text-left sm:text-[14px] sm:truncate">
-                  {step.label}
-                </span>
-
-                {(isActive || isCompleted) && (
-                  <div className="absolute -bottom-3.5 left-0 right-0 h-[2.5px] bg-[#1E60F2]" />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <PaystubStepper currentStep={currentStep} onStepClick={setCurrentStep} />
 
       {/* Main 2-Column Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

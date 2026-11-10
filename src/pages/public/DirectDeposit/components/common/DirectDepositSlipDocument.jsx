@@ -1,7 +1,8 @@
 import React from "react";
 
 const formatCityLine = (city, state, zip) =>
-  [city, [state, zip].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "—";
+  [city, [state, zip].filter(Boolean).join(" ")].filter(Boolean).join(", ") ||
+  "—";
 
 const SectionTitle = ({ children }) => (
   <div className="bg-sky-50/70 border-y border-slate-200 px-3 py-1 text-[6.5px] uppercase tracking-wider font-bold text-[#092258]">
@@ -14,7 +15,9 @@ const Field = ({ label, value, className = "", valueClassName = "" }) => (
     <span className="text-[6px] uppercase tracking-wider text-slate-400 font-semibold block">
       {label}
     </span>
-    <span className={`text-[7.5px] text-slate-800 font-medium block mt-0.5 break-words ${valueClassName}`}>
+    <span
+      className={`text-[7.5px] text-slate-800 font-medium block mt-0.5 break-words ${valueClassName}`}
+    >
       {value || "—"}
     </span>
   </div>
@@ -92,7 +95,10 @@ const DirectDepositSlipDocument = ({ formData }) => (
         value={formData.accountNumber}
         valueClassName="font-mono text-slate-600"
       />
-      <Field label="Deposit Amount" value={`$${formData.depositAmount || "0.00"}`} />
+      <Field
+        label="Deposit Amount"
+        value={`$${formData.depositAmount || "0.00"}`}
+      />
       <Field
         label="Payment Description"
         value={formData.paymentDescription}
@@ -101,7 +107,9 @@ const DirectDepositSlipDocument = ({ formData }) => (
     </div>
 
     <div className="px-3 py-2.5 bg-slate-50/80 border-t border-slate-200 flex items-center justify-between">
-      <span className="font-semibold text-slate-700 text-[8px]">Payment total</span>
+      <span className="font-semibold text-slate-700 text-[8px]">
+        Payment total
+      </span>
       <span className="font-bold text-secondary text-[10px]">
         ${formData.depositAmount || "0.00"}
       </span>

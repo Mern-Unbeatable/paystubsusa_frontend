@@ -108,5 +108,75 @@ export async function restoreSessionApi(options = {}) {
 }
 
 export async function logoutApi(options = {}) {
-  await httpClient.post(API_ENDPOINTS.AUTH.LOGOUT, null, options);
+  // No body: axios serialises `null` to "null", which the API's strict JSON parser rejects.
+  await httpClient.post(API_ENDPOINTS.AUTH.LOGOUT, undefined, options);
+}
+
+export async function forgotPasswordApi(email, options = {}) {
+  await httpClient.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, { email }, options);
+}
+
+export async function resetPasswordApi({ token, password }, options = {}) {
+  await httpClient.post(
+    API_ENDPOINTS.AUTH.RESET_PASSWORD,
+    { token, password },
+    options,
+  );
+}
+
+/** Returns the ISO time at which another code may be requested. */
+export async function resendVerificationApi(options = {}) {
+  const response = await httpClient.post(
+    API_ENDPOINTS.AUTH.RESEND_VERIFICATION,
+    undefined,
+    options,
+  );
+  return response.data?.data?.resendAvailableAt || null;
+}
+
+/** Only `name` and `phone` are editable; email changes are not supported by the API. */
+export async function updateProfileApi(changes, options = {}) {
+  const response = await httpClient.patch(
+    API_ENDPOINTS.ACCOUNT.PROFILE,
+    changes,
+    options,
+  );
+  return { user: resolveUserPayload(response.data) };
+}
+
+export async function uploadAvatarApi(file, options = {}) {
+  const body = new FormData();
+  body.append("avatar", file);
+  // Overrides the instance's JSON default, which would make axios serialize FormData to JSON.
+  const response = await httpClient.put(API_ENDPOINTS.ACCOUNT.AVATAR, body, {
+    ...options,
+    headers: { ...options.headers, "Content-Type": "multipart/form-data" },
+  });
+  return { user: resolveUserPayload(response.data) };
+}
+
+export async function removeAvatarApi(options = {}) {
+  const response = await httpClient.delete(API_ENDPOINTS.ACCOUNT.AVATAR, options);
+  return { user: resolveUserPayload(response.data) };
+}
+
+/** The API keeps the current session and signs out every other one. */
+export async function changePasswordApi(
+  { currentPassword, newPassword },
+  options = {},
+) {
+  await httpClient.post(
+    API_ENDPOINTS.ACCOUNT.PASSWORD,
+    { currentPassword, newPassword },
+    options,
+  );
+}
+
+export async function verifyEmailApi(code, options = {}) {
+  const response = await httpClient.post(
+    API_ENDPOINTS.AUTH.VERIFY_EMAIL,
+    { code },
+    options,
+  );
+  return { user: resolveUserPayload(response.data) };
 }

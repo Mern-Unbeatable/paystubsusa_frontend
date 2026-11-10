@@ -68,7 +68,7 @@ const DirectDepositHeroSection = () => {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
         {/* Eyebrow Tag */}
         <p
           ref={eyebrowRef}
@@ -96,7 +96,7 @@ const DirectDepositHeroSection = () => {
         {/* 3 Features Row matching Figma */}
         <div
           ref={featuresRef}
-          className="flex flex-wrap items-center justify-center gap-7 sm:gap-9"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4.5"
         >
           {featureItems.map((item, idx) => {
             const IconComponent = ICON_MAP[item.iconKey];
@@ -108,10 +108,10 @@ const DirectDepositHeroSection = () => {
             return (
               <div
                 key={idx}
-                className="inline-flex items-center gap-2 text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                className="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-secondary/40 transition-all duration-200"
               >
                 <IconComponent className={iconClassName} />
-                <span>{item.text}</span>
+                <span className="text-[14px] sm:text-[14.5px] font-medium text-slate-700 whitespace-nowrap">{item.text}</span>
               </div>
             );
           })}

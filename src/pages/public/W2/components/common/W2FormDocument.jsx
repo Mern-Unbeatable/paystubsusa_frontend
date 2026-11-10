@@ -33,9 +33,7 @@ const W2FormDocument = ({ formData }) => (
           <span className="text-[7.5px] text-slate-500 block">
             b Employer identification number (EIN)
           </span>
-          <span className="font-semibold">
-            {formData.ein || "12-3456789"}
-          </span>
+          <span className="font-semibold">{formData.ein || "12-3456789"}</span>
         </div>
 
         {/* Box c: Employer Name & Address */}
@@ -50,8 +48,7 @@ const W2FormDocument = ({ formData }) => (
             {formData.streetAddress || "123 Business St"}
           </p>
           <p className="text-[8px] text-slate-700">
-            {formData.city || "City"},{" "}
-            {formData.state || "ST"}{" "}
+            {formData.city || "City"}, {formData.state || "ST"}{" "}
             {formData.zipCode || "00000"}
           </p>
         </div>
@@ -61,9 +58,7 @@ const W2FormDocument = ({ formData }) => (
           <span className="text-[7.5px] text-slate-500 block">
             d Control number
           </span>
-          <span className="text-[8px]">
-            {formData.controlNumber || ""}
-          </span>
+          <span className="text-[8px]">{formData.controlNumber || ""}</span>
         </div>
 
         {/* Box e: Employee Name */}
@@ -73,9 +68,7 @@ const W2FormDocument = ({ formData }) => (
           </span>
           <p className="font-bold text-[9px] uppercase">
             {formData.firstName || "Jordan"}{" "}
-            {formData.middleInitial
-              ? `${formData.middleInitial}.`
-              : ""}{" "}
+            {formData.middleInitial ? `${formData.middleInitial}.` : ""}{" "}
             {formData.lastName || "Miller"}
           </p>
         </div>
@@ -90,8 +83,7 @@ const W2FormDocument = ({ formData }) => (
           </p>
           <p className="text-[8px]">
             {formData.employeeCity || "Oakland"},{" "}
-            {formData.employeeState || "CA"}{" "}
-            {formData.employeeZip || "94607"}
+            {formData.employeeState || "CA"} {formData.employeeZip || "94607"}
           </p>
         </div>
       </div>
@@ -161,9 +153,7 @@ const W2FormDocument = ({ formData }) => (
         {/* Row 7 & 8 */}
         <div className="grid grid-cols-2 border-b border-slate-400 text-slate-400">
           <div className="p-1 border-r border-slate-400 min-h-[22px]">
-            <span className="text-[7px] block">
-              7 Social security tips
-            </span>
+            <span className="text-[7px] block">7 Social security tips</span>
             <span className="text-[7.5px] text-slate-700 block text-right">
               {formData.box7SocialSecurityTips
                 ? `$${formData.box7SocialSecurityTips}`
@@ -171,9 +161,7 @@ const W2FormDocument = ({ formData }) => (
             </span>
           </div>
           <div className="p-1 min-h-[22px]">
-            <span className="text-[7px] block">
-              8 Allocated tips
-            </span>
+            <span className="text-[7px] block">8 Allocated tips</span>
             <span className="text-[7.5px] text-slate-700 block text-right">
               {formData.box8AllocatedTips
                 ? `$${formData.box8AllocatedTips}`
@@ -185,9 +173,7 @@ const W2FormDocument = ({ formData }) => (
         {/* Row 10 & 11 */}
         <div className="grid grid-cols-2 border-b border-slate-400 text-slate-400">
           <div className="p-1 border-r border-slate-400 min-h-[22px]">
-            <span className="text-[7px] block">
-              10 Dependent care
-            </span>
+            <span className="text-[7px] block">10 Dependent care</span>
             <span className="text-[7.5px] text-slate-700 block text-right">
               {formData.box10DependentCare
                 ? `$${formData.box10DependentCare}`
@@ -195,9 +181,7 @@ const W2FormDocument = ({ formData }) => (
             </span>
           </div>
           <div className="p-1 min-h-[22px]">
-            <span className="text-[7px] block">
-              11 Nonqualified plans
-            </span>
+            <span className="text-[7px] block">11 Nonqualified plans</span>
             <span className="text-[7.5px] text-slate-700 block text-right">
               {formData.box11NonqualifiedPlans
                 ? `$${formData.box11NonqualifiedPlans}`
@@ -219,18 +203,11 @@ const W2FormDocument = ({ formData }) => (
         {/* Box 13 */}
         <div className="p-1 flex items-center justify-between text-[7.5px] text-slate-600">
           <div className="flex items-center gap-1">
-            <span className="text-[7px] text-slate-400">
-              13
-            </span>
-            <span>
-              Statutory{" "}
-              {formData.box13StatutoryEmployee ? "☑" : "□"}
-            </span>
+            <span className="text-[7px] text-slate-400">13</span>
+            <span>Statutory {formData.box13StatutoryEmployee ? "☑" : "□"}</span>
             <span>Retirement □</span>
           </div>
-          <div className="text-[7px] text-slate-400">
-            14 Other
-          </div>
+          <div className="text-[7px] text-slate-400">14 Other</div>
         </div>
       </div>
     </div>
@@ -242,8 +219,7 @@ const W2FormDocument = ({ formData }) => (
           15 State / Employer's ID
         </span>
         <span className="font-semibold">
-          {formData.box15State || "CA"}{" "}
-          {formData.box15StateId || ""}
+          {formData.box15State || "CA"} {formData.box15StateId || ""}
         </span>
       </div>
       <div className="border-r border-slate-400 p-0.5">
@@ -267,9 +243,7 @@ const W2FormDocument = ({ formData }) => (
           18 Local wages
         </span>
         <span className="text-slate-700 block text-right">
-          {formData.box18LocalWages
-            ? `$${formData.box18LocalWages}`
-            : "—"}
+          {formData.box18LocalWages ? `$${formData.box18LocalWages}` : "—"}
         </span>
       </div>
       <div className="border-r border-slate-400 p-0.5">
@@ -293,15 +267,11 @@ const W2FormDocument = ({ formData }) => (
     {/* Official IRS Title Footer */}
     <div className="pt-2 flex items-center justify-between font-bold text-[8.5px]">
       <div className="flex items-baseline gap-1">
-        <span className="text-[11px] font-black text-slate-900">
-          W-2
-        </span>
+        <span className="text-[11px] font-black text-slate-900">W-2</span>
         <span className="text-[8px] text-slate-600 font-medium">
           Wage and Tax Statement
         </span>
-        <span className="text-[11px] font-black text-slate-900 ml-1">
-          2025
-        </span>
+        <span className="text-[11px] font-black text-slate-900 ml-1">2025</span>
       </div>
       <span className="text-[7px] text-slate-500 font-normal">
         Department of the Treasury—Internal Revenue Service

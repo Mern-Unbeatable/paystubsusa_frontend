@@ -1,53 +1,21 @@
-import React, { Suspense, lazy, useState } from "react";
-import { Link, useNavigate } from "react-router";
-import {
-  ArrowLeft,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  User,
-  ShieldCheck,
-} from "lucide-react";
+import React, { Suspense, useState } from "react";
+import { Link } from "react-router";
+import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
-import { DEMO_CREDENTIALS } from "../../../features/auth/auth.constants";
+import { getErrorMessage } from "../../../api/errorNormalizer";
+import { PATHS } from "../../../config/paths";
 
-const AuthInvoicePreview = lazy(
-  () => import("../components/AuthInvoicePreview"),
-);
+import AuthInvoicePreview from "../components/AuthInvoicePreview";
 
 const LoginView = () => {
-  const navigate = useNavigate();
-  const { login, loginAs, loading, error: authError } = useAuth();
+  const { login, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [formError, setFormError] = useState("");
-
-  const errorMessage = formError || authError?.message || "";
-
-  const handleDemoLogin = async (role) => {
-    setFormError("");
-
-    const targetRole = role === "admin" ? "admin" : "customer";
-
-    if (role === "admin") {
-      setEmail("admin@demo.test");
-      setPassword("admin123");
-    } else {
-      setEmail("customer@demo.test");
-      setPassword("password123");
-    }
-
-    try {
-      const result = await loginAs(targetRole);
-      const nextRole = result?.user?.role === "admin" ? "admin" : "customer";
-      navigate(nextRole === "admin" ? "/admin" : "/dashboard");
-    } catch (error) {
-      setFormError(error?.message || "Unable to log in with demo account.");
-    }
-  };
+  const [errorMessage, setFormError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,11 +27,15 @@ const LoginView = () => {
     }
 
     try {
-      const result = await login({ email, password, rememberMe });
-      const nextRole = result?.user?.role === "admin" ? "admin" : "customer";
-      navigate(nextRole === "admin" ? "/admin" : "/dashboard");
+      // RequireGuest performs the redirect once the user lands in the store.
+      const { user } = await login({ email, password, rememberMe });
+      toast.success(`Welcome back${user?.name ? `, ${user.name}` : ""}!`, {
+        id: "login-success",
+      });
     } catch (error) {
-      setFormError(error?.message || "Unable to sign in. Please try again.");
+      setFormError(
+        getErrorMessage(error, "Unable to sign in. Please try again."),
+      );
     }
   };
 
@@ -71,19 +43,26 @@ const LoginView = () => {
     <div className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2 select-none">
       {/* Left Column: Interactive Invoice Preview Showcase (50% width) */}
       <div className="hidden lg:block w-full h-full">
-        <Suspense
-          fallback={
-            <div className="w-full h-full min-h-screen bg-slate-100 animate-pulse" />
-          }
-        >
-          <AuthInvoicePreview />
-        </Suspense>
+        <AuthInvoicePreview />
       </div>
 
       {/* Right Column: Clean Authentication Form (50% width) */}
       <div className="w-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 bg-white min-h-screen">
-        {/* Top Header / Back Button */}
-        <div className="w-full flex items-center justify-end">
+        {/* Top Header: Logo (mobile only; desktop shows it in the left panel) */}
+        <div className="w-full flex items-center justify-between lg:justify-end">
+          <Link to="/" className="inline-block lg:hidden">
+            <img
+              src={logoImg}
+              alt="Logo"
+              className="h-10 w-auto object-contain"
+              loading="eager"
+              decoding="async"
+            />
+          </Link>
+        </div>
+
+        {/* Form Body Container */}
+        <div className="w-full max-w-sm mx-auto my-auto py-6">
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-800 transition-colors group"
@@ -91,25 +70,9 @@ const LoginView = () => {
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
             <span>Back to Home</span>
           </Link>
-        </div>
-
-        {/* Form Body Container */}
-        <div className="w-full max-w-sm mx-auto my-auto py-8">
-          {/* Logo */}
-          <div className="mb-6">
-            <Link to="/" className="inline-block">
-              <img
-                src={logoImg}
-                alt="Logo"
-                className="h-10 w-auto object-contain"
-                loading="eager"
-                decoding="async"
-              />
-            </Link>
-          </div>
 
           {/* Heading */}
-          <div className="mb-6">
+          <div className="my-6">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Sign In
             </h1>
@@ -149,7 +112,7 @@ const LoginView = () => {
                   Password
                 </label>
                 <Link
-                  to="/forgot-password"
+                  to={PATHS.AUTH.forgotPassword}
                   className="text-xs font-medium text-secondary hover:underline"
                 >
                   Forgot password?
@@ -211,65 +174,11 @@ const LoginView = () => {
             </button>
           </form>
 
-          {/* Quick 1-Click Demo Login Bar */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <div className="flex items-center justify-between mb-2.5">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                Fast Demo Login
-              </span>
-              <span className="text-[10.5px] text-slate-400">
-                1-click access
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2.5">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin("customer")}
-                disabled={loading}
-                className="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200/90 hover:border-[#009BFB]/40 text-slate-700 hover:text-[#009BFB] font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs group"
-              >
-                <User className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#009BFB] transition-colors" />
-                <span>Customer Demo</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin("admin")}
-                disabled={loading}
-                className="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-purple-50/60 border border-slate-200/90 hover:border-purple-300 text-slate-700 hover:text-purple-600 font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs group"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 transition-colors" />
-                <span>Admin Demo</span>
-              </button>
-            </div>
-            <div className="mt-3 space-y-1 text-[11px] text-slate-500">
-              <p>
-                Customer:{" "}
-                <span className="font-semibold">
-                  {DEMO_CREDENTIALS.customer.email}
-                </span>{" "}
-                /{" "}
-                <span className="font-semibold">
-                  {DEMO_CREDENTIALS.customer.password}
-                </span>
-              </p>
-              <p>
-                Admin:{" "}
-                <span className="font-semibold">
-                  {DEMO_CREDENTIALS.admin.email}
-                </span>{" "}
-                /{" "}
-                <span className="font-semibold">
-                  {DEMO_CREDENTIALS.admin.password}
-                </span>
-              </p>
-            </div>
-          </div>
-
           {/* Switch to Register */}
           <div className="mt-5 text-center text-xs text-slate-500">
             <span>Don't have an account? </span>
             <Link
-              to="/register"
+              to={PATHS.AUTH.register}
               className="font-semibold text-secondary hover:underline"
             >
               Create an account
