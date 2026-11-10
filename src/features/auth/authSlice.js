@@ -1,10 +1,10 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {
   bootstrapAuth,
-  loginAsDemoUser,
   loginUser,
   logoutUser,
   registerUser,
+  verifyEmail,
 } from "./authThunks";
 
 const initialState = {
@@ -25,6 +25,7 @@ const authSlice = createSlice({
     },
     forceLogout(state, action) {
       state.user = null;
+      state.isAuthenticated = false;
       state.loading = false;
       state.status = "unauthenticated";
       state.error = null;
@@ -68,6 +69,11 @@ const authSlice = createSlice({
         state.status = "unauthenticated";
         state.error = action.payload || null;
       })
+      .addCase(verifyEmail.fulfilled, (state, action) => {
+        if (action.payload?.user) {
+          state.user = action.payload.user;
+        }
+      })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
@@ -88,7 +94,6 @@ const authSlice = createSlice({
           bootstrapAuth.pending,
           loginUser.pending,
           registerUser.pending,
-          loginAsDemoUser.pending,
           logoutUser.pending,
         ),
         (state) => {
@@ -98,11 +103,7 @@ const authSlice = createSlice({
         },
       )
       .addMatcher(
-        isAnyOf(
-          loginUser.fulfilled,
-          registerUser.fulfilled,
-          loginAsDemoUser.fulfilled,
-        ),
+        isAnyOf(loginUser.fulfilled, registerUser.fulfilled),
         (state, action) => {
           state.user = action.payload?.user || null;
           state.isAuthenticated = Boolean(action.payload?.user);
@@ -115,11 +116,7 @@ const authSlice = createSlice({
         },
       )
       .addMatcher(
-        isAnyOf(
-          loginUser.rejected,
-          registerUser.rejected,
-          loginAsDemoUser.rejected,
-        ),
+        isAnyOf(loginUser.rejected, registerUser.rejected),
         (state, action) => {
           state.loading = false;
           state.status = "unauthenticated";

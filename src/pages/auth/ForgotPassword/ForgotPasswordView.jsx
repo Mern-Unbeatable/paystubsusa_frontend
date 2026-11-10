@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail } from "lucide-react";
 import logoImg from "../../../assets/logo.png";
 import AuthInvoicePreview from "../components/AuthInvoicePreview";
+import { useAuth } from "../../../hooks/useAuth";
+import { getErrorMessage } from "../../../api/errorNormalizer";
 
 const ForgotPasswordView = () => {
-  const navigate = useNavigate();
+  const { forgotPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -15,7 +17,7 @@ const ForgotPasswordView = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
 
@@ -25,11 +27,15 @@ const ForgotPasswordView = () => {
     }
 
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // The API answers 202 whether or not the account exists (no account enumeration).
+      await forgotPassword(email.trim());
       setSubmitted(true);
-    }, 600);
+    } catch (err) {
+      setError(getErrorMessage(err, "Unable to send reset instructions."));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -124,23 +130,14 @@ const ForgotPasswordView = () => {
                   Check your inbox
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
-                  We sent a reset link to{" "}
-                  <span className="font-semibold text-slate-800">{email}</span>.
+                  If an account exists for{" "}
+                  <span className="font-semibold text-slate-800">{email}</span>,
+                  we sent a link to reset your password. The link expires soon,
+                  so use it right away.
                 </p>
               </div>
 
               <div className="pt-2 space-y-3">
-                <button
-                  type="button"
-                  onClick={() =>
-                    navigate(`/reset-password?email=${encodeURIComponent(email)}`)
-                  }
-                  className="w-full py-3 px-4 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm transition shadow-sm hover:shadow active:scale-98 cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <span>Continue to Reset Password</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
                 <button
                   type="button"
                   onClick={() => {

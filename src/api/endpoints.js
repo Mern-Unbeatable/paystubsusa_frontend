@@ -8,6 +8,10 @@ export const API_ENDPOINTS = Object.freeze({
     LOGOUT: "/auth/logout",
     REFRESH: "/auth/refresh",
     PROFILE: "/auth/me",
+    FORGOT_PASSWORD: "/auth/password/forgot",
+    RESET_PASSWORD: "/auth/password/reset",
+    RESEND_VERIFICATION: "/auth/email/verification",
+    VERIFY_EMAIL: "/auth/email/verify",
   }),
   USERS: Object.freeze({
     LIST: "/users",

@@ -108,5 +108,37 @@ export async function restoreSessionApi(options = {}) {
 }
 
 export async function logoutApi(options = {}) {
-  await httpClient.post(API_ENDPOINTS.AUTH.LOGOUT, null, options);
+  // No body: axios serialises `null` to "null", which the API's strict JSON parser rejects.
+  await httpClient.post(API_ENDPOINTS.AUTH.LOGOUT, undefined, options);
+}
+
+export async function forgotPasswordApi(email, options = {}) {
+  await httpClient.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, { email }, options);
+}
+
+export async function resetPasswordApi({ token, password }, options = {}) {
+  await httpClient.post(
+    API_ENDPOINTS.AUTH.RESET_PASSWORD,
+    { token, password },
+    options,
+  );
+}
+
+/** Returns the ISO time at which another code may be requested. */
+export async function resendVerificationApi(options = {}) {
+  const response = await httpClient.post(
+    API_ENDPOINTS.AUTH.RESEND_VERIFICATION,
+    undefined,
+    options,
+  );
+  return response.data?.data?.resendAvailableAt || null;
+}
+
+export async function verifyEmailApi(code, options = {}) {
+  const response = await httpClient.post(
+    API_ENDPOINTS.AUTH.VERIFY_EMAIL,
+    { code },
+    options,
+  );
+  return { user: resolveUserPayload(response.data) };
 }

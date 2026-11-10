@@ -9,26 +9,38 @@ import {
 } from "lucide-react";
 import logoImg from "../../../assets/logo.png";
 import AuthInvoicePreview from "../components/AuthInvoicePreview";
+import { useAuth } from "../../../hooks/useAuth";
+import { getErrorMessage } from "../../../api/errorNormalizer";
+
+const MISSING_TOKEN_MESSAGE =
+  "This reset link is invalid. Please request a new one.";
 
 const ResetPasswordView = () => {
   const [searchParams] = useSearchParams();
-  const emailParam = searchParams.get("email") || "";
+  const token = searchParams.get("token") || "";
+  const { resetPassword, user, logout } = useAuth();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(token ? "" : MISSING_TOKEN_MESSAGE);
   const [success, setSuccess] = useState(false);
+  const [tokenInvalid, setTokenInvalid] = useState(!token);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+
+    if (!token) {
+      setError(MISSING_TOKEN_MESSAGE);
+      return;
+    }
 
     if (!password || !confirmPassword) {
       setError("Please fill in all fields");
@@ -46,10 +58,17 @@ const ResetPasswordView = () => {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await resetPassword({ token, password });
+      // The API revoked every session, including this tab's.
+      if (user) await logout().catch(() => {});
       setSuccess(true);
-    }, 600);
+    } catch (err) {
+      setTokenInvalid(err?.code === "RESET_TOKEN_INVALID");
+      setError(getErrorMessage(err, "Unable to reset your password."));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,23 +108,21 @@ const ResetPasswordView = () => {
                   Reset Password
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  {emailParam ? (
-                    <>
-                      Create a new password for{" "}
-                      <span className="font-semibold text-slate-800">
-                        {emailParam}
-                      </span>
-                      .
-                    </>
-                  ) : (
-                    "Choose a strong, secure new password for your account."
-                  )}
+                  Choose a strong, secure new password for your account.
                 </p>
               </div>
 
               {error && (
                 <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 text-center">
                   {error}
+                  {tokenInvalid && (
+                    <Link
+                      to="/forgot-password"
+                      className="block mt-1 text-secondary hover:underline"
+                    >
+                      Request a new reset link
+                    </Link>
+                  )}
                 </div>
               )}
 

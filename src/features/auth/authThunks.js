@@ -74,24 +74,13 @@ export const bootstrapAuth = createAsyncThunk(
   },
 );
 
-export const loginAsDemoUser = createAsyncThunk(
-  "auth/loginAsDemoUser",
-  async (userKey, { rejectWithValue }) => {
+export const verifyEmail = createAsyncThunk(
+  "auth/verifyEmail",
+  async (code, { rejectWithValue, signal }) => {
     try {
-      return await authService.loginAsDemoUser(userKey);
+      return await authService.verifyEmail(code, { signal });
     } catch (error) {
       return rejectWithValue(normalizeThunkError(error));
     }
-  },
-  {
-    condition: (_, { getState }) => {
-      const authState = getState()?.auth;
-
-      if (!authState) {
-        return true;
-      }
-
-      return authState.loading !== true;
-    },
   },
 );

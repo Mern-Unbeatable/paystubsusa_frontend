@@ -4,9 +4,9 @@ import { PATHS } from "../../config/paths";
 import GuardRedirect from "./GuardRedirect";
 
 export default function RequireAdmin() {
-  const { user, loading } = useAuth();
+  const { user, initializing } = useAuth();
   const location = useLocation();
-  if (loading) return null;
+  if (initializing) return null;
 
   if (user?.role !== "admin")
     return (

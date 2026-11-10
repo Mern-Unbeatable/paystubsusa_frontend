@@ -7,6 +7,7 @@ const authExcludedEndpoints = new Set([
   API_ENDPOINTS.AUTH.LOGIN,
   API_ENDPOINTS.AUTH.REGISTER,
   API_ENDPOINTS.AUTH.REFRESH,
+  API_ENDPOINTS.AUTH.LOGOUT,
 ]);
 
 const baseConfig = {
@@ -16,6 +17,8 @@ const baseConfig = {
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
+    // The API's CSRF guard for cookie-authenticated routes (refresh, logout).
+    "X-Requested-With": "XMLHttpRequest",
   },
 };
 
@@ -69,6 +72,17 @@ async function refreshAccessToken() {
   return refreshedToken;
 }
 
+/**
+ * Single-flight refresh: concurrent callers share one request. Two parallel refreshes with
+ * the same cookie would look like token reuse to the API, which revokes the whole session.
+ */
+export function refreshSession() {
+  refreshPromise ??= refreshAccessToken().finally(() => {
+    refreshPromise = null;
+  });
+  return refreshPromise;
+}
+
 function notifyAuthFailure() {
   if (typeof onAuthFailure === "function") {
     onAuthFailure();
@@ -98,10 +112,15 @@ axiosInstance.interceptors.response.use(
     const status = response?.status;
     const originalRequest = config;
 
+    const usedGuestToken = String(
+      originalRequest?.headers?.Authorization || "",
+    ).startsWith("Guest ");
+
     if (
       status !== 401 ||
       !originalRequest ||
       originalRequest._retry ||
+      usedGuestToken ||
       shouldSkipRefresh(originalRequest.url)
     ) {
       return Promise.reject(error);
@@ -110,13 +129,7 @@ axiosInstance.interceptors.response.use(
     originalRequest._retry = true;
 
     try {
-      if (!refreshPromise) {
-        refreshPromise = refreshAccessToken().finally(() => {
-          refreshPromise = null;
-        });
-      }
-
-      const refreshedToken = await refreshPromise;
+      const refreshedToken = await refreshSession();
 
       originalRequest.headers = {
         ...originalRequest.headers,

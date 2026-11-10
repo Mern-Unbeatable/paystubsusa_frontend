@@ -29,6 +29,7 @@ export const PATHS = {
     register: "/register",
     forgotPassword: "/forgot-password",
     resetPassword: "/reset-password",
+    verifyEmail: "/verify-email",
   },
   CUSTOMER: {
     dashboard: "/customer/overview",

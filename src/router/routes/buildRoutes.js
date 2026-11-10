@@ -7,7 +7,7 @@ import RequireAdmin from "../guard/RequireAdmin";
 import RequireCustomer from "../guard/RequireCustomer";
 import RequireGuest from "../guard/RequireGuest";
 import { publicRoutes } from "./publicRoutes";
-import { authRoutes } from "./authRoutes";
+import { authRoutes, resetPasswordRoute, verifyEmailRoute } from "./authRoutes";
 import { customerRoutes } from "./customerRoutes";
 import { adminRoutes } from "./adminRoutes";
 import { ALIASES } from "../../config/paths";
@@ -33,8 +33,16 @@ export const routeConfig = [
     ],
   },
   {
+    element: React.createElement(AuthLayout),
+    children: [resetPasswordRoute],
+  },
+  {
     element: React.createElement(RequireAuth),
     children: [
+      {
+        element: React.createElement(AuthLayout),
+        children: [verifyEmailRoute],
+      },
       {
         element: React.createElement(RequireCustomer),
         children: customerRoutes,

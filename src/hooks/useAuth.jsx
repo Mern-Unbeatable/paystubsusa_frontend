@@ -7,11 +7,12 @@ import {
   selectAuthUser,
   selectIsAuthenticated,
 } from "../features/auth/authSelectors";
+import { authService } from "../features/auth/auth.service";
 import {
-  loginAsDemoUser,
   loginUser,
   logoutUser,
   registerUser,
+  verifyEmail as verifyEmailThunk,
 } from "../features/auth/authThunks";
 
 export function useAuth() {
@@ -32,22 +33,27 @@ export function useAuth() {
     [dispatch],
   );
 
-  const loginAs = useCallback(
-    (userKey) => dispatch(loginAsDemoUser(userKey)).unwrap(),
+  const logout = useCallback(() => dispatch(logoutUser()).unwrap(), [dispatch]);
+
+  const verifyEmail = useCallback(
+    (code) => dispatch(verifyEmailThunk(code)).unwrap(),
     [dispatch],
   );
-
-  const logout = useCallback(() => dispatch(logoutUser()).unwrap(), [dispatch]);
 
   return {
     user,
     loading,
     status,
+    // True until the first session restore settles; guards wait on this, not on `loading`.
+    initializing: status === "idle" || status === "bootstrapping",
     error,
     isAuthenticated,
     login,
     register,
-    loginAs,
     logout,
+    verifyEmail,
+    forgotPassword: authService.forgotPassword,
+    resetPassword: authService.resetPassword,
+    resendVerification: authService.resendVerification,
   };
 }
