@@ -191,7 +191,7 @@ export const publicRoutes = [
     path: PATHS.PUBLIC.directDepositSuccess,
     element: createLazyRouteElement(DirectDepositSuccessView),
   },
-  { path: "pricing", element: createLazyRouteElement(PricingView) },
+  { path: "pricing/:billing?", element: createLazyRouteElement(PricingView) },
   { path: "find-paystubs", element: createLazyRouteElement(FindPaystubsView) },
   { path: "about", element: createLazyRouteElement(AboutView) },
   {

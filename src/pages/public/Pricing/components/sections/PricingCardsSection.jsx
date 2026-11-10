@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router";
 import { Check, ChevronRight } from "lucide-react";
 import monthlyFeatures from "../../../data/pricing/monthlyFeatures.json";
 import oneTimeCards from "../../../data/pricing/oneTimeCards.json";
 
-const PricingCardsSection = () => {
-  const [billingType, setBillingType] = useState("one-time"); // 'one-time' | 'monthly'
+const PricingCardsSection = ({ billingType, onBillingChange }) => {
 
   return (
     <section className="w-full bg-[#F7FAFF] pt-2 pb-24 border-t border-slate-100">
@@ -52,7 +51,7 @@ const PricingCardsSection = () => {
           <div className="bg-[#EAF2FA] p-1 sm:p-1.5 rounded-xl inline-flex gap-1 border border-slate-200/60 shadow-xs">
             <button
               type="button"
-              onClick={() => setBillingType("one-time")}
+              onClick={() => onBillingChange("one-time")}
               className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                 billingType === "one-time"
                   ? "bg-white text-secondary shadow-xs"
@@ -63,7 +62,7 @@ const PricingCardsSection = () => {
             </button>
             <button
               type="button"
-              onClick={() => setBillingType("monthly")}
+              onClick={() => onBillingChange("monthly")}
               className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                 billingType === "monthly"
                   ? "bg-white text-secondary shadow-xs"

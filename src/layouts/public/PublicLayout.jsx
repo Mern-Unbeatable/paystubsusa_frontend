@@ -4,11 +4,13 @@ import NavbarLayout from "../../Components/navigation/public/NavbarLayout";
 import FooterLayout from "../../Components/navigation/public/FooterLayout";
 
 const PublicLayout = () => {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
+  const keepScroll = Boolean(state?.keepScroll);
 
   useEffect(() => {
+    if (keepScroll) return;
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, [pathname]);
+  }, [pathname, keepScroll]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-secondary selection:text-white">

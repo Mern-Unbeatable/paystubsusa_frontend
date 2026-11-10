@@ -184,7 +184,7 @@ const PricingSection = () => {
                 {/* CTA */}
                 <div className="relative mt-2">
                   <Link
-                    to={PATHS.PUBLIC.paystubGenerator}
+                    to={`${PATHS.PUBLIC.pricing}/monthly`}
                     className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3.5 text-[15px] font-semibold text-white shadow-md shadow-secondary/25 transition-all duration-200 hover:bg-[#0089e0] hover:shadow-lg hover:shadow-secondary/30 active:scale-[0.99]"
                   >
                     <span>Get Unlimited Access</span>
