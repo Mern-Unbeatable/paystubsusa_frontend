@@ -13,7 +13,9 @@ import {
   logoutUser,
   registerUser,
   reloadUser as reloadUserThunk,
+  removeAvatar as removeAvatarThunk,
   updateProfile as updateProfileThunk,
+  uploadAvatar as uploadAvatarThunk,
   verifyEmail as verifyEmailThunk,
 } from "../features/auth/authThunks";
 
@@ -52,6 +54,16 @@ export function useAuth() {
     [dispatch],
   );
 
+  const uploadAvatar = useCallback(
+    (file) => dispatch(uploadAvatarThunk(file)).unwrap(),
+    [dispatch],
+  );
+
+  const removeAvatar = useCallback(
+    () => dispatch(removeAvatarThunk()).unwrap(),
+    [dispatch],
+  );
+
   return {
     user,
     loading,
@@ -66,6 +78,8 @@ export function useAuth() {
     verifyEmail,
     updateProfile,
     reloadUser,
+    uploadAvatar,
+    removeAvatar,
     changePassword: authService.changePassword,
     forgotPassword: authService.forgotPassword,
     resetPassword: authService.resetPassword,

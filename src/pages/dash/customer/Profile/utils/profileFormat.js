@@ -1,3 +1,10 @@
+import { ENV_CONFIG } from "../../../../../config/env";
+
+/** The API returns the avatar path relative to its base URL. */
+export function avatarSrc(user) {
+  return user?.avatarUrl ? `${ENV_CONFIG.apiBaseUrl}${user.avatarUrl}` : null;
+}
+
 export function getInitials(name, email) {
   const source = (name || "").trim() || (email || "").split("@")[0] || "";
   const parts = source.split(/\s+/).filter(Boolean);

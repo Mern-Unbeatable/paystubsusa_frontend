@@ -19,6 +19,7 @@ import {
 import { useAuth } from "../../../hooks/useAuth";
 import { useBodyScrollLock } from "../../../hooks/useBodyScrollLock";
 import { PATHS } from "../../../config/paths";
+import { ENV_CONFIG } from "../../../config/env";
 
 const NAV_LINKS = [
   {
@@ -79,13 +80,20 @@ const getInitials = (name = "") =>
     .map((part) => part[0].toUpperCase())
     .join("") || "U";
 
-const UserAvatar = ({ user, size = "w-9 h-9 text-[13px]" }) => (
+const UserAvatar = ({ user, size = "w-9 h-9 text-[13px]" }) =>
+  user?.avatarUrl ? (
+    <img
+      src={`${ENV_CONFIG.apiBaseUrl}${user.avatarUrl}`}
+      alt=""
+      className={`${size} shrink-0 rounded-full object-cover ring-2 ring-white`}
+    />
+  ) : (
   <span
     className={`${size} shrink-0 rounded-full bg-secondary/10 text-secondary font-bold inline-flex items-center justify-center ring-2 ring-white`}
   >
     {getInitials(user?.name || user?.email)}
   </span>
-);
+  );
 
 const AccountLinkItem = ({ link, onClick, className }) => {
   const Icon = link.icon;

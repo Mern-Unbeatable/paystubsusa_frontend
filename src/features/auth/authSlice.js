@@ -5,7 +5,9 @@ import {
   logoutUser,
   registerUser,
   reloadUser,
+  removeAvatar,
   updateProfile,
+  uploadAvatar,
   verifyEmail,
 } from "./authThunks";
 
@@ -87,7 +89,13 @@ const authSlice = createSlice({
         state.error = action.payload || null;
       })
       .addMatcher(
-        isAnyOf(verifyEmail.fulfilled, updateProfile.fulfilled, reloadUser.fulfilled),
+        isAnyOf(
+          verifyEmail.fulfilled,
+          updateProfile.fulfilled,
+          reloadUser.fulfilled,
+          uploadAvatar.fulfilled,
+          removeAvatar.fulfilled,
+        ),
         (state, action) => {
           if (action.payload?.user) {
             state.user = action.payload.user;

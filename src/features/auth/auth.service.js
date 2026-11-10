@@ -7,10 +7,12 @@ import {
   loginApi,
   logoutApi,
   registerApi,
+  removeAvatarApi,
   resendVerificationApi,
   resetPasswordApi,
   restoreSessionApi,
   updateProfileApi,
+  uploadAvatarApi,
   verifyEmailApi,
 } from "./authApi";
 
@@ -54,5 +56,7 @@ export const authService = {
   verifyEmail: verifyEmailApi,
   reloadUser: restoreSessionApi,
   updateProfile: updateProfileApi,
+  uploadAvatar: uploadAvatarApi,
+  removeAvatar: removeAvatarApi,
   changePassword: changePasswordApi,
 };

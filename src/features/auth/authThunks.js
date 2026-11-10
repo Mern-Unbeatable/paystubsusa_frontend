@@ -85,6 +85,28 @@ export const updateProfile = createAsyncThunk(
   },
 );
 
+export const uploadAvatar = createAsyncThunk(
+  "auth/uploadAvatar",
+  async (file, { rejectWithValue, signal }) => {
+    try {
+      return await authService.uploadAvatar(file, { signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
+
+export const removeAvatar = createAsyncThunk(
+  "auth/removeAvatar",
+  async (_, { rejectWithValue, signal }) => {
+    try {
+      return await authService.removeAvatar({ signal });
+    } catch (error) {
+      return rejectWithValue(normalizeThunkError(error));
+    }
+  },
+);
+
 /** Re-reads the signed-in user from the API, the source of truth for account state. */
 export const reloadUser = createAsyncThunk(
   "auth/reloadUser",

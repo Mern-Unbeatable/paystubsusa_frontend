@@ -144,6 +144,22 @@ export async function updateProfileApi(changes, options = {}) {
   return { user: resolveUserPayload(response.data) };
 }
 
+export async function uploadAvatarApi(file, options = {}) {
+  const body = new FormData();
+  body.append("avatar", file);
+  // Overrides the instance's JSON default, which would make axios serialize FormData to JSON.
+  const response = await httpClient.put(API_ENDPOINTS.ACCOUNT.AVATAR, body, {
+    ...options,
+    headers: { ...options.headers, "Content-Type": "multipart/form-data" },
+  });
+  return { user: resolveUserPayload(response.data) };
+}
+
+export async function removeAvatarApi(options = {}) {
+  const response = await httpClient.delete(API_ENDPOINTS.ACCOUNT.AVATAR, options);
+  return { user: resolveUserPayload(response.data) };
+}
+
 /** The API keeps the current session and signs out every other one. */
 export async function changePasswordApi(
   { currentPassword, newPassword },
