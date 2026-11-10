@@ -27,9 +27,13 @@ const ForgotPasswordView = () => {
       // The API answers 202 whether or not the account exists (no account enumeration).
       await forgotPassword(email.trim());
       setSubmitted(true);
-      toast.success("Reset link sent. Check your inbox.", { id: "forgot-password" });
+      toast.success("Reset link sent. Check your inbox.", {
+        id: "forgot-password",
+      });
     } catch (err) {
-      toast.error(getErrorMessage(err, "Unable to send reset instructions."), { id: "forgot-password" });
+      toast.error(getErrorMessage(err, "Unable to send reset instructions."), {
+        id: "forgot-password",
+      });
     } finally {
       setLoading(false);
     }
@@ -113,8 +117,8 @@ const ForgotPasswordView = () => {
                 </h2>
 
                 {/* Trust hint */}
-                <div className="mt-8 flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shrink-0 mt-0.5">
+                <div className="mt-8 flex items-start gap-3 p-3.5 rounded-xl bg-emerald-50 border border-slate-100">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center border border-emerald-100 shrink-0 mt-0.5">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
@@ -130,9 +134,9 @@ const ForgotPasswordView = () => {
                   </div>
                 </div>
 
-                <div className="mt-8 flex items-start gap-3 p-3.5 rounded-xl bg-red-50 border border-red-200">
+                <div className="mt-8 flex items-start gap-3 p-3.5 rounded-xl bg-gray-50 border border-gray-200">
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-red-600 mt-0.5 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-red-900 mt-0.5 font-semibold leading-relaxed">
                       The link expires soon, so use it right away.
                     </p>
                   </div>
