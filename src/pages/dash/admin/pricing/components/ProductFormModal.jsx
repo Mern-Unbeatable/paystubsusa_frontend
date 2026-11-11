@@ -6,7 +6,7 @@ import { describeRequestError } from "../../../customer/Profile/utils/profileFor
 import {
   createAdminProductApi,
   updateAdminProductApi,
-} from "../../../../../features/adminPricing/adminPricingApi";
+} from "../../../../../features/dash/admin/Pricing/adminPricingApi";
 import {
   DOCUMENT_TYPE_LABELS,
   PRODUCT_CODE_PATTERN,

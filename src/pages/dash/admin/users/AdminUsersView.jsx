@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import {
   DashboardHeader,
   DashboardPagination,
   DashboardTable,
 } from "../../../../Components/Dashboard";
-import { PAGE_SIZE_OPTIONS, useAdminUsers } from "../../../../features/adminUsers/useAdminUsers";
+import { PAGE_SIZE_OPTIONS } from "../../../../hooks/usePaginatedList";
+import { useUsers } from "../../../../hooks/useUsers";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import UsersToolbar from "./components/UsersToolbar";
 import UserDetailsModal from "./components/UserDetailsModal";
@@ -25,20 +26,40 @@ const AdminUsersView = () => {
     users,
     meta,
     filters,
-    search,
-    setSearch,
-    updateFilter,
-    resetFilters,
     loading,
     error,
-    reload,
-    replaceUser,
-  } = useAdminUsers();
+    loadUsers,
+    setFilter: updateFilter,
+    resetFilters: resetUserFilters,
+  } = useUsers();
+  const [search, setSearch] = useState(filters.q);
+  const [reloadKey, setReloadKey] = useState(0);
   const [viewing, setViewing] = useState(null);
   const [changingStatus, setChangingStatus] = useState(null);
 
-  // Under a status filter the changed user no longer belongs on this page, so refetch.
-  const handleStatusUpdated = (updated) => (filters.status ? reload() : replaceUser(updated));
+  useEffect(() => {
+    const trimmed = search.trim();
+    if (trimmed === filters.q) return undefined;
+    const timer = setTimeout(() => updateFilter("q", trimmed), 300);
+    return () => clearTimeout(timer);
+  }, [search, filters.q, updateFilter]);
+
+  useEffect(() => {
+    const request = loadUsers(filters);
+    return () => request.abort();
+  }, [filters, reloadKey, loadUsers]);
+
+  const reload = useCallback(() => setReloadKey((k) => k + 1), []);
+
+  const resetFilters = () => {
+    setSearch("");
+    resetUserFilters();
+  };
+
+  // The store already holds the updated row; under a status filter it no longer belongs on this page.
+  const handleStatusUpdated = () => {
+    if (filters.status) reload();
+  };
 
   const actions = (user) => (
     <UserRowActions user={user} onView={setViewing} onChangeStatus={setChangingStatus} />

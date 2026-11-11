@@ -1,8 +1,8 @@
-import { API_ENDPOINTS } from "../../api/endpoints";
-import { httpClient } from "../../api/httpClient";
+import { API_ENDPOINTS } from "../../../../api/endpoints";
+import { httpClient } from "../../../../api/httpClient";
 
 /** The API lists customers only (never admins) and supports search by name or email. */
-export async function listAdminUsersApi(
+export async function listUsersApi(
   { q, status, subscription, emailVerified, sort, page, pageSize },
   options = {},
 ) {
@@ -23,18 +23,18 @@ export async function listAdminUsersApi(
 }
 
 /** Customer record plus recent orders, documents and subscription. */
-export async function getAdminUserApi(id, options = {}) {
+export async function getUserApi(id, options = {}) {
   const response = await httpClient.get(API_ENDPOINTS.ADMIN.CUSTOMER(id), options);
-  return response.data?.data ?? null;
+  return { user: response.data?.data ?? null };
 }
 
 /** Suspending revokes every session of that customer on the server. */
-export async function updateAdminUserStatusApi(id, { status, reason }, options = {}) {
+export async function updateUserStatusApi({ id, status, reason }, options = {}) {
   const body = reason ? { status, reason } : { status };
   const response = await httpClient.patch(
     API_ENDPOINTS.ADMIN.CUSTOMER(id),
     body,
     options,
   );
-  return response.data?.data ?? null;
+  return { user: response.data?.data ?? null };
 }

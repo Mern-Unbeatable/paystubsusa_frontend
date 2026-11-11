@@ -11,11 +11,11 @@ import ConfirmModal from "../../../../Components/modal/ConfirmModal";
 import {
   PAGE_SIZE_OPTIONS,
   useAdminPricing,
-} from "../../../../features/adminPricing/useAdminPricing";
+} from "../../../../features/dash/admin/Pricing/useAdminPricing";
 import {
   deleteAdminProductApi,
   updateAdminProductApi,
-} from "../../../../features/adminPricing/adminPricingApi";
+} from "../../../../features/dash/admin/Pricing/adminPricingApi";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import ProductDetailsModal from "./components/ProductDetailsModal";
 import ProductFormModal from "./components/ProductFormModal";

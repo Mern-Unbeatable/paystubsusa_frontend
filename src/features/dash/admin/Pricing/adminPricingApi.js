@@ -1,5 +1,5 @@
-import { API_ENDPOINTS } from "../../api/endpoints";
-import { httpClient } from "../../api/httpClient";
+import { API_ENDPOINTS } from "../../../../api/endpoints";
+import { httpClient } from "../../../../api/httpClient";
 
 /** Paginated catalog for admins, including inactive products and usage counts. */
 export async function listAdminProductsApi(

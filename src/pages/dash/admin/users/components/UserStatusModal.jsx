@@ -3,12 +3,13 @@ import { toast } from "react-hot-toast";
 import { ShieldCheck, ShieldOff } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { updateAdminUserStatusApi } from "../../../../../features/adminUsers/adminUsersApi";
+import { useUsers } from "../../../../../hooks/useUsers";
 
 const REASON_MAX = 500;
 
 /** Suspend or reactivate one account. Suspension also signs the user out everywhere (server-side). */
 const UserStatusModal = ({ user, onClose, onUpdated }) => {
+  const { updateUserStatus } = useUsers();
   const [reason, setReason] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -26,7 +27,8 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
     setSubmitting(true);
     setError(null);
     try {
-      const updated = await updateAdminUserStatusApi(user.id, {
+      const { user: updated } = await updateUserStatus({
+        id: user.id,
         status: nextStatus,
         reason: reason.trim() || undefined,
       });

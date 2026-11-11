@@ -20,7 +20,7 @@ import {
   Wallet,
 } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
-import { getAdminUserApi } from "../../../../../features/adminUsers/adminUsersApi";
+import { useUsers } from "../../../../../hooks/useUsers";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
 import { formatCents, formatMoney, formatShortDate } from "../utils/userFormat";
 
@@ -67,38 +67,21 @@ const Skeleton = () => (
 
 /** `user` is the list row (shown immediately); orders and plan details load from the API. */
 const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
-  const [loaded, setLoaded] = useState({
-    id: null,
-    details: null,
-    error: null,
-  });
+  const { details: loaded, loadUserDetails } = useUsers();
   const [attempt, setAttempt] = useState(0);
   const userId = user?.id;
 
-  const retry = () => {
-    setLoaded({ id: null, details: null, error: null });
-    setAttempt((n) => n + 1);
-  };
+  const retry = () => setAttempt((n) => n + 1);
 
   useEffect(() => {
     if (!userId) return undefined;
-    const controller = new AbortController();
-    getAdminUserApi(userId, { signal: controller.signal })
-      .then((details) => setLoaded({ id: userId, details, error: null }))
-      .catch((err) => {
-        if (!err?.isCanceled) {
-          setLoaded({
-            id: userId,
-            details: null,
-            error: describeRequestError(err, "Couldn't load this user."),
-          });
-        }
-      });
-    return () => controller.abort();
-  }, [userId, attempt]);
+    const request = loadUserDetails(userId);
+    return () => request.abort();
+  }, [userId, attempt, loadUserDetails]);
 
-  const { details, error } =
-    loaded.id === userId ? loaded : { details: null, error: null };
+  const current = loaded.id === userId ? loaded : { user: null, loading: true, error: null };
+  const details = current.user;
+  const error = current.error && describeRequestError(current.error, "Couldn't load this user.");
   const record = details || user;
   const pending = !details && !error;
   const plan = details?.subscription;

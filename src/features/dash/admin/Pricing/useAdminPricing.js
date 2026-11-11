@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { usePaginatedList } from "../../hooks/usePaginatedList";
+import { usePaginatedList } from "../../../../hooks/usePaginatedList";
 import { listAdminProductsApi } from "./adminPricingApi";
 
-export { PAGE_SIZE_OPTIONS } from "../../hooks/usePaginatedList";
+export { PAGE_SIZE_OPTIONS } from "../../../../hooks/usePaginatedList";
 
 const INITIAL_FILTERS = {
   q: "",

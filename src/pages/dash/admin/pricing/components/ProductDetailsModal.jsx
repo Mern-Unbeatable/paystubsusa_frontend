@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { getAdminProductApi } from "../../../../../features/adminPricing/adminPricingApi";
+import { getAdminProductApi } from "../../../../../features/dash/admin/Pricing/adminPricingApi";
 import { formatPrice, formatShortDate } from "../utils/pricingFormat";
 import { BillingTag, DocumentTypeLabel, ProductStatusBadge } from "./ProductCells";
 
