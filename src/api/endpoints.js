@@ -23,6 +23,10 @@ export const API_ENDPOINTS = Object.freeze({
     CUSTOMER: (id) => buildResourcePath("admin/customers", id),
     PRODUCTS: "/admin/products",
     PRODUCT: (code) => buildResourcePath("admin/products", code),
+    TEMPLATES: "/admin/templates",
+    TEMPLATE: (id) => buildResourcePath("admin/templates", id),
+    TEMPLATE_DEFAULT: (id) => `${buildResourcePath("admin/templates", id)}/default`,
+    TEMPLATE_PREVIEW: (id) => `${buildResourcePath("admin/templates", id)}/preview`,
   }),
   USERS: Object.freeze({
     LIST: "/users",
