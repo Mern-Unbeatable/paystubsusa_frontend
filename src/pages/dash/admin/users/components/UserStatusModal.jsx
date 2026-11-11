@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ShieldCheck, ShieldOff } from "lucide-react";
-import ProfileModal from "../../../customer/Profile/components/ProfileModal";
+import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
 import { updateAdminUserStatusApi } from "../../../../../features/adminUsers/adminUsersApi";
 
@@ -30,11 +30,20 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
         status: nextStatus,
         reason: reason.trim() || undefined,
       });
-      toast.success(suspending ? `${user.name} was suspended.` : `${user.name} was reactivated.`);
+      toast.success(
+        suspending
+          ? `${user.name} was suspended.`
+          : `${user.name} was reactivated.`,
+      );
       onUpdated(updated || { ...user, status: nextStatus });
       onClose();
     } catch (err) {
-      setError(describeRequestError(err, "Couldn't update this account. Please try again."));
+      setError(
+        describeRequestError(
+          err,
+          "Couldn't update this account. Please try again.",
+        ),
+      );
     } finally {
       inFlightRef.current = false;
       setSubmitting(false);
@@ -56,8 +65,14 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
     >
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <div>
-          <label htmlFor="status-reason" className="text-sm font-semibold text-slate-700">
-            Reason <span className="font-normal text-slate-400">(optional, kept in the audit log)</span>
+          <label
+            htmlFor="status-reason"
+            className="text-sm font-semibold text-slate-700"
+          >
+            Reason{" "}
+            <span className="font-normal text-slate-400">
+              (optional, kept in the audit log)
+            </span>
           </label>
           <textarea
             id="status-reason"
@@ -75,7 +90,10 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
         </div>
 
         {error && (
-          <p role="alert" className="rounded-xl bg-rose-50 px-3.5 py-2.5 text-sm text-rose-700">
+          <p
+            role="alert"
+            className="rounded-xl bg-rose-50 px-3.5 py-2.5 text-sm text-rose-700"
+          >
             {error}
           </p>
         )}
@@ -93,10 +111,16 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
             type="submit"
             disabled={submitting}
             className={`h-10 rounded-xl px-4 text-sm font-semibold text-white transition disabled:opacity-60 cursor-pointer ${
-              suspending ? "bg-rose-600 hover:bg-rose-700" : "bg-emerald-600 hover:bg-emerald-700"
+              suspending
+                ? "bg-rose-600 hover:bg-rose-700"
+                : "bg-emerald-600 hover:bg-emerald-700"
             }`}
           >
-            {submitting ? "Saving…" : suspending ? "Suspend account" : "Reactivate account"}
+            {submitting
+              ? "Saving…"
+              : suspending
+                ? "Suspend account"
+                : "Reactivate account"}
           </button>
         </div>
       </form>

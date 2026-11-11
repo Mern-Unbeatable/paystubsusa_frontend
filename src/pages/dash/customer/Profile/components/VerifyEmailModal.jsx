@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AlertCircle, Clock, MailCheck, RefreshCw } from "lucide-react";
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { useAuth } from "../../../../../hooks/useAuth";
-import { describeRequestError, maskEmail, secondsUntil } from "../utils/profileFormat";
+import {
+  describeRequestError,
+  maskEmail,
+  secondsUntil,
+} from "../utils/profileFormat";
 
 const CODE_LENGTH = 6;
 // Used only when the API answers RESEND_COOLDOWN without a retry time.
@@ -44,7 +48,10 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
     event.preventDefault();
     if (inFlightRef.current) return;
     if (code.length !== CODE_LENGTH) {
-      setError({ kind: "invalid", message: `Enter the ${CODE_LENGTH}-digit code from your email.` });
+      setError({
+        kind: "invalid",
+        message: `Enter the ${CODE_LENGTH}-digit code from your email.`,
+      });
       return;
     }
 
@@ -59,11 +66,20 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
       if (err?.code === "EMAIL_ALREADY_VERIFIED") {
         await finishAlreadyVerified();
       } else if (err?.code === "CODE_EXPIRED") {
-        setError({ kind: "expired", message: "This code has expired. Request a new code below." });
+        setError({
+          kind: "expired",
+          message: "This code has expired. Request a new code below.",
+        });
       } else if (err?.code === "CHALLENGE_LOCKED") {
-        setError({ kind: "expired", message: "Too many incorrect attempts. Request a new code below." });
+        setError({
+          kind: "expired",
+          message: "Too many incorrect attempts. Request a new code below.",
+        });
       } else {
-        setError({ kind: "invalid", message: describeRequestError(err, "We couldn't verify that code.") });
+        setError({
+          kind: "invalid",
+          message: describeRequestError(err, "We couldn't verify that code."),
+        });
       }
     } finally {
       inFlightRef.current = false;
@@ -77,7 +93,9 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
     setResending(true);
     try {
       const availableAt = await resendVerification();
-      setCooldown(availableAt ? secondsUntil(availableAt) : FALLBACK_COOLDOWN_SECONDS);
+      setCooldown(
+        availableAt ? secondsUntil(availableAt) : FALLBACK_COOLDOWN_SECONDS,
+      );
       setCode("");
       setError(null);
       toast.success("A new code is on its way.", { id: "verification-resent" });
@@ -86,8 +104,12 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
         await finishAlreadyVerified();
         return;
       }
-      if (err?.code === "RESEND_COOLDOWN") setCooldown(FALLBACK_COOLDOWN_SECONDS);
-      setError({ kind: "error", message: describeRequestError(err, "We couldn't send a new code.") });
+      if (err?.code === "RESEND_COOLDOWN")
+        setCooldown(FALLBACK_COOLDOWN_SECONDS);
+      setError({
+        kind: "error",
+        message: describeRequestError(err, "We couldn't send a new code."),
+      });
     } finally {
       inFlightRef.current = false;
       setResending(false);
@@ -106,7 +128,10 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
       description={
         <>
           Enter the {CODE_LENGTH}-digit verification code we emailed to{" "}
-          <span className="font-semibold text-slate-700">{maskEmail(email)}</span>.
+          <span className="font-semibold text-slate-700">
+            {maskEmail(email)}
+          </span>
+          .
         </>
       }
     >
@@ -130,7 +155,9 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
             aria-invalid={Boolean(error)}
             aria-describedby={error ? errorId : undefined}
             onChange={(event) => {
-              setCode(event.target.value.replace(/\D/g, "").slice(0, CODE_LENGTH));
+              setCode(
+                event.target.value.replace(/\D/g, "").slice(0, CODE_LENGTH),
+              );
               if (error?.kind === "invalid") setError(null);
             }}
             placeholder={"0".repeat(CODE_LENGTH)}
@@ -153,9 +180,15 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
             }`}
           >
             {error.kind === "expired" ? (
-              <Clock className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
+              <Clock
+                className="mt-0.5 h-4 w-4 flex-shrink-0"
+                aria-hidden="true"
+              />
             ) : (
-              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
+              <AlertCircle
+                className="mt-0.5 h-4 w-4 flex-shrink-0"
+                aria-hidden="true"
+              />
             )}
             <span>{error.message}</span>
           </div>
@@ -178,7 +211,9 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
       </form>
 
       <div className="mt-5 flex flex-col items-center gap-1 border-t border-slate-100 pt-4 text-center">
-        <p className="text-[13px] text-slate-500">Didn&apos;t get a code, or did it expire?</p>
+        <p className="text-[13px] text-slate-500">
+          Didn&apos;t get a code, or did it expire?
+        </p>
         <button
           type="button"
           onClick={handleResend}
@@ -186,7 +221,10 @@ const VerifyEmailModal = ({ open, onClose, email }) => {
           aria-live="polite"
           className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[13px] font-semibold text-secondary transition hover:underline disabled:cursor-not-allowed disabled:text-slate-400 disabled:no-underline cursor-pointer"
         >
-          <RefreshCw className={`h-3.5 w-3.5 ${resending ? "animate-spin" : ""}`} aria-hidden="true" />
+          <RefreshCw
+            className={`h-3.5 w-3.5 ${resending ? "animate-spin" : ""}`}
+            aria-hidden="true"
+          />
           {resending
             ? "Sending…"
             : cooldown > 0
