@@ -316,7 +316,8 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
     }
   };
 
-  const isActive = (path) => location.pathname === path;
+  // Nested pages (e.g. /admin/templates/:id/edit) keep their section highlighted.
+  const isActive = (path) => location.pathname === path || location.pathname.startsWith(`${path}/`);
 
   return (
     <>

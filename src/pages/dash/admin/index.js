@@ -6,5 +6,6 @@ export { default as AdminPricingPlansView } from "./pricing/AdminPricingPlansVie
 export { default as AdminProfileView } from "./profile/AdminProfileView";
 export { default as AdminSubscriptionsView } from "./subscriptions/AdminSubscriptionsView";
 export { default as AdminDocumentTemplatesView } from "./templates/AdminDocumentTemplatesView";
+export { default as AdminTemplateEditView } from "./templates/AdminTemplateEditView";
 export { default as AdminTransactionsView } from "./transactions/AdminTransactionsView";
 export { default as AdminUsersView } from "./users/AdminUsersView";

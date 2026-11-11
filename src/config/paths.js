@@ -54,6 +54,7 @@ export const PATHS = {
     transactions: "/admin/transactions",
     subscriptions: "/admin/subscriptions",
     templates: "/admin/templates",
+    templateEdit: "/admin/templates/:id/edit",
     pricing: "/admin/pricing",
     profile: "/admin/profile",
   },
@@ -93,6 +94,9 @@ export const buildPaystubCheckoutPath = (templateId) =>
 
 export const buildPaystubSuccessPath = (templateId) =>
   fillTemplateSlug(PATHS.PUBLIC.paystubSuccess, templateId);
+
+export const buildAdminTemplateEditPath = (id) =>
+  PATHS.ADMIN.templateEdit.replace(":id", encodeURIComponent(id));
 
 // Legacy path -> canonical path. Rendered as <Navigate replace>.
 export const ALIASES = {

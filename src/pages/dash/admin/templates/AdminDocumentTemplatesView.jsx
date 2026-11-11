@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import { Plus, Power, PowerOff, RefreshCw, Star, Trash2 } from "lucide-react";
 import {
@@ -8,10 +9,11 @@ import {
   DashboardTable,
 } from "../../../../Components/Dashboard";
 import ConfirmModal from "../../../../Components/modal/ConfirmModal";
+import { buildAdminTemplateEditPath } from "../../../../config/paths";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import { useTemplates } from "./hooks/useTemplates";
+import TemplateCreateModal from "./components/TemplateCreateModal";
 import TemplateDetailsModal from "./components/TemplateDetailsModal";
-import TemplateFormModal from "./components/TemplateFormModal";
 import {
   DocumentTypeLabel,
   LayoutLabel,
@@ -47,10 +49,12 @@ const AdminDocumentTemplatesView = () => {
   } = useTemplates();
   const [search, setSearch] = useState(filters.q);
   const [reloadKey, setReloadKey] = useState(0);
-  // { type: "view" | "create" | "edit" | "default" | "toggle" | "delete", template }
+  const navigate = useNavigate();
+  // { type: "view" | "create" | "default" | "toggle" | "delete", template }
   const [dialog, setDialog] = useState(null);
   const open = (type) => (template) => setDialog({ type, template });
   const closeDialog = () => setDialog(null);
+  const editTemplate = (template) => navigate(buildAdminTemplateEditPath(template.id));
 
   useEffect(() => {
     const trimmed = search.trim();
@@ -97,7 +101,7 @@ const AdminDocumentTemplatesView = () => {
     <TemplateRowActions
       template={template}
       onView={open("view")}
-      onEdit={open("edit")}
+      onEdit={editTemplate}
       onSetDefault={open("default")}
       onToggle={open("toggle")}
       onDelete={open("delete")}
@@ -232,19 +236,12 @@ const AdminDocumentTemplatesView = () => {
           key={target.id}
           template={target}
           onClose={closeDialog}
-          onEdit={open("edit")}
+          onEdit={editTemplate}
           onSetDefault={open("default")}
         />
       )}
 
-      {(dialog?.type === "create" || dialog?.type === "edit") && (
-        <TemplateFormModal
-          key={target?.id ?? "new"}
-          template={target}
-          onClose={closeDialog}
-          onSaved={reload}
-        />
-      )}
+      {dialog?.type === "create" && <TemplateCreateModal onClose={closeDialog} onCreated={reload} />}
 
       <ConfirmModal
         key={`default-${target?.id}`}
