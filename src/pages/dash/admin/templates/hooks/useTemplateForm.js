@@ -5,11 +5,13 @@ import {
   PREVIEW_TYPES,
   RENDERERS_BY_TYPE,
   TEMPLATE_CODE_PATTERN,
+  THEMEABLE_RENDERER,
   VARIANTLESS_RENDERERS,
   VARIANT_FIELDS,
   previewImageSrc,
   suggestTemplateCode,
 } from "../utils/templateFormat";
+import { DEFAULT_PAYSTUB_THEME } from "../../../../public/Generator/utils/paystubTheme";
 
 const initialValues = (template) =>
   template
@@ -55,7 +57,12 @@ const checkImage = (file) => {
   return null;
 };
 
-const sameVariant = (a, b) => VARIANT_FIELDS.every(({ key }) => a?.[key] === b?.[key]);
+// Key-wise, because the stored JSON's key order isn't preserved.
+const sameTheme = (a, b) =>
+  a && b ? Object.keys(DEFAULT_PAYSTUB_THEME).every((key) => a[key] === b[key]) : !a && !b;
+
+const sameVariant = (a, b) =>
+  VARIANT_FIELDS.every(({ key }) => a?.[key] === b?.[key]) && sameTheme(a?.theme, b?.theme);
 
 /**
  * Form state shared by the create modal and the edit page (no `template` = create).
@@ -83,6 +90,8 @@ export function useTemplateForm(template) {
 
   const variantless = VARIANTLESS_RENDERERS.has(values.renderer);
   const layoutLocked = !isCreate && !template.canEditLayout;
+  const themeable = values.renderer === THEMEABLE_RENDERER;
+  const theme = values.variant?.theme ?? null;
   const imageFile = image?.file ?? null;
   const previewSrc = image?.url || (removeImage ? null : previewImageSrc(template));
 
@@ -101,6 +110,23 @@ export function useTemplateForm(template) {
   const setVariant = (key) => (event) => {
     const { value } = event.target;
     setValues((prev) => ({ ...prev, variant: { ...prev.variant, [key]: value } }));
+    setErrors((prev) => ({ ...prev, variant: undefined }));
+  };
+
+  /** The first edit starts from the default look, so untouched values match what's shown. */
+  const setThemeValue = (key, value) => {
+    setValues((prev) => ({
+      ...prev,
+      variant: { ...prev.variant, theme: { ...(prev.variant.theme ?? DEFAULT_PAYSTUB_THEME), [key]: value } },
+    }));
+    setErrors((prev) => ({ ...prev, variant: undefined }));
+  };
+
+  const clearTheme = () => {
+    setValues((prev) => {
+      const { theme: _removed, ...variant } = prev.variant;
+      return { ...prev, variant };
+    });
     setErrors((prev) => ({ ...prev, variant: undefined }));
   };
 
@@ -155,6 +181,17 @@ export function useTemplateForm(template) {
     return changes;
   };
 
+  const dirty = !isCreate && (Object.keys(buildChanges()).length > 0 || Boolean(image) || removeImage);
+
+  /** Back to the loaded template's values. */
+  const reset = () => {
+    setValues(initialValues(template));
+    replaceImage(null);
+    setRemoveImage(false);
+    setErrors({});
+    setFormError(null);
+  };
+
   const applyServerErrors = (err, fallback) => {
     const serverErrors = Object.fromEntries(
       Object.entries(err?.fieldErrors || {}).map(([key, messages]) => [key, [].concat(messages)[0]]),
@@ -175,11 +212,17 @@ export function useTemplateForm(template) {
     setSubmitting,
     variantless,
     layoutLocked,
+    themeable,
+    theme,
+    dirty,
     imageFile,
     removeImage,
     previewSrc,
     set,
     setVariant,
+    setThemeValue,
+    clearTheme,
+    reset,
     pickImage,
     clearImage,
     validateForm,

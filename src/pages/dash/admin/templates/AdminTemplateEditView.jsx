@@ -1,15 +1,38 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-hot-toast";
-import { AlertTriangle, ArrowLeft, FileQuestion, Lock } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  ChevronDown,
+  FileQuestion,
+  FileText,
+  Image as ImageIcon,
+  LayoutTemplate,
+  Lock,
+  Palette,
+  RotateCcw,
+  Ruler,
+  Type,
+} from "lucide-react";
 import { DashboardHeader } from "../../../../Components/Dashboard";
+import ConfirmModal from "../../../../Components/modal/ConfirmModal";
 import { PATHS } from "../../../../config/paths";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
-import TemplateFormFields from "./components/TemplateFormFields";
+import {
+  FormErrorAlert,
+  LayoutLockNote,
+  TemplateDetailsFields,
+  TemplateImageField,
+  TemplatePublishFields,
+  TemplateVariantFields,
+} from "./components/TemplateFormFields";
+import TemplateBuilderPreview from "./components/TemplateBuilderPreview";
+import { ColorControls, SpacingControls, TypographyControls } from "./components/ThemeControls";
 import { DocumentTypeLabel, TemplateStatus } from "./components/TemplateCells";
 import { useTemplateForm } from "./hooks/useTemplateForm";
 import { useTemplates } from "./hooks/useTemplates";
-import { formatShortDate } from "./utils/templateFormat";
+import { RENDERER_LABELS, formatShortDate, livePreviewTemplate } from "./utils/templateFormat";
 
 const FORM_ID = "template-edit-form";
 
@@ -48,15 +71,66 @@ const secondaryButton =
 const primaryButton =
   "inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-secondary px-4 text-sm font-semibold text-white transition hover:bg-secondary/90 disabled:opacity-60 cursor-pointer";
 
+/** `hasError` keeps the section open so validation messages stay visible. */
+const BuilderSection = ({ title, icon, aside, defaultOpen = false, hasError = false, children }) => {
+  const [expanded, setOpen] = useState(defaultOpen);
+  const open = expanded || hasError;
+  const Icon = icon;
+  const contentId = useId();
+  return (
+    <section className={card}>
+      <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5">
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls={contentId}
+          className="flex min-w-0 flex-1 items-center gap-2.5 text-left cursor-pointer"
+        >
+          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+            <Icon className="h-4 w-4" aria-hidden="true" />
+          </span>
+          <span className="flex-1 truncate text-sm font-bold text-slate-800">{title}</span>
+          <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 transition ${open ? "rotate-180" : ""}`} aria-hidden="true" />
+        </button>
+        {aside}
+      </div>
+      <div id={contentId} hidden={!open} className="border-t border-slate-100 px-4 py-4 sm:px-5">
+        {children}
+      </div>
+    </section>
+  );
+};
+
 /** Mounted once the template is loaded, so the form starts from the server's current values. */
 const TemplateEditForm = ({ template, onDone }) => {
   const { updateTemplate, uploadTemplatePreview, removeTemplatePreview } = useTemplates();
   const form = useTemplateForm(template);
   const inFlightRef = useRef(false);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
+  const { dirty } = form;
+
+  useEffect(() => {
+    if (!dirty) return undefined;
+    const warn = (event) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+
+  const handleCancel = () => (dirty ? setConfirmDiscard(true) : onDone());
+
+  const handleReset = () => {
+    form.reset();
+    toast("Changes discarded.");
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (inFlightRef.current || !form.validateForm()) return;
+    if (inFlightRef.current) return;
+    if (!form.validateForm()) {
+      toast.error("Fix the highlighted fields before saving.");
+      return;
+    }
 
     const changes = form.buildChanges();
     const hasChanges = Object.keys(changes).length > 0;
@@ -70,7 +144,9 @@ const TemplateEditForm = ({ template, onDone }) => {
     try {
       if (hasChanges) await updateTemplate({ id: template.id, changes });
     } catch (err) {
-      form.applyServerErrors(err, describeRequestError(err, "Couldn't save this template. Please try again."));
+      const message = describeRequestError(err, "Couldn't save this template. Please try again.");
+      form.applyServerErrors(err, message);
+      toast.error(message);
       inFlightRef.current = false;
       form.setSubmitting(false);
       return;
@@ -91,25 +167,134 @@ const TemplateEditForm = ({ template, onDone }) => {
     onDone();
   };
 
+  const styleLocked = form.layoutLocked && !form.variantless;
+  const themeAside =
+    form.themeable && styleLocked ? (
+      <LayoutLockNote form={form} />
+    ) : null;
+
   return (
-    <div className={card}>
-      <div className="p-5 sm:p-6">
-        <TemplateFormFields form={form} formId={FORM_ID} onSubmit={handleSubmit} />
+    <form
+      id={FORM_ID}
+      onSubmit={handleSubmit}
+      noValidate
+      className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px]"
+    >
+      <div className="lg:sticky lg:top-6 lg:self-start">
+        <TemplateBuilderPreview template={livePreviewTemplate(form)} />
       </div>
-      <div className="sticky bottom-0 flex flex-col-reverse gap-2 rounded-b-2xl border-t border-slate-100 bg-white/95 px-5 py-4 backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p className="hidden text-xs text-slate-400 sm:block">
-          Changes apply to new documents only. Untouched fields keep their current values.
+
+      <div className="space-y-3">
+        <BuilderSection
+          title="Content & details"
+          icon={FileText}
+          defaultOpen
+          hasError={Boolean(form.errors.title || form.errors.subtitle || form.errors.sortOrder)}
+        >
+          <div className="space-y-4">
+            <TemplateDetailsFields form={form} compact />
+            <TemplatePublishFields form={form} compact />
+          </div>
+        </BuilderSection>
+
+        <BuilderSection
+          title="Layout style"
+          icon={LayoutTemplate}
+          aside={<LayoutLockNote form={form} />}
+          defaultOpen
+          hasError={Boolean(form.errors.variant)}
+        >
+          <TemplateVariantFields form={form} columns="" />
+          {form.errors.variant && <p className="mt-3 text-xs font-medium text-rose-600">{form.errors.variant}</p>}
+        </BuilderSection>
+
+        {form.themeable ? (
+          <>
+            {styleLocked && (
+              <p className="flex gap-2 rounded-xl bg-amber-50 px-3.5 py-2.5 text-xs leading-relaxed text-amber-800">
+                <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                {template.isSystem
+                  ? "Built-in templates can't be restyled. Create a new template to customise colours, typography and spacing."
+                  : "Documents were issued with this template, so its style is frozen. Create a new template to restyle it."}
+              </p>
+            )}
+            <BuilderSection
+              title="Colours"
+              icon={Palette}
+              aside={
+                themeAside ??
+                (form.theme && (
+                  <button
+                    type="button"
+                    onClick={form.clearTheme}
+                    disabled={form.submitting}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 transition hover:text-secondary cursor-pointer"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+                    Default style
+                  </button>
+                ))
+              }
+            >
+              <ColorControls form={form} />
+            </BuilderSection>
+            <BuilderSection title="Typography" icon={Type} aside={themeAside}>
+              <TypographyControls form={form} />
+            </BuilderSection>
+            <BuilderSection title="Layout & spacing" icon={Ruler} aside={themeAside}>
+              <SpacingControls form={form} />
+            </BuilderSection>
+          </>
+        ) : (
+          <p className="rounded-xl border border-slate-200/80 bg-white px-4 py-3 text-xs leading-relaxed text-slate-500">
+            Colours, typography and spacing can be customised on the “{RENDERER_LABELS.variant}” layout only.
+          </p>
+        )}
+
+        <BuilderSection title="Images" icon={ImageIcon} hasError={Boolean(form.errors.image)}>
+          <TemplateImageField form={form} />
+        </BuilderSection>
+
+        <FormErrorAlert message={form.formError} />
+      </div>
+
+      <div className="sticky bottom-0 z-10 -mx-1 flex flex-col-reverse gap-3 rounded-2xl border border-slate-200/80 bg-white/95 px-4 py-3 shadow-[0_-4px_16px_rgba(15,23,42,0.06)] backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:px-5 lg:col-span-2">
+        <p className="flex items-center gap-2 text-xs font-medium" aria-live="polite">
+          {dirty ? (
+            <>
+              <span className="h-2 w-2 rounded-full bg-amber-500" aria-hidden="true" />
+              <span className="text-amber-700">Unsaved changes</span>
+            </>
+          ) : (
+            <span className="text-slate-400">All changes saved. Changes apply to new documents only.</span>
+          )}
         </p>
         <div className="flex flex-col-reverse gap-2 sm:flex-row">
-          <button type="button" onClick={onDone} disabled={form.submitting} className={secondaryButton}>
+          <button type="button" onClick={handleReset} disabled={!dirty || form.submitting} className={secondaryButton}>
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
+            Reset
+          </button>
+          <button type="button" onClick={handleCancel} disabled={form.submitting} className={secondaryButton}>
             Cancel
           </button>
-          <button type="submit" form={FORM_ID} disabled={form.submitting} className={primaryButton}>
+          <button type="submit" disabled={!dirty || form.submitting} className={primaryButton}>
             {form.submitting ? "Saving…" : "Save changes"}
           </button>
         </div>
       </div>
-    </div>
+
+      <ConfirmModal
+        open={confirmDiscard}
+        onClose={() => setConfirmDiscard(false)}
+        onConfirm={async () => onDone()}
+        icon={AlertTriangle}
+        tone="danger"
+        title="Discard unsaved changes?"
+        confirmLabel="Discard changes"
+      >
+        <p className="text-sm leading-relaxed text-slate-600">Your edits to this template haven't been saved and will be lost.</p>
+      </ConfirmModal>
+    </form>
   );
 };
 
@@ -169,7 +354,7 @@ const AdminTemplateEditView = () => {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6">
       <button
         type="button"
         onClick={backToList}

@@ -27,6 +27,25 @@ export const RENDERER_LABELS = {
 /** Full-page layouts that take no style options. */
 export const VARIANTLESS_RENDERERS = new Set(["earnings-statement", "check-statement"]);
 
+/** The only layout that renders `variant.theme`; the server rejects a theme on others. */
+export const THEMEABLE_RENDERER = "variant";
+
+export const inputClass =
+  "mt-1.5 h-10 w-full rounded-xl border px-3 text-sm text-slate-800 transition focus:outline-none focus:ring-2 disabled:bg-slate-50 disabled:text-slate-500";
+export const inputState = (hasError) =>
+  hasError
+    ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
+    : "border-slate-200 focus:border-secondary focus:ring-secondary/20";
+
+/** The template as the preview components render it, from `useTemplateForm`'s current values. */
+export const livePreviewTemplate = ({ values, variantless }) => ({
+  code: values.code,
+  title: values.title || "Untitled template",
+  subtitle: values.subtitle,
+  renderer: values.renderer,
+  variant: variantless ? null : values.variant,
+});
+
 export const VARIANT_FIELDS = [
   {
     key: "headerVariant",
@@ -87,10 +106,4 @@ export const previewImageSrc = (template) =>
   template?.previewImageUrl ? `${ENV_CONFIG.apiBaseUrl}${template.previewImageUrl}` : null;
 
 /** Shape the generator's PaystubThumbnail expects. */
-export const toThumbnailTemplate = ({ code, title, subtitle, renderer, variant }) => ({
-  id: code,
-  title,
-  subtitle,
-  ...(variant || {}),
-  ...(VARIANTLESS_RENDERERS.has(renderer) ? { document: renderer } : {}),
-});
+export { toGeneratorTemplate as toThumbnailTemplate } from "../../../../public/Generator/utils/templateUtils";

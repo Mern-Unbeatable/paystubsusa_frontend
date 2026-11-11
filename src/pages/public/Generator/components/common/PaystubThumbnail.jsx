@@ -2,6 +2,7 @@ import React from "react";
 import stubData from "../../../data/generator/templateStubData.json";
 import templates from "../../../data/generator/templates.json";
 import ScaledDocument from "./ScaledDocument";
+import { themeStyle } from "../../utils/paystubTheme";
 import {
   CompanyLogo,
   DOCUMENT_PAGE,
@@ -34,7 +35,7 @@ const ThumbnailCompany = ({ logo, dark = false, children }) => (
     {logo && (
       <>
         <CompanyLogo src={logo} boxWidth={40} boxHeight={24} shrink />
-        <span className={`self-stretch w-px shrink-0 ${dark ? "bg-white/40" : "bg-slate-300"}`} />
+        <span className={`self-stretch w-px shrink-0 ${dark ? "bg-white/40" : "bg-(--ps-b300)"}`} />
       </>
     )}
     <div className="min-w-0">{children}</div>
@@ -46,37 +47,38 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
   if (hasTemplateDocument(template)) return <DocumentThumbnail template={template} full={full} />;
 
   const stub = data;
-  const { headerVariant, netPayVariant, tableVariant } = template;
+  const { headerVariant, netPayVariant, tableVariant, theme } = template;
 
   return (
     <div
-      className={`w-full bg-white text-[7.5px] leading-tight select-none font-sans ${
+      style={themeStyle(theme, framed)}
+      className={`w-full bg-(--ps-bg) text-[calc(7.5px*var(--ps-fs))] leading-(--ps-lh) select-none font-sans ${
         framed ? "border border-slate-200/80 rounded-md p-2.5 sm:p-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)]" : ""
       }`}
     >
       {/* 1. Top Header Banner */}
       {headerVariant === "dark-full" && (
-        <div className="bg-[#092258] text-white p-2 rounded flex justify-between items-center mb-2">
+        <div className="bg-(--ps-primary) text-white p-2 rounded-(--ps-radius) flex justify-between items-center mb-(--ps-gap)">
           <div>
             <ThumbnailCompany logo={stub.company.logo} dark>
-              <p className="font-bold text-[8.5px]">{stub.company.name}</p>
-              <p className="text-white/80 text-[6.5px]">
+              <p className="font-bold text-[calc(8.5px*var(--ps-fs))]">{stub.company.name}</p>
+              <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-white/80 text-[6.5px]">
+              <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-white/80 text-[6.5px]">
+              <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.ein}
               </p>
-              {stub.company.phone && <p className="text-white/80 text-[6.5px]">{stub.company.phone}</p>}
+              {stub.company.phone && <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="text-right">
-            <p className="font-bold text-[8px] uppercase tracking-wider">
+            <p className="font-bold text-[calc(8px*var(--ps-fs))] uppercase tracking-wider">
               {stub.statement.title}
             </p>
-            <p className="text-white/80 text-[6.5px]">
+            <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -84,27 +86,27 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {headerVariant === "blue-full" && (
-        <div className="bg-[#1E60F2] text-white p-2 rounded flex justify-between items-center mb-2">
+        <div className="bg-(--ps-accent) text-white p-2 rounded-(--ps-radius) flex justify-between items-center mb-(--ps-gap)">
           <div>
             <ThumbnailCompany logo={stub.company.logo} dark>
-              <p className="font-bold text-[8.5px]">{stub.company.name}</p>
-              <p className="text-white/80 text-[6.5px]">
+              <p className="font-bold text-[calc(8.5px*var(--ps-fs))]">{stub.company.name}</p>
+              <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-white/80 text-[6.5px]">
+              <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-white/80 text-[6.5px]">
+              <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.ein}
               </p>
-              {stub.company.phone && <p className="text-white/80 text-[6.5px]">{stub.company.phone}</p>}
+              {stub.company.phone && <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="text-right">
-            <p className="font-bold text-[8px] uppercase tracking-wider">
+            <p className="font-bold text-[calc(8px*var(--ps-fs))] uppercase tracking-wider">
               {stub.statement.title}
             </p>
-            <p className="text-white/80 text-[6.5px]">
+            <p className="text-white/80 text-[calc(6.5px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -112,29 +114,29 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {headerVariant === "minimal-blue-line" && (
-        <div className="border-b border-[#1E60F2] pb-1.5 mb-2 flex justify-between items-center">
+        <div className="border-b border-(--ps-accent) pb-1.5 mb-(--ps-gap) flex justify-between items-center">
           <div>
             <ThumbnailCompany logo={stub.company.logo}>
-              <p className="font-bold text-[#1E60F2] text-[8.5px]">
+              <p className="font-bold text-(--ps-accent) text-[calc(8.5px*var(--ps-fs))]">
                 {stub.company.name}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.ein}
               </p>
-              {stub.company.phone && <p className="text-slate-500 text-[6.5px]">{stub.company.phone}</p>}
+              {stub.company.phone && <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="text-right">
-            <p className="font-bold text-slate-800 text-[8px]">
+            <p className="font-bold text-(--ps-s800) text-[calc(8px*var(--ps-fs))]">
               {stub.statement.title}
             </p>
-            <p className="text-slate-500 text-[6.5px]">
+            <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -142,29 +144,29 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {headerVariant === "minimal-dark-line" && (
-        <div className="border-b border-slate-800 pb-1.5 mb-2 flex justify-between items-center">
+        <div className="border-b border-slate-800 pb-1.5 mb-(--ps-gap) flex justify-between items-center">
           <div>
             <ThumbnailCompany logo={stub.company.logo}>
-              <p className="font-bold text-slate-900 text-[8.5px]">
+              <p className="font-bold text-(--ps-s900) text-[calc(8.5px*var(--ps-fs))]">
                 {stub.company.name}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.ein}
               </p>
-              {stub.company.phone && <p className="text-slate-500 text-[6.5px]">{stub.company.phone}</p>}
+              {stub.company.phone && <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="text-right">
-            <p className="font-bold text-slate-800 text-[8px]">
+            <p className="font-bold text-(--ps-s800) text-[calc(8px*var(--ps-fs))]">
               {stub.statement.title}
             </p>
-            <p className="text-slate-500 text-[6.5px]">
+            <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -172,29 +174,29 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {headerVariant === "boxed" && (
-        <div className="border border-slate-200 p-1.5 rounded mb-2 flex justify-between items-center">
+        <div className="border border-(--ps-b200) p-1.5 rounded-(--ps-radius) mb-(--ps-gap) flex justify-between items-center">
           <div>
             <ThumbnailCompany logo={stub.company.logo}>
-              <p className="font-bold text-[#1E60F2] text-[8px]">
+              <p className="font-bold text-(--ps-accent) text-[calc(8px*var(--ps-fs))]">
                 {stub.company.name}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-slate-500 text-[6.5px]">
+              <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
                 {stub.company.ein}
               </p>
-              {stub.company.phone && <p className="text-slate-500 text-[6.5px]">{stub.company.phone}</p>}
+              {stub.company.phone && <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="text-right">
-            <p className="font-bold text-slate-800 text-[7.5px]">
+            <p className="font-bold text-(--ps-s800) text-[calc(7.5px*var(--ps-fs))]">
               {stub.statement.title}
             </p>
-            <p className="text-slate-500 text-[6.5px]">
+            <p className="text-(--ps-s500) text-[calc(6.5px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -202,25 +204,25 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {headerVariant === "split-dark" && (
-        <div className="flex justify-between items-stretch mb-2 overflow-hidden rounded">
-          <div className="bg-[#092258] text-white p-1.5 w-[56%]">
+        <div className="flex justify-between items-stretch mb-(--ps-gap) overflow-hidden rounded-(--ps-radius)">
+          <div className="bg-(--ps-primary) text-white p-1.5 w-[56%]">
             <ThumbnailCompany logo={stub.company.logo} dark>
-              <p className="font-bold text-[8px]">{stub.company.name}</p>
-              <p className="text-white/80 text-[6px]">
+              <p className="font-bold text-[calc(8px*var(--ps-fs))]">{stub.company.name}</p>
+              <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-white/80 text-[6px]">
+              <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-white/80 text-[6px]">{stub.company.ein}</p>
-              {stub.company.phone && <p className="text-white/80 text-[6px]">{stub.company.phone}</p>}
+              <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">{stub.company.ein}</p>
+              {stub.company.phone && <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="p-1.5 text-right w-[44%] flex flex-col justify-center">
-            <p className="font-bold text-slate-800 text-[7.5px]">
+            <p className="font-bold text-(--ps-s800) text-[calc(7.5px*var(--ps-fs))]">
               {stub.statement.title}
             </p>
-            <p className="text-slate-500 text-[6px]">
+            <p className="text-(--ps-s500) text-[calc(6px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -228,25 +230,25 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {headerVariant === "split-blue" && (
-        <div className="flex justify-between items-stretch mb-2 overflow-hidden rounded">
-          <div className="bg-[#1E60F2] text-white p-1.5 w-[56%]">
+        <div className="flex justify-between items-stretch mb-(--ps-gap) overflow-hidden rounded-(--ps-radius)">
+          <div className="bg-(--ps-accent) text-white p-1.5 w-[56%]">
             <ThumbnailCompany logo={stub.company.logo} dark>
-              <p className="font-bold text-[8px]">{stub.company.name}</p>
-              <p className="text-white/80 text-[6px]">
+              <p className="font-bold text-[calc(8px*var(--ps-fs))]">{stub.company.name}</p>
+              <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">
                 {stub.company.address}
               </p>
-              <p className="text-white/80 text-[6px]">
+              <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">
                 {stub.company.cityStateZip}
               </p>
-              <p className="text-white/80 text-[6px]">{stub.company.ein}</p>
-              {stub.company.phone && <p className="text-white/80 text-[6px]">{stub.company.phone}</p>}
+              <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">{stub.company.ein}</p>
+              {stub.company.phone && <p className="text-white/80 text-[calc(6px*var(--ps-fs))]">{stub.company.phone}</p>}
             </ThumbnailCompany>
           </div>
           <div className="p-1.5 text-right w-[44%] flex flex-col justify-center">
-            <p className="font-bold text-slate-800 text-[7.5px]">
+            <p className="font-bold text-(--ps-s800) text-[calc(7.5px*var(--ps-fs))]">
               {stub.statement.title}
             </p>
-            <p className="text-slate-500 text-[6px]">
+            <p className="text-(--ps-s500) text-[calc(6px*var(--ps-fs))]">
               {stub.statement.payDate}
             </p>
           </div>
@@ -254,89 +256,89 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       )}
 
       {/* 2. Employee Info & Net Pay Row */}
-      <div className="grid grid-cols-12 gap-1.5 mb-2.5 items-center">
+      <div className="grid grid-cols-12 gap-1.5 mb-[calc(var(--ps-gap)+2px)] items-center">
         {/* Employee */}
-        <div className="col-span-4 bg-slate-50/70 p-1.5 rounded border border-slate-100">
-          <p className="text-slate-400 text-[6px] uppercase font-semibold">
+        <div className="col-span-4 bg-(--ps-surface) p-1.5 rounded-(--ps-radius) border border-(--ps-b100)">
+          <p className="text-(--ps-s400) text-[calc(6px*var(--ps-fs))] uppercase font-semibold">
             Employee
           </p>
-          <p className="font-bold text-slate-800 text-[7px] wrap-anywhere">
+          <p className="font-bold text-(--ps-s800) text-[calc(7px*var(--ps-fs))] wrap-anywhere">
             {stub.employee.name}
           </p>
-          <p className="text-slate-500 text-[6px] wrap-anywhere">
+          <p className="text-(--ps-s500) text-[calc(6px*var(--ps-fs))] wrap-anywhere">
             {stub.employee.address}
           </p>
-          <p className="text-slate-500 text-[6px] wrap-anywhere">
+          <p className="text-(--ps-s500) text-[calc(6px*var(--ps-fs))] wrap-anywhere">
             {stub.employee.cityStateZip}
           </p>
         </div>
 
         {/* Pay Period */}
-        <div className="col-span-4 bg-slate-50/70 p-1.5 rounded border border-slate-100">
-          <p className="text-slate-400 text-[6px] uppercase font-semibold">
+        <div className="col-span-4 bg-(--ps-surface) p-1.5 rounded-(--ps-radius) border border-(--ps-b100)">
+          <p className="text-(--ps-s400) text-[calc(6px*var(--ps-fs))] uppercase font-semibold">
             Pay Period
           </p>
-          <p className="font-medium text-slate-800 text-[6.5px] truncate">
+          <p className="font-medium text-(--ps-s800) text-[calc(6.5px*var(--ps-fs))] truncate">
             {stub.payPeriod.dates}
           </p>
-          <p className="text-slate-500 text-[6px] truncate">
+          <p className="text-(--ps-s500) text-[calc(6px*var(--ps-fs))] truncate">
             {stub.payPeriod.frequency}
           </p>
-          <p className="text-slate-500 text-[6px] truncate">
+          <p className="text-(--ps-s500) text-[calc(6px*var(--ps-fs))] truncate">
             {stub.payPeriod.id}
           </p>
         </div>
 
         {/* Net Pay Callout */}
         <div
-          className={`col-span-4 p-1.5 rounded text-center flex flex-col justify-center ${
+          className={`col-span-4 p-1.5 rounded-(--ps-radius) text-center flex flex-col justify-center ${
             netPayVariant === "blue"
-              ? "bg-[#1E60F2] text-white"
-              : "bg-[#092258] text-white"
+              ? "bg-(--ps-accent) text-white"
+              : "bg-(--ps-primary) text-white"
           }`}
         >
-          <p className="text-[6px] uppercase tracking-wider text-white/80 font-medium">
+          <p className="text-[calc(6px*var(--ps-fs))] uppercase tracking-wider text-white/80 font-medium">
             Net Pay
           </p>
-          <p className="font-bold text-[9.5px] sm:text-[10.5px]">
+          <p className="font-bold text-[calc(9.5px*var(--ps-fs))] sm:text-[calc(10.5px*var(--ps-fs))]">
             {stub.netPay}
           </p>
         </div>
       </div>
 
       {/* 3. Earnings & Taxes Breakdown */}
-      <div className="grid grid-cols-2 gap-2 mb-2">
+      <div className="grid grid-cols-2 gap-2 mb-(--ps-gap)">
         {/* Earnings Table */}
         <div>
           <div
-            className={`px-1.5 py-0.5 rounded-t text-[6.5px] font-bold flex justify-between ${
+            className={`px-1.5 py-0.5 rounded-t-(--ps-radius) text-[calc(6.5px*var(--ps-fs))] font-bold flex justify-between ${
               tableVariant === "solid-blue"
-                ? "bg-[#1E60F2] text-white"
+                ? "bg-(--ps-accent) text-white"
                 : tableVariant === "solid-dark"
-                  ? "bg-[#092258] text-white"
+                  ? "bg-(--ps-primary) text-white"
                   : tableVariant === "minimal-gray"
                     ? "bg-slate-800 text-white"
-                    : "bg-[#EBF2FA] text-[#092258]"
+                    : "bg-(--ps-tint) text-(--ps-primary)"
             }`}
           >
             <span>EARNINGS</span>
             <span>AMOUNT</span>
           </div>
-          <div className="space-y-0.5 py-1 text-[6.5px]">
+          <div className="space-y-0.5 py-1 text-[calc(6.5px*var(--ps-fs))]">
             {stub.earnings.map((e, idx) => (
-              <div key={idx} className="flex justify-between text-slate-600">
+              <div key={idx} className="flex justify-between text-(--ps-s600)">
                 <span className="truncate">
                   {e.desc}{" "}
                   {e.rate && (
-                    <span className="text-slate-400 text-[5.5px]">
+                    <span className="text-(--ps-s400) text-[calc(5.5px*var(--ps-fs))]">
                       {e.rate}
                     </span>
                   )}
                 </span>
-                <span className="font-medium text-slate-700">{e.amount}</span>
+                <span className="font-medium text-(--ps-s700)">{e.amount}</span>
               </div>
             ))}
-            <div className="flex justify-between font-bold text-slate-900 border-t border-slate-100 pt-0.5 mt-0.5">
+            <div className="flex justify-between font-bold text-(--ps-s900) border-t border-(--ps-b100) pt-0.5 mt-0.5">
               <span>Gross Pay</span>
               <span>{stub.grossPay}</span>
             </div>
@@ -346,27 +348,27 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
         {/* Taxes Table */}
         <div>
           <div
-            className={`px-1.5 py-0.5 rounded-t text-[6.5px] font-bold flex justify-between ${
+            className={`px-1.5 py-0.5 rounded-t-(--ps-radius) text-[calc(6.5px*var(--ps-fs))] font-bold flex justify-between ${
               tableVariant === "solid-blue"
-                ? "bg-[#1E60F2] text-white"
+                ? "bg-(--ps-accent) text-white"
                 : tableVariant === "solid-dark"
-                  ? "bg-[#092258] text-white"
+                  ? "bg-(--ps-primary) text-white"
                   : tableVariant === "minimal-gray"
                     ? "bg-slate-800 text-white"
-                    : "bg-[#EBF2FA] text-[#092258]"
+                    : "bg-(--ps-tint) text-(--ps-primary)"
             }`}
           >
             <span>TAXES</span>
             <span>AMOUNT</span>
           </div>
-          <div className="space-y-0.5 py-1 text-[6.5px]">
+          <div className="space-y-0.5 py-1 text-[calc(6.5px*var(--ps-fs))]">
             {stub.taxes.map((t, idx) => (
-              <div key={idx} className="flex justify-between text-slate-600">
+              <div key={idx} className="flex justify-between text-(--ps-s600)">
                 <span className="truncate">{t.desc}</span>
-                <span className="font-medium text-slate-700">{t.amount}</span>
+                <span className="font-medium text-(--ps-s700)">{t.amount}</span>
               </div>
             ))}
-            <div className="flex justify-between font-bold text-slate-900 border-t border-slate-100 pt-0.5 mt-0.5">
+            <div className="flex justify-between font-bold text-(--ps-s900) border-t border-(--ps-b100) pt-0.5 mt-0.5">
               <span>Total Taxes</span>
               <span>{stub.totalTaxes}</span>
             </div>
@@ -375,20 +377,20 @@ export const PaystubThumbnail = ({ template, full = false, data = STUB_DATA, fra
       </div>
 
       {/* 4. Other Deductions & Bottom Summary */}
-      <div className="border-t border-slate-150 pt-1 text-[6.5px] flex justify-between text-slate-500 font-medium">
+      <div className="border-t border-slate-150 pt-1 text-[calc(6.5px*var(--ps-fs))] flex justify-between text-(--ps-s500) font-medium">
         <span>
           Gross Pay:{" "}
-          <strong className="text-slate-800">{stub.summary.gross}</strong>
+          <strong className="text-(--ps-s800)">{stub.summary.gross}</strong>
         </span>
         <span>
           Deductions:{" "}
-          <strong className="text-slate-800">
+          <strong className="text-(--ps-s800)">
             {stub.summary.deductions}
           </strong>
         </span>
         <span>
           Net Pay:{" "}
-          <strong className="text-slate-800">{stub.summary.net}</strong>
+          <strong className="text-(--ps-s800)">{stub.summary.net}</strong>
         </span>
       </div>
     </div>

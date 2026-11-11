@@ -4,6 +4,7 @@ import gsap from "gsap";
 import TemplateCard from "../common/TemplateCard";
 import TemplatePreviewModal from "../common/TemplatePreviewModal";
 import { PaystubThumbnail, TEMPLATES } from "../common/PaystubThumbnail";
+import { usePaystubTemplates } from "../../utils/templateUtils";
 
 export { PaystubThumbnail, TEMPLATES };
 
@@ -22,6 +23,7 @@ const TemplateSelectionSection = ({
     onSelectTemplate?.(id);
   };
 
+  const { templates } = usePaystubTemplates();
   const [previewTemplate, setPreviewTemplate] = useState(null);
   const closePreview = useCallback(() => setPreviewTemplate(null), []);
   const sectionRef = useRef(null);
@@ -63,7 +65,7 @@ const TemplateSelectionSection = ({
 
         {/* 8 Templates Grid (4 columns desktop, 2 tablet, 1 mobile) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {TEMPLATES.map((tmpl) => (
+          {templates.map((tmpl) => (
             <TemplateCard
               key={tmpl.id}
               template={tmpl}

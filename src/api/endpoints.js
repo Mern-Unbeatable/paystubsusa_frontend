@@ -18,6 +18,9 @@ export const API_ENDPOINTS = Object.freeze({
     PASSWORD: "/me/password",
     AVATAR: "/me/avatar",
   }),
+  CATALOG: Object.freeze({
+    TEMPLATES: "/catalog/templates",
+  }),
   ADMIN: Object.freeze({
     CUSTOMERS: "/admin/customers",
     CUSTOMER: (id) => buildResourcePath("admin/customers", id),
