@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   BadgeDollarSign,
   CalendarClock,
@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { getAdminProductApi } from "../../../../../features/dash/admin/Pricing/adminPricingApi";
+import { usePricing } from "../hooks/usePricing";
 import { formatPrice, formatShortDate } from "../utils/pricingFormat";
 import { BillingTag, DocumentTypeLabel, ProductStatusBadge } from "./ProductCells";
 
@@ -45,21 +45,19 @@ const Section = ({ title, children }) => (
 
 /** `product` is the list row (shown immediately); usage counts are refreshed from the API. */
 const ProductDetailsModal = ({ product, onClose, onEdit }) => {
-  const [loaded, setLoaded] = useState({ details: null, error: null });
+  const { details, loadProductDetails } = usePricing();
   const code = product.code;
 
   useEffect(() => {
-    const controller = new AbortController();
-    getAdminProductApi(code, { signal: controller.signal })
-      .then((details) => setLoaded({ details, error: null }))
-      .catch((err) => {
-        if (!err?.isCanceled) {
-          setLoaded({ details: null, error: describeRequestError(err, "Couldn't refresh this product.") });
-        }
-      });
-    return () => controller.abort();
-  }, [code]);
+    const request = loadProductDetails(code);
+    return () => request.abort();
+  }, [code, loadProductDetails]);
 
+  const current = details.code === code ? details : { product: null, error: null };
+  const loaded = {
+    details: current.product,
+    error: current.error && describeRequestError(current.error, "Couldn't refresh this product."),
+  };
   const record = loaded.details || product;
   const usage = record.usage || { orderItems: 0, subscriptions: 0 };
 

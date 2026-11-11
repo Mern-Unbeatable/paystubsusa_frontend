@@ -8,13 +8,13 @@ import {
   selectUsersLoading,
   selectUsersMeta,
   selectUsersStatus,
-} from "../features/dash/admin/user/userSelectors";
-import { resetUserFilters, setUserFilter } from "../features/dash/admin/user/userSlice";
+} from "../../../../../features/dash/admin/user/userSelectors";
+import { resetUserFilters, setUserFilter } from "../../../../../features/dash/admin/user/userSlice";
 import {
   fetchUserDetails,
   fetchUsers,
   updateUserStatus as updateUserStatusThunk,
-} from "../features/dash/admin/user/userThunks";
+} from "../../../../../features/dash/admin/user/userThunks";
 
 export function useUsers() {
   const dispatch = useDispatch();

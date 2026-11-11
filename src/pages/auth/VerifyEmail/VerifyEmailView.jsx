@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, MailCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import logoImg from "../../../assets/logo.png";
 import AuthVerifyEmailIllustration from "../components/AuthVerifyEmailIllustration";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 import { PATHS } from "../../../config/paths";
 import { CheckCircle2 } from "lucide-react";

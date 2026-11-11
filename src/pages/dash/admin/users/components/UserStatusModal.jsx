@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { ShieldCheck, ShieldOff } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { useUsers } from "../../../../../hooks/useUsers";
+import { useUsers } from "../hooks/useUsers";
 
 const REASON_MAX = 500;
 

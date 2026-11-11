@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
 import AuthIllustrationPanel from "../components/AuthIllustrationPanel";
 import { getErrorMessage } from "../../../api/errorNormalizer";

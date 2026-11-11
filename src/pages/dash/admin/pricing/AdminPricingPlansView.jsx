@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Plus, Power, PowerOff, RefreshCw, Trash2 } from "lucide-react";
 import {
@@ -8,14 +8,7 @@ import {
   DashboardTable,
 } from "../../../../Components/Dashboard";
 import ConfirmModal from "../../../../Components/modal/ConfirmModal";
-import {
-  PAGE_SIZE_OPTIONS,
-  useAdminPricing,
-} from "../../../../features/dash/admin/Pricing/useAdminPricing";
-import {
-  deleteAdminProductApi,
-  updateAdminProductApi,
-} from "../../../../features/dash/admin/Pricing/adminPricingApi";
+import { usePricing } from "./hooks/usePricing";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import ProductDetailsModal from "./components/ProductDetailsModal";
 import ProductFormModal from "./components/ProductFormModal";
@@ -45,31 +38,52 @@ const AdminPricingPlansView = () => {
     products,
     meta,
     filters,
-    search,
-    setSearch,
-    updateFilter,
-    resetFilters,
     loading,
     error,
-    reload,
-    replaceProduct,
-  } = useAdminPricing();
+    loadProducts,
+    setFilter: updateFilter,
+    resetFilters: resetPricingFilters,
+    updateProduct,
+    deleteProduct: removeProduct,
+  } = usePricing();
+  const [search, setSearch] = useState(filters.q);
+  const [reloadKey, setReloadKey] = useState(0);
   // { type: "view" | "create" | "edit" | "toggle" | "delete", product }
   const [dialog, setDialog] = useState(null);
   const open = (type) => (product) => setDialog({ type, product });
   const closeDialog = () => setDialog(null);
 
-  const toggleActive = async () => {
-    const { product } = dialog;
-    const updated = await updateAdminProductApi(product.code, { isActive: !product.isActive });
-    toast.success(`${product.name} was ${product.isActive ? "deactivated" : "activated"}.`);
-    if (filters.status) reload();
-    else replaceProduct(updated);
+  useEffect(() => {
+    const trimmed = search.trim();
+    if (trimmed === filters.q) return undefined;
+    const timer = setTimeout(() => updateFilter("q", trimmed), 300);
+    return () => clearTimeout(timer);
+  }, [search, filters.q, updateFilter]);
+
+  useEffect(() => {
+    const request = loadProducts(filters);
+    return () => request.abort();
+  }, [filters, reloadKey, loadProducts]);
+
+  const reload = useCallback(() => setReloadKey((k) => k + 1), []);
+
+  const resetFilters = () => {
+    setSearch("");
+    resetPricingFilters();
   };
 
+  // The store already holds the updated row; under a status filter it may no longer belong here.
+  const toggleActive = async () => {
+    const { product } = dialog;
+    await updateProduct({ code: product.code, changes: { isActive: !product.isActive } });
+    toast.success(`${product.name} was ${product.isActive ? "deactivated" : "activated"}.`);
+    if (filters.status) reload();
+  };
+
+  // Refetch so the page refills from the next one and the total stays accurate.
   const deleteProduct = async () => {
     const { product } = dialog;
-    await deleteAdminProductApi(product.code);
+    await removeProduct(product.code);
     toast.success(`${product.name} was deleted.`);
     reload();
   };
@@ -203,7 +217,6 @@ const AdminPricingPlansView = () => {
               pageSize={meta.pageSize}
               totalItems={meta.totalItems}
               totalPages={meta.totalPages}
-              pageSizeOptions={PAGE_SIZE_OPTIONS}
               onPageChange={(page) => updateFilter("page", page)}
               onPageSizeChange={(size) => updateFilter("pageSize", size)}
               disabled={loading}

@@ -3,10 +3,7 @@ import { toast } from "react-hot-toast";
 import { AlertTriangle, PackagePlus, Pencil } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import {
-  createAdminProductApi,
-  updateAdminProductApi,
-} from "../../../../../features/dash/admin/Pricing/adminPricingApi";
+import { usePricing } from "../hooks/usePricing";
 import {
   DOCUMENT_TYPE_LABELS,
   PRODUCT_CODE_PATTERN,
@@ -97,6 +94,7 @@ const SERVER_FIELDS = { amountCents: "price" };
 
 /** Create (no `product`) or edit. Code, document type and pack size are fixed after creation. */
 const ProductFormModal = ({ product, onClose, onSaved }) => {
+  const { createProduct, updateProduct } = usePricing();
   const isCreate = !product;
   const [values, setValues] = useState(() => initialValues(product));
   const [codeTouched, setCodeTouched] = useState(!isCreate);
@@ -158,9 +156,9 @@ const ProductFormModal = ({ product, onClose, onSaved }) => {
     inFlightRef.current = true;
     setSubmitting(true);
     try {
-      const saved = isCreate
-        ? await createAdminProductApi(body)
-        : await updateAdminProductApi(product.code, body);
+      const { product: saved } = isCreate
+        ? await createProduct(body)
+        : await updateProduct({ code: product.code, changes: body });
       toast.success(isCreate ? `${saved.name} was created.` : `${saved.name} was updated.`);
       onSaved(saved);
       onClose();

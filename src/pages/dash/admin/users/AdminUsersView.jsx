@@ -5,8 +5,7 @@ import {
   DashboardPagination,
   DashboardTable,
 } from "../../../../Components/Dashboard";
-import { PAGE_SIZE_OPTIONS } from "../../../../hooks/usePaginatedList";
-import { useUsers } from "../../../../hooks/useUsers";
+import { useUsers } from "./hooks/useUsers";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import UsersToolbar from "./components/UsersToolbar";
 import UserDetailsModal from "./components/UserDetailsModal";
@@ -164,7 +163,6 @@ const AdminUsersView = () => {
               pageSize={meta.pageSize}
               totalItems={meta.totalItems}
               totalPages={meta.totalPages}
-              pageSizeOptions={PAGE_SIZE_OPTIONS}
               onPageChange={(page) => updateFilter("page", page)}
               onPageSizeChange={(size) => updateFilter("pageSize", size)}
               disabled={loading}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../pages/auth/hooks/useAuth";
 import { PATHS } from "../../../config/paths";
 import { ENV_CONFIG } from "../../../config/env";
 import { toast } from "react-hot-toast";

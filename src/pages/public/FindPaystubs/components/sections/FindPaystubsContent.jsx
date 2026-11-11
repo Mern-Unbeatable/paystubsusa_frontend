@@ -17,7 +17,7 @@ import documents from "../../../data/findPaystubs/documents.json";
 import paginationConfig from "../../../data/findPaystubs/pagination.json";
 import sortOptions from "../../../data/findPaystubs/sortOptions.json";
 import tabs from "../../../data/findPaystubs/tabs.json";
-import { useAuth } from "../../../../../hooks/useAuth";
+import { useAuth } from "../../../../auth/hooks/useAuth";
 import findPaystubsIllustration from "../../../../../assets/find-paystubs-illustration.png";
 
 const FindPaystubsContent = () => {

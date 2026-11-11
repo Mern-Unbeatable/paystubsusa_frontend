@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AlertCircle, Clock, MailCheck, RefreshCw } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
-import { useAuth } from "../../../../../hooks/useAuth";
+import { useAuth } from "../../../../auth/hooks/useAuth";
 import {
   describeRequestError,
   maskEmail,

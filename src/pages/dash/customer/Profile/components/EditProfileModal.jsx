@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { Camera, Trash2, UserRound } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import UserAvatar from "./UserAvatar";
-import { useAuth } from "../../../../../hooks/useAuth";
+import { useAuth } from "../../../../auth/hooks/useAuth";
 import { avatarSrc, describeRequestError } from "../utils/profileFormat";
 
 const NAME_MAX = 100;

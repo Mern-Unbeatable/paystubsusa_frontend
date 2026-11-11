@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import logoImg from "../../../assets/logo.png";
 import AuthPasswordIllustration from "../components/AuthPasswordIllustration";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { getErrorMessage } from "../../../api/errorNormalizer";
 import { PATHS } from "../../../config/paths";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { DashboardHeader } from "../../../../Components/Dashboard";
-import { useAuth } from "../../../../hooks/useAuth";
+import { useAuth } from "../../../auth/hooks/useAuth";
 import ProfileOverviewCard from "./components/ProfileOverviewCard";
 import EmailVerificationCard from "./components/EmailVerificationCard";
 import PersonalInfoCard from "./components/PersonalInfoCard";

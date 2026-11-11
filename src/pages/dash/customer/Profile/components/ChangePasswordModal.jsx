@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AlertCircle, Check, Eye, EyeOff, KeyRound } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
-import { useAuth } from "../../../../../hooks/useAuth";
+import { useAuth } from "../../../../auth/hooks/useAuth";
 import { describeRequestError } from "../utils/profileFormat";
 
 // Mirrors the API password policy (8–128 characters; the API also rejects common passwords).
