@@ -18,6 +18,10 @@ export const API_ENDPOINTS = Object.freeze({
     PASSWORD: "/me/password",
     AVATAR: "/me/avatar",
   }),
+  ADMIN: Object.freeze({
+    CUSTOMERS: "/admin/customers",
+    CUSTOMER: (id) => buildResourcePath("admin/customers", id),
+  }),
   USERS: Object.freeze({
     LIST: "/users",
     DETAILS: (id) => buildResourcePath("users", id),

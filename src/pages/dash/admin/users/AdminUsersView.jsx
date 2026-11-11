@@ -1,78 +1,174 @@
-import React from "react";
-import { UserCog, ShieldCheck, Mail } from "lucide-react";
+import React, { useState } from "react";
+import { RefreshCw } from "lucide-react";
 import {
   DashboardHeader,
+  DashboardPagination,
   DashboardTable,
 } from "../../../../Components/Dashboard";
-import { DashboardStatusBadge } from "../../../../layouts";
-import users from "../data/users/users.json";
+import { PAGE_SIZE_OPTIONS, useAdminUsers } from "../../../../features/adminUsers/useAdminUsers";
+import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
+import UsersToolbar from "./components/UsersToolbar";
+import UserDetailsModal from "./components/UserDetailsModal";
+import UserStatusModal from "./components/UserStatusModal";
+import {
+  RoleBadge,
+  SubscriptionBadge,
+  UserIdentity,
+  UserRowActions,
+  UserStatusBadge,
+  EmailVerifiedBadge,
+} from "./components/UserCells";
+import { formatShortDate } from "./utils/userFormat";
 
-const AdminUsersView = () => (
-  <div className="space-y-6">
-    <DashboardHeader
-      title="Manage Users"
-      description="View and manage customer accounts."
-    />
+const AdminUsersView = () => {
+  const {
+    users,
+    meta,
+    filters,
+    search,
+    setSearch,
+    updateFilter,
+    resetFilters,
+    loading,
+    error,
+    reload,
+    replaceUser,
+  } = useAdminUsers();
+  const [viewing, setViewing] = useState(null);
+  const [changingStatus, setChangingStatus] = useState(null);
 
-    <DashboardTable
-      title="Customer Accounts"
-      minWidth="min-w-[700px]"
-      columns={[
-        {
-          header: "User",
-          render: (user) => (
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
-                <UserCog className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="font-bold text-slate-900 text-xs">
-                  {user.name}
-                </div>
-                <div className="text-[10.5px] text-slate-400 font-mono">
-                  {user.id}
-                </div>
-              </div>
-            </div>
-          ),
-        },
-        {
-          header: "Email",
-          render: (user) => (
-            <div className="flex items-center gap-2 text-slate-600 font-medium">
-              <Mail className="w-3.5 h-3.5 text-slate-400" />
-              <span>{user.email}</span>
-            </div>
-          ),
-        },
-        {
-          header: "Plan",
-          key: "plan",
-          cellClassName: "text-slate-600 font-medium",
-        },
-        {
-          header: "Last Active",
-          key: "lastActive",
-          cellClassName: "text-slate-500 font-medium",
-        },
-        {
-          header: "Status",
-          render: (user) => <DashboardStatusBadge status={user.status} />,
-        },
-        {
-          header: "Access",
-          align: "right",
-          render: () => (
-            <div className="inline-flex items-center gap-2 text-[#009BFB]">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="text-xs font-semibold">Manage</span>
-            </div>
-          ),
-        },
-      ]}
-      data={users}
-    />
-  </div>
-);
+  // Under a status filter the changed user no longer belongs on this page, so refetch.
+  const handleStatusUpdated = (updated) => (filters.status ? reload() : replaceUser(updated));
+
+  const actions = (user) => (
+    <UserRowActions user={user} onView={setViewing} onChangeStatus={setChangingStatus} />
+  );
+
+  const columns = [
+    { header: "User", render: (user) => <UserIdentity user={user} /> },
+    {
+      header: "Email",
+      render: (user) => <span className="block max-w-[16rem] truncate">{user.email}</span>,
+    },
+    { header: "Role", render: () => <RoleBadge /> },
+    { header: "Status", render: (user) => <UserStatusBadge user={user} /> },
+    { header: "Email verification", render: (user) => <EmailVerifiedBadge user={user} /> },
+    { header: "Subscription", render: (user) => <SubscriptionBadge status={user.subscriptionStatus} /> },
+    {
+      header: "Joined",
+      render: (user) => formatShortDate(user.createdAt),
+      cellClassName: "whitespace-nowrap text-slate-500",
+    },
+    { header: "Actions", align: "right", render: actions },
+  ];
+
+  const renderMobileRow = (user) => (
+    <div className="flex items-start justify-between gap-3">
+      <div className="min-w-0 space-y-2">
+        <UserIdentity user={user} showEmail />
+        <div className="flex flex-wrap items-center gap-1.5">
+          <RoleBadge />
+          <UserStatusBadge user={user} />
+          <EmailVerifiedBadge user={user} />
+          <SubscriptionBadge status={user.subscriptionStatus} />
+        </div>
+        <p className="text-xs text-slate-400">Joined {formatShortDate(user.createdAt)}</p>
+      </div>
+      {actions(user)}
+    </div>
+  );
+
+  const hasQuery = Boolean(
+    filters.q || filters.status || filters.subscription || filters.emailVerified,
+  );
+
+  return (
+    <div className="space-y-6">
+      <DashboardHeader
+        title="Manage Users"
+        description="Search, review and manage customer accounts."
+        badge={
+          !loading && (
+            <span className="rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs font-bold text-secondary">
+              {meta.totalItems}
+            </span>
+          )
+        }
+        action={
+          <button
+            type="button"
+            onClick={reload}
+            disabled={loading}
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-60 cursor-pointer"
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+            Refresh
+          </button>
+        }
+      />
+
+      {error && (
+        <div
+          role="alert"
+          className="flex flex-col gap-2 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <span>{describeRequestError(error, "Couldn't load users.")}</span>
+          <button type="button" onClick={reload} className="font-semibold underline cursor-pointer">
+            Try again
+          </button>
+        </div>
+      )}
+
+      <DashboardTable
+        title="Customer accounts"
+        minWidth="min-w-[1080px]"
+        toolbar={
+          <UsersToolbar
+            search={search}
+            onSearchChange={setSearch}
+            filters={filters}
+            onFilterChange={updateFilter}
+            onReset={resetFilters}
+          />
+        }
+        columns={columns}
+        data={error ? [] : users}
+        loading={loading}
+        renderMobileRow={renderMobileRow}
+        emptyMessage={hasQuery ? "No users match your search or filters." : "No users yet."}
+        footer={
+          !error && (
+            <DashboardPagination
+              page={meta.page}
+              pageSize={meta.pageSize}
+              totalItems={meta.totalItems}
+              totalPages={meta.totalPages}
+              pageSizeOptions={PAGE_SIZE_OPTIONS}
+              onPageChange={(page) => updateFilter("page", page)}
+              onPageSizeChange={(size) => updateFilter("pageSize", size)}
+              disabled={loading}
+            />
+          )
+        }
+      />
+
+      <UserDetailsModal
+        key={viewing?.id ?? "none"}
+        user={viewing}
+        onClose={() => setViewing(null)}
+        onChangeStatus={(user) => {
+          setViewing(null);
+          setChangingStatus(user);
+        }}
+      />
+      <UserStatusModal
+        key={changingStatus?.id ?? "none"}
+        user={changingStatus}
+        onClose={() => setChangingStatus(null)}
+        onUpdated={handleStatusUpdated}
+      />
+    </div>
+  );
+};
 
 export default AdminUsersView;
