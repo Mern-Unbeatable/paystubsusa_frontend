@@ -21,6 +21,8 @@ export const API_ENDPOINTS = Object.freeze({
   ADMIN: Object.freeze({
     CUSTOMERS: "/admin/customers",
     CUSTOMER: (id) => buildResourcePath("admin/customers", id),
+    PRODUCTS: "/admin/products",
+    PRODUCT: (code) => buildResourcePath("admin/products", code),
   }),
   USERS: Object.freeze({
     LIST: "/users",
