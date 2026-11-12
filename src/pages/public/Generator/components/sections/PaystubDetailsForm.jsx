@@ -726,7 +726,7 @@ const PaystubDetailsForm = ({
 
           {/* Step 4: Review Paystub */}
           {currentStep === 4 && (
-            <div className="space-y- animate-in fade-in-50 duration-200">
+            <div className="space-y-5 animate-in fade-in-50 duration-200">
               <div>
                 <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
                   STEP 4 OF 4
