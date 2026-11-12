@@ -16,11 +16,15 @@ export const API_ENDPOINTS = Object.freeze({
   ACCOUNT: Object.freeze({
     PROFILE: "/me",
     DASHBOARD: "/me/dashboard",
+    SUBSCRIPTION: "/me/subscription",
+    SUBSCRIPTION_CHECKOUT: "/me/subscription/checkout-session",
+    SUBSCRIPTION_PORTAL: "/me/subscription/portal-session",
     PASSWORD: "/me/password",
     AVATAR: "/me/avatar",
   }),
   CATALOG: Object.freeze({
     TEMPLATES: "/catalog/templates",
+    PRODUCTS: "/catalog/products",
   }),
   VERIFICATIONS: Object.freeze({
     SEND: "/verifications",
