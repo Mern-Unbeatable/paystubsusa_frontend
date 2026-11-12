@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import PaystubFlowPage from "./components/common/PaystubFlowPage";
-import OrderSummaryLines from "./components/common/OrderSummaryLines";
+import OrderSummaryCard from "./components/common/OrderSummaryCard";
 import CheckoutSection from "./components/sections/CheckoutSection";
 import CheckoutPaySection from "./components/sections/CheckoutPaySection";
 import StripePaymentModal from "./components/sections/StripePaymentModal";
@@ -29,7 +29,7 @@ import {
 const PaystubCheckoutContent = ({ template }) => {
   const dispatch = useDispatch();
   const { checkoutEmail, setCheckoutEmail, grandTotal, items, summaryLines } = usePaystubOrder();
-  const { formData } = usePaystubFormData();
+  const { formData, calculations } = usePaystubFormData();
   const { guestToken, email, order, clientSecret } = useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
   const { onBackToPackage, onBackToFormStep, onPaymentSuccess } =
@@ -153,16 +153,15 @@ const PaystubCheckoutContent = ({ template }) => {
           )}
         </div>
 
-        <div className="lg:col-span-5 lg:sticky lg:top-24 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              {order && (
-                <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-0.5">
-                  Order #{order.orderNumber}
-                </p>
-              )}
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900">Your package</h3>
-            </div>
+        <OrderSummaryCard
+          className="lg:col-span-5"
+          template={template}
+          formData={formData}
+          calculations={calculations}
+          lines={lines}
+          total={total}
+          eyebrow={order && `Order #${order.orderNumber}`}
+          action={
             <button
               type="button"
               onClick={onBackToPackage}
@@ -171,9 +170,8 @@ const PaystubCheckoutContent = ({ template }) => {
             >
               Change package
             </button>
-          </div>
-          <OrderSummaryLines templateTitle={template.title} lines={lines} total={total} />
-        </div>
+          }
+        />
       </div>
       {order && clientSecret && (
         <StripePaymentModal

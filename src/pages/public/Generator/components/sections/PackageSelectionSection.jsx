@@ -1,7 +1,6 @@
 import React from "react";
-import { Check, Lock, Minus, Plus } from "lucide-react";
-import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
-import OrderSummaryLines from "../common/OrderSummaryLines";
+import { Check, Minus, Plus } from "lucide-react";
+import OrderSummaryCard from "../common/OrderSummaryCard";
 
 const PackageSelectionSection = ({
   template,
@@ -166,10 +165,15 @@ const PackageSelectionSection = ({
         </div>
 
         {/* Right Column: Order Summary Card */}
-        <div className="lg:col-span-4 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm lg:sticky lg:top-24">
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <h3 className="text-xl font-bold text-slate-900">Order summary</h3>
-            {onChangeTemplate && (
+        <OrderSummaryCard
+          className="lg:col-span-4"
+          template={template}
+          formData={formData}
+          calculations={calculations}
+          lines={summaryLines}
+          total={grandTotal}
+          action={
+            onChangeTemplate && (
               <button
                 type="button"
                 onClick={onChangeTemplate}
@@ -177,36 +181,9 @@ const PackageSelectionSection = ({
               >
                 Change Template
               </button>
-            )}
-          </div>
-
-          <OrderSummaryLines
-            templateTitle={template.title}
-            lines={summaryLines}
-            total={grandTotal}
-          />
-
-          <p className="mt-2.5 flex items-center justify-center gap-1.5 text-slate-400 text-[12px]">
-            <Lock className="w-3.5 h-3.5" />
-            <span>
-              Secure payment by Stripe. Final price confirmed at checkout.
-            </span>
-          </p>
-
-          {/* Paystub Document Thumbnail */}
-          <div className="mt-5 pt-5 border-t border-slate-100">
-            <p className="text-[12px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
-              Your paystub preview
-            </p>
-            <div className="overflow-hidden">
-              <TemplateDocumentPreview
-                template={template}
-                formData={formData}
-                calculations={calculations}
-              />
-            </div>
-          </div>
-        </div>
+            )
+          }
+        />
       </div>
     </div>
   );
