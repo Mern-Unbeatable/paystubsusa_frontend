@@ -10,7 +10,7 @@ const paymentErrorMessage = (error) =>
     ? error.message
     : "Your payment could not be processed. Please try again.";
 
-const PaymentForm = ({ totalLabel, returnUrl, onPaid, onBusyChange }) => {
+const PaymentForm = ({ email, totalLabel, returnUrl, onPaid, onBusyChange }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [submitting, setSubmitting] = useState(false);
@@ -45,7 +45,7 @@ const PaymentForm = ({ totalLabel, returnUrl, onPaid, onBusyChange }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <PaymentElement />
+      <PaymentElement options={{ defaultValues: { billingDetails: { email } } }} />
       {error && (
         <p role="alert" className="text-[13px] text-rose-600 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2">
           {error}
@@ -93,7 +93,7 @@ const StripePaymentModal = ({ open, onClose, clientSecret, email, totalLabel, re
           stripe={stripePromise}
           options={{ clientSecret, appearance: { theme: "stripe", variables: { colorPrimary: "#1E60F2" } } }}
         >
-          <PaymentForm totalLabel={totalLabel} returnUrl={returnUrl} onPaid={onPaid} onBusyChange={setBusy} />
+          <PaymentForm email={email} totalLabel={totalLabel} returnUrl={returnUrl} onPaid={onPaid} onBusyChange={setBusy} />
         </Elements>
       ) : (
         <p role="alert" className="text-[13px] text-rose-600 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2">
