@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import PaystubFlowPage from "./components/common/PaystubFlowPage";
 import CheckoutSection from "./components/sections/CheckoutSection";
+import CheckoutPaySection from "./components/sections/CheckoutPaySection";
 import StripePaymentModal from "./components/sections/StripePaymentModal";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";
 import { usePaystubFormData } from "./hooks/usePaystubFormData";
@@ -60,11 +61,6 @@ const PaystubCheckoutContent = ({ template }) => {
 
   const handleVerify = async (code) => {
     if (!template.catalogId) return fail({ message: "This template is unavailable right now. Please try again later." });
-    // Reopening after closing the dialog reuses the same order and PaymentIntent.
-    if (order && clientSecret) {
-      setPaymentOpen(true);
-      return;
-    }
     setIsProcessingPayment(true);
     try {
       if (!guestToken) {
@@ -75,7 +71,6 @@ const PaystubCheckoutContent = ({ template }) => {
         createCheckoutOrder({ templateId: template.catalogId, items, formData, idempotencyKey: idempotencyKeyRef.current }),
       );
       if (!createCheckoutOrder.fulfilled.match(created)) return fail(created.payload);
-      if (created.payload.payment) setPaymentOpen(true);
     } finally {
       setIsProcessingPayment(false);
     }
@@ -89,16 +84,24 @@ const PaystubCheckoutContent = ({ template }) => {
   return (
     <>
       <PaystubStepper currentStep={PAYSTUB_PAGE_STEPS.CHECKOUT} onStepClick={handleStepClick} />
-      <CheckoutSection
-        email={checkoutEmail}
-        onEmailChange={setCheckoutEmail}
-        totalLabel={formatCurrency(grandTotal)}
-        isProcessingPayment={isProcessingPayment}
-        onSendCode={handleSendCode}
-        onPay={handleVerify}
-        verifyLabel={order && clientSecret ? "Continue to payment" : "Verify & continue to payment"}
-        onBack={onBackToPackage}
-      />
+      {order && clientSecret ? (
+        <CheckoutPaySection
+          order={order}
+          templateTitle={template.title}
+          onPay={() => setPaymentOpen(true)}
+        />
+      ) : (
+        <CheckoutSection
+          email={checkoutEmail}
+          onEmailChange={setCheckoutEmail}
+          totalLabel={formatCurrency(grandTotal)}
+          isProcessingPayment={isProcessingPayment}
+          onSendCode={handleSendCode}
+          onPay={handleVerify}
+          verifyLabel="Verify code"
+          onBack={onBackToPackage}
+        />
+      )}
       {order && clientSecret && (
         <StripePaymentModal
           open={paymentOpen}

@@ -17,6 +17,7 @@ const ProfileModal = ({
   description,
   icon: Icon,
   dismissible = true,
+  closeOnOverlayClick = true,
   footer,
   size = "md",
   children,
@@ -74,7 +75,7 @@ const ProfileModal = ({
       <div
         className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px]"
         aria-hidden="true"
-        onClick={dismissible ? onClose : undefined}
+        onClick={dismissible && closeOnOverlayClick ? onClose : undefined}
       />
       <div
         ref={panelRef}
