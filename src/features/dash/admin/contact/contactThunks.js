@@ -15,13 +15,13 @@ export const fetchContactMessages = thunk(
   "adminContact/fetchContactMessages",
   contactService.list,
 );
-export const createContactMessage = thunk(
-  "adminContact/createContactMessage",
-  contactService.create,
-);
 export const updateContactMessage = thunk(
   "adminContact/updateContactMessage",
   contactService.update,
+);
+export const replyContactMessage = thunk(
+  "adminContact/replyContactMessage",
+  contactService.reply,
 );
 export const deleteContactMessage = thunk(
   "adminContact/deleteContactMessage",

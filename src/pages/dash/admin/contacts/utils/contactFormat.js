@@ -28,7 +28,4 @@ export function formatReceived(value) {
   return Number.isNaN(date.getTime()) ? "—" : dateTime.format(date);
 }
 
-export const replyMailto = (m) =>
-  `mailto:${m.email}?subject=${encodeURIComponent(`Re: ${m.subject}`)}`;
-
 export const nextStatus = (m) => (m.status === "new" ? "handled" : "new");

@@ -62,6 +62,7 @@ export const API_ENDPOINTS = Object.freeze({
     SUBSCRIPTION_CANCEL: (id) => `${buildResourcePath("admin/subscriptions", id)}/cancel`,
     CONTACT_MESSAGES: "/admin/contact-messages",
     CONTACT_MESSAGE: (id) => buildResourcePath("admin/contact-messages", id),
+    CONTACT_MESSAGE_REPLY: (id) => `${buildResourcePath("admin/contact-messages", id)}/reply`,
     PRODUCTS: "/admin/products",
     PRODUCT: (code) => buildResourcePath("admin/products", code),
     TEMPLATES: "/admin/templates",

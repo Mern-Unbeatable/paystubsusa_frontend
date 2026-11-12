@@ -1,6 +1,5 @@
 import React from "react";
-import { CheckCircle2, Eye, Pencil, RotateCcw, Trash2 } from "lucide-react";
-
+import { CheckCircle2, Eye, Reply, RotateCcw, Trash2 } from "lucide-react";
 const actionButton =
   "inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent transition focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/30 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer";
 const neutral =
@@ -10,7 +9,7 @@ const ContactRowActions = ({
   message,
   busy,
   onView,
-  onEdit,
+  onReply,
   onToggle,
   onDelete,
 }) => {
@@ -31,12 +30,12 @@ const ContactRowActions = ({
       </button>
       <button
         type="button"
-        onClick={() => onEdit(message)}
-        title="Edit message"
-        aria-label={`Edit message from ${message.name}`}
+        onClick={() => onReply(message)}
+        title={`Reply to ${message.email}`}
+        aria-label={`Reply to ${message.name}`}
         className={`${actionButton} ${neutral}`}
       >
-        <Pencil className="h-4 w-4" />
+        <Reply className="h-4 w-4" />
       </button>
       <button
         type="button"

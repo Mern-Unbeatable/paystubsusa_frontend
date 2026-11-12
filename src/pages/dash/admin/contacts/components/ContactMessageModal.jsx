@@ -6,18 +6,14 @@ import {
   CircleDot,
   Mail,
   MailOpen,
-  Pencil,
+  Reply,
   RotateCcw,
   UserRound,
 } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
 import { useAdminContacts } from "../hooks/useAdminContacts";
-import {
-  formatReceived,
-  nextStatus,
-  replyMailto,
-} from "../utils/contactFormat";
+import { formatReceived, nextStatus } from "../utils/contactFormat";
 import ContactStatusBadge from "./ContactStatusBadge";
 
 const Field = ({ label, icon, children }) => {
@@ -40,7 +36,7 @@ const Field = ({ label, icon, children }) => {
 };
 
 /** `message` is the list row; status changes update the row in the store, so read it back from there. */
-const ContactMessageModal = ({ message, onClose, onEdit }) => {
+const ContactMessageModal = ({ message, onClose, onReply }) => {
   const { messages, setStatus } = useAdminContacts();
   const [saving, setSaving] = useState(false);
   const record = messages.find((m) => m.id === message?.id) ?? message;
@@ -72,15 +68,6 @@ const ContactMessageModal = ({ message, onClose, onEdit }) => {
       </button>
       <button
         type="button"
-        onClick={() => onEdit(record)}
-        disabled={saving}
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-60 cursor-pointer"
-      >
-        <Pencil className="h-4 w-4" />
-        Edit
-      </button>
-      <button
-        type="button"
         onClick={toggleStatus}
         disabled={saving}
         className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:opacity-60 cursor-pointer"
@@ -92,13 +79,15 @@ const ContactMessageModal = ({ message, onClose, onEdit }) => {
         )}
         {record.status === "new" ? "Mark as handled" : "Mark as new"}
       </button>
-      <a
-        href={replyMailto(record)}
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-secondary px-4 text-sm font-semibold text-white transition hover:bg-[#0089e0]"
+      <button
+        type="button"
+        onClick={() => onReply(record)}
+        disabled={saving}
+        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-secondary px-4 text-sm font-semibold text-white transition hover:bg-[#0089e0] disabled:opacity-60 cursor-pointer"
       >
-        <Mail className="h-4 w-4" />
-        Reply by email
-      </a>
+        <Reply className="h-4 w-4" />
+        Reply
+      </button>
     </div>
   );
 
@@ -120,12 +109,7 @@ const ContactMessageModal = ({ message, onClose, onEdit }) => {
               {record.name}
             </Field>
             <Field label="Email" icon={Mail}>
-              <a
-                href={replyMailto(record)}
-                className="text-secondary hover:underline"
-              >
-                {record.email}
-              </a>
+              {record.email}
             </Field>
             <Field label="Received" icon={CalendarDays}>
               {formatReceived(record.createdAt)}

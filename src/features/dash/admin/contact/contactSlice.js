@@ -1,7 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {
   deleteContactMessage,
   fetchContactMessages,
+  replyContactMessage,
   updateContactMessage,
 } from "./contactThunks";
 
@@ -47,21 +48,24 @@ const adminContactSlice = createSlice({
         state.status = action.meta.aborted ? "idle" : "failed";
         state.error = action.meta.aborted ? null : action.payload || null;
       })
-      .addCase(updateContactMessage.fulfilled, (state, action) => {
-        const updated = action.payload?.message;
-        if (!updated) {
-          return;
-        }
-
-        state.messages = state.messages.map((m) =>
-          m.id === updated.id ? { ...m, ...updated } : m,
-        );
-      })
       .addCase(deleteContactMessage.fulfilled, (state, action) => {
         state.messages = state.messages.filter(
           (m) => m.id !== action.payload.id,
         );
-      });
+      })
+      .addMatcher(
+        isAnyOf(updateContactMessage.fulfilled, replyContactMessage.fulfilled),
+        (state, action) => {
+          const updated = action.payload?.message;
+          if (!updated) {
+            return;
+          }
+
+          state.messages = state.messages.map((m) =>
+            m.id === updated.id ? { ...m, ...updated } : m,
+          );
+        },
+      );
   },
 });
 

@@ -1,13 +1,13 @@
 import {
-  createContactMessageApi,
   deleteContactMessageApi,
   listContactMessagesApi,
+  replyContactMessageApi,
   updateContactMessageApi,
 } from "./contactApi";
 
 export const contactService = {
   list: listContactMessagesApi,
-  create: createContactMessageApi,
   update: updateContactMessageApi,
+  reply: replyContactMessageApi,
   remove: deleteContactMessageApi,
 };

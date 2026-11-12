@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Plus, RefreshCw, Trash2 } from "lucide-react";
+import { RefreshCw, Trash2 } from "lucide-react";
 import {
   DashboardFilterToolbar,
   DashboardHeader,
@@ -13,8 +13,9 @@ import { describeRequestError } from "../../customer/Profile/utils/profileFormat
 import { useAdminContacts } from "./hooks/useAdminContacts";
 import ContactStatusBadge from "./components/ContactStatusBadge";
 import ContactMessageModal from "./components/ContactMessageModal";
-import ContactFormModal from "./components/ContactFormModal";
+import ContactReplyModal from "./components/ContactReplyModal";
 import ContactRowActions from "./components/ContactRowActions";
+import SelectCheckbox from "./components/SelectCheckbox";
 import {
   CONTACT_STATUS_OPTIONS,
   formatReceived,
@@ -49,9 +50,26 @@ const AdminContactsView = () => {
     if (search.trim() !== filters.q) setSearch(filters.q);
   }
   const [reloadKey, setReloadKey] = useState(0);
-  // { type: "view" | "create" | "edit" | "delete", message }
+  // { type: "view" | "reply" | "delete", message } or { type: "bulkDelete", ids }
   const [dialog, setDialog] = useState(null);
   const [savingId, setSavingId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
+  // Only rows on the current page count, so changing page or filters drops the selection from view.
+  const selected = messages.filter((m) => selectedIds.has(m.id));
+  const allSelected =
+    messages.length > 0 && selected.length === messages.length;
+
+  const toggleSelected = (id) =>
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
+  const toggleAll = () =>
+    setSelectedIds(
+      allSelected ? new Set() : new Set(messages.map((m) => m.id)),
+    );
+  const clearSelection = () => setSelectedIds(new Set());
 
   const open = (type) => (message) => setDialog({ type, message });
   const closeDialog = () => setDialog(null);
@@ -105,12 +123,45 @@ const AdminContactsView = () => {
     reload();
   };
 
+  // One request per message, in sequence, so a large page doesn't trip the rate limiter.
+  const deleteSelected = async () => {
+    const { ids } = dialog;
+    let failed = 0;
+    let lastError;
+    for (const id of ids) {
+      try {
+        await removeMessage(id);
+      } catch (err) {
+        failed += 1;
+        lastError = err;
+      }
+    }
+    if (failed === ids.length) throw lastError;
+    clearSelection();
+    reload();
+    const deleted = ids.length - failed;
+    const noun = deleted === 1 ? "message" : "messages";
+    if (failed) {
+      toast.error(`Deleted ${deleted} ${noun}; ${failed} couldn't be deleted.`);
+    } else {
+      toast.success(`Deleted ${deleted} ${noun}.`);
+    }
+  };
+
+  const checkbox = (m) => (
+    <SelectCheckbox
+      checked={selectedIds.has(m.id)}
+      onChange={() => toggleSelected(m.id)}
+      label={`Select message from ${m.name}`}
+    />
+  );
+
   const actions = (m) => (
     <ContactRowActions
       message={m}
       busy={Boolean(savingId)}
       onView={open("view")}
-      onEdit={open("edit")}
+      onReply={open("reply")}
       onToggle={toggleStatus}
       onDelete={open("delete")}
     />
@@ -135,6 +186,19 @@ const AdminContactsView = () => {
   );
 
   const columns = [
+    {
+      header: (
+        <SelectCheckbox
+          checked={allSelected}
+          indeterminate={selected.length > 0}
+          onChange={toggleAll}
+          disabled={loading || messages.length === 0}
+          label="Select all messages on this page"
+        />
+      ),
+      headerClassName: "w-10",
+      render: checkbox,
+    },
     { header: "From", render: sender },
     { header: "Subject", render: subject },
     {
@@ -152,7 +216,10 @@ const AdminContactsView = () => {
   const renderMobileRow = (m) => (
     <div className="space-y-2">
       <div className="flex items-start justify-between gap-3">
-        {sender(m)}
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="pt-0.5">{checkbox(m)}</span>
+          {sender(m)}
+        </div>
         <ContactStatusBadge status={m.status} />
       </div>
       <p className="truncate text-sm font-medium text-slate-700">{m.subject}</p>
@@ -164,6 +231,8 @@ const AdminContactsView = () => {
   );
 
   const hasQuery = Boolean(filters.q || filters.status);
+  const bulkCount = dialog?.ids?.length ?? 0;
+  const bulkLabel = `${bulkCount} ${bulkCount === 1 ? "message" : "messages"}`;
 
   return (
     <div className="space-y-6">
@@ -191,14 +260,6 @@ const AdminContactsView = () => {
               />
               <span className="hidden sm:inline">Refresh</span>
             </button>
-            <button
-              type="button"
-              onClick={() => setDialog({ type: "create", message: null })}
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-secondary px-4 text-sm font-semibold text-white transition hover:bg-secondary/90 cursor-pointer"
-            >
-              <Plus className="h-4 w-4" />
-              New message
-            </button>
           </div>
         }
       />
@@ -225,15 +286,51 @@ const AdminContactsView = () => {
         title="All messages"
         minWidth="min-w-[900px]"
         toolbar={
-          <DashboardFilterToolbar
-            search={search}
-            onSearchChange={setSearch}
-            filters={filters}
-            onFilterChange={setFilter}
-            onReset={resetFilters}
-            searchPlaceholder="Search by name, email or subject"
-            selects={SELECTS}
-          />
+          selected.length > 0 ? (
+            <div className="flex min-h-10 flex-wrap items-center gap-3">
+              <SelectCheckbox
+                checked={allSelected}
+                indeterminate
+                onChange={toggleAll}
+                label="Select all messages on this page"
+              />
+              <span className="text-sm font-semibold text-slate-700">
+                {selected.length} selected
+              </span>
+              <div className="ml-auto flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setDialog({
+                      type: "bulkDelete",
+                      ids: selected.map((m) => m.id),
+                    })
+                  }
+                  className="inline-flex h-9 items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-3.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-100 cursor-pointer"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  onClick={clearSelection}
+                  className="text-sm font-semibold text-slate-500 hover:text-slate-700 cursor-pointer"
+                >
+                  Clear selection
+                </button>
+              </div>
+            </div>
+          ) : (
+            <DashboardFilterToolbar
+              search={search}
+              onSearchChange={setSearch}
+              filters={filters}
+              onFilterChange={setFilter}
+              onReset={resetFilters}
+              searchPlaceholder="Search by name, email or subject"
+              selects={SELECTS}
+            />
+          )
         }
         columns={columns}
         data={error ? [] : messages}
@@ -264,16 +361,15 @@ const AdminContactsView = () => {
           key={target.id}
           message={target}
           onClose={closeDialog}
-          onEdit={open("edit")}
+          onReply={open("reply")}
         />
       )}
 
-      {(dialog?.type === "create" || dialog?.type === "edit") && (
-        <ContactFormModal
-          key={target?.id ?? "new"}
+      {dialog?.type === "reply" && (
+        <ContactReplyModal
+          key={target.id}
           message={target}
           onClose={closeDialog}
-          onSaved={reload}
         />
       )}
 
@@ -301,6 +397,27 @@ const AdminContactsView = () => {
               </span>
             </>
           )}{" "}
+          will be removed permanently. This can&apos;t be undone.
+        </p>
+      </ConfirmModal>
+
+      <ConfirmModal
+        key="bulk-delete"
+        open={dialog?.type === "bulkDelete"}
+        onClose={closeDialog}
+        onConfirm={deleteSelected}
+        icon={Trash2}
+        tone="danger"
+        title={`Delete ${bulkLabel}`}
+        confirmLabel="Delete permanently"
+        pendingLabel="Deleting…"
+        errorFallback="Couldn't delete these messages. Please try again."
+      >
+        <p className="text-sm leading-relaxed text-slate-600">
+          The{" "}
+          <span className="font-semibold text-slate-800">
+            {bulkLabel} you selected
+          </span>{" "}
           will be removed permanently. This can&apos;t be undone.
         </p>
       </ConfirmModal>

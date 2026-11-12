@@ -7,9 +7,9 @@ import {
   selectAdminContactMeta,
 } from "../../../../../features/dash/admin/contact/contactSelectors";
 import {
-  createContactMessage,
   deleteContactMessage,
   fetchContactMessages,
+  replyContactMessage,
   updateContactMessage,
 } from "../../../../../features/dash/admin/contact/contactThunks";
 
@@ -25,10 +25,6 @@ export function useAdminContacts() {
     (filters) => dispatch(fetchContactMessages(filters)),
     [dispatch],
   );
-  const createMessage = useCallback(
-    (body) => dispatch(createContactMessage(body)).unwrap(),
-    [dispatch],
-  );
   const updateMessage = useCallback(
     (id, changes) => dispatch(updateContactMessage({ id, changes })).unwrap(),
     [dispatch],
@@ -36,6 +32,11 @@ export function useAdminContacts() {
   const setStatus = useCallback(
     (id, status) => updateMessage(id, { status }),
     [updateMessage],
+  );
+  const replyMessage = useCallback(
+    (id, message, idempotencyKey) =>
+      dispatch(replyContactMessage({ id, message, idempotencyKey })).unwrap(),
+    [dispatch],
   );
   const removeMessage = useCallback(
     (id) => dispatch(deleteContactMessage(id)).unwrap(),
@@ -48,9 +49,8 @@ export function useAdminContacts() {
     loading,
     error,
     loadMessages,
-    createMessage,
-    updateMessage,
     setStatus,
+    replyMessage,
     removeMessage,
   };
 }
