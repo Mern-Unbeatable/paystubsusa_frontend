@@ -14,6 +14,7 @@ import {
   User,
   LogOut,
   Users,
+  UserRound,
   ShoppingBag,
   LayoutTemplate,
   Tag,
@@ -69,6 +70,12 @@ const ADMIN_NAV_ITEMS = [
     path: "/admin/customers",
   },
   {
+    id: "guest-buyers",
+    label: "Guest Buyers",
+    icon: UserRound,
+    path: "/admin/guest-buyers",
+  },
+  {
     id: "orders",
     label: "Orders",
     icon: ShoppingBag,
@@ -109,12 +116,6 @@ const ADMIN_NAV_ITEMS = [
     label: "Pricing & Tags",
     icon: Tag,
     path: "/admin/pricing",
-  },
-  {
-    id: "users",
-    label: "Users",
-    icon: Users,
-    path: "/admin/users",
   },
   {
     id: "profile",

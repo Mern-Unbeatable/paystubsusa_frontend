@@ -10,11 +10,6 @@ const AdminOverviewView = lazy(() =>
     default: module.AdminOverviewView,
   })),
 );
-const AdminUsersView = lazy(() =>
-  import("../../pages/dash/admin").then((module) => ({
-    default: module.AdminUsersView,
-  })),
-);
 const AdminCustomersView = lazy(() =>
   import("../../pages/dash/admin").then((module) => ({
     default: module.AdminCustomersView,
@@ -43,6 +38,11 @@ const AdminSubscriptionsView = lazy(() =>
 const AdminContactsView = lazy(() =>
   import("../../pages/dash/admin").then((module) => ({
     default: module.AdminContactsView,
+  })),
+);
+const AdminGuestBuyersView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminGuestBuyersView,
   })),
 );
 const AdminDocumentTemplatesView = lazy(() =>
@@ -93,11 +93,18 @@ export const adminRoutes = [
       },
       {
         path: "users",
-        element: createLazyRouteElement(AdminUsersView),
+        element: React.createElement(Navigate, {
+          to: "/admin/customers",
+          replace: true,
+        }),
       },
       {
         path: "customers",
         element: createLazyRouteElement(AdminCustomersView),
+      },
+      {
+        path: "guest-buyers",
+        element: createLazyRouteElement(AdminGuestBuyersView),
       },
       {
         path: "documents",

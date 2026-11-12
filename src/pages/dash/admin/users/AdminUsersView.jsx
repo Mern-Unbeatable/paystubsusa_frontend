@@ -34,7 +34,7 @@ const URL_SELECTS = {
   sort: SORT_OPTIONS.map((o) => o.value),
 };
 
-/** Also rendered as the Customers page; the API lists customer accounts only. */
+/** Rendered as the Customers page (/admin/users redirects there); the API lists customer accounts only. */
 const AdminUsersView = ({
   title = "Manage Users",
   description = "Search, review and manage customer accounts.",
