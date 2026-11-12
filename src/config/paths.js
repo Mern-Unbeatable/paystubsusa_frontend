@@ -56,6 +56,7 @@ export const PATHS = {
     orders: "/admin/orders",
     transactions: "/admin/transactions",
     subscriptions: "/admin/subscriptions",
+    contacts: "/admin/contacts",
     templates: "/admin/templates",
     templateNew: "/admin/templates/new",
     templateEdit: "/admin/templates/:id/edit",

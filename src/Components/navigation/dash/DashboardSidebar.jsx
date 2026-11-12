@@ -17,6 +17,7 @@ import {
   ShoppingBag,
   LayoutTemplate,
   Tag,
+  Mail,
   X,
 } from "lucide-react";
 
@@ -90,6 +91,12 @@ const ADMIN_NAV_ITEMS = [
     label: "Transactions",
     icon: CreditCard,
     path: "/admin/transactions",
+  },
+  {
+    id: "contacts",
+    label: "Contacts",
+    icon: Mail,
+    path: "/admin/contacts",
   },
   {
     id: "templates",

@@ -40,6 +40,11 @@ const AdminSubscriptionsView = lazy(() =>
     default: module.AdminSubscriptionsView,
   })),
 );
+const AdminContactsView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminContactsView,
+  })),
+);
 const AdminDocumentTemplatesView = lazy(() =>
   import("../../pages/dash/admin").then((module) => ({
     default: module.AdminDocumentTemplatesView,
@@ -109,6 +114,10 @@ export const adminRoutes = [
       {
         path: "subscriptions",
         element: createLazyRouteElement(AdminSubscriptionsView),
+      },
+      {
+        path: "contacts",
+        element: createLazyRouteElement(AdminContactsView),
       },
       {
         path: "templates",
