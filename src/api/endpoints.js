@@ -21,6 +21,17 @@ export const API_ENDPOINTS = Object.freeze({
   CATALOG: Object.freeze({
     TEMPLATES: "/catalog/templates",
   }),
+  VERIFICATIONS: Object.freeze({
+    SEND: "/verifications",
+    VERIFY: (challengeId) => `${buildResourcePath("verifications", challengeId)}/verify`,
+  }),
+  ORDERS: Object.freeze({
+    CREATE: "/orders",
+    DETAILS: (id) => buildResourcePath("orders", id),
+  }),
+  DOCUMENTS: Object.freeze({
+    DOWNLOAD: (id) => `${buildResourcePath("documents", id)}/download`,
+  }),
   ADMIN: Object.freeze({
     CUSTOMERS: "/admin/customers",
     CUSTOMER: (id) => buildResourcePath("admin/customers", id),

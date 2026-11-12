@@ -1,5 +1,4 @@
 export const LAST_TEMPLATE_STORAGE_KEY = "paystubGenerator.lastTemplateId";
-const PAID_TEMPLATE_STORAGE_KEY = "paystubGenerator.paidTemplateId";
 
 // Storage can be unavailable (private mode, quota); every helper degrades to a no-op.
 const safeSessionStorage = {
@@ -29,12 +28,3 @@ const safeSessionStorage = {
 // JSON-encoded to stay compatible with useSessionStorageState.
 export const rememberLastTemplateId = (templateId) =>
   safeSessionStorage.set(LAST_TEMPLATE_STORAGE_KEY, JSON.stringify(templateId));
-
-export const isTemplatePaid = (templateId) =>
-  safeSessionStorage.get(PAID_TEMPLATE_STORAGE_KEY) === templateId;
-
-export const markTemplatePaid = (templateId) =>
-  safeSessionStorage.set(PAID_TEMPLATE_STORAGE_KEY, templateId);
-
-export const clearPaidTemplate = () =>
-  safeSessionStorage.remove(PAID_TEMPLATE_STORAGE_KEY);

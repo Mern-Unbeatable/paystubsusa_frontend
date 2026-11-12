@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss()],
+    // Only the Stripe publishable key is exposed beyond VITE_*; never widen this to "STRIPE_".
+    envPrefix: ["VITE_", "STRIPE_PUBLISHABLE_KEY"],
     server: {
       proxy: {
         // changeOrigin sends the target's Host header, which a remote (proxied/TLS) API requires.

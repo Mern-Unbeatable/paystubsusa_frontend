@@ -1,13 +1,24 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 
+const SINGLE_LINE = [{ offset: 0, scale: 1 }];
+
 /**
  * Diagonal "PREVIEW ONLY" stamp across its positioned parent, running from the
  * bottom-left to the top-right corner whatever the parent's aspect ratio.
+ * `lines` adds parallel copies: `offset` moves a line across the diagonal (fraction
+ * of the shorter side, negative = towards the top-left), `scale` sizes it.
  */
 const PreviewWatermark = ({
   text = "PREVIEW ONLY",
   fontWeight = "normal",
+  fontFamily = "Arial, Helvetica, sans-serif",
+  fill = "rgba(15, 23, 42, 0.22)",
   scale = 1,
+  lines = SINGLE_LINE,
+  /** Vertical centre of the stamp as a fraction of the parent's height. */
+  anchorY = 0.5,
+  /** Fixed tilt in degrees; defaults to the parent's corner-to-corner diagonal. */
+  angle: fixedAngle,
 }) => {
   const ref = useRef(null);
   const [size, setSize] = useState(null);
@@ -24,14 +35,15 @@ const PreviewWatermark = ({
   }, []);
 
   const diagonal = size ? Math.hypot(size.width, size.height) : 0;
-  const angle = size
-    ? (Math.atan2(size.height, size.width) * 180) / Math.PI
+  const shortSide = size ? Math.min(size.width, size.height) : 0;
+  const angle =
+    fixedAngle ??
+    (size ? (Math.atan2(size.height, size.width) * 180) / Math.PI : 0);
+  const baseFontSize = size
+    ? Math.min(diagonal * 0.1, shortSide * 0.2) * scale
     : 0;
-  const fontSize = size
-    ? Math.min(diagonal * 0.1, Math.min(size.width, size.height) * 0.2) * scale
-    : 0;
-  // Never stretch short words beyond their natural Arial width (~0.6em per glyph).
-  const textLength = Math.min(diagonal * 0.8, fontSize * 0.6 * text.length);
+  const cx = size ? size.width / 2 : 0;
+  const cy = size ? size.height * anchorY : 0;
 
   return (
     <div
@@ -41,21 +53,30 @@ const PreviewWatermark = ({
     >
       {diagonal > 0 && (
         <svg width={size.width} height={size.height} className="block">
-          <text
-            x={size.width / 2}
-            y={size.height / 2}
-            transform={`rotate(${-angle} ${size.width / 2} ${size.height / 2})`}
-            textAnchor="middle"
-            dominantBaseline="central"
-            textLength={textLength}
-            lengthAdjust="spacingAndGlyphs"
-            fontSize={fontSize}
-            fontFamily="Arial, Helvetica, sans-serif"
-            fontWeight={fontWeight}
-            fill="rgba(15, 23, 42, 0.22)"
-          >
-            {text}
-          </text>
+          <g transform={`rotate(${-angle} ${cx} ${cy})`}>
+            {lines.map(({ offset, scale: lineScale }, i) => {
+              const fontSize = baseFontSize * lineScale;
+              // Off-centre lines cross a shorter chord; never stretch beyond the natural glyph width.
+              const room = diagonal * (offset === 0 ? 0.8 : 0.45);
+              return (
+                <text
+                  key={i}
+                  x={cx}
+                  y={cy + offset * shortSide}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  textLength={Math.min(room, fontSize * 0.6 * text.length)}
+                  lengthAdjust="spacingAndGlyphs"
+                  fontSize={fontSize}
+                  // fontFamily={fontFamily}
+                  // fontWeight={fontWeight}
+                  fill={fill}
+                >
+                  {text}
+                </text>
+              );
+            })}
+          </g>
         </svg>
       )}
     </div>

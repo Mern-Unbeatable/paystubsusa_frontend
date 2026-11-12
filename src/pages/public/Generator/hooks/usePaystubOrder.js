@@ -23,8 +23,16 @@ export function usePaystubOrder() {
     packagesConfig[selectedPackage] || packagesConfig[DEFAULT_PACKAGE];
   const additionalCost = additionalCount * ADDITIONAL_PAYSTUB_PRICE;
   const grandTotal = currentPkg.price + additionalCost;
+  // What the server prices; the displayed totals above are estimates only.
+  const items = [
+    { productCode: currentPkg.productCode, quantity: 1 },
+    ...(additionalCount > 0 && currentPkg.productCode !== "unlimited_monthly"
+      ? [{ productCode: "paystub_additional", quantity: additionalCount }]
+      : []),
+  ];
 
   return {
+    items,
     selectedPackage,
     setSelectedPackage,
     additionalCount,

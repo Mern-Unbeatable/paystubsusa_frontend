@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckCircle2, Download, RotateCcw } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
 
-const PaymentSuccessSection = ({ formData, order, onDownload, onStartOver }) => {
+const PaymentSuccessSection = ({ formData, order, processing = false, onDownload, onStartOver }) => {
   const { grandTotal, currentPkg, checkoutEmail } = order;
 
   return (
@@ -11,9 +11,13 @@ const PaymentSuccessSection = ({ formData, order, onDownload, onStartOver }) => 
             <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Payment Successful!</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{processing ? 'Payment Processing' : 'Payment Successful!'}</h2>
             <p className="text-slate-500 text-[14px] mt-1.5">
-              Your professional paystub for <strong className="text-slate-800">{formData.employeeName}</strong> is ready.
+              {processing ? (
+                <>We&apos;ll email your paystub for <strong className="text-slate-800">{formData.employeeName}</strong> once the payment clears.</>
+              ) : (
+                <>Your professional paystub for <strong className="text-slate-800">{formData.employeeName}</strong> is ready.</>
+              )}
             </p>
           </div>
 
@@ -36,7 +40,8 @@ const PaymentSuccessSection = ({ formData, order, onDownload, onStartOver }) => 
             <button
               type="button"
               onClick={onDownload}
-              className="w-full py-3 rounded-xl bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[15px] shadow-sm transition flex items-center justify-center gap-2 cursor-pointer"
+              disabled={processing}
+              className="w-full py-3 rounded-xl bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[15px] shadow-sm transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <Download className="w-4 h-4" />
               <span>Download Paystub PDF</span>

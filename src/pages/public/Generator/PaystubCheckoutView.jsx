@@ -1,32 +1,89 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import PaystubFlowPage from "./components/common/PaystubFlowPage";
 import CheckoutSection from "./components/sections/CheckoutSection";
+import StripePaymentModal from "./components/sections/StripePaymentModal";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";
+import { usePaystubFormData } from "./hooks/usePaystubFormData";
 import { usePaystubFlowNavigation } from "./hooks/usePaystubFlowNavigation";
 import { formatCurrency } from "./utils/formatCurrency";
 import PaystubStepper from "./components/common/PaystubStepper";
 import { PAYSTUB_PAGE_STEPS } from "./utils/paystubFlow";
-
-const SIMULATED_PAYMENT_MS = 1200;
+import { buildPaystubSuccessPath } from "../../../config/paths";
+import { getErrorMessage } from "../../../api/errorNormalizer";
+import { resetCheckout, setPaymentStatus } from "../../../features/public/checkout/checkoutSlice";
+import { selectCheckout, selectCheckoutPaid } from "../../../features/public/checkout/checkoutSelectors";
+import {
+  createCheckoutOrder,
+  sendCheckoutCode,
+  verifyCheckoutCode,
+} from "../../../features/public/checkout/checkoutThunks";
 
 const PaystubCheckoutContent = ({ template }) => {
-  const { checkoutEmail, setCheckoutEmail, grandTotal } = usePaystubOrder();
+  const dispatch = useDispatch();
+  const { checkoutEmail, setCheckoutEmail, grandTotal, items } = usePaystubOrder();
+  const { formData } = usePaystubFormData();
+  const { guestToken, email, order, clientSecret } = useSelector(selectCheckout);
+  const paid = useSelector(selectCheckoutPaid);
   const { onBackToPackage, onBackToFormStep, onPaymentSuccess } =
     usePaystubFlowNavigation(template.id);
   const handleStepClick = (step) =>
     step === PAYSTUB_PAGE_STEPS.PACKAGE ? onBackToPackage() : onBackToFormStep(step);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  const paymentTimerRef = useRef(null);
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  // One key per checkout visit: a double click or retry replays the same order instead of creating two.
+  const idempotencyKeyRef = useRef(crypto.randomUUID());
 
-  useEffect(() => () => clearTimeout(paymentTimerRef.current), []);
+  // Leaving checkout unpaid drops the pending order so a changed package or form gets a fresh one.
+  useEffect(
+    () => () =>
+      dispatch((next, getState) => {
+        if (!selectCheckoutPaid(getState()) && !getState().checkout.paymentStatus) next(resetCheckout());
+      }),
+    [dispatch],
+  );
 
-  // TODO: replace the simulated delay with the payment provider integration.
-  const handlePay = () => {
+  useEffect(() => {
+    if (paid) onPaymentSuccess();
+  }, [paid]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const fail = (error) => {
+    toast.error(getErrorMessage(error));
+    return false;
+  };
+
+  const handleSendCode = async (value) => {
+    const action = await dispatch(sendCheckoutCode(value));
+    return sendCheckoutCode.fulfilled.match(action) || fail(action.payload);
+  };
+
+  const handleVerify = async (code) => {
+    if (!template.catalogId) return fail({ message: "This template is unavailable right now. Please try again later." });
+    // Reopening after closing the dialog reuses the same order and PaymentIntent.
+    if (order && clientSecret) {
+      setPaymentOpen(true);
+      return;
+    }
     setIsProcessingPayment(true);
-    paymentTimerRef.current = setTimeout(() => {
+    try {
+      if (!guestToken) {
+        const verified = await dispatch(verifyCheckoutCode(code));
+        if (!verifyCheckoutCode.fulfilled.match(verified)) return fail(verified.payload);
+      }
+      const created = await dispatch(
+        createCheckoutOrder({ templateId: template.catalogId, items, formData, idempotencyKey: idempotencyKeyRef.current }),
+      );
+      if (!createCheckoutOrder.fulfilled.match(created)) return fail(created.payload);
+      if (created.payload.payment) setPaymentOpen(true);
+    } finally {
       setIsProcessingPayment(false);
-      onPaymentSuccess();
-    }, SIMULATED_PAYMENT_MS);
+    }
+  };
+
+  const handlePaid = (status) => {
+    dispatch(setPaymentStatus(status));
+    if (status !== "succeeded") onPaymentSuccess();
   };
 
   return (
@@ -37,9 +94,22 @@ const PaystubCheckoutContent = ({ template }) => {
         onEmailChange={setCheckoutEmail}
         totalLabel={formatCurrency(grandTotal)}
         isProcessingPayment={isProcessingPayment}
-        onPay={handlePay}
+        onSendCode={handleSendCode}
+        onPay={handleVerify}
+        verifyLabel={order && clientSecret ? "Continue to payment" : "Verify & continue to payment"}
         onBack={onBackToPackage}
       />
+      {order && clientSecret && (
+        <StripePaymentModal
+          open={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          clientSecret={clientSecret}
+          email={email}
+          totalLabel={formatCurrency(order.totalCents / 100)}
+          returnUrl={`${window.location.origin}${buildPaystubSuccessPath(template.id)}`}
+          onPaid={handlePaid}
+        />
+      )}
     </>
   );
 };

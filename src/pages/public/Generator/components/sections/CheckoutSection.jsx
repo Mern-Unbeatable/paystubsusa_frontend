@@ -102,6 +102,8 @@ const CheckoutSection = ({
   totalLabel,
   isProcessingPayment,
   onPay,
+  onSendCode,
+  verifyLabel,
   onBack,
   backLabel = "Back to package",
   className = "max-w-xl mx-auto",
@@ -122,9 +124,17 @@ const CheckoutSection = ({
     return () => clearTimeout(timer);
   }, [resendIn]);
 
-  // TODO: replace the simulated delay with the verification-code API once it exists.
-  const sendCode = (onSent) => {
+  // `onSendCode(email)` resolves true once the code was sent; flows without it keep the simulated delay.
+  const sendCode = async (onSent) => {
     setIsSendingCode(true);
+    if (onSendCode) {
+      const sent = await onSendCode(email.trim());
+      setIsSendingCode(false);
+      if (!sent) return;
+      setResendIn(RESEND_COOLDOWN_SECONDS);
+      onSent?.();
+      return;
+    }
     setTimeout(() => {
       setIsSendingCode(false);
       setResendIn(RESEND_COOLDOWN_SECONDS);
@@ -151,7 +161,7 @@ const CheckoutSection = ({
   const handleVerifyAndPay = (e) => {
     e.preventDefault();
     if (!isOtpComplete || isProcessingPayment) return;
-    onPay();
+    onPay(otp);
   };
 
   return (
@@ -334,7 +344,7 @@ const CheckoutSection = ({
               ) : (
                 <>
                   <Lock className="w-4 h-4" />
-                  <span>Verify &amp; pay {totalLabel} securely</span>
+                  <span>{verifyLabel ?? <>Verify &amp; pay {totalLabel} securely</>}</span>
                 </>
               )}
             </button>
