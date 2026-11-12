@@ -2,24 +2,26 @@ import React from "react";
 import { CheckCircle2, Lock } from "lucide-react";
 
 /** Shown once the email is verified; Pay Now opens the payment dialog. */
-const CheckoutPaySection = ({ email, totalLabel, paying, onPay, onChangeEmail }) => (
+const CheckoutPaySection = ({ email, title = "Email verified", totalLabel, paying, onPay, onChangeEmail }) => (
   <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200">
     <div className="flex items-start gap-3 p-3.5 rounded-xl bg-emerald-50 border border-emerald-100">
       <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
       <div className="min-w-0 flex-1">
-        <p className="text-[14px] font-semibold text-emerald-800">Email verified</p>
+        <p className="text-[14px] font-semibold text-emerald-800">{title}</p>
         <p className="text-[13px] text-emerald-700 break-all">
           Your documents will be sent to {email}.
         </p>
       </div>
-      <button
-        type="button"
-        onClick={onChangeEmail}
-        disabled={paying}
-        className="text-[13px] font-semibold text-[#1E60F2] hover:underline cursor-pointer whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Change
-      </button>
+      {onChangeEmail && (
+        <button
+          type="button"
+          onClick={onChangeEmail}
+          disabled={paying}
+          className="text-[13px] font-semibold text-[#1E60F2] hover:underline cursor-pointer whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Change
+        </button>
+      )}
     </div>
 
     <div>

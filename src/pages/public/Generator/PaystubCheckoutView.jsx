@@ -20,6 +20,7 @@ import {
   setPaymentStatus,
 } from "../../../features/public/checkout/checkoutSlice";
 import { selectCheckout, selectCheckoutPaid } from "../../../features/public/checkout/checkoutSelectors";
+import { selectAuthUser } from "../../../features/auth/authSelectors";
 import {
   createCheckoutOrder,
   sendCheckoutCode,
@@ -32,6 +33,10 @@ const PaystubCheckoutContent = ({ template }) => {
   const { formData, calculations } = usePaystubFormData();
   const { guestToken, email, order, clientSecret } = useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
+  const authUser = useSelector(selectAuthUser);
+  // A signed-in account with a verified email pays with its own session; no guest code needed.
+  const accountEmail = authUser?.role === "customer" && authUser.emailVerified ? authUser.email : null;
+  const verifiedEmail = guestToken ? email : accountEmail;
   const { onBackToPackage, onBackToFormStep, onPaymentSuccess } =
     usePaystubFlowNavigation(template.id);
   const handleStepClick = (step) =>
@@ -41,6 +46,11 @@ const PaystubCheckoutContent = ({ template }) => {
   const [paymentOpen, setPaymentOpen] = useState(false);
   // One key per order attempt: a double click or retry replays the same order instead of creating two.
   const idempotencyKeyRef = useRef(crypto.randomUUID());
+
+  // Signed in but unverified: the same code flow as guests, starting from the account email.
+  useEffect(() => {
+    if (authUser?.email && !accountEmail && !guestToken) setCheckoutEmail(authUser.email);
+  }, [authUser?.email, accountEmail]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Checkout needs a complete form; send the user back to the first step with a gap.
   useEffect(() => {
@@ -129,13 +139,14 @@ const PaystubCheckoutContent = ({ template }) => {
       <PaystubStepper currentStep={PAYSTUB_PAGE_STEPS.CHECKOUT} onStepClick={handleStepClick} />
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div className="lg:col-span-7">
-          {guestToken ? (
+          {verifiedEmail ? (
             <CheckoutPaySection
-              email={email}
+              email={verifiedEmail}
+              title={guestToken ? "Email verified" : "Signed in"}
               totalLabel={formatCurrency(total)}
               paying={isPreparingPayment}
               onPay={handlePayNow}
-              onChangeEmail={handleChangeEmail}
+              onChangeEmail={guestToken ? handleChangeEmail : undefined}
             />
           ) : (
             <CheckoutSection
@@ -178,7 +189,7 @@ const PaystubCheckoutContent = ({ template }) => {
           open={paymentOpen}
           onClose={() => setPaymentOpen(false)}
           clientSecret={clientSecret}
-          email={email}
+          email={verifiedEmail}
           totalLabel={formatCurrency(order.totalCents / 100)}
           returnUrl={`${window.location.origin}${buildPaystubSuccessPath(template.id)}`}
           onPaid={handlePaid}

@@ -22,12 +22,12 @@ const SETTLED_DOCUMENT_STATUSES = new Set(["ready", "failed", "revoked"]);
 
 /** Polls the order until the webhook marks it paid and its documents finish rendering. */
 function useOrderPolling(checkout, dispatch) {
-  const { order, guestToken } = checkout;
+  const { order } = checkout;
   const settled =
     order?.status === "paid" && (order.documents ?? []).every((d) => SETTLED_DOCUMENT_STATUSES.has(d.status));
 
   useEffect(() => {
-    if (!order?.id || !guestToken || settled) return undefined;
+    if (!order?.id || settled) return undefined;
     let polls = 0;
     const timer = setInterval(() => {
       polls += 1;
@@ -35,7 +35,7 @@ function useOrderPolling(checkout, dispatch) {
       else dispatch(refreshCheckoutOrder());
     }, POLL_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [order?.id, guestToken, settled, dispatch]);
+  }, [order?.id, settled, dispatch]);
 }
 
 const PaystubSuccessContent = ({ template }) => {
@@ -88,7 +88,7 @@ const PaystubSuccessContent = ({ template }) => {
   const summary = {
     ...pkg,
     grandTotal: checkout.order ? checkout.order.totalCents / 100 : pkg.grandTotal,
-    checkoutEmail: checkout.email ?? pkg.checkoutEmail,
+    checkoutEmail: checkout.order?.email ?? checkout.email ?? pkg.checkoutEmail,
   };
 
   return (

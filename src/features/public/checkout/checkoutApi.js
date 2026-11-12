@@ -1,7 +1,8 @@
 import { API_ENDPOINTS } from "../../../api/endpoints";
 import { httpClient } from "../../../api/httpClient";
 
-const guestAuth = (guestToken) => ({ Authorization: `Guest ${guestToken}` });
+// Without a guest token the request falls back to the signed-in user's Bearer token.
+const guestAuth = (guestToken) => (guestToken ? { Authorization: `Guest ${guestToken}` } : {});
 
 /** Emails a 6-digit checkout code. Responds the same whether or not the email is known. */
 export async function sendCheckoutCodeApi(email) {
