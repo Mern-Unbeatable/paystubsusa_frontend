@@ -61,8 +61,8 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
       title={suspending ? "Suspend account" : "Reactivate account"}
       description={
         suspending
-          ? `${user.name} will be signed out on every device and won't be able to sign in until reactivated.`
-          : `${user.name} will be able to sign in again.`
+          ? `${user.name} will be signed out on every device, won't be able to sign in until reactivated, and will be notified by email.`
+          : `${user.name} will be able to sign in again and will be notified by email.`
       }
     >
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -71,9 +71,9 @@ const UserStatusModal = ({ user, onClose, onUpdated }) => {
             htmlFor="status-reason"
             className="text-sm font-semibold text-slate-700"
           >
-            Reason{" "}
+            Message to the user{" "}
             <span className="font-normal text-slate-400">
-              (optional, kept in the audit log)
+              (optional, included in the email and kept in the audit log)
             </span>
           </label>
           <textarea
