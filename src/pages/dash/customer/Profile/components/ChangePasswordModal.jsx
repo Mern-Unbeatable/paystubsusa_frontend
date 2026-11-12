@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AlertCircle, Check, Eye, EyeOff, KeyRound } from "lucide-react";
-import ProfileModal from "./ProfileModal";
-import { useAuth } from "../../../../../hooks/useAuth";
+import ProfileModal from "../../../../../Components/modal/ProfileModal";
+import { useAuth } from "../../../../auth/hooks/useAuth";
 import { describeRequestError } from "../utils/profileFormat";
 
 // Mirrors the API password policy (8–128 characters; the API also rejects common passwords).
@@ -10,11 +10,23 @@ const MIN_LENGTH = 8;
 const MAX_LENGTH = 128;
 const EMPTY = { currentPassword: "", newPassword: "", confirmPassword: "" };
 
-const PasswordField = ({ id, label, value, onChange, error, autoComplete, disabled, autoFocus }) => {
+const PasswordField = ({
+  id,
+  label,
+  value,
+  onChange,
+  error,
+  autoComplete,
+  disabled,
+  autoFocus,
+}) => {
   const [visible, setVisible] = useState(false);
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-600">
+      <label
+        htmlFor={id}
+        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-600"
+      >
         {label}
       </label>
       <div className="relative">
@@ -38,10 +50,18 @@ const PasswordField = ({ id, label, value, onChange, error, autoComplete, disabl
         <button
           type="button"
           onClick={() => setVisible((prev) => !prev)}
-          aria-label={visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
+          aria-label={
+            visible
+              ? `Hide ${label.toLowerCase()}`
+              : `Show ${label.toLowerCase()}`
+          }
           className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-400 transition hover:text-slate-600 cursor-pointer"
         >
-          {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          {visible ? (
+            <EyeOff className="h-4 w-4" />
+          ) : (
+            <Eye className="h-4 w-4" />
+          )}
         </button>
       </div>
       {error && (
@@ -54,7 +74,9 @@ const PasswordField = ({ id, label, value, onChange, error, autoComplete, disabl
 };
 
 const Rule = ({ met, children }) => (
-  <li className={`flex items-center gap-2 ${met ? "text-emerald-700" : "text-slate-500"}`}>
+  <li
+    className={`flex items-center gap-2 ${met ? "text-emerald-700" : "text-slate-500"}`}
+  >
     <span
       className={`flex h-4 w-4 items-center justify-center rounded-full ${
         met ? "bg-emerald-100" : "bg-slate-100"
@@ -85,11 +107,16 @@ const ChangePasswordModal = ({ open, onClose }) => {
 
   const { currentPassword, newPassword, confirmPassword } = form;
   const rules = {
-    length: newPassword.length >= MIN_LENGTH && newPassword.length <= MAX_LENGTH,
+    length:
+      newPassword.length >= MIN_LENGTH && newPassword.length <= MAX_LENGTH,
     different: newPassword.length > 0 && newPassword !== currentPassword,
     matches: confirmPassword.length > 0 && newPassword === confirmPassword,
   };
-  const canSubmit = currentPassword.length > 0 && rules.length && rules.different && rules.matches;
+  const canSubmit =
+    currentPassword.length > 0 &&
+    rules.length &&
+    rules.different &&
+    rules.matches;
 
   const update = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
@@ -110,7 +137,9 @@ const ChangePasswordModal = ({ open, onClose }) => {
     setGeneralError(null);
     try {
       await changePassword({ currentPassword, newPassword });
-      toast.success("Password updated. Other devices have been signed out.", { id: "password-changed" });
+      toast.success("Password updated. Other devices have been signed out.", {
+        id: "password-changed",
+      });
       onClose();
     } catch (err) {
       const fieldErrors = err?.fieldErrors || {};
@@ -119,7 +148,10 @@ const ChangePasswordModal = ({ open, onClose }) => {
         newPassword: fieldErrors.newPassword?.[0],
       };
       if (mapped.currentPassword || mapped.newPassword) setErrors(mapped);
-      else setGeneralError(describeRequestError(err, "We couldn't change your password."));
+      else
+        setGeneralError(
+          describeRequestError(err, "We couldn't change your password."),
+        );
     } finally {
       inFlightRef.current = false;
       setSaving(false);
@@ -161,22 +193,39 @@ const ChangePasswordModal = ({ open, onClose }) => {
           autoComplete="new-password"
           value={confirmPassword}
           onChange={update("confirmPassword")}
-          error={confirmPassword && !rules.matches ? "Passwords don't match." : undefined}
+          error={
+            confirmPassword && !rules.matches
+              ? "Passwords don't match."
+              : undefined
+          }
           disabled={saving}
         />
 
-        <ul className="space-y-1.5 rounded-xl bg-slate-50 px-3.5 py-3 text-[12.5px]" aria-label="Password requirements">
+        <ul
+          className="space-y-1.5 rounded-xl bg-slate-50 px-3.5 py-3 text-[12.5px]"
+          aria-label="Password requirements"
+        >
           <Rule met={rules.length}>
             {MIN_LENGTH}–{MAX_LENGTH} characters
           </Rule>
-          <Rule met={rules.different}>Different from your current password</Rule>
+          <Rule met={rules.different}>
+            Different from your current password
+          </Rule>
           <Rule met={rules.matches}>Both new passwords match</Rule>
-          <li className="pl-6 text-[12px] text-slate-400">Very common passwords are not accepted.</li>
+          <li className="pl-6 text-[12px] text-slate-400">
+            Very common passwords are not accepted.
+          </li>
         </ul>
 
         {generalError && (
-          <div role="alert" className="flex items-start gap-2 rounded-xl bg-rose-50 px-3 py-2.5 text-[13px] text-rose-700 ring-1 ring-rose-200">
-            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-xl bg-rose-50 px-3 py-2.5 text-[13px] text-rose-700 ring-1 ring-rose-200"
+          >
+            <AlertCircle
+              className="mt-0.5 h-4 w-4 flex-shrink-0"
+              aria-hidden="true"
+            />
             <span>{generalError}</span>
           </div>
         )}
@@ -195,7 +244,9 @@ const ChangePasswordModal = ({ open, onClose }) => {
             disabled={saving || !canSubmit}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0089e0] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
           >
-            {saving && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />}
+            {saving && (
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            )}
             {saving ? "Saving…" : "Save New Password"}
           </button>
         </div>

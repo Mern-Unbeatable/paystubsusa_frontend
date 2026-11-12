@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../pages/auth/hooks/useAuth";
 import { PATHS } from "../../config/paths";
 import GuardRedirect from "./GuardRedirect";
 

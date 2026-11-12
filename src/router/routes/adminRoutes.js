@@ -10,11 +10,6 @@ const AdminOverviewView = lazy(() =>
     default: module.AdminOverviewView,
   })),
 );
-const AdminUsersView = lazy(() =>
-  import("../../pages/dash/admin").then((module) => ({
-    default: module.AdminUsersView,
-  })),
-);
 const AdminCustomersView = lazy(() =>
   import("../../pages/dash/admin").then((module) => ({
     default: module.AdminCustomersView,
@@ -40,9 +35,29 @@ const AdminSubscriptionsView = lazy(() =>
     default: module.AdminSubscriptionsView,
   })),
 );
+const AdminContactsView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminContactsView,
+  })),
+);
+const AdminGuestBuyersView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminGuestBuyersView,
+  })),
+);
 const AdminDocumentTemplatesView = lazy(() =>
   import("../../pages/dash/admin").then((module) => ({
     default: module.AdminDocumentTemplatesView,
+  })),
+);
+const AdminTemplateCreateView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminTemplateCreateView,
+  })),
+);
+const AdminTemplateEditView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminTemplateEditView,
   })),
 );
 const AdminPricingPlansView = lazy(() =>
@@ -77,12 +92,12 @@ export const adminRoutes = [
         element: createLazyRouteElement(AdminOverviewView),
       },
       {
-        path: "users",
-        element: createLazyRouteElement(AdminUsersView),
-      },
-      {
         path: "customers",
         element: createLazyRouteElement(AdminCustomersView),
+      },
+      {
+        path: "guest-buyers",
+        element: createLazyRouteElement(AdminGuestBuyersView),
       },
       {
         path: "documents",
@@ -101,8 +116,20 @@ export const adminRoutes = [
         element: createLazyRouteElement(AdminSubscriptionsView),
       },
       {
+        path: "contacts",
+        element: createLazyRouteElement(AdminContactsView),
+      },
+      {
         path: "templates",
         element: createLazyRouteElement(AdminDocumentTemplatesView),
+      },
+      {
+        path: "templates/new",
+        element: createLazyRouteElement(AdminTemplateCreateView),
+      },
+      {
+        path: "templates/:id/edit",
+        element: createLazyRouteElement(AdminTemplateEditView),
       },
       {
         path: "pricing",

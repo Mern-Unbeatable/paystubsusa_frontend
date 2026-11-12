@@ -4,8 +4,11 @@ import { X } from "lucide-react";
 import TemplatePagePreview from "./TemplatePagePreview";
 import { useBodyScrollLock } from "../../../../../hooks/useBodyScrollLock";
 
-/** Full-size preview of a single template with a fixed header and action footer. */
-const TemplatePreviewModal = ({ template, onClose, onUseTemplate }) => {
+/**
+ * Full-size preview of a single template with a fixed header and action footer.
+ * `footer` replaces the default "Use This Template" action.
+ */
+const TemplatePreviewModal = ({ template, onClose, onUseTemplate, footer }) => {
   const titleId = useId();
   const open = Boolean(template);
 
@@ -56,13 +59,15 @@ const TemplatePreviewModal = ({ template, onClose, onUseTemplate }) => {
 
         {/* Footer */}
         <div className="shrink-0 px-5 sm:px-6 py-4 border-t border-slate-200/80 bg-white">
-          <button
-            type="button"
-            onClick={() => onUseTemplate(template.id)}
-            className="w-full py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] active:bg-[#007cc7] text-white font-semibold text-[15px] shadow-sm transition cursor-pointer text-center"
-          >
-            Use This Template
-          </button>
+          {footer ?? (
+            <button
+              type="button"
+              onClick={() => onUseTemplate(template.id)}
+              className="w-full py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] active:bg-[#007cc7] text-white font-semibold text-[15px] shadow-sm transition cursor-pointer text-center"
+            >
+              Use This Template
+            </button>
+          )}
         </div>
       </div>
     </div>,

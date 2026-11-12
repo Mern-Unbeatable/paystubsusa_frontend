@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { ChevronDown, Trash2, Lock } from "lucide-react";
 import payFrequencyOptions from "../../../data/generator/payFrequencyOptions.json";
 import US_STATES from "../../../data/shared/usStates.json";
@@ -6,6 +7,7 @@ import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
 import CompanyLogoField from "../common/CompanyLogoField";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
+import { findIncompleteField } from "../../hooks/usePaystubFormData";
 import PaystubStepper from "../common/PaystubStepper";
 
 const PaystubDetailsForm = ({
@@ -23,6 +25,15 @@ const PaystubDetailsForm = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const openTemplatePicker = () => onChangeTemplate(currentStep);
+  const handleContinueToPackage = () => {
+    const missing = findIncompleteField(form.formData);
+    if (missing) {
+      toast.error(`${missing.label} is required.`);
+      setCurrentStep(missing.step);
+      return;
+    }
+    onContinueToPackage();
+  };
   const {
     formData,
     setFormData,
@@ -44,7 +55,7 @@ const PaystubDetailsForm = ({
       {/* Main 2-Column Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT COLUMN: Form Card */}
-        <div className="lg:col-span-6 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+        <div className="lg:col-span-8 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
           {/* Step 1: Employer Information */}
           {currentStep === 1 && (
             <div className="space-y-5 animate-in fade-in-50 duration-200">
@@ -904,7 +915,7 @@ const PaystubDetailsForm = ({
                 </button>
                 <button
                   type="button"
-                  onClick={onContinueToPackage}
+                  onClick={handleContinueToPackage}
                   className="px-7 py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-[15px] shadow-sm transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Continue to Checkout</span>
@@ -916,7 +927,7 @@ const PaystubDetailsForm = ({
         </div>
 
         {/* RIGHT COLUMN: The Sticky Live Preview */}
-        <div className="lg:col-span-6 sticky top-32">
+        <div className="lg:col-span-4 sticky top-32">
           <div className="flex items-center justify-between mb-3 px-1">
             <span className="text-[14px] font-bold text-slate-800">
               Live Preview • Template {selectedTemplateId}

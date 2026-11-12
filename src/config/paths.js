@@ -23,6 +23,9 @@ export const PATHS = {
     pricing: "/pricing",
     findPaystubs: "/find-paystubs",
     about: "/about",
+    contact: "/contact",
+    terms: "/terms-conditions",
+    privacy: "/privacy-policy",
   },
   AUTH: {
     root: "/auth",
@@ -47,13 +50,16 @@ export const PATHS = {
     dashboard: "/admin/overview",
     home: "/admin/home",
     overview: "/admin/overview",
-    users: "/admin/users",
     customers: "/admin/customers",
+    guestBuyers: "/admin/guest-buyers",
     documents: "/admin/documents",
     orders: "/admin/orders",
     transactions: "/admin/transactions",
     subscriptions: "/admin/subscriptions",
+    contacts: "/admin/contacts",
     templates: "/admin/templates",
+    templateNew: "/admin/templates/new",
+    templateEdit: "/admin/templates/:id/edit",
     pricing: "/admin/pricing",
     profile: "/admin/profile",
   },
@@ -94,6 +100,9 @@ export const buildPaystubCheckoutPath = (templateId) =>
 export const buildPaystubSuccessPath = (templateId) =>
   fillTemplateSlug(PATHS.PUBLIC.paystubSuccess, templateId);
 
+export const buildAdminTemplateEditPath = (id) =>
+  PATHS.ADMIN.templateEdit.replace(":id", encodeURIComponent(id));
+
 // Legacy path -> canonical path. Rendered as <Navigate replace>.
 export const ALIASES = {
   generator: PATHS.PUBLIC.paystubGenerator,
@@ -101,6 +110,10 @@ export const ALIASES = {
   1099: PATHS.PUBLIC.nec1099,
   "find-your-paystubs": PATHS.PUBLIC.findPaystubs,
   "about-us": PATHS.PUBLIC.about,
+  "contact-us": PATHS.PUBLIC.contact,
+  contracts: PATHS.PUBLIC.contact,
+  terms: PATHS.PUBLIC.terms,
+  privacy: PATHS.PUBLIC.privacy,
   "/login": PATHS.AUTH.login,
   "/register": PATHS.AUTH.register,
   "/forgot-password": PATHS.AUTH.forgotPassword,

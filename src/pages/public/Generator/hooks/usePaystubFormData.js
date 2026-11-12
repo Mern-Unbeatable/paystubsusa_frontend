@@ -47,7 +47,7 @@ const DEFAULT_FORM_DATA = {
 const sumAmounts = (items) =>
   items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
 
-const calculatePaystub = (formData) => {
+export const calculatePaystub = (formData) => {
   let regularEarnings = 0;
   let overtimeEarnings = 0;
   let totalGross = 0;
@@ -81,6 +81,33 @@ const calculatePaystub = (formData) => {
     netPay,
   };
 };
+
+// Same required fields as the server's paystub schema; formats are still validated there.
+const REQUIRED_FIELDS = [
+  { step: 1, key: "companyName", label: "Company name" },
+  { step: 1, key: "companyAddress", label: "Company address" },
+  { step: 1, key: "companyCity", label: "Company city" },
+  { step: 1, key: "companyState", label: "Company state" },
+  { step: 1, key: "companyZip", label: "Company ZIP code" },
+  { step: 2, key: "employeeName", label: "Employee name" },
+  { step: 2, key: "employeeAddress", label: "Employee address" },
+  { step: 2, key: "employeeCity", label: "Employee city" },
+  { step: 2, key: "employeeState", label: "Employee state" },
+  { step: 2, key: "employeeZip", label: "Employee ZIP code" },
+  { step: 3, key: "payPeriodStart", label: "Pay period start" },
+  { step: 3, key: "payPeriodEnd", label: "Pay period end" },
+  { step: 3, key: "payDate", label: "Pay date" },
+  { step: 3, key: "payFrequency", label: "Pay frequency" },
+  { step: 3, key: "hourlyRate", label: "Hourly rate", when: (d) => d.payType === "Hourly" },
+  { step: 3, key: "regularHours", label: "Regular hours", when: (d) => d.payType === "Hourly" },
+  { step: 3, key: "salaryAmount", label: "Gross salary amount", when: (d) => d.payType !== "Hourly" },
+];
+
+/** First empty required field as `{ step, label }`, or null when the form is complete. */
+export const findIncompleteField = (formData) =>
+  REQUIRED_FIELDS.find(
+    (f) => (!f.when || f.when(formData)) && !String(formData[f.key] ?? "").trim(),
+  ) ?? null;
 
 /** Paystub details shared across every page of the generator flow. */
 export function usePaystubFormData() {

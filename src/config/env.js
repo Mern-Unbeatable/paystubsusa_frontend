@@ -16,4 +16,8 @@ export const ENV_CONFIG = Object.freeze({
   apiTimeoutMs: parseTimeout(import.meta.env.VITE_API_TIMEOUT_MS),
   apiWithCredentials: import.meta.env.VITE_API_WITH_CREDENTIALS !== "false",
   refreshEndpoint: import.meta.env.VITE_API_REFRESH_ENDPOINT || "/auth/refresh",
+  // Publishable (pk_) key only; checkout shows an error when it is missing.
+  stripePublishableKey: /^pk_(test|live)_/.test(import.meta.env.STRIPE_PUBLISHABLE_KEY || "")
+    ? import.meta.env.STRIPE_PUBLISHABLE_KEY
+    : "",
 });

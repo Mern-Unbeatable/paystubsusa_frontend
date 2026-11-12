@@ -16,7 +16,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../pages/auth/hooks/useAuth";
 import { useBodyScrollLock } from "../../../hooks/useBodyScrollLock";
 import { PATHS } from "../../../config/paths";
 import { ENV_CONFIG } from "../../../config/env";

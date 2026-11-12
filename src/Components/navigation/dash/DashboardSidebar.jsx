@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../pages/auth/hooks/useAuth";
 import { PATHS } from "../../../config/paths";
 import { ENV_CONFIG } from "../../../config/env";
 import { toast } from "react-hot-toast";
@@ -14,9 +14,11 @@ import {
   User,
   LogOut,
   Users,
+  UserRound,
   ShoppingBag,
   LayoutTemplate,
   Tag,
+  Mail,
   X,
 } from "lucide-react";
 
@@ -68,6 +70,12 @@ const ADMIN_NAV_ITEMS = [
     path: "/admin/customers",
   },
   {
+    id: "guest-buyers",
+    label: "Guest Buyers",
+    icon: UserRound,
+    path: "/admin/guest-buyers",
+  },
+  {
     id: "orders",
     label: "Orders",
     icon: ShoppingBag,
@@ -104,10 +112,10 @@ const ADMIN_NAV_ITEMS = [
     path: "/admin/pricing",
   },
   {
-    id: "users",
-    label: "Users",
-    icon: Users,
-    path: "/admin/users",
+    id: "contacts",
+    label: "Contacts",
+    icon: Mail,
+    path: "/admin/contacts",
   },
   {
     id: "profile",
@@ -316,7 +324,8 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
     }
   };
 
-  const isActive = (path) => location.pathname === path;
+  // Nested pages (e.g. /admin/templates/:id/edit) keep their section highlighted.
+  const isActive = (path) => location.pathname === path || location.pathname.startsWith(`${path}/`);
 
   return (
     <>

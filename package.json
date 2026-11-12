@@ -6,11 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:renderer": "vite build --config vite.renderer.config.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.0",
+    "@stripe/react-stripe-js": "^7.0.1",
+    "@stripe/stripe-js": "^10.2.1",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
     "gsap": "^3.15.0",

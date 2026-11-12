@@ -2,7 +2,7 @@ import React, { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import TemplateCard from "./TemplateCard";
-import { TEMPLATES } from "./PaystubThumbnail";
+import { usePaystubTemplates } from "../../utils/templateUtils";
 import { useBodyScrollLock } from "../../../../../hooks/useBodyScrollLock";
 
 /**
@@ -15,11 +15,13 @@ const TemplateSelectionModal = ({
   selectedTemplateId,
   onClose,
   onConfirm,
-  templates = TEMPLATES,
+  templates: templatesProp,
   title = "Choose a Template",
   description = "Pick a layout for your paystub. Your entered details are kept.",
   confirmLabel = "Select Template",
 }) => {
+  const catalog = usePaystubTemplates();
+  const templates = templatesProp ?? catalog.templates;
   const titleId = useId();
   const [draftId, setDraftId] = useState(selectedTemplateId);
 

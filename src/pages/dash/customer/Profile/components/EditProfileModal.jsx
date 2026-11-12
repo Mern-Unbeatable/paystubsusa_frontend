@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Camera, Trash2, UserRound } from "lucide-react";
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import UserAvatar from "./UserAvatar";
-import { useAuth } from "../../../../../hooks/useAuth";
+import { useAuth } from "../../../../auth/hooks/useAuth";
 import { avatarSrc, describeRequestError } from "../utils/profileFormat";
 
 const NAME_MAX = 100;
@@ -18,7 +18,8 @@ function validate({ name, phone }) {
   const errors = {};
   const trimmedName = name.trim();
   if (!trimmedName) errors.name = "Name is required.";
-  else if (trimmedName.length > NAME_MAX) errors.name = `Name must be ${NAME_MAX} characters or fewer.`;
+  else if (trimmedName.length > NAME_MAX)
+    errors.name = `Name must be ${NAME_MAX} characters or fewer.`;
 
   const normalizedPhone = normalizePhone(phone);
   if (normalizedPhone && !PHONE_PATTERN.test(normalizedPhone)) {
@@ -34,7 +35,8 @@ const inputClass = (hasError) =>
       : "border-slate-200 focus:border-secondary focus:ring-secondary/20"
   }`;
 
-const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-600";
+const labelClass =
+  "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-600";
 
 const EditProfileModal = ({ open, onClose, user }) => {
   const { updateProfile, uploadAvatar, removeAvatar } = useAuth();
@@ -56,7 +58,10 @@ const EditProfileModal = ({ open, onClose, user }) => {
   }, [open]);
 
   const preview = photo && photo !== "remove" ? photo.preview : null;
-  useEffect(() => (preview ? () => URL.revokeObjectURL(preview) : undefined), [preview]);
+  useEffect(
+    () => (preview ? () => URL.revokeObjectURL(preview) : undefined),
+    [preview],
+  );
 
   const currentSrc = photo === "remove" ? null : preview || avatarSrc(user);
 
@@ -70,11 +75,17 @@ const EditProfileModal = ({ open, onClose, user }) => {
     event.target.value = "";
     if (!file) return;
     if (!AVATAR_TYPES.includes(file.type)) {
-      setErrors((prev) => ({ ...prev, avatar: "Use a JPG, PNG or WebP image." }));
+      setErrors((prev) => ({
+        ...prev,
+        avatar: "Use a JPG, PNG or WebP image.",
+      }));
       return;
     }
     if (file.size > AVATAR_MAX_BYTES) {
-      setErrors((prev) => ({ ...prev, avatar: "Image must be 2 MB or smaller." }));
+      setErrors((prev) => ({
+        ...prev,
+        avatar: "Image must be 2 MB or smaller.",
+      }));
       return;
     }
     setErrors((prev) => ({ ...prev, avatar: undefined }));
@@ -93,7 +104,8 @@ const EditProfileModal = ({ open, onClose, user }) => {
     const phone = normalizePhone(form.phone) || null;
     if (name !== user.name) changes.name = name;
     if (phone !== (user.phone || null)) changes.phone = phone;
-    const photoChange = photo === "remove" ? (user.avatarUrl ? "remove" : null) : photo;
+    const photoChange =
+      photo === "remove" ? (user.avatarUrl ? "remove" : null) : photo;
 
     if (!photoChange && Object.keys(changes).length === 0) {
       onClose();
@@ -105,10 +117,14 @@ const EditProfileModal = ({ open, onClose, user }) => {
     try {
       if (photoChange) {
         try {
-          await (photoChange === "remove" ? removeAvatar() : uploadAvatar(photoChange.file));
+          await (photoChange === "remove"
+            ? removeAvatar()
+            : uploadAvatar(photoChange.file));
           setPhoto(null);
         } catch (err) {
-          setErrors({ avatar: describeRequestError(err, "We couldn't save your photo.") });
+          setErrors({
+            avatar: describeRequestError(err, "We couldn't save your photo."),
+          });
           return;
         }
       }
@@ -117,9 +133,16 @@ const EditProfileModal = ({ open, onClose, user }) => {
           await updateProfile(changes);
         } catch (err) {
           const fieldErrors = err?.fieldErrors || {};
-          const mapped = { name: fieldErrors.name?.[0], phone: fieldErrors.phone?.[0] };
+          const mapped = {
+            name: fieldErrors.name?.[0],
+            phone: fieldErrors.phone?.[0],
+          };
           if (mapped.name || mapped.phone) setErrors(mapped);
-          else toast.error(describeRequestError(err, "We couldn't update your profile."), { id: "profile-updated" });
+          else
+            toast.error(
+              describeRequestError(err, "We couldn't update your profile."),
+              { id: "profile-updated" },
+            );
           return;
         }
       }
@@ -144,7 +167,12 @@ const EditProfileModal = ({ open, onClose, user }) => {
         <div>
           <span className={labelClass}>Profile photo</span>
           <div className="flex items-center gap-4">
-            <UserAvatar src={currentSrc} name={form.name || user.name} email={user.email} className="h-16 w-16 text-lg" />
+            <UserAvatar
+              src={currentSrc}
+              name={form.name || user.name}
+              email={user.email}
+              className="h-16 w-16 text-lg"
+            />
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
@@ -178,18 +206,33 @@ const EditProfileModal = ({ open, onClose, user }) => {
               onChange={pickPhoto}
               className="sr-only"
               tabIndex={-1}
-              aria-describedby={errors.avatar ? "profile-avatar-error" : "profile-avatar-hint"}
+              aria-describedby={
+                errors.avatar ? "profile-avatar-error" : "profile-avatar-hint"
+              }
             />
           </div>
           {errors.avatar ? (
-            <p id="profile-avatar-error" role="alert" className="mt-1.5 text-[12px] text-rose-600">{errors.avatar}</p>
+            <p
+              id="profile-avatar-error"
+              role="alert"
+              className="mt-1.5 text-[12px] text-rose-600"
+            >
+              {errors.avatar}
+            </p>
           ) : (
-            <p id="profile-avatar-hint" className="mt-1.5 text-[12px] text-slate-400">JPG, PNG or WebP, up to 2 MB.</p>
+            <p
+              id="profile-avatar-hint"
+              className="mt-1.5 text-[12px] text-slate-400"
+            >
+              JPG, PNG or WebP, up to 2 MB.
+            </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="profile-name" className={labelClass}>Full name</label>
+          <label htmlFor="profile-name" className={labelClass}>
+            Full name
+          </label>
           <input
             id="profile-name"
             type="text"
@@ -203,12 +246,22 @@ const EditProfileModal = ({ open, onClose, user }) => {
             aria-describedby={errors.name ? "profile-name-error" : undefined}
             className={inputClass(errors.name)}
           />
-          {errors.name && <p id="profile-name-error" className="mt-1 text-[12px] text-rose-600">{errors.name}</p>}
+          {errors.name && (
+            <p
+              id="profile-name-error"
+              className="mt-1 text-[12px] text-rose-600"
+            >
+              {errors.name}
+            </p>
+          )}
         </div>
 
         <div>
           <label htmlFor="profile-phone" className={labelClass}>
-            Phone number <span className="font-normal normal-case tracking-normal text-slate-400">(optional)</span>
+            Phone number{" "}
+            <span className="font-normal normal-case tracking-normal text-slate-400">
+              (optional)
+            </span>
           </label>
           <input
             id="profile-phone"
@@ -220,13 +273,23 @@ const EditProfileModal = ({ open, onClose, user }) => {
             onChange={updateField("phone")}
             disabled={saving}
             aria-invalid={Boolean(errors.phone)}
-            aria-describedby={errors.phone ? "profile-phone-error" : "profile-phone-hint"}
+            aria-describedby={
+              errors.phone ? "profile-phone-error" : "profile-phone-hint"
+            }
             className={inputClass(errors.phone)}
           />
           {errors.phone ? (
-            <p id="profile-phone-error" className="mt-1 text-[12px] text-rose-600">{errors.phone}</p>
+            <p
+              id="profile-phone-error"
+              className="mt-1 text-[12px] text-rose-600"
+            >
+              {errors.phone}
+            </p>
           ) : (
-            <p id="profile-phone-hint" className="mt-1 text-[12px] text-slate-400">
+            <p
+              id="profile-phone-hint"
+              className="mt-1 text-[12px] text-slate-400"
+            >
               Include the country code. Leave empty to remove it.
             </p>
           )}
@@ -246,7 +309,9 @@ const EditProfileModal = ({ open, onClose, user }) => {
             disabled={saving}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0089e0] disabled:opacity-60 cursor-pointer"
           >
-            {saving && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />}
+            {saving && (
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            )}
             {saving ? "Saving…" : "Save Changes"}
           </button>
         </div>

@@ -1,0 +1,428 @@
+import React, { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { RefreshCw, Trash2 } from "lucide-react";
+import {
+  DashboardFilterToolbar,
+  DashboardHeader,
+  DashboardPagination,
+  DashboardTable,
+} from "../../../../Components/Dashboard";
+import ConfirmModal from "../../../../Components/modal/ConfirmModal";
+import { useUrlFilters } from "../../../../hooks/useUrlFilters";
+import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
+import { useAdminContacts } from "./hooks/useAdminContacts";
+import ContactStatusBadge from "./components/ContactStatusBadge";
+import ContactMessageModal from "./components/ContactMessageModal";
+import ContactReplyModal from "./components/ContactReplyModal";
+import ContactRowActions from "./components/ContactRowActions";
+import SelectCheckbox from "./components/SelectCheckbox";
+import {
+  CONTACT_STATUS_OPTIONS,
+  formatReceived,
+  nextStatus,
+} from "./utils/contactFormat";
+
+const SELECTS = [
+  { key: "status", label: "Filter by status", options: CONTACT_STATUS_OPTIONS },
+];
+const URL_SELECTS = { status: CONTACT_STATUS_OPTIONS.map((o) => o.value) };
+
+const AdminContactsView = () => {
+  const {
+    messages,
+    meta,
+    loading,
+    error,
+    loadMessages,
+    setStatus,
+    removeMessage,
+  } = useAdminContacts();
+  const {
+    filters,
+    setFilter,
+    resetFilters: resetUrlFilters,
+  } = useUrlFilters(URL_SELECTS);
+  const [search, setSearch] = useState(filters.q);
+  const [urlQ, setUrlQ] = useState(filters.q);
+  // Back/forward or a pasted link changed `q`: show it in the box (the debounce then has nothing to do).
+  if (urlQ !== filters.q) {
+    setUrlQ(filters.q);
+    if (search.trim() !== filters.q) setSearch(filters.q);
+  }
+  const [reloadKey, setReloadKey] = useState(0);
+  // { type: "view" | "reply" | "delete", message } or { type: "bulkDelete", ids }
+  const [dialog, setDialog] = useState(null);
+  const [savingId, setSavingId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
+  // Only rows on the current page count, so changing page or filters drops the selection from view.
+  const selected = messages.filter((m) => selectedIds.has(m.id));
+  const allSelected =
+    messages.length > 0 && selected.length === messages.length;
+
+  const toggleSelected = (id) =>
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
+  const toggleAll = () =>
+    setSelectedIds(
+      allSelected ? new Set() : new Set(messages.map((m) => m.id)),
+    );
+  const clearSelection = () => setSelectedIds(new Set());
+
+  const open = (type) => (message) => setDialog({ type, message });
+  const closeDialog = () => setDialog(null);
+  const target = dialog?.message;
+
+  useEffect(() => {
+    const trimmed = search.trim();
+    if (trimmed === filters.q) return undefined;
+    const timer = setTimeout(() => setFilter("q", trimmed), 300);
+    return () => clearTimeout(timer);
+  }, [search, filters.q, setFilter]);
+
+  useEffect(() => {
+    const request = loadMessages(filters);
+    return () => request.abort();
+  }, [filters, reloadKey, loadMessages]);
+
+  // A link to a page past the end lands on the last real page.
+  useEffect(() => {
+    if (!loading && meta.totalPages > 0 && filters.page > meta.totalPages) {
+      setFilter("page", meta.totalPages, { replace: true });
+    }
+  }, [loading, meta.totalPages, filters.page, setFilter]);
+
+  const reload = useCallback(() => setReloadKey((k) => k + 1), []);
+
+  const resetFilters = () => {
+    setSearch("");
+    resetUrlFilters();
+  };
+
+  const toggleStatus = async (m) => {
+    if (savingId) return;
+    setSavingId(m.id);
+    try {
+      const status = nextStatus(m);
+      await setStatus(m.id, status);
+      toast.success(
+        status === "handled" ? "Marked as handled." : "Marked as new.",
+      );
+    } catch (err) {
+      toast.error(describeRequestError(err, "Couldn't update this message."));
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const deleteMessage = async () => {
+    await removeMessage(target.id);
+    toast.success("Message deleted.");
+    reload();
+  };
+
+  // One request per message, in sequence, so a large page doesn't trip the rate limiter.
+  const deleteSelected = async () => {
+    const { ids } = dialog;
+    let failed = 0;
+    let lastError;
+    for (const id of ids) {
+      try {
+        await removeMessage(id);
+      } catch (err) {
+        failed += 1;
+        lastError = err;
+      }
+    }
+    if (failed === ids.length) throw lastError;
+    clearSelection();
+    reload();
+    const deleted = ids.length - failed;
+    const noun = deleted === 1 ? "message" : "messages";
+    if (failed) {
+      toast.error(`Deleted ${deleted} ${noun}; ${failed} couldn't be deleted.`);
+    } else {
+      toast.success(`Deleted ${deleted} ${noun}.`);
+    }
+  };
+
+  const checkbox = (m) => (
+    <SelectCheckbox
+      checked={selectedIds.has(m.id)}
+      onChange={() => toggleSelected(m.id)}
+      label={`Select message from ${m.name}`}
+    />
+  );
+
+  const actions = (m) => (
+    <ContactRowActions
+      message={m}
+      busy={Boolean(savingId)}
+      onView={open("view")}
+      onReply={open("reply")}
+      onToggle={toggleStatus}
+      onDelete={open("delete")}
+    />
+  );
+
+  const sender = (m) => (
+    <div className="max-w-[16rem]">
+      <p
+        className={`truncate text-slate-800 ${m.status === "new" ? "font-bold" : "font-semibold"}`}
+      >
+        {m.name}
+      </p>
+      <p className="truncate text-xs text-slate-400">{m.email}</p>
+    </div>
+  );
+
+  const subject = (m) => (
+    <div className="max-w-[22rem]">
+      <p className="truncate font-medium text-slate-700">{m.subject}</p>
+      <p className="truncate text-xs text-slate-400">{m.message}</p>
+    </div>
+  );
+
+  const columns = [
+    {
+      header: (
+        <SelectCheckbox
+          checked={allSelected}
+          indeterminate={selected.length > 0}
+          onChange={toggleAll}
+          disabled={loading || messages.length === 0}
+          label="Select all messages on this page"
+        />
+      ),
+      headerClassName: "w-10",
+      render: checkbox,
+    },
+    { header: "From", render: sender },
+    { header: "Subject", render: subject },
+    {
+      header: "Status",
+      render: (m) => <ContactStatusBadge status={m.status} />,
+    },
+    {
+      header: "Received",
+      render: (m) => formatReceived(m.createdAt),
+      cellClassName: "whitespace-nowrap text-slate-500",
+    },
+    { header: "Actions", align: "right", render: actions },
+  ];
+
+  const renderMobileRow = (m) => (
+    <div className="space-y-2">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="pt-0.5">{checkbox(m)}</span>
+          {sender(m)}
+        </div>
+        <ContactStatusBadge status={m.status} />
+      </div>
+      <p className="truncate text-sm font-medium text-slate-700">{m.subject}</p>
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs text-slate-400">{formatReceived(m.createdAt)}</p>
+        {actions(m)}
+      </div>
+    </div>
+  );
+
+  const hasQuery = Boolean(filters.q || filters.status);
+  const bulkCount = dialog?.ids?.length ?? 0;
+  const bulkLabel = `${bulkCount} ${bulkCount === 1 ? "message" : "messages"}`;
+
+  return (
+    <div className="space-y-6">
+      <DashboardHeader
+        title="Contacts"
+        description="Messages sent through the contact form and Help Center."
+        badge={
+          !loading && (
+            <span className="rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs font-bold text-secondary">
+              {meta.totalItems}
+            </span>
+          )
+        }
+        action={
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={reload}
+              disabled={loading}
+              aria-label="Refresh messages"
+              className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-60 cursor-pointer"
+            >
+              <RefreshCw
+                className={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
+              />
+              <span className="hidden sm:inline">Refresh</span>
+            </button>
+          </div>
+        }
+      />
+
+      {error && (
+        <div
+          role="alert"
+          className="flex flex-col gap-2 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <span>
+            {describeRequestError(error, "Couldn't load contact messages.")}
+          </span>
+          <button
+            type="button"
+            onClick={reload}
+            className="font-semibold underline cursor-pointer"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      <DashboardTable
+        title="All messages"
+        minWidth="min-w-[900px]"
+        toolbar={
+          selected.length > 0 ? (
+            <div className="flex min-h-10 flex-wrap items-center gap-3">
+              <SelectCheckbox
+                checked={allSelected}
+                indeterminate
+                onChange={toggleAll}
+                label="Select all messages on this page"
+              />
+              <span className="text-sm font-semibold text-slate-700">
+                {selected.length} selected
+              </span>
+              <div className="ml-auto flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setDialog({
+                      type: "bulkDelete",
+                      ids: selected.map((m) => m.id),
+                    })
+                  }
+                  className="inline-flex h-9 items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-3.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-100 cursor-pointer"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  onClick={clearSelection}
+                  className="text-sm font-semibold text-slate-500 hover:text-slate-700 cursor-pointer"
+                >
+                  Clear selection
+                </button>
+              </div>
+            </div>
+          ) : (
+            <DashboardFilterToolbar
+              search={search}
+              onSearchChange={setSearch}
+              filters={filters}
+              onFilterChange={setFilter}
+              onReset={resetFilters}
+              searchPlaceholder="Search by name, email or subject"
+              selects={SELECTS}
+            />
+          )
+        }
+        columns={columns}
+        data={error ? [] : messages}
+        loading={loading}
+        renderMobileRow={renderMobileRow}
+        emptyMessage={
+          hasQuery
+            ? "No messages match your search or filters."
+            : "No contact messages yet."
+        }
+        footer={
+          !error && (
+            <DashboardPagination
+              page={meta.page}
+              pageSize={meta.pageSize}
+              totalItems={meta.totalItems}
+              totalPages={meta.totalPages}
+              onPageChange={(page) => setFilter("page", page)}
+              onPageSizeChange={(size) => setFilter("pageSize", size)}
+              disabled={loading}
+            />
+          )
+        }
+      />
+
+      {dialog?.type === "view" && (
+        <ContactMessageModal
+          key={target.id}
+          message={target}
+          onClose={closeDialog}
+          onReply={open("reply")}
+        />
+      )}
+
+      {dialog?.type === "reply" && (
+        <ContactReplyModal
+          key={target.id}
+          message={target}
+          onClose={closeDialog}
+        />
+      )}
+
+      <ConfirmModal
+        key={`delete-${target?.id}`}
+        open={dialog?.type === "delete"}
+        onClose={closeDialog}
+        onConfirm={deleteMessage}
+        icon={Trash2}
+        tone="danger"
+        title="Delete message"
+        confirmLabel="Delete permanently"
+        pendingLabel="Deleting…"
+        errorFallback="Couldn't delete this message. Please try again."
+      >
+        <p className="text-sm leading-relaxed text-slate-600">
+          The message from{" "}
+          <span className="font-semibold text-slate-800">{target?.name}</span>
+          {target?.subject && (
+            <>
+              {" "}
+              about{" "}
+              <span className="font-semibold text-slate-800">
+                “{target.subject}”
+              </span>
+            </>
+          )}{" "}
+          will be removed permanently. This can&apos;t be undone.
+        </p>
+      </ConfirmModal>
+
+      <ConfirmModal
+        key="bulk-delete"
+        open={dialog?.type === "bulkDelete"}
+        onClose={closeDialog}
+        onConfirm={deleteSelected}
+        icon={Trash2}
+        tone="danger"
+        title={`Delete ${bulkLabel}`}
+        confirmLabel="Delete permanently"
+        pendingLabel="Deleting…"
+        errorFallback="Couldn't delete these messages. Please try again."
+      >
+        <p className="text-sm leading-relaxed text-slate-600">
+          The{" "}
+          <span className="font-semibold text-slate-800">
+            {bulkLabel} you selected
+          </span>{" "}
+          will be removed permanently. This can&apos;t be undone.
+        </p>
+      </ConfirmModal>
+    </div>
+  );
+};
+
+export default AdminContactsView;

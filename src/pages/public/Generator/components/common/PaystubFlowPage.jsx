@@ -10,11 +10,15 @@ import { rememberLastTemplateId } from "../../utils/generatorStorage";
  * `children` is a render function receiving the resolved template.
  */
 const PaystubFlowPage = ({ children }) => {
-  const { templateSlug, template, redirectTo } = usePaystubFlowRoute();
+  const { templateSlug, template, redirectTo, loading } = usePaystubFlowRoute();
 
   useEffect(() => {
     if (template) rememberLastTemplateId(template.id);
   }, [template]);
+
+  if (loading) {
+    return <div className="w-full min-h-screen bg-[#F4F7FB]" aria-busy="true" />;
+  }
 
   if (redirectTo) {
     return <Navigate to={redirectTo} replace />;

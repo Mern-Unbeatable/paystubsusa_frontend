@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, Eye, EyeOff, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import logoImg from "../../../assets/logo.png";
 import AuthIllustrationPanel from "../components/AuthIllustrationPanel";
 import { getErrorMessage } from "../../../api/errorNormalizer";
@@ -193,11 +193,23 @@ const RegisterView = () => {
                 />
                 <span className="text-xs text-slate-600 leading-snug">
                   I agree to the{" "}
-                  <a href="#terms" className="text-secondary hover:underline">
+                  <a
+                    href={PATHS.PUBLIC.terms}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-secondary hover:underline"
+                  >
                     Terms &amp; Conditions
                   </a>{" "}
                   and{" "}
-                  <a href="#privacy" className="text-secondary hover:underline">
+                  <a
+                    href={PATHS.PUBLIC.privacy}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-secondary hover:underline"
+                  >
                     Privacy Policy
                   </a>
                 </span>

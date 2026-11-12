@@ -9,24 +9,26 @@ import {
   toTemplateSlug,
 } from "../../../config/paths";
 import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
-import { DEFAULT_TEMPLATE_ID, getTemplateById } from "./utils/templateUtils";
+import { getTemplateById, usePaystubTemplates } from "./utils/templateUtils";
 import { LAST_TEMPLATE_STORAGE_KEY } from "./utils/generatorStorage";
 
 const GeneratorView = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { templates, defaultTemplateId } = usePaystubTemplates();
   const [lastTemplateId, setLastTemplateId] = useSessionStorageState(
     LAST_TEMPLATE_STORAGE_KEY,
-    DEFAULT_TEMPLATE_ID,
+    defaultTemplateId,
   );
 
   const queryTemplate = getTemplateById(
     fromTemplateSlug(searchParams.get(TEMPLATE_QUERY_PARAM) ?? ""),
+    templates,
   );
   const selectedTemplateId =
     queryTemplate?.id ??
-    getTemplateById(lastTemplateId)?.id ??
-    DEFAULT_TEMPLATE_ID;
+    getTemplateById(lastTemplateId, templates)?.id ??
+    defaultTemplateId;
 
   const handleSelectTemplate = (id) => {
     setLastTemplateId(id);

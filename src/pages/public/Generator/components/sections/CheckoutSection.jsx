@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Lock, Mail } from "lucide-react";
+import { PATHS } from "../../../../../config/paths";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 30;
@@ -7,6 +8,25 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Spinner = () => (
   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+);
+
+// New tab so the in-progress checkout (kept in memory only) isn't lost; the click must not toggle the checkbox.
+const LegalLink = ({ to, children }) => (
+  <a
+    href={to}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    className="font-semibold text-[#1E60F2] hover:underline"
+  >
+    {children}
+  </a>
+);
+
+const StepRibbon = ({ children }) => (
+  <span className="absolute top-4 -left-9 w-32 -rotate-45 bg-[#1E60F2] py-1 text-center text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+    {children}
+  </span>
 );
 
 const OtpInputs = ({ value, onChange, disabled }) => {
@@ -102,6 +122,9 @@ const CheckoutSection = ({
   totalLabel,
   isProcessingPayment,
   onPay,
+  onSendCode,
+  verifyLabel,
+  processingLabel = "Processing Payment...",
   onBack,
   backLabel = "Back to package",
   className = "max-w-xl mx-auto",
@@ -122,9 +145,17 @@ const CheckoutSection = ({
     return () => clearTimeout(timer);
   }, [resendIn]);
 
-  // TODO: replace the simulated delay with the verification-code API once it exists.
-  const sendCode = (onSent) => {
+  // `onSendCode(email)` resolves true once the code was sent; flows without it keep the simulated delay.
+  const sendCode = async (onSent) => {
     setIsSendingCode(true);
+    if (onSendCode) {
+      const sent = await onSendCode(email.trim());
+      setIsSendingCode(false);
+      if (!sent) return;
+      setResendIn(RESEND_COOLDOWN_SECONDS);
+      onSent?.();
+      return;
+    }
     setTimeout(() => {
       setIsSendingCode(false);
       setResendIn(RESEND_COOLDOWN_SECONDS);
@@ -151,7 +182,7 @@ const CheckoutSection = ({
   const handleVerifyAndPay = (e) => {
     e.preventDefault();
     if (!isOtpComplete || isProcessingPayment) return;
-    onPay();
+    onPay(otp);
   };
 
   return (
@@ -175,12 +206,10 @@ const CheckoutSection = ({
         <form
           onSubmit={handleSendCode}
           noValidate
-          className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200"
+          className="relative overflow-hidden bg-white rounded-2xl p-6 pt-12 sm:p-8 sm:pt-12 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200"
         >
+          <StepRibbon>Step 1 of 2</StepRibbon>
           <div>
-            <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
-              STEP 1 OF 2
-            </p>
             <h3 className="text-lg sm:text-xl font-bold text-slate-900">
               Enter your email
             </h3>
@@ -232,7 +261,8 @@ const CheckoutSection = ({
               {agreedToTerms && <Check className="w-3.5 h-3.5 stroke-[3]" />}
             </div>
             <span className="text-[13px] text-slate-600">
-              I agree to the Terms &amp; Conditions and Privacy Policy.
+              I agree to the <LegalLink to={PATHS.PUBLIC.terms}>Terms &amp; Conditions</LegalLink> and{" "}
+              <LegalLink to={PATHS.PUBLIC.privacy}>Privacy Policy</LegalLink>.
             </span>
           </div>
 
@@ -275,12 +305,10 @@ const CheckoutSection = ({
       {phase === "otp" && (
         <form
           onSubmit={handleVerifyAndPay}
-          className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200"
+          className="relative overflow-hidden bg-white rounded-2xl p-6 pt-12 sm:p-8 sm:pt-12 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200"
         >
+          <StepRibbon>Step 2 of 2</StepRibbon>
           <div>
-            <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
-              STEP 2 OF 2
-            </p>
             <h3 className="text-lg sm:text-xl font-bold text-slate-900">
               Enter verification code
             </h3>
@@ -329,12 +357,12 @@ const CheckoutSection = ({
               {isProcessingPayment ? (
                 <span className="inline-flex items-center gap-2">
                   <Spinner />
-                  Processing Payment...
+                  {processingLabel}
                 </span>
               ) : (
                 <>
                   <Lock className="w-4 h-4" />
-                  <span>Verify &amp; pay {totalLabel} securely</span>
+                  <span>{verifyLabel ?? <>Verify &amp; pay {totalLabel} securely</>}</span>
                 </>
               )}
             </button>
