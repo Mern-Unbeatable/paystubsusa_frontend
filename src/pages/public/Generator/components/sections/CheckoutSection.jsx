@@ -110,6 +110,7 @@ const CheckoutSection = ({
   onPay,
   onSendCode,
   verifyLabel,
+  processingLabel = "Processing Payment...",
   onBack,
   backLabel = "Back to package",
   className = "max-w-xl mx-auto",
@@ -341,7 +342,7 @@ const CheckoutSection = ({
               {isProcessingPayment ? (
                 <span className="inline-flex items-center gap-2">
                   <Spinner />
-                  Processing Payment...
+                  {processingLabel}
                 </span>
               ) : (
                 <>

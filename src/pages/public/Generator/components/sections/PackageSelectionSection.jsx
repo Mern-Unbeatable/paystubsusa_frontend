@@ -1,7 +1,7 @@
 import React from "react";
 import { Check, Lock, Minus, Plus } from "lucide-react";
 import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
-import { formatCurrency } from "../../utils/formatCurrency";
+import OrderSummaryLines from "../common/OrderSummaryLines";
 
 const PackageSelectionSection = ({
   template,
@@ -17,8 +17,7 @@ const PackageSelectionSection = ({
     setSelectedPackage,
     additionalCount,
     setAdditionalCount,
-    currentPkg,
-    additionalCost,
+    summaryLines,
     grandTotal,
   } = order;
 
@@ -181,43 +180,11 @@ const PackageSelectionSection = ({
             )}
           </div>
 
-          {/* Line Items */}
-          <div className="rounded-xl bg-slate-50 border border-slate-100 p-4 space-y-3 text-[14px]">
-            <div className="flex items-center justify-between gap-3 text-slate-500">
-              <span>Template</span>
-              <span className="font-semibold text-slate-800 text-right">
-                {template.title}
-              </span>
-            </div>
-            <div className="flex items-center justify-between gap-3 text-slate-500">
-              <span>{currentPkg.name}</span>
-              <span className="font-semibold text-slate-800">
-                {formatCurrency(currentPkg.price)}
-                {currentPkg.period && (
-                  <span className="text-[12px] font-normal text-slate-400">
-                    {currentPkg.period}
-                  </span>
-                )}
-              </span>
-            </div>
-            {additionalCount > 0 && (
-              <div className="flex items-center justify-between gap-3 text-slate-500">
-                <span>Additional paystubs × {additionalCount}</span>
-                <span className="font-semibold text-slate-800">
-                  {formatCurrency(additionalCost)}
-                </span>
-              </div>
-            )}
-
-            <div className="border-t border-slate-200 pt-3 flex items-center justify-between">
-              <span className="text-[16px] font-bold text-slate-900">
-                Total
-              </span>
-              <span className="text-2xl font-bold text-[#1E60F2]">
-                {formatCurrency(grandTotal)}
-              </span>
-            </div>
-          </div>
+          <OrderSummaryLines
+            templateTitle={template.title}
+            lines={summaryLines}
+            total={grandTotal}
+          />
 
           <p className="mt-2.5 flex items-center justify-center gap-1.5 text-slate-400 text-[12px]">
             <Lock className="w-3.5 h-3.5" />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { ChevronDown, Trash2, Lock } from "lucide-react";
 import payFrequencyOptions from "../../../data/generator/payFrequencyOptions.json";
 import US_STATES from "../../../data/shared/usStates.json";
@@ -6,6 +7,7 @@ import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
 import CompanyLogoField from "../common/CompanyLogoField";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
+import { findIncompleteField } from "../../hooks/usePaystubFormData";
 import PaystubStepper from "../common/PaystubStepper";
 
 const PaystubDetailsForm = ({
@@ -23,6 +25,15 @@ const PaystubDetailsForm = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const openTemplatePicker = () => onChangeTemplate(currentStep);
+  const handleContinueToPackage = () => {
+    const missing = findIncompleteField(form.formData);
+    if (missing) {
+      toast.error(`${missing.label} is required.`);
+      setCurrentStep(missing.step);
+      return;
+    }
+    onContinueToPackage();
+  };
   const {
     formData,
     setFormData,
@@ -904,7 +915,7 @@ const PaystubDetailsForm = ({
                 </button>
                 <button
                   type="button"
-                  onClick={onContinueToPackage}
+                  onClick={handleContinueToPackage}
                   className="px-7 py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-[15px] shadow-sm transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Continue to Checkout</span>

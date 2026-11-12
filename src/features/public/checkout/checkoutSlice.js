@@ -17,6 +17,12 @@ const checkoutSlice = createSlice({
   initialState,
   reducers: {
     resetCheckout: () => initialState,
+    // Drops an unpaid order (e.g. the package changed) but keeps the verified email.
+    clearCheckoutOrder: (state) => {
+      state.order = null;
+      state.clientSecret = null;
+      state.paymentStatus = null;
+    },
     setPaymentStatus: (state, action) => {
       state.paymentStatus = action.payload;
     },
@@ -42,5 +48,5 @@ const checkoutSlice = createSlice({
   },
 });
 
-export const { resetCheckout, setPaymentStatus } = checkoutSlice.actions;
+export const { resetCheckout, clearCheckoutOrder, setPaymentStatus } = checkoutSlice.actions;
 export const checkoutReducer = checkoutSlice.reducer;

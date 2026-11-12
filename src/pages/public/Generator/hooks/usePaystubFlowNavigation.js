@@ -8,7 +8,7 @@ import {
   buildPaystubSuccessPath,
 } from "../../../../config/paths";
 import { PAYSTUB_FORM_STEPS, getFlowPathBuilder } from "../utils/paystubFlow";
-import { resetCheckout } from "../../../../features/public/checkout/checkoutSlice";
+import { clearCheckoutOrder, resetCheckout } from "../../../../features/public/checkout/checkoutSlice";
 
 /** Navigation callbacks for each transition in the paystub flow. */
 export function usePaystubFlowNavigation(templateId) {
@@ -23,7 +23,7 @@ export function usePaystubFlowNavigation(templateId) {
     },
     /** Swaps the template while staying on the current flow page. */
     onSwitchTemplate: (nextTemplateId, state) => {
-      dispatch(resetCheckout());
+      dispatch(clearCheckoutOrder());
       navigate(getFlowPathBuilder(pathname)(nextTemplateId), { replace: true, state });
     },
     onContinueToPackage: () => navigate(buildPaystubPackagePath(templateId)),
