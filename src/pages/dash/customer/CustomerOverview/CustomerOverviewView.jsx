@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import {
   FileText,
@@ -7,54 +7,102 @@ import {
   Star,
   FilePlus,
   ArrowRight,
+  ExternalLink,
 } from "lucide-react";
-import { DocumentDetailsModal } from "../components/modals";
 import {
   DashboardHeader,
   DashboardTable,
 } from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
-import recentDocuments from "../data/overview/recentDocuments.json";
-import transactions from "../data/payments/transactions.json";
-import stats from "../data/overview/stats.json";
+import { describeRequestError } from "../Profile/utils/profileFormat";
+import { formatMoney } from "../../admin/users/utils/userFormat";
+import { DOCUMENT_TYPE_LABELS, formatDateTime } from "../../admin/orders/utils/orderFormat";
 import StatCard from "./components/StatCard";
 import DocumentActionButtons from "./components/DocumentActionButtons";
 import DownloadToast from "./components/DownloadToast";
-const ICON_MAP = {
-  CreditCard,
-  FileText,
-  LayoutGrid,
-  Star,
-};
-const RECENT_PAYMENTS_LIMIT = 3;
-const DOWNLOAD_TOAST_DURATION_MS = 2500;
+import RecentDocumentModal from "./components/RecentDocumentModal";
+import { useCustomerOverview } from "./hooks/useCustomerOverview";
+import {
+  describeCard,
+  documentStatusLabel,
+  paymentStatusLabel,
+  subscriptionStatusLabel,
+} from "./utils/overviewFormat";
+
+const TOAST_DURATION_MS = 3000;
 
 const CustomerOverviewView = () => {
+  const { dashboard, loading, error, loadDashboard, getDownloadUrl } = useCustomerOverview();
   const [selectedDoc, setSelectedDoc] = useState(null);
-  const [downloadSuccess, setDownloadSuccess] = useState(null);
-  const recentPayments = useMemo(
-    () => transactions.slice(0, RECENT_PAYMENTS_LIMIT),
-    [],
-  );
+  const [downloadingId, setDownloadingId] = useState(null);
+  const [toast, setToast] = useState(null);
+  const toastTimer = useRef(null);
 
-  const handleDownload = useCallback((docName) => {
-    setDownloadSuccess(`Downloading ${docName}...`);
-    setTimeout(() => {
-      setDownloadSuccess(null);
-    }, DOWNLOAD_TOAST_DURATION_MS);
+  useEffect(() => {
+    const request = loadDashboard();
+    return () => request.abort();
+  }, [loadDashboard]);
+
+  useEffect(() => () => clearTimeout(toastTimer.current), []);
+
+  const showToast = useCallback((message, tone = "success") => {
+    clearTimeout(toastTimer.current);
+    setToast({ message, tone });
+    toastTimer.current = setTimeout(() => setToast(null), TOAST_DURATION_MS);
   }, []);
 
-  const handleCloseModal = useCallback(() => {
-    setSelectedDoc(null);
-  }, []);
-
-  const handleModalDownload = useCallback(
-    (name) => {
-      handleDownload(name);
-      setSelectedDoc(null);
+  const handleDownload = useCallback(
+    async (doc) => {
+      if (doc.status !== "ready" || downloadingId) return;
+      setDownloadingId(doc.id);
+      try {
+        const url = await getDownloadUrl(doc.id);
+        if (!url) throw new Error();
+        showToast(`Downloading ${doc.title}...`);
+        window.location.assign(url);
+      } catch (err) {
+        showToast(describeRequestError(err, "Could not download this document. Please try again."), "error");
+      } finally {
+        setDownloadingId(null);
+      }
     },
-    [handleDownload],
+    [downloadingId, getDownloadUrl, showToast],
   );
+
+  const stats = dashboard?.stats;
+  const showSkeleton = loading && !dashboard;
+  const statCards = useMemo(() => {
+    const total = stats?.totalDocuments ?? 0;
+    const paystubs = stats?.paystubDocuments ?? 0;
+    const subscription = stats?.subscription;
+    const placeholder = showSkeleton ? "…" : null;
+    return [
+      {
+        title: "Total Documents",
+        value: placeholder ?? total.toLocaleString(),
+        change: "All-time documents",
+        icon: FileText,
+      },
+      {
+        title: "Paystubs Created",
+        value: placeholder ?? paystubs.toLocaleString(),
+        change: total ? `${Math.round((paystubs / total) * 100)}% of your documents` : "No documents yet",
+        icon: LayoutGrid,
+      },
+      {
+        title: "Total Purchases",
+        value: placeholder ?? (stats?.successfulPayments ?? 0).toLocaleString(),
+        change: "Successful purchases",
+        icon: CreditCard,
+      },
+      {
+        title: "Subscription Status",
+        value: placeholder ?? (subscription ? subscriptionStatusLabel(subscription.status) : "None"),
+        change: subscription?.planName ?? "No active subscription",
+        icon: Star,
+      },
+    ];
+  }, [stats, showSkeleton]);
 
   const documentColumns = useMemo(
     () => [
@@ -65,28 +113,26 @@ const CustomerOverviewView = () => {
             <div className="w-8 h-8 rounded bg-[#EBF5FF] text-[#009BFB] flex items-center justify-center flex-shrink-0">
               <FileText className="w-4 h-4" />
             </div>
-            <div>
-              <div className="font-bold text-slate-900 text-xs">{doc.name}</div>
-              <div className="text-[10.5px] text-slate-400 font-mono">
-                {doc.id}
-              </div>
+            <div className="min-w-0">
+              <div className="font-bold text-slate-900 text-xs truncate max-w-[16rem]">{doc.title}</div>
+              <div className="text-[10.5px] text-slate-400 font-mono">{doc.documentNumber}</div>
             </div>
           </div>
         ),
       },
       {
         header: "Document Type",
-        key: "type",
+        render: (doc) => DOCUMENT_TYPE_LABELS[doc.type] ?? doc.type,
         cellClassName: "text-slate-600 font-medium",
       },
       {
         header: "Created Date",
-        key: "date",
-        cellClassName: "text-slate-500 font-medium",
+        render: (doc) => formatDateTime(doc.createdAt),
+        cellClassName: "text-slate-500 font-medium whitespace-nowrap",
       },
       {
         header: "Status",
-        render: (doc) => <DashboardStatusBadge status={doc.status} />,
+        render: (doc) => <DashboardStatusBadge status={documentStatusLabel(doc.status)} />,
       },
       {
         header: "Action",
@@ -96,18 +142,19 @@ const CustomerOverviewView = () => {
             doc={doc}
             onView={setSelectedDoc}
             onDownload={handleDownload}
+            canDownload={doc.status === "ready" && downloadingId !== doc.id}
           />
         ),
       },
     ],
-    [handleDownload],
+    [handleDownload, downloadingId],
   );
 
   const paymentColumns = useMemo(
     () => [
       {
-        header: "Transaction ID",
-        key: "id",
+        header: "Order",
+        render: (payment) => payment.orderNumber ?? "Subscription",
         cellClassName: "font-mono font-semibold text-slate-800 text-[11px]",
       },
       {
@@ -117,22 +164,39 @@ const CustomerOverviewView = () => {
       },
       {
         header: "Date",
-        key: "date",
-        cellClassName: "text-slate-500 font-medium",
+        render: (payment) => formatDateTime(payment.createdAt),
+        cellClassName: "text-slate-500 font-medium whitespace-nowrap",
       },
       {
         header: "Payment Method",
-        key: "method",
+        render: describeCard,
         cellClassName: "text-slate-600 font-medium",
       },
       {
         header: "Amount",
-        key: "amount",
+        render: (payment) => formatMoney(payment.amountCents, payment.currency),
         cellClassName: "font-bold text-slate-900",
       },
       {
         header: "Status",
-        render: (payment) => <DashboardStatusBadge status={payment.status} />,
+        render: (payment) => <DashboardStatusBadge status={paymentStatusLabel(payment.status)} />,
+      },
+      {
+        header: "Receipt",
+        align: "right",
+        render: (payment) =>
+          payment.receiptUrl?.startsWith("https://") ? (
+            <a
+              href={payment.receiptUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#009BFB] hover:underline"
+            >
+              View <ExternalLink className="w-3 h-3" />
+            </a>
+          ) : (
+            <span className="text-slate-300">—</span>
+          ),
       },
     ],
     [],
@@ -140,10 +204,8 @@ const CustomerOverviewView = () => {
 
   return (
     <div className="space-y-6">
-      {/* Download Alert Toast */}
-      <DownloadToast message={downloadSuccess} />
+      <DownloadToast message={toast?.message} tone={toast?.tone} />
 
-      {/* Top Welcome Header */}
       <DashboardHeader
         title="Welcome Back!"
         description="Manage your documents, review purchases, and access your subscription."
@@ -158,20 +220,21 @@ const CustomerOverviewView = () => {
         }
       />
 
-      {/* Stats Cards Grid (4 Cards Exactly as in Design) */}
+      {error && (
+        <div className="flex flex-col gap-2 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700 sm:flex-row sm:items-center sm:justify-between">
+          <span>{describeRequestError(error, "Could not load your dashboard.")}</span>
+          <button type="button" onClick={loadDashboard} className="font-semibold underline cursor-pointer self-start sm:self-auto">
+            Try again
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-        {stats.map((stat) => (
-          <StatCard
-            key={stat.title}
-            title={stat.title}
-            value={stat.value}
-            change={stat.change}
-            icon={ICON_MAP[stat.iconKey]}
-          />
+        {statCards.map((stat) => (
+          <StatCard key={stat.title} title={stat.title} value={stat.value} change={stat.change} icon={stat.icon} />
         ))}
       </div>
 
-      {/* Section 1: Recent Documents */}
       <DashboardTable
         title="Recent Documents"
         minWidth="min-w-[600px]"
@@ -185,13 +248,14 @@ const CustomerOverviewView = () => {
           </Link>
         }
         columns={documentColumns}
-        data={recentDocuments}
+        data={dashboard?.recentDocuments ?? []}
+        loading={showSkeleton}
+        emptyMessage="No documents yet. Generate your first paystub to see it here."
       />
 
-      {/* Section 2: Recent Payment Activity */}
       <DashboardTable
         title="Recent Payment Activity"
-        minWidth="min-w-[700px]"
+        minWidth="min-w-[760px]"
         headerAction={
           <Link
             to="/customer/payments"
@@ -202,17 +266,17 @@ const CustomerOverviewView = () => {
           </Link>
         }
         columns={paymentColumns}
-        data={recentPayments}
+        data={dashboard?.recentPayments ?? []}
+        loading={showSkeleton}
+        emptyMessage="No payments yet."
       />
 
-      {/* Document Details Modal */}
-      {selectedDoc && (
-        <DocumentDetailsModal
-          doc={selectedDoc}
-          onClose={handleCloseModal}
-          onDownload={handleModalDownload}
-        />
-      )}
+      <RecentDocumentModal
+        doc={selectedDoc}
+        downloading={downloadingId === selectedDoc?.id}
+        onClose={() => setSelectedDoc(null)}
+        onDownload={handleDownload}
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@ export const API_ENDPOINTS = Object.freeze({
   }),
   ACCOUNT: Object.freeze({
     PROFILE: "/me",
+    DASHBOARD: "/me/dashboard",
     PASSWORD: "/me/password",
     AVATAR: "/me/avatar",
   }),
