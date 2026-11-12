@@ -1,14 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  FileSearch,
-  Send,
-  Tag,
-} from "lucide-react";
+import { AlertCircle, CheckCircle2, Clock, FileSearch, Send, Tag } from "lucide-react";
 import { selectAuthUser } from "../../../features/auth/authSelectors";
 import { sendContactMessage } from "../../../features/support/supportThunks";
 import { getErrorMessage } from "../../../api/errorNormalizer";
@@ -42,10 +35,7 @@ const inputClass = (error) =>
 
 const Field = ({ id, label, error, children }) => (
   <div>
-    <label
-      htmlFor={id}
-      className="mb-1.5 block text-[13px] font-semibold text-slate-700"
-    >
+    <label htmlFor={id} className="mb-1.5 block text-[13px] font-semibold text-slate-700">
       {label}
     </label>
     {children}
@@ -60,8 +50,7 @@ const Field = ({ id, label, error, children }) => (
 function validate(form) {
   const errors = {};
   if (!form.name.trim()) errors.name = "Please enter your name.";
-  if (!EMAIL_RE.test(form.email.trim()))
-    errors.email = "Please enter a valid email address.";
+  if (!EMAIL_RE.test(form.email.trim())) errors.email = "Please enter a valid email address.";
   if (!form.subject.trim()) errors.subject = "Please add a subject.";
   if (!form.message.trim()) errors.message = "Please write your message.";
   return errors;
@@ -119,36 +108,26 @@ const ContactView = () => {
           .map((key) => [key, fieldErrors[key][0]]),
       );
       if (Object.keys(mapped).length) setErrors(mapped);
-      else
-        setGeneralError(
-          getErrorMessage(
-            err,
-            "We couldn't send your message. Please try again.",
-          ),
-        );
+      else setGeneralError(getErrorMessage(err, "We couldn't send your message. Please try again."));
     } finally {
       inFlightRef.current = false;
       setSending(false);
     }
   };
 
-  const describedBy = (field) =>
-    errors[field] ? `contact-${field}-error` : undefined;
+  const describedBy = (field) => (errors[field] ? `contact-${field}-error` : undefined);
 
   return (
     <div className="min-h-screen bg-[#FBFBFA] py-16 sm:py-24">
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         <div className="max-w-2xl space-y-4 mb-12">
-          <span className="text-xs font-bold text-[#009BFB] tracking-widest uppercase block">
-            Contact us
-          </span>
+          <span className="text-xs font-bold text-[#009BFB] tracking-widest uppercase block">Contact us</span>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.12]">
-            How can we{" "}
-            <span className="text-[#009BFB] italic font-semibold">help?</span>
+            How can we <span className="text-[#009BFB] italic font-semibold">help?</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Questions about a document, an order, or your account? Send us a
-            message and our team will reply by email.
+            Questions about a document, an order, or your account? Send us a message and our team will reply by
+            email.
           </p>
         </div>
 
@@ -159,13 +138,10 @@ const ContactView = () => {
                 <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">
-                  Message sent
-                </h2>
+                <h2 className="text-2xl font-bold text-slate-900">Message sent</h2>
                 <p className="text-slate-600 text-[14px] max-w-sm mx-auto">
                   Thanks for reaching out. We&apos;ll reply to{" "}
-                  <span className="font-semibold text-slate-800">{sentTo}</span>
-                  , usually within one business day.
+                  <span className="font-semibold text-slate-800">{sentTo}</span>, usually within one business day.
                 </p>
                 <button
                   type="button"
@@ -177,9 +153,7 @@ const ContactView = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-5">
-                <h2 className="text-xl font-bold text-slate-900">
-                  Send us a message
-                </h2>
+                <h2 className="text-xl font-bold text-slate-900">Send us a message</h2>
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field id="contact-name" label="Name" error={errors.name}>
@@ -213,11 +187,7 @@ const ContactView = () => {
                   </Field>
                 </div>
 
-                <Field
-                  id="contact-subject"
-                  label="Subject"
-                  error={errors.subject}
-                >
+                <Field id="contact-subject" label="Subject" error={errors.subject}>
                   <input
                     id="contact-subject"
                     type="text"
@@ -232,11 +202,7 @@ const ContactView = () => {
                   />
                 </Field>
 
-                <Field
-                  id="contact-message"
-                  label="Message"
-                  error={errors.message}
-                >
+                <Field id="contact-message" label="Message" error={errors.message}>
                   <textarea
                     id="contact-message"
                     rows={6}
@@ -272,10 +238,7 @@ const ContactView = () => {
                     role="alert"
                     className="flex items-start gap-2 rounded-lg bg-rose-50 px-3 py-2.5 text-[13px] text-rose-700 ring-1 ring-rose-200"
                   >
-                    <AlertCircle
-                      className="mt-0.5 h-4 w-4 flex-shrink-0"
-                      aria-hidden="true"
-                    />
+                    <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
                     <span>{generalError}</span>
                   </div>
                 )}
@@ -302,12 +265,9 @@ const ContactView = () => {
                 <Clock className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-[15px]">
-                  Response time
-                </h3>
+                <h3 className="font-bold text-slate-900 text-[15px]">Response time</h3>
                 <p className="text-slate-600 text-[14px] mt-1">
-                  We usually reply within one business day. Including your order
-                  number helps us answer faster.
+                  We usually reply within one business day. Including your order number helps us answer faster.
                 </p>
               </div>
             </div>
@@ -324,12 +284,8 @@ const ContactView = () => {
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-[15px]">
-                      {title}
-                    </h3>
-                    <p className="text-slate-600 text-[14px] mt-1">
-                      {description}
-                    </p>
+                    <h3 className="font-bold text-slate-900 text-[15px]">{title}</h3>
+                    <p className="text-slate-600 text-[14px] mt-1">{description}</p>
                   </div>
                 </Link>
               );
@@ -338,10 +294,7 @@ const ContactView = () => {
             {!user && (
               <p className="text-[13px] text-slate-500 px-1">
                 Have an account?{" "}
-                <Link
-                  to={PATHS.AUTH.login}
-                  className="font-semibold text-[#009BFB] hover:underline"
-                >
+                <Link to={PATHS.AUTH.login} className="font-semibold text-[#009BFB] hover:underline">
                   Sign in
                 </Link>{" "}
                 to see your orders and documents.

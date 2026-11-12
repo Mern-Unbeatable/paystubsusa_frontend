@@ -113,14 +113,14 @@ const FooterLayout = () => {
             </h4>
             <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
-                <a href="#terms-conditions" className="hover:text-secondary transition-colors">
+                <Link to="/terms-conditions" className="hover:text-secondary transition-colors">
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#privacy-policy" className="hover:text-secondary transition-colors">
+                <Link to="/privacy-policy" className="hover:text-secondary transition-colors">
                   Privacy policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

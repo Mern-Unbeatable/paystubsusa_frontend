@@ -24,6 +24,8 @@ export const PATHS = {
     findPaystubs: "/find-paystubs",
     about: "/about",
     contact: "/contact",
+    terms: "/terms-conditions",
+    privacy: "/privacy-policy",
   },
   AUTH: {
     root: "/auth",
@@ -109,6 +111,8 @@ export const ALIASES = {
   "about-us": PATHS.PUBLIC.about,
   "contact-us": PATHS.PUBLIC.contact,
   contracts: PATHS.PUBLIC.contact,
+  terms: PATHS.PUBLIC.terms,
+  privacy: PATHS.PUBLIC.privacy,
   "/login": PATHS.AUTH.login,
   "/register": PATHS.AUTH.register,
   "/forgot-password": PATHS.AUTH.forgotPassword,

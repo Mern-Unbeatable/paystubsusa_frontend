@@ -20,3 +20,5 @@ export { default as PricingView } from "./Pricing/PricingView";
 export { default as FindPaystubsView } from "./FindPaystubs/FindPaystubsView";
 export { default as AboutView } from "./About/AboutView";
 export { default as ContactView } from "./Contact/ContactView";
+export { default as TermsView } from "./Legal/TermsView";
+export { default as PrivacyPolicyView } from "./Legal/PrivacyPolicyView";

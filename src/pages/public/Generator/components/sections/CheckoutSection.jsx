@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Lock, Mail } from "lucide-react";
+import { PATHS } from "../../../../../config/paths";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 30;
@@ -7,6 +8,19 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Spinner = () => (
   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+);
+
+// New tab so the in-progress checkout (kept in memory only) isn't lost; the click must not toggle the checkbox.
+const LegalLink = ({ to, children }) => (
+  <a
+    href={to}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    className="font-semibold text-[#1E60F2] hover:underline"
+  >
+    {children}
+  </a>
 );
 
 const StepRibbon = ({ children }) => (
@@ -247,7 +261,8 @@ const CheckoutSection = ({
               {agreedToTerms && <Check className="w-3.5 h-3.5 stroke-[3]" />}
             </div>
             <span className="text-[13px] text-slate-600">
-              I agree to the Terms &amp; Conditions and Privacy Policy.
+              I agree to the <LegalLink to={PATHS.PUBLIC.terms}>Terms &amp; Conditions</LegalLink> and{" "}
+              <LegalLink to={PATHS.PUBLIC.privacy}>Privacy Policy</LegalLink>.
             </span>
           </div>
 

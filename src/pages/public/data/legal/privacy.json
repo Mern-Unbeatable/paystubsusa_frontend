@@ -1,0 +1,76 @@
+{
+  "title": "Privacy Policy",
+  "updated": "November 12, 2026",
+  "intro": "This policy explains what personal information PaydayStubs.com collects, why we collect it, how long we keep it and the choices you have.",
+  "sections": [
+    {
+      "heading": "1. Information we collect",
+      "list": [
+        "Account and contact details: your name, email address and, if you add it, your phone number and profile photo.",
+        "Document details: the employer, employee and pay information you enter to create a document, which may include a Social Security number.",
+        "Order and payment records: what you bought, amounts, dates and the card brand and last four digits. Card numbers are handled by Stripe and never reach our servers.",
+        "Messages you send us through the contact form or support.",
+        "Basic technical data such as IP address and browser type, used for security, rate limiting and preventing abuse."
+      ]
+    },
+    {
+      "heading": "2. How we use it",
+      "list": [
+        "to create, deliver and let you re-download your documents;",
+        "to process payments, refunds and subscriptions;",
+        "to verify your email, keep you signed in and protect accounts;",
+        "to answer your questions and send messages about your orders;",
+        "to prevent fraud and misuse of the service."
+      ],
+      "after": ["We do not sell your personal information, and we do not use document details such as SSNs for marketing or advertising."]
+    },
+    {
+      "heading": "3. How we protect it",
+      "body": [
+        "The pay details you enter are encrypted with AES-256 before they are stored, and all traffic to our site is encrypted in transit. Access to customer data is limited to staff who need it to run the service."
+      ]
+    },
+    {
+      "heading": "4. How long we keep it",
+      "list": [
+        "The pay details you enter for a document are deleted 30 days after the document is generated.",
+        "PDFs bought without an account are deleted one year after purchase. PDFs in an account stay available until you ask us to delete them.",
+        "Email verification codes are deleted within 24 hours, and sign-in sessions expire after 30 days.",
+        "Order and payment records are kept as long as needed for accounting, tax and legal obligations."
+      ]
+    },
+    {
+      "heading": "5. Who we share it with",
+      "body": ["We share data only with service providers that host or process it for us under written contracts, including:"],
+      "list": [
+        "Stripe, to process payments and subscriptions;",
+        "our hosting and email delivery providers, to run the site and send your emails."
+      ],
+      "after": ["We may also disclose information when required by law or to protect the rights and safety of our users and the service."]
+    },
+    {
+      "heading": "6. Cookies",
+      "body": [
+        "We use essential cookies to keep you signed in and secure your session. We do not place advertising or remarketing trackers on pages where you enter pay data."
+      ]
+    },
+    {
+      "heading": "7. Your choices and rights",
+      "body": [
+        "You can update your profile from your dashboard. You can ask us for a copy of your data, to correct it, or to delete it at any time by emailing privacy@paydaystubs.com or using our contact page. We may keep records we are legally required to retain."
+      ]
+    },
+    {
+      "heading": "8. Children",
+      "body": ["The service is not intended for children under 16, and we do not knowingly collect their information."]
+    },
+    {
+      "heading": "9. Changes to this policy",
+      "body": ["We may update this policy. The date at the top shows when it last changed."]
+    },
+    {
+      "heading": "10. Contact",
+      "body": ["For privacy questions or requests, email privacy@paydaystubs.com or send us a message through our contact page."]
+    }
+  ]
+}

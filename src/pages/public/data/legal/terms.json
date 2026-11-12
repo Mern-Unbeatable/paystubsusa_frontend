@@ -1,0 +1,72 @@
+{
+  "title": "Terms & Conditions",
+  "updated": "November 12, 2026",
+  "intro": "These terms govern your use of PaydayStubs.com, including our paystub, W-2, 1099 and direct deposit slip generators. By creating a document, buying a package or opening an account, you agree to them.",
+  "sections": [
+    {
+      "heading": "1. What we provide",
+      "body": [
+        "PaydayStubs.com is an online tool that turns the pay information you enter into formatted documents. We calculate common payroll figures such as federal, state and FICA withholding from the values you provide.",
+        "We are not a payroll provider, employer, bank, tax adviser or accountant. Our documents are records you prepare yourself; they are not issued or verified by any employer or government agency."
+      ]
+    },
+    {
+      "heading": "2. Acceptable use",
+      "body": ["You may only create documents that reflect real income that was actually earned and paid. You agree not to:"],
+      "list": [
+        "enter false, inflated or made-up pay information;",
+        "create documents for a person or business without their permission;",
+        "use our documents to mislead a lender, landlord, government agency or anyone else;",
+        "copy, scrape, resell or interfere with the service or its security."
+      ],
+      "after": ["We may refuse service, cancel orders or close accounts that break these rules, and we may cooperate with law enforcement when required."]
+    },
+    {
+      "heading": "3. Your responsibility for accuracy",
+      "body": [
+        "You are responsible for the information you enter and for checking every document before you use it. Tax rates and rules change, and your situation may need professional advice. Please review the preview carefully before paying."
+      ]
+    },
+    {
+      "heading": "4. Accounts and guest checkout",
+      "body": [
+        "You can buy as a guest by verifying your email with a one-time code, or create an account. Keep your sign-in details private; you are responsible for activity on your account. Tell us right away if you think someone else has accessed it."
+      ]
+    },
+    {
+      "heading": "5. Prices, packages and payment",
+      "body": [
+        "Prices are shown before you pay and are confirmed by our server at checkout. Payments are processed by Stripe; we never see or store your full card number.",
+        "Multi-paystub packages give you a number of paystub credits. The first credit is used for the paystub you create at checkout, and the rest can be used for further paystubs on the same order."
+      ]
+    },
+    {
+      "heading": "6. Unlimited subscription",
+      "body": [
+        "The Unlimited plan is billed monthly by Stripe until you cancel. You can cancel at any time from your dashboard; you keep access until the end of the period you have already paid for, and you will not be charged again."
+      ]
+    },
+    {
+      "heading": "7. Refunds",
+      "body": [
+        "We offer a 30-day money-back guarantee. If a document is inaccurate or does not meet your expectations, contact us within 30 days of purchase and we will refund you."
+      ]
+    },
+    {
+      "heading": "8. Availability and changes",
+      "body": [
+        "We work to keep the service available but cannot promise it will always be uninterrupted or error-free. We may change features, prices or these terms. Changes apply from the date they are posted here and do not affect orders you have already paid for."
+      ]
+    },
+    {
+      "heading": "9. Limitation of liability",
+      "body": [
+        "To the extent the law allows, the service is provided \"as is\". We are not liable for indirect or consequential losses, or for how you or others use the documents you create. Our total liability for any claim is limited to the amount you paid us for the order concerned."
+      ]
+    },
+    {
+      "heading": "10. Contact",
+      "body": ["Questions about these terms? Send us a message through our contact page and we will get back to you."]
+    }
+  ]
+}
