@@ -1,3 +1,4 @@
+import sampleLogo from "../../../../assets/logo.png";
 import { buildPaystubDocument } from "./buildPaystubDocument";
 
 // Mirrors the reference designs so thumbnails show a realistic, filled-in stub.
@@ -42,12 +43,13 @@ const SAMPLE_CALCULATIONS = {
   netPay: 1310.36,
 };
 
-// Demo mark for gallery thumbnails only; generated paystubs show the user's upload or nothing.
-export const SAMPLE_LOGO = `data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="72" viewBox="0 0 50 36" fill="none" stroke="#1E8BE6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h22c8 0 14 6 14 14s-6 14-14 14H20l-3 4H7l3-4"/><path d="M6 11h24M3 18h27M8 25h14"/></svg>',
-)}`;
+// Demo mark for gallery thumbnails and previews only; generated paystubs show the user's upload or nothing.
+export const SAMPLE_LOGO = sampleLogo;
 
-export const SAMPLE_PAYSTUB_DOCUMENT = buildPaystubDocument(
-  SAMPLE_FORM_DATA,
-  SAMPLE_CALCULATIONS,
-);
+const sampleDocument = buildPaystubDocument(SAMPLE_FORM_DATA, SAMPLE_CALCULATIONS);
+
+// Set after building: `buildPaystubDocument` only accepts uploaded data-URL logos.
+export const SAMPLE_PAYSTUB_DOCUMENT = {
+  ...sampleDocument,
+  company: { ...sampleDocument.company, logo: SAMPLE_LOGO },
+};

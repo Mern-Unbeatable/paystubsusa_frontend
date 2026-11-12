@@ -6,6 +6,7 @@ import {
   RENDERERS_BY_TYPE,
   TEMPLATE_CODE_PATTERN,
   THEMEABLE_RENDERER,
+  formVariant,
   VARIANTLESS_RENDERERS,
   VARIANT_FIELDS,
   previewImageSrc,
@@ -167,7 +168,7 @@ export function useTemplateForm(template) {
     code: values.code,
     documentType: values.documentType,
     renderer: values.renderer,
-    variant: variantless ? null : values.variant,
+    variant: formVariant({ values, variantless, themeable }),
   });
 
   /** Only what changed, so untouched fields are preserved and the audit log records the real edit. */
@@ -181,7 +182,9 @@ export function useTemplateForm(template) {
     return changes;
   };
 
-  const dirty = !isCreate && (Object.keys(buildChanges()).length > 0 || Boolean(image) || removeImage);
+  const dirty = isCreate
+    ? Boolean(image) || JSON.stringify(values) !== JSON.stringify(initialValues(null))
+    : Object.keys(buildChanges()).length > 0 || Boolean(image) || removeImage;
 
   /** Back to the loaded template's values. */
   const reset = () => {

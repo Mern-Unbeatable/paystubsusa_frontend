@@ -37,13 +37,27 @@ export const inputState = (hasError) =>
     ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
     : "border-slate-200 focus:border-secondary focus:ring-secondary/20";
 
+export const builderCard = "rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.04)]";
+export const secondaryButton =
+  "inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50 cursor-pointer";
+export const primaryButton =
+  "inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-secondary px-4 text-sm font-semibold text-white transition hover:bg-secondary/90 disabled:opacity-60 cursor-pointer";
+
+/** The variant `useTemplateForm` would save: none for full-page layouts, no theme where unsupported. */
+export const formVariant = ({ values, variantless, themeable }) => {
+  if (variantless) return null;
+  if (themeable) return values.variant;
+  const { theme: _unsupported, ...variant } = values.variant;
+  return variant;
+};
+
 /** The template as the preview components render it, from `useTemplateForm`'s current values. */
-export const livePreviewTemplate = ({ values, variantless }) => ({
-  code: values.code,
-  title: values.title || "Untitled template",
-  subtitle: values.subtitle,
-  renderer: values.renderer,
-  variant: variantless ? null : values.variant,
+export const livePreviewTemplate = (form) => ({
+  code: form.values.code,
+  title: form.values.title || "Untitled template",
+  subtitle: form.values.subtitle,
+  renderer: form.values.renderer,
+  variant: formVariant(form),
 });
 
 export const VARIANT_FIELDS = [

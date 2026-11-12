@@ -9,10 +9,9 @@ import {
   DashboardTable,
 } from "../../../../Components/Dashboard";
 import ConfirmModal from "../../../../Components/modal/ConfirmModal";
-import { buildAdminTemplateEditPath } from "../../../../config/paths";
+import { PATHS, buildAdminTemplateEditPath } from "../../../../config/paths";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import { useTemplates } from "./hooks/useTemplates";
-import TemplateCreateModal from "./components/TemplateCreateModal";
 import TemplateDetailsModal from "./components/TemplateDetailsModal";
 import {
   DocumentTypeLabel,
@@ -50,7 +49,7 @@ const AdminDocumentTemplatesView = () => {
   const [search, setSearch] = useState(filters.q);
   const [reloadKey, setReloadKey] = useState(0);
   const navigate = useNavigate();
-  // { type: "view" | "create" | "default" | "toggle" | "delete", template }
+  // { type: "view" | "default" | "toggle" | "delete", template }
   const [dialog, setDialog] = useState(null);
   const open = (type) => (template) => setDialog({ type, template });
   const closeDialog = () => setDialog(null);
@@ -174,7 +173,7 @@ const AdminDocumentTemplatesView = () => {
             </button>
             <button
               type="button"
-              onClick={() => setDialog({ type: "create", template: null })}
+              onClick={() => navigate(PATHS.ADMIN.templateNew)}
               className="inline-flex h-10 items-center gap-2 rounded-xl bg-secondary px-4 text-sm font-semibold text-white transition hover:bg-secondary/90 cursor-pointer"
             >
               <Plus className="h-4 w-4" />
@@ -240,8 +239,6 @@ const AdminDocumentTemplatesView = () => {
           onSetDefault={open("default")}
         />
       )}
-
-      {dialog?.type === "create" && <TemplateCreateModal onClose={closeDialog} onCreated={reload} />}
 
       <ConfirmModal
         key={`default-${target?.id}`}

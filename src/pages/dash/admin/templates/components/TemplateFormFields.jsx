@@ -8,9 +8,7 @@ import {
   VARIANT_FIELDS,
   inputClass,
   inputState,
-  livePreviewTemplate,
 } from "../utils/templateFormat";
-import { TemplatePreview } from "./TemplateCells";
 
 export const Field = ({ id, label, hint, error, children }) => (
   <div>
@@ -123,7 +121,7 @@ export const LayoutLockNote = ({ form }) =>
   form.layoutLocked && !form.variantless ? (
     <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500">
       <Lock className="h-3.5 w-3.5" aria-hidden="true" />
-      {form.template.isSystem ? "Built-in layout" : "Used by issued documents"}
+      Used by issued documents
     </span>
   ) : null;
 
@@ -251,36 +249,3 @@ export const FormErrorAlert = ({ message }) =>
       {message}
     </p>
   ) : null;
-
-/** All fields for `useTemplateForm`; the caller owns submit and the action buttons (`form={formId}`). */
-const TemplateFormFields = ({ form, formId, onSubmit }) => (
-  <form id={formId} onSubmit={onSubmit} className="space-y-5" noValidate>
-    <TemplateDetailsFields form={form} />
-
-    <section className="grid grid-cols-1 gap-4 rounded-2xl border border-slate-100 bg-slate-50/60 p-4 md:grid-cols-[minmax(0,1fr)_200px]">
-      <div className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="text-sm font-semibold text-slate-800">Style</h3>
-          <LayoutLockNote form={form} />
-        </div>
-        <TemplateVariantFields form={form} />
-        {form.errors.variant && <p className="text-xs font-medium text-rose-600">{form.errors.variant}</p>}
-      </div>
-      <div>
-        <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-slate-400">Layout preview</p>
-        <TemplatePreview template={livePreviewTemplate(form)} imageSrc={null} className="shadow-sm" />
-      </div>
-    </section>
-
-    <section className="space-y-2">
-      <h3 className="text-sm font-semibold text-slate-800">Preview image</h3>
-      <TemplateImageField form={form} />
-    </section>
-
-    <TemplatePublishFields form={form} />
-
-    <FormErrorAlert message={form.formError} />
-  </form>
-);
-
-export default TemplateFormFields;

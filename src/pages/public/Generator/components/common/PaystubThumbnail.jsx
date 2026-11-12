@@ -6,12 +6,13 @@ import { themeStyle } from "../../utils/paystubTheme";
 import {
   CompanyLogo,
   DOCUMENT_PAGE,
+  SAMPLE_LOGO,
   SAMPLE_PAYSTUB_DOCUMENT,
   TemplateDocument,
   hasTemplateDocument,
 } from "../../templates";
 
-const STUB_DATA = stubData;
+const STUB_DATA = { ...stubData, company: { ...stubData.company, logo: SAMPLE_LOGO } };
 export const TEMPLATES = templates;
 
 // Card thumbnails show the top of the page so they line up with the other cards.

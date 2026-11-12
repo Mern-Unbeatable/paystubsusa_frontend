@@ -45,6 +45,11 @@ const AdminDocumentTemplatesView = lazy(() =>
     default: module.AdminDocumentTemplatesView,
   })),
 );
+const AdminTemplateCreateView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminTemplateCreateView,
+  })),
+);
 const AdminTemplateEditView = lazy(() =>
   import("../../pages/dash/admin").then((module) => ({
     default: module.AdminTemplateEditView,
@@ -108,6 +113,10 @@ export const adminRoutes = [
       {
         path: "templates",
         element: createLazyRouteElement(AdminDocumentTemplatesView),
+      },
+      {
+        path: "templates/new",
+        element: createLazyRouteElement(AdminTemplateCreateView),
       },
       {
         path: "templates/:id/edit",
