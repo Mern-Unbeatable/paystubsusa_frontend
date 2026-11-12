@@ -44,7 +44,7 @@ const PaystubDetailsForm = ({
       {/* Main 2-Column Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT COLUMN: Form Card */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+        <div className="lg:col-span-8 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
           {/* Step 1: Employer Information */}
           {currentStep === 1 && (
             <div className="space-y-5 animate-in fade-in-50 duration-200">
@@ -726,7 +726,7 @@ const PaystubDetailsForm = ({
 
           {/* Step 4: Review Paystub */}
           {currentStep === 4 && (
-            <div className="space-y-5 animate-in fade-in-50 duration-200">
+            <div className="space-y- animate-in fade-in-50 duration-200">
               <div>
                 <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
                   STEP 4 OF 4
