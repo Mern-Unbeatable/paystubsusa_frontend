@@ -99,9 +99,9 @@ const FooterLayout = () => {
                 </Link>
               </li>
               <li>
-                <a href="#contracts" className="hover:text-secondary transition-colors">
-                  Contracts
-                </a>
+                <Link to="/contact" className="hover:text-secondary transition-colors">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </div>

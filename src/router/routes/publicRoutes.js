@@ -104,6 +104,11 @@ const AboutView = lazy(() =>
     default: module.AboutView,
   })),
 );
+const ContactView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.ContactView,
+  })),
+);
 const NotFound = lazy(() => import("../../pages/error/NotFound"));
 
 // Rendered inside PublicLayout (shared header/footer)
@@ -174,6 +179,7 @@ export const publicRoutes = [
   { path: "pricing/:billing?", element: createLazyRouteElement(PricingView) },
   { path: "find-paystubs", element: createLazyRouteElement(FindPaystubsView) },
   { path: "about", element: createLazyRouteElement(AboutView) },
+  { path: "contact", element: createLazyRouteElement(ContactView) },
   {
     path: "*",
     element: createLazyRouteElement(NotFound, { compactFallback: true }),

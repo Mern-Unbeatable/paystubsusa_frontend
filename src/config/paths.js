@@ -23,6 +23,7 @@ export const PATHS = {
     pricing: "/pricing",
     findPaystubs: "/find-paystubs",
     about: "/about",
+    contact: "/contact",
   },
   AUTH: {
     root: "/auth",
@@ -106,6 +107,8 @@ export const ALIASES = {
   1099: PATHS.PUBLIC.nec1099,
   "find-your-paystubs": PATHS.PUBLIC.findPaystubs,
   "about-us": PATHS.PUBLIC.about,
+  "contact-us": PATHS.PUBLIC.contact,
+  contracts: PATHS.PUBLIC.contact,
   "/login": PATHS.AUTH.login,
   "/register": PATHS.AUTH.register,
   "/forgot-password": PATHS.AUTH.forgotPassword,
