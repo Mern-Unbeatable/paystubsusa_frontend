@@ -21,7 +21,8 @@ const SELECTS = [
 ];
 const URL_SELECTS = { sort: SORT_OPTIONS.map((o) => o.value) };
 
-const ordersLink = (email) => `/admin/orders?q=${encodeURIComponent(email)}`;
+const ordersLink = (email) =>
+  `/admin/orders?q=${encodeURIComponent(email)}&buyer=guest`;
 
 const AccountBadge = ({ hasAccount }) =>
   hasAccount ? (

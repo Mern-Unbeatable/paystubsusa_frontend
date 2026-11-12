@@ -1,10 +1,11 @@
 import React from "react";
 import { DashboardFilterToolbar } from "../../../../../Components/Dashboard";
-import { DOCUMENT_TYPE_OPTIONS, ORDER_STATUS_OPTIONS } from "../utils/orderFormat";
+import { BUYER_OPTIONS, DOCUMENT_TYPE_OPTIONS, ORDER_STATUS_OPTIONS } from "../utils/orderFormat";
 
 const SELECTS = [
   { key: "status", label: "Filter by status", options: ORDER_STATUS_OPTIONS },
   { key: "documentType", label: "Filter by document type", options: DOCUMENT_TYPE_OPTIONS },
+  { key: "buyer", label: "Filter by buyer", options: BUYER_OPTIONS },
 ];
 
 const OrdersToolbar = (props) => (

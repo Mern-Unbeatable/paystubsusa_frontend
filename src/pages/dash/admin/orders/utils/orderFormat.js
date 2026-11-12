@@ -19,6 +19,12 @@ export const ORDER_STATUS_OPTIONS = [
   ...Object.entries(ORDER_STATUS).map(([value, { label }]) => ({ value, label })),
 ];
 
+export const BUYER_OPTIONS = [
+  { value: "", label: "All buyers" },
+  { value: "customer", label: "Customer orders" },
+  { value: "guest", label: "Guest orders" },
+];
+
 export const DOCUMENT_TYPE_OPTIONS = [
   { value: "", label: "All document types" },
   ...Object.entries(DOCUMENT_TYPE_LABELS).map(([value, label]) => ({ value, label })),

@@ -2,11 +2,12 @@ import { API_ENDPOINTS } from "../../../../api/endpoints";
 import { httpClient } from "../../../../api/httpClient";
 
 /** Search matches the order number or the buyer's email. */
-export async function listOrdersApi({ q, status, documentType, page, pageSize }, options = {}) {
+export async function listOrdersApi({ q, status, documentType, buyer, page, pageSize }, options = {}) {
   const params = { page, pageSize };
   if (q) params.q = q;
   if (status) params.status = status;
   if (documentType) params.documentType = documentType;
+  if (buyer) params.buyer = buyer;
 
   const response = await httpClient.get(API_ENDPOINTS.ADMIN.ORDERS, { ...options, params });
   return {
