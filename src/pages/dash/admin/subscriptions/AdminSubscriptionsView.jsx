@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { Eye, RefreshCw } from "lucide-react";
 import {
   DashboardFilterToolbar,
   DashboardHeader,
@@ -62,8 +62,9 @@ const AdminSubscriptionsView = () => {
     <button
       type="button"
       onClick={() => setViewing(s)}
-      className="rounded-lg bg-secondary/10 px-3.5 py-1.5 text-sm font-semibold text-secondary transition hover:bg-secondary/15 cursor-pointer"
+      className="inline-flex items-center gap-1.5 rounded-lg bg-secondary/10 px-3.5 py-1.5 text-sm font-semibold text-secondary transition hover:bg-secondary/15 cursor-pointer"
     >
+      <Eye className="h-4 w-4" />
       View
     </button>
   );
