@@ -18,20 +18,36 @@ import {
   UserStatusBadge,
   EmailVerifiedBadge,
 } from "./components/UserCells";
-import { formatShortDate } from "./utils/userFormat";
+import {
+  EMAIL_VERIFIED_OPTIONS,
+  SORT_OPTIONS,
+  STATUS_OPTIONS,
+  SUBSCRIPTION_OPTIONS,
+  formatShortDate,
+} from "./utils/userFormat";
+import { useUrlFilters } from "../../../../hooks/useUrlFilters";
 
-const AdminUsersView = () => {
-  const {
-    users,
-    meta,
-    filters,
-    loading,
-    error,
-    loadUsers,
-    setFilter: updateFilter,
-    resetFilters: resetUserFilters,
-  } = useUsers();
+const URL_SELECTS = {
+  status: STATUS_OPTIONS.map((o) => o.value),
+  subscription: SUBSCRIPTION_OPTIONS.map((o) => o.value),
+  emailVerified: EMAIL_VERIFIED_OPTIONS.map((o) => o.value),
+  sort: SORT_OPTIONS.map((o) => o.value),
+};
+
+/** Also rendered as the Customers page; the API lists customer accounts only. */
+const AdminUsersView = ({
+  title = "Manage Users",
+  description = "Search, review and manage customer accounts.",
+}) => {
+  const { users, meta, loading, error, loadUsers } = useUsers();
+  const { filters, setFilter: updateFilter, resetFilters: resetUserFilters } = useUrlFilters(URL_SELECTS);
   const [search, setSearch] = useState(filters.q);
+  const [urlQ, setUrlQ] = useState(filters.q);
+  // Back/forward or a pasted link changed `q`: show it in the box (the debounce then has nothing to do).
+  if (urlQ !== filters.q) {
+    setUrlQ(filters.q);
+    if (search.trim() !== filters.q) setSearch(filters.q);
+  }
   const [reloadKey, setReloadKey] = useState(0);
   const [viewing, setViewing] = useState(null);
   const [changingStatus, setChangingStatus] = useState(null);
@@ -47,6 +63,13 @@ const AdminUsersView = () => {
     const request = loadUsers(filters);
     return () => request.abort();
   }, [filters, reloadKey, loadUsers]);
+
+  // A link past the last page, or a suspension under a status filter shrinking the list, lands on the last real page.
+  useEffect(() => {
+    if (!loading && meta.totalPages > 0 && filters.page > meta.totalPages) {
+      updateFilter("page", meta.totalPages, { replace: true });
+    }
+  }, [loading, meta.totalPages, filters.page, updateFilter]);
 
   const reload = useCallback(() => setReloadKey((k) => k + 1), []);
 
@@ -105,8 +128,8 @@ const AdminUsersView = () => {
   return (
     <div className="space-y-6">
       <DashboardHeader
-        title="Manage Users"
-        description="Search, review and manage customer accounts."
+        title={title}
+        description={description}
         badge={
           !loading && (
             <span className="rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs font-bold text-secondary">

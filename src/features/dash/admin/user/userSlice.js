@@ -1,20 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchUserDetails, fetchUsers, updateUserStatus } from "./userThunks";
 
-export const INITIAL_USER_FILTERS = {
-  q: "",
-  status: "",
-  subscription: "",
-  emailVerified: "",
-  sort: "-createdAt",
-  page: 1,
-  pageSize: 20,
-};
-
+/** Filters live in the URL query string (see useUrlFilters), not in the store. */
 const initialState = {
   users: [],
-  meta: { page: 1, pageSize: 20, totalItems: 0, totalPages: 0 },
-  filters: INITIAL_USER_FILTERS,
+  meta: { page: 1, pageSize: 10, totalItems: 0, totalPages: 0 },
   loading: false,
   status: "idle",
   error: null,
@@ -30,17 +20,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    /** Any filter change except paging returns to the first page. */
-    setUserFilter(state, action) {
-      const { key, value } = action.payload;
-      state.filters[key] = value;
-      if (key !== "page") {
-        state.filters.page = 1;
-      }
-    },
-    resetUserFilters(state) {
-      state.filters = INITIAL_USER_FILTERS;
-    },
     clearUserError(state) {
       state.error = null;
     },
@@ -63,10 +42,6 @@ const userSlice = createSlice({
         state.meta = meta;
         state.loading = false;
         state.status = "succeeded";
-        // The total can shrink (e.g. after a suspension under a status filter); stay on a real page.
-        if (meta.totalPages > 0 && state.filters.page > meta.totalPages) {
-          state.filters.page = meta.totalPages;
-        }
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         if (state.requestId !== action.meta.requestId) {
@@ -115,5 +90,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearUserError, resetUserFilters, setUserFilter } = userSlice.actions;
+export const { clearUserError } = userSlice.actions;
 export const userReducer = userSlice.reducer;

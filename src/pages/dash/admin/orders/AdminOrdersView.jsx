@@ -7,11 +7,17 @@ import { useAdminOrders } from "./hooks/useAdminOrders";
 import OrdersToolbar from "./components/OrdersToolbar";
 import OrderStatusBadge from "./components/OrderStatusBadge";
 import OrderDetailsModal from "./components/OrderDetailsModal";
-import { DOCUMENT_TYPE_LABELS, formatDateTime } from "./utils/orderFormat";
+import { DOCUMENT_TYPE_LABELS, DOCUMENT_TYPE_OPTIONS, ORDER_STATUS_OPTIONS, formatDateTime } from "./utils/orderFormat";
+import { useUrlFilters } from "../../../../hooks/useUrlFilters";
+
+const URL_SELECTS = {
+  status: ORDER_STATUS_OPTIONS.map((o) => o.value),
+  documentType: DOCUMENT_TYPE_OPTIONS.map((o) => o.value),
+};
 
 const AdminOrdersView = () => {
-  const { orders, meta, filters, loading, error, loadOrders, setFilter, resetFilters: resetOrderFilters } =
-    useAdminOrders();
+  const { orders, meta, loading, error, loadOrders } = useAdminOrders();
+  const { filters, setFilter, resetFilters: resetOrderFilters } = useUrlFilters(URL_SELECTS);
   const [search, setSearch] = useState(filters.q);
   const [urlQ, setUrlQ] = useState(filters.q);
   // Back/forward or a pasted link changed `q`: show it in the box (the debounce then has nothing to do).

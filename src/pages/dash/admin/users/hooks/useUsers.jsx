@@ -2,14 +2,12 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectUserDetails,
-  selectUserFilters,
   selectUsers,
   selectUsersError,
   selectUsersLoading,
   selectUsersMeta,
   selectUsersStatus,
 } from "../../../../../features/dash/admin/user/userSelectors";
-import { resetUserFilters, setUserFilter } from "../../../../../features/dash/admin/user/userSlice";
 import {
   fetchUserDetails,
   fetchUsers,
@@ -20,7 +18,6 @@ export function useUsers() {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
   const meta = useSelector(selectUsersMeta);
-  const filters = useSelector(selectUserFilters);
   const loading = useSelector(selectUsersLoading);
   const status = useSelector(selectUsersStatus);
   const error = useSelector(selectUsersError);
@@ -37,13 +34,6 @@ export function useUsers() {
     [dispatch],
   );
 
-  const setFilter = useCallback(
-    (key, value) => dispatch(setUserFilter({ key, value })),
-    [dispatch],
-  );
-
-  const resetFilters = useCallback(() => dispatch(resetUserFilters()), [dispatch]);
-
   const updateUserStatus = useCallback(
     (payload) => dispatch(updateUserStatusThunk(payload)).unwrap(),
     [dispatch],
@@ -52,15 +42,12 @@ export function useUsers() {
   return {
     users,
     meta,
-    filters,
     loading,
     status,
     error,
     details,
     loadUsers,
     loadUserDetails,
-    setFilter,
-    resetFilters,
     updateUserStatus,
   };
 }
