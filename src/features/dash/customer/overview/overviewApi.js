@@ -6,9 +6,3 @@ export async function getCustomerDashboardApi(options = {}) {
   const response = await httpClient.get(API_ENDPOINTS.ACCOUNT.DASHBOARD, options);
   return { dashboard: response.data?.data ?? null };
 }
-
-/** Short-lived signed URL for a rendered PDF the customer owns. */
-export async function downloadCustomerDocumentApi(id) {
-  const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.DOWNLOAD(id));
-  return response.data?.data;
-}

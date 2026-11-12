@@ -5,10 +5,8 @@ import {
   selectCustomerDashboardError,
   selectCustomerDashboardLoading,
 } from "../../../../../features/dash/customer/overview/overviewSelectors";
-import {
-  downloadCustomerDocument,
-  fetchCustomerDashboard,
-} from "../../../../../features/dash/customer/overview/overviewThunks";
+import { fetchCustomerDashboard } from "../../../../../features/dash/customer/overview/overviewThunks";
+import { downloadMyDocument } from "../../../../../features/dash/customer/document/documentThunks";
 
 export function useCustomerOverview() {
   const dispatch = useDispatch();
@@ -19,7 +17,7 @@ export function useCustomerOverview() {
   // Returns the thunk promise (not unwrapped) so callers can `.abort()` superseded requests.
   const loadDashboard = useCallback(() => dispatch(fetchCustomerDashboard()), [dispatch]);
   const getDownloadUrl = useCallback(
-    async (id) => (await dispatch(downloadCustomerDocument(id)).unwrap())?.url,
+    async (id) => (await dispatch(downloadMyDocument(id)).unwrap())?.url,
     [dispatch],
   );
 

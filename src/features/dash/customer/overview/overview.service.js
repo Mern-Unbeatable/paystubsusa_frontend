@@ -1,6 +1,5 @@
-import { downloadCustomerDocumentApi, getCustomerDashboardApi } from "./overviewApi";
+import { getCustomerDashboardApi } from "./overviewApi";
 
 export const customerOverviewService = {
   getDashboard: getCustomerDashboardApi,
-  downloadDocument: downloadCustomerDocumentApi,
 };

@@ -9,6 +9,7 @@ import { adminSubscriptionReducer } from "../features/dash/admin/subscription/su
 import { adminDocumentReducer } from "../features/dash/admin/document/documentSlice";
 import { adminOverviewReducer } from "../features/dash/admin/overview/overviewSlice";
 import { customerOverviewReducer } from "../features/dash/customer/overview/overviewSlice";
+import { customerDocumentReducer } from "../features/dash/customer/document/documentSlice";
 import { publicTemplateReducer } from "../features/public/template/publicTemplateSlice";
 import { checkoutReducer } from "../features/public/checkout/checkoutSlice";
 
@@ -23,6 +24,7 @@ export const rootReducer = combineReducers({
   adminDocument: adminDocumentReducer,
   adminOverview: adminOverviewReducer,
   customerOverview: customerOverviewReducer,
+  customerDocument: customerDocumentReducer,
   pricing: pricingReducer,
   template: templateReducer,
 });

@@ -12,14 +12,3 @@ export const fetchCustomerDashboard = createAsyncThunk(
     }
   },
 );
-
-export const downloadCustomerDocument = createAsyncThunk(
-  "customerOverview/downloadDocument",
-  async (id, { rejectWithValue }) => {
-    try {
-      return await customerOverviewService.downloadDocument(id);
-    } catch (error) {
-      return rejectWithValue(normalizeThunkError(error));
-    }
-  },
-);
