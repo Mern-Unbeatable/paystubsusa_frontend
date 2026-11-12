@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // changeOrigin sends the target's Host header, which a remote (proxied/TLS) API requires.
         "/api": {
-          target: env.VITE_API_PROXY_TARGET || "http://localhost:4000",
+          target: env.VITE_API_PROXY_TARGET || "http://localhost:3000",
           changeOrigin: true,
         },
       },
