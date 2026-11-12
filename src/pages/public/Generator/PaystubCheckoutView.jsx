@@ -6,6 +6,7 @@ import OrderSummaryCard from "./components/common/OrderSummaryCard";
 import CheckoutSection from "./components/sections/CheckoutSection";
 import CheckoutPaySection from "./components/sections/CheckoutPaySection";
 import StripePaymentModal from "./components/sections/StripePaymentModal";
+import UnlimitedCheckoutSection from "./components/sections/UnlimitedCheckoutSection";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";
 import { findIncompleteField, usePaystubFormData } from "./hooks/usePaystubFormData";
 import { usePaystubFlowNavigation } from "./hooks/usePaystubFlowNavigation";
@@ -29,7 +30,8 @@ import {
 
 const PaystubCheckoutContent = ({ template }) => {
   const dispatch = useDispatch();
-  const { checkoutEmail, setCheckoutEmail, grandTotal, items, summaryLines } = usePaystubOrder();
+  const { checkoutEmail, setCheckoutEmail, grandTotal, items, summaryLines, currentPkg } = usePaystubOrder();
+  const isUnlimited = currentPkg.productCode === "unlimited_monthly";
   const { formData, calculations } = usePaystubFormData();
   const { guestToken, email, order, clientSecret } = useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
@@ -139,7 +141,9 @@ const PaystubCheckoutContent = ({ template }) => {
       <PaystubStepper currentStep={PAYSTUB_PAGE_STEPS.CHECKOUT} onStepClick={handleStepClick} />
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div className="lg:col-span-7">
-          {verifiedEmail ? (
+          {isUnlimited ? (
+            <UnlimitedCheckoutSection generating={isPreparingPayment} onGenerate={handlePayNow} />
+          ) : verifiedEmail ? (
             <CheckoutPaySection
               email={verifiedEmail}
               title={guestToken ? "Email verified" : "Signed in"}

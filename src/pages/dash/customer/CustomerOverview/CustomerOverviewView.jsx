@@ -30,6 +30,13 @@ import {
 } from "./utils/overviewFormat";
 
 const TOAST_DURATION_MS = 3000;
+const SUBSCRIPTION_TONES = {
+  active: "success",
+  past_due: "warning",
+  unpaid: "warning",
+  incomplete: "warning",
+  canceled: "danger",
+};
 
 const CustomerOverviewView = () => {
   const { dashboard, loading, error, loadDashboard, getDownloadUrl } = useCustomerOverview();
@@ -100,6 +107,7 @@ const CustomerOverviewView = () => {
         value: placeholder ?? (subscription ? subscriptionStatusLabel(subscription.status) : "None"),
         change: subscription?.planName ?? "No active subscription",
         icon: Star,
+        tone: placeholder ? "default" : SUBSCRIPTION_TONES[subscription?.status] ?? "neutral",
       },
     ];
   }, [stats, showSkeleton]);
@@ -231,7 +239,7 @@ const CustomerOverviewView = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {statCards.map((stat) => (
-          <StatCard key={stat.title} title={stat.title} value={stat.value} change={stat.change} icon={stat.icon} />
+          <StatCard key={stat.title} title={stat.title} value={stat.value} change={stat.change} icon={stat.icon} tone={stat.tone} />
         ))}
       </div>
 

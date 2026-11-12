@@ -203,7 +203,7 @@ const PricingCardsSection = ({ billingType, onBillingChange }) => {
               {/* Action Button & Disclaimer */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <Link
-                  to="/paystub-generator"
+                  to="/customer/subscription"
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                   <span>Get Unlimited Access</span>

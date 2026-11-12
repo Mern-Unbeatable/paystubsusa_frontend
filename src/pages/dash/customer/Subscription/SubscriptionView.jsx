@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
+import {
+  clearSubscriptionReturn,
+  readSubscriptionReturn,
+} from '../../../../features/dash/customer/subscription/subscriptionReturn';
 import { Star, Check, HelpCircle, ExternalLink, AlertCircle, CheckCircle2, X } from 'lucide-react';
 import { DashboardHeader } from '../../../../Components/Dashboard';
 import { describeRequestError } from '../Profile/utils/profileFormat';
 import { formatMoney, formatShortDate } from '../../admin/users/utils/userFormat';
 import { subscriptionStatusLabel } from '../CustomerOverview/utils/overviewFormat';
 import { useMySubscription } from './hooks/useMySubscription';
+import SubscriptionCheckoutModal from '../../../../Components/modal/SubscriptionCheckoutModal';
 
 // Marketing copy for the Unlimited plan; the catalog stores price and interval only.
 const PLAN_FEATURES = [
@@ -37,11 +42,13 @@ const INTERVAL_LABELS = { month: 'Monthly', year: 'Yearly', week: 'Weekly', day:
 const isSafeRedirect = (url) => typeof url === 'string' && url.startsWith('https://');
 
 const SubscriptionView = () => {
-  const { subscription, plan, loading, error, loadSubscription, getCheckoutUrl, getPortalUrl } = useMySubscription();
+  const { subscription, plan, loading, error, loadSubscription, getPortalUrl } = useMySubscription();
   const [searchParams, setSearchParams] = useSearchParams();
   const checkoutResult = searchParams.get('checkout');
   const [redirecting, setRedirecting] = useState(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [actionError, setActionError] = useState(null);
+  const [returnTo] = useState(readSubscriptionReturn);
 
   useEffect(() => {
     const request = loadSubscription();
@@ -62,11 +69,20 @@ const SubscriptionView = () => {
     setSearchParams(next, { replace: true });
   };
 
-  const redirect = async (kind) => {
+  // Same notice and status re-checks as a redirect back from Stripe.
+  const handleCheckoutComplete = () => {
+    setCheckoutOpen(false);
+    const next = new URLSearchParams(searchParams);
+    next.set('checkout', 'success');
+    setSearchParams(next, { replace: true });
+    loadSubscription();
+  };
+
+  const openPortal = async () => {
     setActionError(null);
-    setRedirecting(kind);
+    setRedirecting('portal');
     try {
-      const url = kind === 'checkout' ? await getCheckoutUrl() : await getPortalUrl();
+      const url = await getPortalUrl();
       if (!isSafeRedirect(url)) throw new Error();
       window.location.assign(url);
     } catch (err) {
@@ -114,11 +130,22 @@ const SubscriptionView = () => {
         <div className="flex items-start justify-between gap-3 rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status">
           <div className="flex items-start gap-2.5">
             <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
-            <span>
-              {isActive
-                ? 'Your Unlimited subscription is active. Thank you!'
-                : 'Payment received. We are activating your subscription; this can take a few seconds.'}
-            </span>
+            <div>
+              <span>
+                {isActive
+                  ? 'Your Unlimited subscription is active. Thank you!'
+                  : 'Payment received. We are activating your subscription; this can take a few seconds.'}
+              </span>
+              {isActive && returnTo && (
+                <Link
+                  to={returnTo}
+                  onClick={clearSubscriptionReturn}
+                  className="mt-2 inline-flex items-center rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
+                >
+                  Continue creating your paystub
+                </Link>
+              )}
+            </div>
           </div>
           <button type="button" onClick={dismissCheckoutNotice} aria-label="Dismiss" className="cursor-pointer text-emerald-700 hover:text-emerald-900">
             <X className="w-4 h-4" />
@@ -208,17 +235,20 @@ const SubscriptionView = () => {
               {canSubscribe && (
                 <button
                   type="button"
-                  onClick={() => redirect('checkout')}
+                  onClick={() => {
+                    setActionError(null);
+                    setCheckoutOpen(true);
+                  }}
                   disabled={Boolean(redirecting)}
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-sm transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {redirecting === 'checkout' ? 'Opening checkout...' : subscription ? 'Resubscribe' : 'Subscribe now'}
+                  {subscription ? 'Resubscribe' : 'Subscribe now'}
                 </button>
               )}
               {subscription && (
                 <button
                   type="button"
-                  onClick={() => redirect('portal')}
+                  onClick={openPortal}
                   disabled={Boolean(redirecting)}
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded border border-white/30 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                 >
@@ -267,10 +297,17 @@ const SubscriptionView = () => {
         <div>
           <h4 className="font-bold text-xs sm:text-sm text-slate-900">Secure subscription management</h4>
           <p className="text-xs text-slate-500 mt-0.5">
-            You'll be redirected to Stripe's secure checkout or customer portal to subscribe, update payment details, or cancel your plan.
+            Payments are processed securely by Stripe. To update payment details or cancel, you'll be redirected to Stripe's customer portal.
           </p>
         </div>
       </div>
+
+      <SubscriptionCheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        onComplete={handleCheckoutComplete}
+        planLabel={plan?.name ?? 'Unlimited Access'}
+      />
     </div>
   );
 };

@@ -11,4 +11,5 @@ export const SUBSCRIPTION_STATUS_OPTIONS = [
   ...Object.entries(SUBSCRIPTION_STATUS).map(([value, { label }]) => ({ value, label })),
 ];
 
-export const canCancel = (s) => s.status !== "canceled" && !s.cancelAtPeriodEnd;
+// A period-end cancel can still be turned into an immediate one.
+export const canCancel = (s) => s.status !== "canceled";

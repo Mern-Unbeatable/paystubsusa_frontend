@@ -9,7 +9,8 @@ import { useAdminSubscriptions } from "../hooks/useAdminSubscriptions";
 /** Cancels through Stripe; the webhook later confirms the final state. */
 const CancelSubscriptionModal = ({ subscription, onClose }) => {
   const { cancelSubscription } = useAdminSubscriptions();
-  const [atPeriodEnd, setAtPeriodEnd] = useState(true);
+  const scheduled = Boolean(subscription?.cancelAtPeriodEnd);
+  const [atPeriodEnd, setAtPeriodEnd] = useState(!scheduled);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const inFlightRef = useRef(false);
@@ -69,7 +70,13 @@ const CancelSubscriptionModal = ({ subscription, onClose }) => {
     >
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <div className="space-y-2">
-          {option(true, "At the end of the billing period", `Access continues until ${periodEnd}; no further charges.`)}
+          {scheduled ? (
+            <p className="rounded-xl bg-amber-50 px-3.5 py-2.5 text-sm text-amber-800">
+              Already set to end on {periodEnd}. You can end it now instead.
+            </p>
+          ) : (
+            option(true, "At the end of the billing period", `Access continues until ${periodEnd}; no further charges.`)
+          )}
           {option(false, "Immediately", "Access ends now. No refund is issued automatically.")}
         </div>
 

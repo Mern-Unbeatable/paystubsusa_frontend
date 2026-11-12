@@ -15,10 +15,10 @@ export async function getSubscriptionPlanApi(options = {}) {
   return (response.data?.data ?? []).find((p) => p.code === SUBSCRIPTION_PRODUCT_CODE) ?? null;
 }
 
-/** Stripe Checkout URL for a new subscription. */
+/** Client secret of a Stripe Checkout Session (Payment Element) for a new subscription. */
 export async function createSubscriptionCheckoutApi() {
   const response = await httpClient.post(API_ENDPOINTS.ACCOUNT.SUBSCRIPTION_CHECKOUT);
-  return response.data?.data?.url ?? null;
+  return response.data?.data?.clientSecret ?? null;
 }
 
 /** Stripe Customer Portal URL to update the card, cancel or resume. */
