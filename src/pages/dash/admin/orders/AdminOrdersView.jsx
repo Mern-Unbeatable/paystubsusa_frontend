@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { DashboardHeader, DashboardPagination, DashboardTable } from "../../../../Components/Dashboard";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
-import { formatMoney } from "../users/utils/userFormat";
+import { formatMoney } from "../../../../utils/format";
 import { useAdminOrders } from "./hooks/useAdminOrders";
 import OrdersToolbar from "./components/OrdersToolbar";
 import OrderStatusBadge from "./components/OrderStatusBadge";

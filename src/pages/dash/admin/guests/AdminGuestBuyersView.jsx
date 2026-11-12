@@ -9,7 +9,7 @@ import {
 } from "../../../../Components/Dashboard";
 import { useUrlFilters } from "../../../../hooks/useUrlFilters";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
-import { formatCents, formatShortDate } from "../users/utils/userFormat";
+import { formatCents, formatShortDate } from "../../../../utils/format";
 import { useGuestBuyers } from "./hooks/useGuestBuyers";
 
 const SORT_OPTIONS = [

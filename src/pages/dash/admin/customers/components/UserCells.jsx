@@ -2,7 +2,7 @@ import React from "react";
 import { Eye, ShieldCheck, ShieldOff } from "lucide-react";
 import { DashboardStatusBadge } from "../../../../../layouts";
 import UserAvatar from "../../../customer/Profile/components/UserAvatar";
-import { STATUS_LABELS, SUBSCRIPTION_LABELS } from "../utils/userFormat";
+import { STATUS_LABELS, SUBSCRIPTION_LABELS } from "../utils/customerFormat";
 
 export const UserIdentity = ({ user, showEmail = false }) => (
   <div className="flex min-w-0 items-center gap-3">

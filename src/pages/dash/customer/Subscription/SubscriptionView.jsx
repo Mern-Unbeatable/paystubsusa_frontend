@@ -7,7 +7,7 @@ import {
 import { Star, Check, HelpCircle, ExternalLink, AlertCircle, CheckCircle2, X } from 'lucide-react';
 import { DashboardHeader } from '../../../../Components/Dashboard';
 import { describeRequestError } from '../Profile/utils/profileFormat';
-import { formatMoney, formatShortDate } from '../../admin/users/utils/userFormat';
+import { formatMoney, formatShortDate } from '../../../../utils/format';
 import { subscriptionStatusLabel } from '../CustomerOverview/utils/overviewFormat';
 import { useMySubscription } from './hooks/useMySubscription';
 import SubscriptionCheckoutModal from '../../../../Components/modal/SubscriptionCheckoutModal';

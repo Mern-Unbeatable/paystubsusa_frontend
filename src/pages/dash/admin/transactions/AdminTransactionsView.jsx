@@ -8,7 +8,7 @@ import {
 } from "../../../../Components/Dashboard";
 import { useUrlFilters } from "../../../../hooks/useUrlFilters";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
-import { formatMoney } from "../users/utils/userFormat";
+import { formatMoney } from "../../../../utils/format";
 import { formatDateTime } from "../orders/utils/orderFormat";
 import { useAdminPayments } from "./hooks/useAdminPayments";
 import PaymentStatusBadge from "./components/PaymentStatusBadge";

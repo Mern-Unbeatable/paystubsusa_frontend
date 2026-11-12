@@ -5,7 +5,7 @@ import {
   SORT_OPTIONS,
   STATUS_OPTIONS,
   SUBSCRIPTION_OPTIONS,
-} from "../utils/userFormat";
+} from "../utils/customerFormat";
 
 const SELECTS = [
   { key: "status", label: "Filter by status", options: STATUS_OPTIONS },

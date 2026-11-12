@@ -15,7 +15,7 @@ import {
 } from "../../../../Components/Dashboard";
 import { DashboardStatusBadge } from "../../../../layouts";
 import { describeRequestError } from "../Profile/utils/profileFormat";
-import { formatMoney } from "../../admin/users/utils/userFormat";
+import { formatMoney } from "../../../../utils/format";
 import { DOCUMENT_TYPE_LABELS, formatDateTime } from "../../admin/orders/utils/orderFormat";
 import StatCard from "./components/StatCard";
 import DocumentActionButtons from "./components/DocumentActionButtons";

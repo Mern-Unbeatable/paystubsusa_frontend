@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { formatMoney } from "../../users/utils/userFormat";
+import { formatMoney } from "../../../../../utils/format";
 import { useAdminOrders } from "../hooks/useAdminOrders";
 import { DOCUMENT_TYPE_LABELS, formatDateTime, humanize } from "../utils/orderFormat";
 import OrderStatusBadge from "./OrderStatusBadge";

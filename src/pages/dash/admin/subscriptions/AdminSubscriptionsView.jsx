@@ -8,7 +8,7 @@ import {
 } from "../../../../Components/Dashboard";
 import { useUrlFilters } from "../../../../hooks/useUrlFilters";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
-import { formatMoney, formatShortDate } from "../users/utils/userFormat";
+import { formatMoney, formatShortDate } from "../../../../utils/format";
 import { useAdminSubscriptions } from "./hooks/useAdminSubscriptions";
 import SubscriptionStatusBadge from "./components/SubscriptionStatusBadge";
 import SubscriptionDetailsModal from "./components/SubscriptionDetailsModal";

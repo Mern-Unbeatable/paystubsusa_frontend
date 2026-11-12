@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { Ban } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { formatShortDate } from "../../users/utils/userFormat";
+import { formatShortDate } from "../../../../../utils/format";
 import { useAdminSubscriptions } from "../hooks/useAdminSubscriptions";
 
 /** Cancels through Stripe; the webhook later confirms the final state. */

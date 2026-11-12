@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Check, Clock, AlertCircle, RotateCcw, ExternalLink } from 'lucide-react';
-import { formatMoney } from '../../../admin/users/utils/userFormat';
+import { formatMoney } from '../../../../../utils/format';
 import { formatDateTime } from '../../../admin/orders/utils/orderFormat';
 import { describeCard, paymentStatusLabel } from '../../CustomerOverview/utils/overviewFormat';
 

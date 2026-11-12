@@ -1,6 +1,6 @@
-import { formatMoney } from "../../users/utils/userFormat";
+import { formatMoney } from "../../../../../utils/format";
 
-export { formatMoney, formatShortDate } from "../../users/utils/userFormat";
+export { formatMoney, formatShortDate } from "../../../../../utils/format";
 
 export const DOCUMENT_TYPE_LABELS = {
   paystub: "Paystub",

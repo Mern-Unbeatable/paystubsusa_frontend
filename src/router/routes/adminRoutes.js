@@ -92,13 +92,6 @@ export const adminRoutes = [
         element: createLazyRouteElement(AdminOverviewView),
       },
       {
-        path: "users",
-        element: React.createElement(Navigate, {
-          to: "/admin/customers",
-          replace: true,
-        }),
-      },
-      {
         path: "customers",
         element: createLazyRouteElement(AdminCustomersView),
       },

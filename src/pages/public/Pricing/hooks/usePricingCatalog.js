@@ -7,7 +7,7 @@ import {
   selectCatalogStatus,
 } from "../../../../features/public/catalog/publicCatalogSelectors";
 import { getErrorMessage } from "../../../../api/errorNormalizer";
-import { formatMoney } from "../../../dash/admin/users/utils/userFormat";
+import { formatMoney } from "../../../../utils/format";
 
 const ADDON_CODE = "paystub_additional";
 const PACK_CODE = "paystub_pack_3";

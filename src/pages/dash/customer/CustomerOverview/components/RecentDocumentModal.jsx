@@ -1,7 +1,7 @@
 import React from "react";
 import { Download, FileText, X } from "lucide-react";
 import { DashboardStatusBadge } from "../../../../../layouts";
-import { formatCents } from "../../../admin/users/utils/userFormat";
+import { formatCents } from "../../../../../utils/format";
 import { DOCUMENT_TYPE_LABELS, formatDateTime } from "../../../admin/orders/utils/orderFormat";
 import { documentStatusLabel } from "../utils/overviewFormat";
 

@@ -20,7 +20,7 @@ import {
   Users,
 } from "lucide-react";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
-import { formatCents, formatMoney } from "../users/utils/userFormat";
+import { formatCents, formatMoney } from "../../../../utils/format";
 import { DOCUMENT_TYPE_LABELS, formatDateTime } from "../orders/utils/orderFormat";
 import OrderStatusBadge from "../orders/components/OrderStatusBadge";
 import { useAdminOverview } from "./hooks/useAdminOverview";

@@ -9,7 +9,7 @@ import {
 import { DashboardStatusBadge } from "../../../../layouts";
 import { useUrlFilters } from "../../../../hooks/useUrlFilters";
 import { describeRequestError } from "../Profile/utils/profileFormat";
-import { formatMoney } from "../../admin/users/utils/userFormat";
+import { formatMoney } from "../../../../utils/format";
 import { formatDateTime } from "../../admin/orders/utils/orderFormat";
 import { describeCard, paymentStatusLabel } from "../CustomerOverview/utils/overviewFormat";
 import { usePaymentHistory } from "./hooks/usePaymentHistory";

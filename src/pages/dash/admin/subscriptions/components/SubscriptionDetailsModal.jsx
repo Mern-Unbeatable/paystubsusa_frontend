@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Ban, CalendarClock, CalendarDays, CircleDot, FileText, Fingerprint, Mail, Package, Repeat, UserRound, Wallet } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { formatMoney, formatShortDate } from "../../users/utils/userFormat";
+import { formatMoney, formatShortDate } from "../../../../../utils/format";
 import { useAdminSubscriptions } from "../hooks/useAdminSubscriptions";
 import { canCancel } from "../utils/subscriptionFormat";
 import SubscriptionStatusBadge from "./SubscriptionStatusBadge";

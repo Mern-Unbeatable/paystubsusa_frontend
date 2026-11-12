@@ -22,7 +22,7 @@ import {
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { useUsers } from "../hooks/useUsers";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { formatCents, formatMoney, formatShortDate } from "../utils/userFormat";
+import { formatCents, formatMoney, formatShortDate } from "../../../../../utils/format";
 
 import {
   EmailVerifiedBadge,

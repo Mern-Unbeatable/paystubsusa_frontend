@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import ProfileModal from "../../../../../Components/modal/ProfileModal";
 import { describeRequestError } from "../../../customer/Profile/utils/profileFormat";
-import { formatCents } from "../../users/utils/userFormat";
+import { formatCents } from "../../../../../utils/format";
 import { formatDateTime } from "../../orders/utils/orderFormat";
 import { useAdminDocuments } from "../hooks/useAdminDocuments";
 import { DOCUMENT_TYPE_LABELS, canRegenerate } from "../utils/documentFormat";
