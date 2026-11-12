@@ -1,10 +1,9 @@
-import React from "react";
-import { Eye, Lock, Pencil, Power, PowerOff, Star, Trash2 } from "lucide-react";
+import React, { useEffect, useId, useRef, useState } from "react";
+import { Eye, MoreVertical, Pencil, Power, PowerOff, Star, Trash2 } from "lucide-react";
 import { DashboardStatusBadge } from "../../../../../layouts";
 import { PaystubThumbnail } from "../../../../public/Generator/components/common/PaystubThumbnail";
 import {
   DOCUMENT_TYPE_LABELS,
-  RENDERER_LABELS,
   previewImageSrc,
   toThumbnailTemplate,
 } from "../utils/templateFormat";
@@ -52,26 +51,8 @@ export const TemplatePreview = ({ template, imageSrc, width, className = "" }) =
   );
 };
 
-export const TemplateIdentity = ({ template }) => (
-  <div className="flex min-w-0 items-center gap-3">
-    <TemplatePreview template={template} width={44} />
-    <div className="min-w-0">
-      <p className="flex items-center gap-1.5 truncate font-semibold text-slate-900">
-        <span className="truncate">{template.title}</span>
-        {template.isSystem && (
-          <Lock className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-label="Built-in template" />
-        )}
-      </p>
-      <p className="truncate text-xs text-slate-500">{template.subtitle || "—"}</p>
-      <p className="truncate font-mono text-[11px] text-slate-400">{template.code}</p>
-    </div>
-  </div>
-);
-
 export const DocumentTypeLabel = ({ template }) =>
   DOCUMENT_TYPE_LABELS[template.documentType] || template.documentType;
-
-export const LayoutLabel = ({ template }) => RENDERER_LABELS[template.renderer] || template.renderer;
 
 export const DefaultBadge = () => (
   <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700">
@@ -87,9 +68,6 @@ export const TemplateStatus = ({ template }) => (
   </div>
 );
 
-const actionButton =
-  "inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent transition focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/30 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer";
-
 const deleteHint = (template) => {
   if (template.canDelete) return "Delete template";
   if (template.isSystem) return "Built-in templates can't be deleted";
@@ -103,66 +81,158 @@ const defaultHint = (template) => {
   return "Make default";
 };
 
-export const TemplateRowActions = ({ template, onView, onEdit, onSetDefault, onToggle, onDelete }) => {
-  const ToggleIcon = template.isActive ? PowerOff : Power;
-  const toggleLabel = template.isActive ? "Deactivate" : "Activate";
+/** Secondary actions for a template card: default, availability and delete. */
+const TemplateCardMenu = ({ template, onSetDefault, onToggle, onDelete }) => {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+  const menuId = useId();
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const closeOutside = (event) => !menuRef.current?.contains(event.target) && setOpen(false);
+    const closeOnEscape = (event) => event.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", closeOutside);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOutside);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
   // The server refuses to deactivate the default; say so instead of failing after confirm.
   const toggleBlocked = template.isActive && template.isDefault;
+  const items = [
+    {
+      label: "Make default",
+      icon: Star,
+      onClick: onSetDefault,
+      disabled: template.isDefault || !template.isActive,
+      hint: defaultHint(template),
+      tone: "text-slate-700",
+    },
+    {
+      label: template.isActive ? "Deactivate" : "Activate",
+      icon: template.isActive ? PowerOff : Power,
+      onClick: onToggle,
+      disabled: toggleBlocked,
+      hint: toggleBlocked ? "Set another default before deactivating" : undefined,
+      tone: "text-slate-700",
+    },
+    {
+      label: "Delete",
+      icon: Trash2,
+      onClick: onDelete,
+      disabled: !template.canDelete,
+      hint: deleteHint(template),
+      tone: "text-rose-600",
+    },
+  ];
 
   return (
-    <div className="inline-flex items-center gap-1">
+    <div ref={menuRef} className="relative">
       <button
         type="button"
-        onClick={() => onView(template)}
-        title="View details"
-        aria-label={`View ${template.title}`}
-        className={`${actionButton} text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-secondary`}
+        onClick={() => setOpen((value) => !value)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? menuId : undefined}
+        aria-label={`More actions for ${template.title}`}
+        className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 cursor-pointer"
       >
-        <Eye className="h-4 w-4" />
+        <MoreVertical className="h-4 w-4" />
       </button>
-      <button
-        type="button"
-        onClick={() => onEdit(template)}
-        title="Edit template"
-        aria-label={`Edit ${template.title}`}
-        className={`${actionButton} text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-secondary`}
-      >
-        <Pencil className="h-4 w-4" />
-      </button>
-      <button
-        type="button"
-        onClick={() => onSetDefault(template)}
-        disabled={template.isDefault || !template.isActive}
-        title={defaultHint(template)}
-        aria-label={`Make ${template.title} the default`}
-        className={`${actionButton} text-amber-500 hover:border-amber-100 hover:bg-amber-50`}
-      >
-        <Star className={`h-4 w-4 ${template.isDefault ? "fill-current" : ""}`} />
-      </button>
-      <button
-        type="button"
-        onClick={() => onToggle(template)}
-        disabled={toggleBlocked}
-        title={toggleBlocked ? "Set another default before deactivating" : `${toggleLabel} template`}
-        aria-label={`${toggleLabel} ${template.title}`}
-        className={`${actionButton} ${
-          template.isActive
-            ? "text-amber-600 hover:border-amber-100 hover:bg-amber-50"
-            : "text-emerald-600 hover:border-emerald-100 hover:bg-emerald-50"
-        }`}
-      >
-        <ToggleIcon className="h-4 w-4" />
-      </button>
-      <button
-        type="button"
-        onClick={() => onDelete(template)}
-        disabled={!template.canDelete}
-        title={deleteHint(template)}
-        aria-label={`Delete ${template.title}`}
-        className={`${actionButton} text-rose-500 hover:border-rose-100 hover:bg-rose-50`}
-      >
-        <Trash2 className="h-4 w-4" />
-      </button>
+      {open && (
+        <div
+          id={menuId}
+          role="menu"
+          className="absolute right-0 top-full z-20 mt-1 w-48 rounded-xl border border-slate-200 bg-white p-1 shadow-lg"
+        >
+          {items.map(({ label, icon, onClick, disabled, hint, tone }) => {
+            const Icon = icon;
+            return (
+              <button
+                key={label}
+                type="button"
+                role="menuitem"
+                disabled={disabled}
+                title={disabled ? hint : undefined}
+                onClick={() => {
+                  setOpen(false);
+                  onClick(template);
+                }}
+                className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm font-medium transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer ${tone}`}
+              >
+                <Icon className="h-4 w-4" aria-hidden="true" />
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
+
+/** Admin template card: status ribbon, actions menu, thumbnail, name/category, Edit and Preview. */
+export const AdminTemplateCard = ({ template, onPreview, onEdit, onSetDefault, onToggle, onDelete }) => (
+  <div className="relative flex flex-col overflow-hidden rounded-xl border border-slate-200/90 bg-white p-4 shadow-xs transition hover:border-slate-300 hover:shadow-md">
+    <span
+      className={`pointer-events-none absolute -left-9 top-4 z-10 w-32 -rotate-45 py-0.5 text-center text-[11px] font-semibold uppercase tracking-wide shadow-sm ${
+        template.isActive ? "bg-emerald-500 text-white" : "bg-slate-400 text-white"
+      }`}
+    >
+      {template.isActive ? "Active" : "Inactive"}
+    </span>
+
+    <div className="mb-2 flex h-7 justify-end">
+      <TemplateCardMenu template={template} onSetDefault={onSetDefault} onToggle={onToggle} onDelete={onDelete} />
+    </div>
+
+    <div className={`mb-3.5 overflow-hidden ${template.isActive ? "" : "opacity-60"}`}>
+      {previewImageSrc(template) ? (
+        <TemplatePreview template={template} />
+      ) : (
+        <PaystubThumbnail template={toThumbnailTemplate(template)} />
+      )}
+    </div>
+
+    <div className="mt-auto">
+      <h3 className="flex items-center gap-1.5 text-[15px] font-bold leading-tight text-[#111827]">
+        <span className="truncate">{template.title}</span>
+        {template.isDefault && <DefaultBadge />}
+      </h3>
+      <p className="mt-0.5 truncate text-[13px] text-slate-500">
+        <DocumentTypeLabel template={template} />
+      </p>
+
+      <div className="mt-3.5 flex gap-2">
+        <button
+          type="button"
+          onClick={() => onEdit(template)}
+          className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-slate-100 text-[14px] font-semibold text-slate-700 transition hover:bg-slate-200 cursor-pointer"
+        >
+          <Pencil className="h-4 w-4" aria-hidden="true" />
+          Edit
+        </button>
+        <button
+          type="button"
+          onClick={() => onPreview(template)}
+          aria-label={`Preview ${template.title}`}
+          className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg border border-secondary px-3.5 text-[14px] font-semibold text-secondary transition hover:bg-secondary/5 cursor-pointer"
+        >
+          <Eye className="h-4 w-4" aria-hidden="true" />
+          Preview
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+export const TemplateCardSkeleton = () => (
+  <div className="rounded-xl border border-slate-200/90 bg-white p-4" aria-hidden="true">
+    <div className="aspect-[4/5] animate-pulse rounded-lg bg-slate-100" />
+    <div className="mt-4 h-4 w-28 animate-pulse rounded bg-slate-100" />
+    <div className="mt-2 h-3 w-20 animate-pulse rounded bg-slate-100" />
+    <div className="mt-4 h-10 animate-pulse rounded-lg bg-slate-100" />
+  </div>
+);
