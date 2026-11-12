@@ -1,5 +1,5 @@
 export const CONTACT_STATUS = {
-  new: { label: "New", className: "bg-sky-50 text-sky-700 ring-sky-100" },
+  new: { label: "New", className: "bg-red-100 text-red-700 ring-red-200" },
   handled: {
     label: "Handled",
     className: "bg-emerald-50 text-emerald-700 ring-emerald-100",
