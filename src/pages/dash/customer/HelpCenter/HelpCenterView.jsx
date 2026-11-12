@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HelpCircle, ChevronRight, ArrowRight } from 'lucide-react';
 import { DashboardHeader } from '../../../../Components/Dashboard';
 import faqs from '../data/help/faqs.json';
+import ContactSupportModal from './components/ContactSupportModal';
 
 const FaqItem = ({ faq, isOpen, onToggle }) => (
   <div className="py-4 sm:py-4.5">
@@ -29,6 +30,7 @@ const FaqItem = ({ faq, isOpen, onToggle }) => (
 
 const HelpCenterView = () => {
   const [openIndex, setOpenIndex] = useState(0);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const toggleFaq = (idx) => {
     setOpenIndex(openIndex === idx ? -1 : idx);
@@ -82,19 +84,22 @@ const HelpCenterView = () => {
             </p>
           </div>
 
-          <a
-            href="mailto:support@paystuba.com"
+          <button
+            type="button"
+            onClick={() => setContactOpen(true)}
             className="w-full max-w-[230px] py-3 px-5 rounded bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-sm transition cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-98"
           >
-            <span>Email Support</span>
+            <span>Message Support</span>
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </button>
 
           <p className="text-xs text-slate-400">
             We typically respond within one business day.
           </p>
         </div>
       </div>
+
+      <ContactSupportModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   );
 };

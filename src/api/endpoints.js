@@ -37,6 +37,9 @@ export const API_ENDPOINTS = Object.freeze({
   PAYMENTS: Object.freeze({
     LIST: "/payments",
   }),
+  SUPPORT: Object.freeze({
+    CONTACT_MESSAGES: "/contact-messages",
+  }),
   DOCUMENTS: Object.freeze({
     LIST: "/documents",
     DOWNLOAD: (id) => `${buildResourcePath("documents", id)}/download`,
