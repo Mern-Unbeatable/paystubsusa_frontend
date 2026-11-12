@@ -42,6 +42,7 @@ export const API_ENDPOINTS = Object.freeze({
   }),
   DOCUMENTS: Object.freeze({
     LIST: "/documents",
+    REDEEM_CREDIT: "/documents",
     DOWNLOAD: (id) => `${buildResourcePath("documents", id)}/download`,
   }),
   ADMIN: Object.freeze({

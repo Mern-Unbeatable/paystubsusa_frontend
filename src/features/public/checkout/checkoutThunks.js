@@ -32,6 +32,12 @@ export const refreshCheckoutOrder = withErrors("checkout/refreshOrder", (_, { ge
   return checkoutService.getOrder(order.id, guestToken);
 });
 
+/** Uses the credit chosen on the success page; no payment, the server checks ownership and balance. */
+export const redeemPaystubCredit = withErrors("checkout/redeemCredit", ({ templateId, formData }, { getState }) => {
+  const { credit, guestToken } = getState().checkout;
+  return checkoutService.redeemCredit({ entitlementId: credit.entitlementId, templateId, formData }, guestToken);
+});
+
 export const downloadCheckoutDocument = withErrors("checkout/downloadDocument", (documentId, { getState }) =>
   checkoutService.downloadDocument(documentId, getState().checkout.guestToken),
 );

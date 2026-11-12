@@ -29,6 +29,12 @@ export async function getOrderApi(orderId, guestToken) {
   return response.data?.data;
 }
 
+/** Spends one paystub credit of a paid order on a new paystub; resolves to `{ document, creditsRemaining }`. */
+export async function redeemCreditApi(body, guestToken) {
+  const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.REDEEM_CREDIT, body, { headers: guestAuth(guestToken) });
+  return response.data?.data;
+}
+
 /** Short-lived signed URL for a rendered PDF. */
 export async function downloadDocumentApi(documentId, guestToken) {
   const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.DOWNLOAD(documentId), undefined, {

@@ -2,6 +2,7 @@ import {
   createOrderApi,
   downloadDocumentApi,
   getOrderApi,
+  redeemCreditApi,
   sendCheckoutCodeApi,
   verifyCheckoutCodeApi,
 } from "./checkoutApi";
@@ -11,5 +12,6 @@ export const checkoutService = {
   verifyCode: verifyCheckoutCodeApi,
   createOrder: createOrderApi,
   getOrder: getOrderApi,
+  redeemCredit: redeemCreditApi,
   downloadDocument: downloadDocumentApi,
 };

@@ -7,10 +7,14 @@ const PaymentSuccessSection = ({
   order,
   processing = false,
   preparingDocument = false,
+  redeemed = false,
+  creditsRemaining = 0,
+  onUseCredit,
   onDownload,
   onStartOver,
 }) => {
   const { grandTotal, packageName, orderNumber, checkoutEmail } = order;
+  const hasCredits = !processing && creditsRemaining > 0;
 
   return (
     <div className="animate-in zoom-in-95 duration-200 max-w-lg mx-auto bg-white rounded-2xl p-8 border border-slate-200 shadow-lg text-center space-y-5">
@@ -19,7 +23,7 @@ const PaymentSuccessSection = ({
       </div>
       <div>
         <h2 className="text-2xl font-bold text-slate-900">
-          {processing ? "Payment Processing" : "Payment Successful!"}
+          {processing ? "Payment Processing" : redeemed ? "Paystub Created!" : "Payment Successful!"}
         </h2>
         <p className="text-slate-500 text-[14px] mt-1.5">
           {processing ? (
@@ -69,6 +73,24 @@ const PaymentSuccessSection = ({
         </div>
       </div>
 
+      {hasCredits && (
+        <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/60 text-left flex items-center justify-between gap-3">
+          <div className="text-[13px]">
+            <p className="font-bold text-slate-800">
+              {creditsRemaining} paystub{creditsRemaining === 1 ? "" : "s"} left in your package
+            </p>
+            <p className="text-slate-500">Already paid. Fill in the next one at no extra cost.</p>
+          </div>
+          <button
+            type="button"
+            onClick={onUseCredit}
+            className="flex-shrink-0 px-4 py-2 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-[13px] transition cursor-pointer"
+          >
+            Create Next Paystub
+          </button>
+        </div>
+      )}
+
       <div className="pt-2 flex flex-col gap-2.5">
         <button
           type="button"
@@ -94,7 +116,7 @@ const PaymentSuccessSection = ({
           className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium text-[14px] transition flex items-center justify-center gap-2 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Create Another Paystub</span>
+          <span>{hasCredits ? "Start a New Order" : "Create Another Paystub"}</span>
         </button>
       </div>
     </div>

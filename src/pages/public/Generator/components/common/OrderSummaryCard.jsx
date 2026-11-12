@@ -12,6 +12,7 @@ const OrderSummaryCard = ({
   total,
   eyebrow,
   action,
+  note = "Secure payment by Stripe. Final price confirmed at checkout.",
   className = "",
 }) => (
   <div
@@ -33,7 +34,7 @@ const OrderSummaryCard = ({
 
     <p className="mt-2.5 flex items-center justify-center gap-1.5 text-slate-400 text-[12px]">
       <Lock className="w-3.5 h-3.5" />
-      <span>Secure payment by Stripe. Final price confirmed at checkout.</span>
+      <span>{note}</span>
     </p>
 
     <div className="mt-5 pt-5 border-t border-slate-100">

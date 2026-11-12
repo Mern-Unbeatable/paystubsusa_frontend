@@ -12,9 +12,11 @@ import { buildPaystubCheckoutPath } from "../../../config/paths";
 import { downloadPaystubPdf } from "./utils/downloadPaystubPdf";
 import { stripePromise } from "./utils/stripeClient";
 import { getErrorMessage } from "../../../api/errorNormalizer";
-import { setPaymentStatus } from "../../../features/public/checkout/checkoutSlice";
+import { PAYSTUB_FORM_STEPS } from "./utils/paystubFlow";
+import { setPaymentStatus, startCreditRedeem } from "../../../features/public/checkout/checkoutSlice";
 import {
   selectCheckout,
+  selectCheckoutCredits,
   selectCheckoutPaid,
 } from "../../../features/public/checkout/checkoutSelectors";
 import {
@@ -28,11 +30,12 @@ const SETTLED_DOCUMENT_STATUSES = new Set(["ready", "failed", "revoked"]);
 
 /** Polls the order until the webhook marks it paid and its documents finish rendering; true while still waiting. */
 function useOrderPolling(checkout, dispatch) {
-  const { order } = checkout;
+  const { order, lastDocumentId } = checkout;
   const [timedOut, setTimedOut] = useState(false);
   const settled =
     order?.status === "paid" &&
     (order.documents ?? []).length > 0 &&
+    (!lastDocumentId || order.documents.some((d) => d.id === lastDocumentId)) &&
     order.documents.every((d) => SETTLED_DOCUMENT_STATUSES.has(d.status));
 
   useEffect(() => {
@@ -46,7 +49,7 @@ function useOrderPolling(checkout, dispatch) {
       } else dispatch(refreshCheckoutOrder());
     }, POLL_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [order?.id, settled, dispatch]);
+  }, [order?.id, lastDocumentId, settled, dispatch]);
 
   return Boolean(order?.id) && !settled && !timedOut;
 }
@@ -57,7 +60,8 @@ const PaystubSuccessContent = ({ template }) => {
   const checkout = useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
   const { formData, calculations } = usePaystubFormData();
-  const { onBackToTemplates } = usePaystubFlowNavigation(template.id);
+  const credits = useSelector(selectCheckoutCredits);
+  const { onBackToTemplates, onBackToFormStep } = usePaystubFlowNavigation(template.id);
   // Set by Stripe when a payment method redirected away and back (memory state is gone then).
   const [searchParams] = useSearchParams();
   const redirectSecret = searchParams.get("payment_intent_client_secret");
@@ -91,9 +95,15 @@ const PaystubSuccessContent = ({ template }) => {
     return <Navigate to={buildPaystubCheckoutPath(template.id)} replace />;
   }
 
-  const readyDocument = checkout.order?.documents?.find(
-    (d) => d.status === "ready",
-  );
+  const documents = checkout.order?.documents ?? [];
+  // After spending a credit, the new paystub is the one to download.
+  const readyDocument = checkout.lastDocumentId
+    ? documents.find((d) => d.id === checkout.lastDocumentId && d.status === "ready")
+    : documents.find((d) => d.status === "ready");
+  const handleUseCredit = () => {
+    dispatch(startCreditRedeem({ entitlementId: credits.id }));
+    onBackToFormStep(PAYSTUB_FORM_STEPS.EMPLOYER);
+  };
   const handleDownload = async () => {
     // The server PDF is the real deliverable; printing is only a fallback once it can't be produced.
     if (!readyDocument) {
@@ -122,7 +132,11 @@ const PaystubSuccessContent = ({ template }) => {
         formData={formData}
         order={summary}
         processing={processing}
-        preparingDocument={!readyDocument && waitingForDocument}        onDownload={handleDownload}
+        preparingDocument={!readyDocument && waitingForDocument}
+        redeemed={Boolean(checkout.lastDocumentId)}
+        creditsRemaining={credits?.creditsRemaining ?? 0}
+        onUseCredit={handleUseCredit}
+        onDownload={handleDownload}
         onStartOver={onBackToTemplates}
       />
       <PrintablePaystub

@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createCheckoutOrder, refreshCheckoutOrder, sendCheckoutCode, verifyCheckoutCode } from "./checkoutThunks";
+import {
+  createCheckoutOrder,
+  redeemPaystubCredit,
+  refreshCheckoutOrder,
+  sendCheckoutCode,
+  verifyCheckoutCode,
+} from "./checkoutThunks";
 
 // In memory only: the guest token must never reach localStorage/sessionStorage.
 const initialState = {
@@ -10,6 +16,10 @@ const initialState = {
   clientSecret: null,
   // Stripe-reported PaymentIntent status; the order itself turns "paid" via the webhook.
   paymentStatus: null,
+  // Set while the customer builds a paystub to pay with a credit of the paid order: { entitlementId }.
+  credit: null,
+  // Paystub created from the last spent credit; the success page shows it instead of the first one.
+  lastDocumentId: null,
 };
 
 const checkoutSlice = createSlice({
@@ -19,12 +29,21 @@ const checkoutSlice = createSlice({
     resetCheckout: () => initialState,
     // Drops an unpaid order (e.g. the package changed) but keeps the verified email.
     clearCheckoutOrder: (state) => {
+      // Spending a credit keeps the paid order, even when the template changes.
+      if (state.credit) return;
       state.order = null;
       state.clientSecret = null;
       state.paymentStatus = null;
+      state.lastDocumentId = null;
     },
     setPaymentStatus: (state, action) => {
       state.paymentStatus = action.payload;
+    },
+    startCreditRedeem: (state, action) => {
+      state.credit = { entitlementId: action.payload.entitlementId };
+    },
+    cancelCreditRedeem: (state) => {
+      state.credit = null;
     },
   },
   extraReducers: (builder) => {
@@ -41,12 +60,19 @@ const checkoutSlice = createSlice({
         state.order = action.payload.order;
         state.clientSecret = action.payload.payment?.clientSecret ?? null;
         state.paymentStatus = null;
+        state.credit = null;
+        state.lastDocumentId = null;
       })
       .addCase(refreshCheckoutOrder.fulfilled, (state, action) => {
         state.order = action.payload;
+      })
+      .addCase(redeemPaystubCredit.fulfilled, (state, action) => {
+        state.credit = null;
+        state.lastDocumentId = action.payload?.document?.id ?? null;
       });
   },
 });
 
-export const { resetCheckout, clearCheckoutOrder, setPaymentStatus } = checkoutSlice.actions;
+export const { resetCheckout, clearCheckoutOrder, setPaymentStatus, startCreditRedeem, cancelCreditRedeem } =
+  checkoutSlice.actions;
 export const checkoutReducer = checkoutSlice.reducer;
