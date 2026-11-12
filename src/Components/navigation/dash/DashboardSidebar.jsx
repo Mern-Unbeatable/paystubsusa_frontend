@@ -100,12 +100,6 @@ const ADMIN_NAV_ITEMS = [
     path: "/admin/transactions",
   },
   {
-    id: "contacts",
-    label: "Contacts",
-    icon: Mail,
-    path: "/admin/contacts",
-  },
-  {
     id: "templates",
     label: "Templates",
     icon: LayoutTemplate,
@@ -116,6 +110,12 @@ const ADMIN_NAV_ITEMS = [
     label: "Pricing & Tags",
     icon: Tag,
     path: "/admin/pricing",
+  },
+  {
+    id: "contacts",
+    label: "Contacts",
+    icon: Mail,
+    path: "/admin/contacts",
   },
   {
     id: "profile",
