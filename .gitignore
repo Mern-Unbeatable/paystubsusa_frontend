@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-renderer
 temp_auto_push.bat
 dist-ssr
 *.local

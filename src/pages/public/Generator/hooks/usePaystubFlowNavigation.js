@@ -17,9 +17,10 @@ export function usePaystubFlowNavigation(templateId) {
   const { pathname } = useLocation();
 
   return {
+    // Navigate before resetting so the success page never re-renders unpaid and bounces to checkout.
     onBackToTemplates: () => {
-      dispatch(resetCheckout());
       navigate(buildPaystubGeneratorPath(templateId));
+      dispatch(resetCheckout());
     },
     /** Swaps the template while staying on the current flow page. */
     onSwitchTemplate: (nextTemplateId, state) => {
@@ -36,9 +37,5 @@ export function usePaystubFlowNavigation(templateId) {
     onContinueToCheckout: () => navigate(buildPaystubCheckoutPath(templateId)),
     onBackToPackage: () => navigate(buildPaystubPackagePath(templateId)),
     onPaymentSuccess: () => navigate(buildPaystubSuccessPath(templateId), { replace: true }),
-    onStartOver: () => {
-      dispatch(resetCheckout());
-      navigate(buildPaystubCreatePath(templateId));
-    },
   };
 }
