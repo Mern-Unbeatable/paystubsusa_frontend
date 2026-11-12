@@ -30,6 +30,9 @@ export const API_ENDPOINTS = Object.freeze({
     CREATE: "/orders",
     DETAILS: (id) => buildResourcePath("orders", id),
   }),
+  PAYMENTS: Object.freeze({
+    LIST: "/payments",
+  }),
   DOCUMENTS: Object.freeze({
     LIST: "/documents",
     DOWNLOAD: (id) => `${buildResourcePath("documents", id)}/download`,
