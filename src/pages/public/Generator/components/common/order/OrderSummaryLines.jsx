@@ -65,7 +65,7 @@ const OrderSummaryLines = ({ templateTitle, lines, total, note }) => (
         </div>
       </div>
 
-      <div className="text-right bg-green-50/80 p-2 rounded-b-xl">
+      <div className=" bg-green-50/80 p-2 rounded-b-xl">
         <p className="flex items-center justify-end gap-1.5 text-green-500 text-[12px]">
           <Lock className="w-3.5 h-3.5" />
           <span>{note}</span>

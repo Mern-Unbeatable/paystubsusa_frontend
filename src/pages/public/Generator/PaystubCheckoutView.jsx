@@ -8,7 +8,10 @@ import CheckoutPaySection from "./components/sections/CheckoutPaySection";
 import StripePaymentModal from "./components/sections/StripePaymentModal";
 import UnlimitedCheckoutSection from "./components/sections/UnlimitedCheckoutSection";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";
-import { findIncompleteField, usePaystubFormData } from "./hooks/usePaystubFormData";
+import {
+  findIncompleteField,
+  usePaystubFormData,
+} from "./hooks/usePaystubFormData";
 import { usePaystubFlowNavigation } from "./hooks/usePaystubFlowNavigation";
 import { formatCurrency } from "./utils/formatCurrency";
 import PaystubStepper from "./components/common/flow/PaystubStepper";
@@ -20,7 +23,10 @@ import {
   resetCheckout,
   setPaymentStatus,
 } from "../../../features/public/checkout/checkoutSlice";
-import { selectCheckout, selectCheckoutPaid } from "../../../features/public/checkout/checkoutSelectors";
+import {
+  selectCheckout,
+  selectCheckoutPaid,
+} from "../../../features/public/checkout/checkoutSelectors";
 import { selectAuthUser } from "../../../features/auth/authSelectors";
 import {
   createCheckoutOrder,
@@ -30,19 +36,32 @@ import {
 
 const PaystubCheckoutContent = ({ template }) => {
   const dispatch = useDispatch();
-  const { checkoutEmail, setCheckoutEmail, grandTotal, items, summaryLines, currentPkg } = usePaystubOrder();
+  const {
+    checkoutEmail,
+    setCheckoutEmail,
+    grandTotal,
+    items,
+    summaryLines,
+    currentPkg,
+  } = usePaystubOrder();
   const isUnlimited = currentPkg.productCode === "unlimited_monthly";
   const { formData, calculations } = usePaystubFormData();
-  const { guestToken, email, order, clientSecret } = useSelector(selectCheckout);
+  const { guestToken, email, order, clientSecret } =
+    useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
   const authUser = useSelector(selectAuthUser);
   // A signed-in account with a verified email pays with its own session; no guest code needed.
-  const accountEmail = authUser?.role === "customer" && authUser.emailVerified ? authUser.email : null;
+  const accountEmail =
+    authUser?.role === "customer" && authUser.emailVerified
+      ? authUser.email
+      : null;
   const verifiedEmail = guestToken ? email : accountEmail;
   const { onBackToPackage, onBackToFormStep, onPaymentSuccess } =
     usePaystubFlowNavigation(template.id);
   const handleStepClick = (step) =>
-    step === PAYSTUB_PAGE_STEPS.PACKAGE ? onBackToPackage() : onBackToFormStep(step);
+    step === PAYSTUB_PAGE_STEPS.PACKAGE
+      ? onBackToPackage()
+      : onBackToFormStep(step);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isPreparingPayment, setIsPreparingPayment] = useState(false);
   const [paymentOpen, setPaymentOpen] = useState(false);
@@ -51,7 +70,8 @@ const PaystubCheckoutContent = ({ template }) => {
 
   // Signed in but unverified: the same code flow as guests, starting from the account email.
   useEffect(() => {
-    if (authUser?.email && !accountEmail && !guestToken) setCheckoutEmail(authUser.email);
+    if (authUser?.email && !accountEmail && !guestToken)
+      setCheckoutEmail(authUser.email);
   }, [authUser?.email, accountEmail]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Checkout needs a complete form; send the user back to the first step with a gap.
@@ -66,7 +86,11 @@ const PaystubCheckoutContent = ({ template }) => {
   useEffect(
     () => () =>
       dispatch((next, getState) => {
-        if (!selectCheckoutPaid(getState()) && !getState().checkout.paymentStatus) next(clearCheckoutOrder());
+        if (
+          !selectCheckoutPaid(getState()) &&
+          !getState().checkout.paymentStatus
+        )
+          next(clearCheckoutOrder());
       }),
     [dispatch],
   );
@@ -98,10 +122,19 @@ const PaystubCheckoutContent = ({ template }) => {
       setPaymentOpen(true);
       return;
     }
-    if (!template.catalogId) return fail({ message: "This template is unavailable right now. Please try again later." });
+    if (!template.catalogId)
+      return fail({
+        message:
+          "This template is unavailable right now. Please try again later.",
+      });
     setIsPreparingPayment(true);
     const created = await dispatch(
-      createCheckoutOrder({ templateId: template.catalogId, items, formData, idempotencyKey: idempotencyKeyRef.current }),
+      createCheckoutOrder({
+        templateId: template.catalogId,
+        items,
+        formData,
+        idempotencyKey: idempotencyKeyRef.current,
+      }),
     );
     setIsPreparingPayment(false);
     if (createCheckoutOrder.fulfilled.match(created)) {
@@ -130,7 +163,8 @@ const PaystubCheckoutContent = ({ template }) => {
   const lines = order
     ? order.items.map((item) => ({
         key: item.productCode,
-        label: item.quantity > 1 ? `${item.name} × ${item.quantity}` : item.name,
+        label:
+          item.quantity > 1 ? `${item.name} × ${item.quantity}` : item.name,
         amount: item.amountCents / 100,
       }))
     : summaryLines;
@@ -138,11 +172,17 @@ const PaystubCheckoutContent = ({ template }) => {
 
   return (
     <>
-      <PaystubStepper currentStep={PAYSTUB_PAGE_STEPS.CHECKOUT} onStepClick={handleStepClick} />
+      <PaystubStepper
+        currentStep={PAYSTUB_PAGE_STEPS.CHECKOUT}
+        onStepClick={handleStepClick}
+      />
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div className="lg:col-span-7">
           {isUnlimited ? (
-            <UnlimitedCheckoutSection generating={isPreparingPayment} onGenerate={handlePayNow} />
+            <UnlimitedCheckoutSection
+              generating={isPreparingPayment}
+              onGenerate={handlePayNow}
+            />
           ) : verifiedEmail ? (
             <CheckoutPaySection
               email={verifiedEmail}
