@@ -1,7 +1,7 @@
 [
-  "All Documents",
-  "Paystubs",
-  "W-2",
-  "1099-NEC",
-  "Direct Deposit Slip"
+  { "value": "", "label": "All Documents" },
+  { "value": "paystub", "label": "Paystubs" },
+  { "value": "w2", "label": "W-2" },
+  { "value": "nec1099", "label": "1099-NEC" },
+  { "value": "direct_deposit", "label": "Direct Deposit Slip" }
 ]
