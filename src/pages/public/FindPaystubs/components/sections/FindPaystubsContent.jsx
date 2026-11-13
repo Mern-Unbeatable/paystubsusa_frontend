@@ -13,6 +13,7 @@ import { useDocumentHistory } from "../../hooks/useDocumentHistory";
 import DocumentAccessForm from "../common/DocumentAccessForm";
 import DocumentPreviewModal from "../common/DocumentPreviewModal";
 import DocumentStatusPill from "../common/DocumentStatusPill";
+import DocumentsStatusMessage from "../common/DocumentsStatusMessage";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -100,8 +101,9 @@ const FindPaystubsContent = () => {
     setDocumentsOwner(listOwner);
   }
   const showDocuments = Boolean(listOwner) && documentsOwner === listOwner;
-  let lookupState = null;
-  if (listOwner && !showDocuments) lookupState = loading ? "loading" : error ? "error" : "none";
+  let messageState = null;
+  if (!listOwner) messageState = "locked";
+  else if (!showDocuments) messageState = loading ? "loading" : error ? "error" : "none";
 
   let emptyMessage = null;
   if (loading) emptyMessage = "Loading your documents...";
@@ -121,10 +123,10 @@ const FindPaystubsContent = () => {
             onSendCode={handleSendCode}
             onVerify={handleVerify}
             onReset={handleReset}
-            lookupState={lookupState}
-            onRetry={history.reload}
           />
         )}
+
+        {messageState && <DocumentsStatusMessage state={messageState} onRetry={history.reload} />}
 
         {/* Bottom: My Documents Section (only once there are documents to show) */}
         {showDocuments && (
