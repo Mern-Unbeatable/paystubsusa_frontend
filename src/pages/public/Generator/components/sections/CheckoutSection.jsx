@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Mail } from "lucide-react";
 import { PATHS } from "../../../../../config/paths";
-import StepRibbon from "../common/StepRibbon";
+import StepRibbon from "../common/flow/StepRibbon";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 30;

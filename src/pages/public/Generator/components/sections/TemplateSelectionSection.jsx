@@ -1,9 +1,9 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
-import TemplateCard from "../common/TemplateCard";
-import TemplatePreviewModal from "../common/TemplatePreviewModal";
-import { PaystubThumbnail, TEMPLATES } from "../common/PaystubThumbnail";
+import TemplateCard from "../common/templatePicker/TemplateCard";
+import TemplatePreviewModal from "../common/templatePicker/TemplatePreviewModal";
+import { PaystubThumbnail, TEMPLATES } from "../common/preview/PaystubThumbnail";
 import { usePaystubTemplates } from "../../utils/templateUtils";
 
 export { PaystubThumbnail, TEMPLATES };

@@ -1,5 +1,5 @@
 import React from "react";
-import { formatCurrency } from "../../utils/formatCurrency";
+import { formatCurrency } from "../../../utils/formatCurrency";
 import { Receipt, ShieldCheck, Lock } from "lucide-react";
 
 /** Template, priced lines and total, shared by the package and checkout pages. */

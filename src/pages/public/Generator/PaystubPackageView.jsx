@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import PaystubFlowPage from "./components/common/PaystubFlowPage";
-import TemplateSelectionModal from "./components/common/TemplateSelectionModal";
+import PaystubFlowPage from "./components/common/flow/PaystubFlowPage";
+import TemplateSelectionModal from "./components/common/templatePicker/TemplateSelectionModal";
 import PackageSelectionSection from "./components/sections/PackageSelectionSection";
 import CreditRedeemSection from "./components/sections/CreditRedeemSection";
-import PaystubStepper from "./components/common/PaystubStepper";
+import PaystubStepper from "./components/common/flow/PaystubStepper";
 import { PAYSTUB_PAGE_STEPS } from "./utils/paystubFlow";
 import { findIncompleteField, usePaystubFormData } from "./hooks/usePaystubFormData";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";

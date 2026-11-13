@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { Eye, MoreVertical, Pencil, Power, PowerOff, Star, Trash2 } from "lucide-react";
 import { DashboardStatusBadge } from "../../../../../layouts";
-import { PaystubThumbnail } from "../../../../public/Generator/components/common/PaystubThumbnail";
+import { PaystubThumbnail } from "../../../../public/Generator/components/common/preview/PaystubThumbnail";
 import {
   DOCUMENT_TYPE_LABELS,
   previewImageSrc,

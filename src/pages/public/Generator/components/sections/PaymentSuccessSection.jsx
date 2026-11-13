@@ -1,9 +1,9 @@
 import React from "react";
 import { Download, Plus } from "lucide-react";
-import ConfettiOverlay from "../common/ConfettiOverlay";
-import SuccessCheckIcon from "../common/SuccessCheckIcon";
-import OrderDetailsCard from "../common/OrderDetailsCard";
-import CreditsRemainingBanner from "../common/CreditsRemainingBanner";
+import ConfettiOverlay from "../common/success/ConfettiOverlay";
+import SuccessCheckIcon from "../common/success/SuccessCheckIcon";
+import OrderDetailsCard from "../common/order/OrderDetailsCard";
+import CreditsRemainingBanner from "../common/order/CreditsRemainingBanner";
 
 const getSuccessTitle = ({ processing, redeemed }) => {
   if (processing) return "Payment Processing";

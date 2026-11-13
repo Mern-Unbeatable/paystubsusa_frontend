@@ -1,7 +1,7 @@
 import React from "react";
 import { ChevronDown } from "lucide-react";
 import US_STATES from "../../../../data/shared/usStates.json";
-import CompanyLogoField from "../../common/CompanyLogoField";
+import CompanyLogoField from "../form/CompanyLogoField";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 

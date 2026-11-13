@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeft, Ticket } from "lucide-react";
-import OrderSummaryCard from "../common/OrderSummaryCard";
+import OrderSummaryCard from "../common/order/OrderSummaryCard";
 
 /** Package step while spending a paystub credit: no package choice and no payment. */
 const CreditRedeemSection = ({

@@ -3,7 +3,7 @@ import { Check, CheckCircle2, Minus, Plus, Layers } from "lucide-react";
 import { FileText } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
 import { ChevronRight } from "lucide-react";
-import OrderSummaryCard from "../common/OrderSummaryCard";
+import OrderSummaryCard from "../common/order/OrderSummaryCard";
 
 const PackageSelectionSection = ({
   template,

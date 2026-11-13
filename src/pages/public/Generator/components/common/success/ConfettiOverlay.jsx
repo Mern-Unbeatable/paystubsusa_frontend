@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { startConfetti } from "../../utils/confetti";
+import { startConfetti } from "../../../utils/confetti";
 
 // Portaled to <body>: a transformed ancestor would otherwise trap `position: fixed`.
 const ConfettiOverlay = ({ active }) => {

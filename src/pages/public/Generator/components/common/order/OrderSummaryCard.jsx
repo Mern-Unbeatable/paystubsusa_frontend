@@ -1,7 +1,7 @@
 import React from "react";
 import { Lock } from "lucide-react";
 import OrderSummaryLines from "./OrderSummaryLines";
-import TemplateDocumentPreview from "./TemplateDocumentPreview";
+import TemplateDocumentPreview from "../preview/TemplateDocumentPreview";
 
 /** Order summary with the paystub preview, used beside the package and checkout steps. */
 const OrderSummaryCard = ({

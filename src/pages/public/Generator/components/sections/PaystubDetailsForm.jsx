@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Lock } from "lucide-react";
-import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
+import TemplateDocumentPreview from "../common/preview/TemplateDocumentPreview";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
 import { findIncompleteField } from "../../hooks/usePaystubFormData";
-import PaystubStepper from "../common/PaystubStepper";
-import StepRibbon from "../common/StepRibbon";
-import EmployerStep from "./detailsForm/EmployerStep";
-import EmployeeStep from "./detailsForm/EmployeeStep";
-import PayDetailsStep from "./detailsForm/PayDetailsStep";
-import ReviewStep from "./detailsForm/ReviewStep";
+import PaystubStepper from "../common/flow/PaystubStepper";
+import StepRibbon from "../common/flow/StepRibbon";
+import EmployerStep from "../common/detailsForm/EmployerStep";
+import EmployeeStep from "../common/detailsForm/EmployeeStep";
+import PayDetailsStep from "../common/detailsForm/PayDetailsStep";
+import ReviewStep from "../common/detailsForm/ReviewStep";
 
 const FORM_STEP_COUNT = 4;
 
