@@ -3,7 +3,7 @@ import { flushSync } from "react-dom";
 import { createRoot } from "react-dom/client";
 import "../index.css";
 import "./renderer.css";
-import PaystubPrintDocument from "../pages/public/Generator/components/common/PaystubPrintDocument";
+import PaystubPrintDocument from "../pages/public/Generator/components/common/print/PaystubPrintDocument";
 import { calculatePaystub } from "../pages/public/Generator/hooks/usePaystubFormData";
 import { toGeneratorTemplate } from "../pages/public/Generator/utils/generatorTemplate";
 

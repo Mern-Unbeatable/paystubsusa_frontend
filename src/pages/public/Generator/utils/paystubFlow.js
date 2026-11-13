@@ -10,6 +10,8 @@ import {
 /** Steps inside the details form on the create page. */
 export const PAYSTUB_FORM_STEPS = {
   EMPLOYER: 1,
+  EMPLOYEE: 2,
+  PAY: 3,
   REVIEW: 4,
 };
 

@@ -283,7 +283,10 @@ const MobileNavDrawer = ({
 
           <DrawerSectionLabel>Menu</DrawerSectionLabel>
           <nav className="space-y-1">
-            {[...NAV_LINKS, FIND_PAYSTUBS_LINK].map((link) => (
+            {(isAuthenticated
+              ? NAV_LINKS
+              : [...NAV_LINKS, FIND_PAYSTUBS_LINK]
+            ).map((link) => (
               <DrawerNavItem
                 key={link.href}
                 link={link}
@@ -447,16 +450,18 @@ const NavbarLayout = () => {
 
               {/* Desktop Actions */}
               <div className="hidden md:flex items-center space-x-4 lg:space-x-5">
-                <Link
-                  to={FIND_PAYSTUBS_LINK.href}
-                  className={`text-[15px] font-medium transition-colors ${
-                    isLinkActive(FIND_PAYSTUBS_LINK, location.pathname)
-                      ? "text-secondary font-semibold underline underline-offset-4"
-                      : "text-secondary hover:text-[#0080d0] hover:underline underline-offset-4"
-                  }`}
-                >
-                  Find your Paystubs
-                </Link>
+                {!isAuthenticated && (
+                  <Link
+                    to={FIND_PAYSTUBS_LINK.href}
+                    className={`text-[15px] font-medium transition-colors ${
+                      isLinkActive(FIND_PAYSTUBS_LINK, location.pathname)
+                        ? "text-secondary font-semibold underline underline-offset-4"
+                        : "text-secondary hover:text-[#0080d0] hover:underline underline-offset-4"
+                    }`}
+                  >
+                    Find your Paystubs
+                  </Link>
+                )}
                 {isAuthenticated ? (
                   <AccountMenu
                     user={user}
