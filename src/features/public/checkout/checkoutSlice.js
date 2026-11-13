@@ -45,6 +45,17 @@ const checkoutSlice = createSlice({
     cancelCreditRedeem: (state) => {
       state.credit = null;
     },
+    // Picks up a paid order found after a reload (memory state was lost) and spends its next credit.
+    resumeCreditOrder: (state, action) => {
+      const order = action.payload;
+      const entitlement = order.entitlements.find((e) => e.documentType === "paystub" && e.creditsRemaining > 0);
+      if (!entitlement) return;
+      state.order = order;
+      state.clientSecret = null;
+      state.paymentStatus = null;
+      state.lastDocumentId = null;
+      state.credit = { entitlementId: entitlement.id };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -73,6 +84,12 @@ const checkoutSlice = createSlice({
   },
 });
 
-export const { resetCheckout, clearCheckoutOrder, setPaymentStatus, startCreditRedeem, cancelCreditRedeem } =
-  checkoutSlice.actions;
+export const {
+  resetCheckout,
+  clearCheckoutOrder,
+  setPaymentStatus,
+  startCreditRedeem,
+  cancelCreditRedeem,
+  resumeCreditOrder,
+} = checkoutSlice.actions;
 export const checkoutReducer = checkoutSlice.reducer;

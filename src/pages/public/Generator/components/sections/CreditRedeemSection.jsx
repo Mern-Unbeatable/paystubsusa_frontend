@@ -1,6 +1,6 @@
 import React from "react";
-import { Ticket } from "lucide-react";
-import OrderSummaryCard from "../common/OrderSummaryCard";
+import { ChevronLeft, Ticket } from "lucide-react";
+import OrderSummaryCard from "../common/order/OrderSummaryCard";
 
 /** Package step while spending a paystub credit: no package choice and no payment. */
 const CreditRedeemSection = ({
@@ -55,9 +55,9 @@ const CreditRedeemSection = ({
               type="button"
               onClick={onBackToReview}
               disabled={submitting}
-              className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer disabled:opacity-60"
+              className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer disabled:opacity-60 inline-flex items-center gap-1.5"
             >
-              &lt; Back
+              <ChevronLeft className="w-4 h-4" /> Back
             </button>
             <button
               type="button"

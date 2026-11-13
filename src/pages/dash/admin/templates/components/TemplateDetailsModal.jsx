@@ -1,6 +1,6 @@
 import React from "react";
 import { Pencil, Star } from "lucide-react";
-import TemplatePreviewModal from "../../../../public/Generator/components/common/TemplatePreviewModal";
+import TemplatePreviewModal from "../../../../public/Generator/components/common/templatePicker/TemplatePreviewModal";
 import { toThumbnailTemplate } from "../utils/templateFormat";
 
 /** The generator's full-page preview, with admin actions in the footer. */

@@ -2,11 +2,11 @@ import { API_ENDPOINTS } from "../../../api/endpoints";
 import { httpClient } from "../../../api/httpClient";
 
 // Without a guest token the request falls back to the signed-in user's Bearer token.
-const guestAuth = (guestToken) => (guestToken ? { Authorization: `Guest ${guestToken}` } : {});
+export const guestAuth = (guestToken) => (guestToken ? { Authorization: `Guest ${guestToken}` } : {});
 
-/** Emails a 6-digit checkout code. Responds the same whether or not the email is known. */
-export async function sendCheckoutCodeApi(email) {
-  const response = await httpClient.post(API_ENDPOINTS.VERIFICATIONS.SEND, { email, purpose: "checkout" });
+/** Emails a 6-digit code ("checkout" or "document_access"). Responds the same whether or not the email is known. */
+export async function sendCheckoutCodeApi(email, purpose = "checkout") {
+  const response = await httpClient.post(API_ENDPOINTS.VERIFICATIONS.SEND, { email, purpose });
   return response.data?.data;
 }
 
@@ -22,6 +22,12 @@ export async function createOrderApi(body, { guestToken, idempotencyKey }) {
     headers: { ...guestAuth(guestToken), "Idempotency-Key": idempotencyKey },
   });
   return response.data?.data;
+}
+
+/** The buyer's own orders (the server scopes guests to their verified email); resolves to `{ data, meta }`. */
+export async function listOrdersApi(params, guestToken) {
+  const response = await httpClient.get(API_ENDPOINTS.ORDERS.LIST, { params, headers: guestAuth(guestToken) });
+  return response.data;
 }
 
 export async function getOrderApi(orderId, guestToken) {

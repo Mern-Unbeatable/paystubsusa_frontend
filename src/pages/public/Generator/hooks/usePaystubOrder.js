@@ -1,5 +1,6 @@
 import packagesConfig from "../../data/generator/paystubPackages.json";
 import { useSessionStorageState } from "../../../../hooks/useSessionStorageState";
+import { useHasActiveSubscription } from "./useActiveSubscription";
 
 const DEFAULT_PACKAGE = "3paystubs"; // '1paystub' | '3paystubs' | 'unlimited'
 const ADDITIONAL_PAYSTUB_PRICE = 7.99;
@@ -18,14 +19,18 @@ export function usePaystubOrder() {
     "paystubGenerator.checkoutEmail",
     "",
   );
+  const hasActiveSubscription = useHasActiveSubscription();
 
   const currentPkg =
     packagesConfig[selectedPackage] || packagesConfig[DEFAULT_PACKAGE];
+  const isUnlimited = currentPkg.productCode === "unlimited_monthly";
+  // Active subscribers create Unlimited documents for $0 (the server prices them the same way).
+  const includedInPlan = isUnlimited && hasActiveSubscription;
+  const packagePrice = includedInPlan ? 0 : currentPkg.price;
   // Unlimited already covers extra paystubs, so add-ons are neither sent nor shown for it.
-  const billableAdditional =
-    currentPkg.productCode === "unlimited_monthly" ? 0 : additionalCount;
+  const billableAdditional = isUnlimited ? 0 : additionalCount;
   const additionalCost = billableAdditional * ADDITIONAL_PAYSTUB_PRICE;
-  const grandTotal = currentPkg.price + additionalCost;
+  const grandTotal = packagePrice + additionalCost;
   // What the server prices; the displayed totals above are estimates only.
   const items = [
     { productCode: currentPkg.productCode, quantity: 1 },
@@ -34,7 +39,9 @@ export function usePaystubOrder() {
       : []),
   ];
   const summaryLines = [
-    { key: currentPkg.productCode, label: currentPkg.name, amount: currentPkg.price, suffix: currentPkg.period },
+    includedInPlan
+      ? { key: currentPkg.productCode, label: `${currentPkg.name} (included in your plan)`, amount: 0 }
+      : { key: currentPkg.productCode, label: currentPkg.name, amount: currentPkg.price, suffix: currentPkg.period },
     ...(billableAdditional > 0
       ? [{ key: "paystub_additional", label: `Additional paystubs × ${billableAdditional}`, amount: additionalCost }]
       : []),
