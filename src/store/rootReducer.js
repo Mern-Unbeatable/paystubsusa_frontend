@@ -17,10 +17,12 @@ import { customerSubscriptionReducer } from "../features/dash/customer/subscript
 import { publicTemplateReducer } from "../features/public/template/publicTemplateSlice";
 import { checkoutReducer } from "../features/public/checkout/checkoutSlice";
 import { publicCatalogReducer } from "../features/public/catalog/publicCatalogSlice";
+import { documentAccessReducer } from "../features/public/documentAccess/documentAccessSlice";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   checkout: checkoutReducer,
+  documentAccess: documentAccessReducer,
   publicTemplate: publicTemplateReducer,
   publicCatalog: publicCatalogReducer,
   user: userReducer,

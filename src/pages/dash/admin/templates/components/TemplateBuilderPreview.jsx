@@ -1,5 +1,5 @@
 import React from "react";
-import TemplatePagePreview from "../../../../public/Generator/components/common/TemplatePagePreview";
+import TemplatePagePreview from "../../../../public/Generator/components/common/preview/TemplatePagePreview";
 import { toThumbnailTemplate } from "../utils/templateFormat";
 
 /** Renders unsaved form values on the same A4 document page customers see. */

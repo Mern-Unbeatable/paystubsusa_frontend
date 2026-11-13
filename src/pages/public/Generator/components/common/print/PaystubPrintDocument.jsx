@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { PaystubThumbnail } from "./PaystubThumbnail";
+import { PaystubThumbnail } from "../preview/PaystubThumbnail";
 import {
   DOCUMENT_PAGE,
   VARIANT_TEMPLATE_WIDTH,
@@ -7,7 +7,7 @@ import {
   buildPaystubDocument,
   buildThumbnailData,
   hasTemplateDocument,
-} from "../../templates";
+} from "../../../templates";
 
 const PRINT_MARGIN = 32;
 

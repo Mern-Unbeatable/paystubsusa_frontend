@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Lock, Mail } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  ChevronLeft,
+  Lock,
+  Mail,
+} from "lucide-react";
 import { PATHS } from "../../../../../config/paths";
+import StepRibbon from "../common/flow/StepRibbon";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 30;
@@ -21,12 +29,6 @@ const LegalLink = ({ to, children }) => (
   >
     {children}
   </a>
-);
-
-const StepRibbon = ({ children }) => (
-  <span className="absolute top-4 -left-9 w-32 -rotate-45 bg-[#1E60F2] py-1 text-center text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
-    {children}
-  </span>
 );
 
 const OtpInputs = ({ value, onChange, disabled }) => {
@@ -187,21 +189,6 @@ const CheckoutSection = ({
 
   return (
     <div className={`animate-in fade-in-50 duration-200 ${className}`}>
-      {/* <div className="mb-4">
-        <button
-          type="button"
-          onClick={phase === "otp" ? () => setPhase("email") : onBack}
-          className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-[#1E60F2] hover:underline cursor-pointer mb-2"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>{phase === "otp" ? "Back to email" : backLabel}</span>
-        </button>
-
-        <p className="text-slate-500 text-[14px] mt-1">
-          No account needed — we'll send your documents to your email.
-        </p>
-      </div> */}
-
       {phase === "email" && (
         <form
           onSubmit={handleSendCode}
@@ -261,7 +248,11 @@ const CheckoutSection = ({
               {agreedToTerms && <Check className="w-3.5 h-3.5 stroke-[3]" />}
             </div>
             <span className="text-[13px] text-slate-600">
-              I agree to the <LegalLink to={PATHS.PUBLIC.terms}>Terms &amp; Conditions</LegalLink> and{" "}
+              I agree to the{" "}
+              <LegalLink to={PATHS.PUBLIC.terms}>
+                Terms &amp; Conditions
+              </LegalLink>{" "}
+              and{" "}
               <LegalLink to={PATHS.PUBLIC.privacy}>Privacy Policy</LegalLink>.
             </span>
           </div>
@@ -295,9 +286,9 @@ const CheckoutSection = ({
             type="button"
             onClick={onBack}
             aria-label={backLabel}
-            className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer"
+            className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5"
           >
-            &lt; Back
+            <ChevronLeft className="w-4 h-4" /> Back
           </button>
         </div>
       )}
@@ -362,7 +353,9 @@ const CheckoutSection = ({
               ) : (
                 <>
                   <Lock className="w-4 h-4" />
-                  <span>{verifyLabel ?? <>Verify &amp; pay {totalLabel} securely</>}</span>
+                  <span>
+                    {verifyLabel ?? <>Verify &amp; pay {totalLabel} securely</>}
+                  </span>
                 </>
               )}
             </button>

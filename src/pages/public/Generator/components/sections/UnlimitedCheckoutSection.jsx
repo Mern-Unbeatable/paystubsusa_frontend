@@ -13,6 +13,7 @@ import {
 import { fetchMySubscription } from "../../../../../features/dash/customer/subscription/subscriptionThunks";
 import { rememberSubscriptionReturn } from "../../../../../features/dash/customer/subscription/subscriptionReturn";
 import SubscriptionCheckoutModal from "../../../../../Components/modal/SubscriptionCheckoutModal";
+import { isSubscriptionActive } from "../../hooks/useActiveSubscription";
 
 const card = "bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200";
 const primaryButton =
@@ -38,7 +39,7 @@ const UnlimitedCheckoutSection = ({ generating, onGenerate }) => {
   const [activating, setActivating] = useState(false);
   const [pollCount, setPollCount] = useState(0);
   const isCustomer = user?.role === "customer";
-  const isActive = subscription?.status === "active" || subscription?.status === "past_due";
+  const isActive = isSubscriptionActive(subscription);
   const stillActivating = activating && !isActive && pollCount < ACTIVATION_MAX_POLLS;
 
   useEffect(() => {
