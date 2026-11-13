@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Lock, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Mail } from "lucide-react";
 import { PATHS } from "../../../../../config/paths";
+import StepRibbon from "../common/StepRibbon";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 30;
@@ -21,12 +22,6 @@ const LegalLink = ({ to, children }) => (
   >
     {children}
   </a>
-);
-
-const StepRibbon = ({ children }) => (
-  <span className="absolute top-4 -left-9 w-32 -rotate-45 bg-[#1E60F2] py-1 text-center text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
-    {children}
-  </span>
 );
 
 const OtpInputs = ({ value, onChange, disabled }) => {
@@ -295,9 +290,9 @@ const CheckoutSection = ({
             type="button"
             onClick={onBack}
             aria-label={backLabel}
-            className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer"
+            className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5"
           >
-            &lt; Back
+            <ChevronLeft className="w-4 h-4" /> Back
           </button>
         </div>
       )}

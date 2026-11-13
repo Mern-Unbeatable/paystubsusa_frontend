@@ -10,37 +10,25 @@ const OrderSummaryCard = ({
   calculations,
   lines,
   total,
-  eyebrow,
   action,
-  note = "Secure payment by Stripe. Final price confirmed at checkout.",
+
   className = "",
 }) => (
-  <div
-    className={`bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm lg:sticky lg:top-24 ${className}`}
-  >
-    <div className="flex items-center justify-between gap-3 mb-4">
-      <div>
-        {eyebrow && (
-          <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-0.5">
-            {eyebrow}
-          </p>
-        )}
-        <h3 className="text-xl font-bold text-slate-900">Order summary</h3>
+  <div className={`${className}`}>
+    <OrderSummaryLines
+      templateTitle={template.title}
+      lines={lines}
+      total={total}
+      note="Secure payment by Stripe. Final price confirmed at checkout."
+    />
+
+    <div className="border-t border-slate-100 mt-4">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <p className="text-[12px] font-semibold uppercase tracking-wider text-slate-400">
+          preview
+        </p>
+        {action && <div className="ml-auto">{action}</div>}
       </div>
-      {action}
-    </div>
-
-    <OrderSummaryLines templateTitle={template.title} lines={lines} total={total} />
-
-    <p className="mt-2.5 flex items-center justify-center gap-1.5 text-slate-400 text-[12px]">
-      <Lock className="w-3.5 h-3.5" />
-      <span>{note}</span>
-    </p>
-
-    <div className="mt-5 pt-5 border-t border-slate-100">
-      <p className="text-[12px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
-        Your paystub preview
-      </p>
       <div className="overflow-hidden">
         <TemplateDocumentPreview
           template={template}

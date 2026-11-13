@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { ChevronDown, Trash2, Lock } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Trash2, Lock } from "lucide-react";
 import payFrequencyOptions from "../../../data/generator/payFrequencyOptions.json";
 import US_STATES from "../../../data/shared/usStates.json";
 import TemplateDocumentPreview from "../common/TemplateDocumentPreview";
@@ -9,6 +9,9 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
 import { findIncompleteField } from "../../hooks/usePaystubFormData";
 import PaystubStepper from "../common/PaystubStepper";
+import StepRibbon from "../common/StepRibbon";
+
+const FORM_STEP_COUNT = 4;
 
 const PaystubDetailsForm = ({
   template,
@@ -55,14 +58,14 @@ const PaystubDetailsForm = ({
       {/* Main 2-Column Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT COLUMN: Form Card */}
-        <div className="lg:col-span-8 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+        <div className="relative overflow-hidden lg:col-span-8 bg-white rounded-2xl p-6 pt-12 sm:p-8 sm:pt-12 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+          <StepRibbon>
+            Step {currentStep} of {FORM_STEP_COUNT}
+          </StepRibbon>
           {/* Step 1: Employer Information */}
           {currentStep === 1 && (
             <div className="space-y-5 animate-in fade-in-50 duration-200">
               <div>
-                <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
-                  STEP 1 OF 4
-                </p>
                 <h2 className="text-2xl sm:text-[26px] font-bold text-[#092258]">
                   Employer Information
                 </h2>
@@ -189,9 +192,9 @@ const PaystubDetailsForm = ({
                 <button
                   type="button"
                   onClick={onBackToTemplates}
-                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition"
+                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5"
                 >
-                  &lt; Back
+                  <ChevronLeft className="w-4 h-4" /> Back
                 </button>
                 <button
                   type="button"
@@ -199,7 +202,7 @@ const PaystubDetailsForm = ({
                   className="px-6 py-2.5 rounded-lg bg-[#1E60F2] text-white font-semibold text-[14px] shadow-sm hover:bg-[#1550cf] transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Continue</span>
-                  <span>&gt;</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -209,9 +212,6 @@ const PaystubDetailsForm = ({
           {currentStep === 2 && (
             <div className="space-y-5 animate-in fade-in-50 duration-200">
               <div>
-                <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
-                  STEP 2 OF 4
-                </p>
                 <h2 className="text-2xl sm:text-[26px] font-bold text-[#092258]">
                   Employee Information
                 </h2>
@@ -317,9 +317,9 @@ const PaystubDetailsForm = ({
                 <button
                   type="button"
                   onClick={() => setCurrentStep(1)}
-                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition"
+                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5"
                 >
-                  &lt; Back
+                  <ChevronLeft className="w-4 h-4" /> Back
                 </button>
                 <button
                   type="button"
@@ -327,7 +327,7 @@ const PaystubDetailsForm = ({
                   className="px-6 py-2.5 rounded-lg bg-[#1E60F2] text-white font-semibold text-[14px] shadow-sm hover:bg-[#1550cf] transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Continue</span>
-                  <span>&gt;</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -337,9 +337,6 @@ const PaystubDetailsForm = ({
           {currentStep === 3 && (
             <div className="space-y-6 animate-in fade-in-50 duration-200">
               <div>
-                <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
-                  STEP 3 OF 4
-                </p>
                 <h2 className="text-2xl sm:text-[26px] font-bold text-[#092258]">
                   Pay Details
                 </h2>
@@ -719,9 +716,9 @@ const PaystubDetailsForm = ({
                 <button
                   type="button"
                   onClick={() => setCurrentStep(2)}
-                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition"
+                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5"
                 >
-                  &lt; Back
+                  <ChevronLeft className="w-4 h-4" /> Back
                 </button>
                 <button
                   type="button"
@@ -729,7 +726,7 @@ const PaystubDetailsForm = ({
                   className="px-6 py-2.5 rounded-lg bg-[#1E60F2] text-white font-semibold text-[14px] shadow-sm hover:bg-[#1550cf] transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Continue</span>
-                  <span>&gt;</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -739,9 +736,6 @@ const PaystubDetailsForm = ({
           {currentStep === 4 && (
             <div className="space-y-5 animate-in fade-in-50 duration-200">
               <div>
-                <p className="text-[#1E60F2] font-bold text-[12px] uppercase tracking-wider mb-1">
-                  STEP 4 OF 4
-                </p>
                 <h2 className="text-2xl sm:text-[26px] font-bold text-[#092258]">
                   Review Paystub
                 </h2>
@@ -909,9 +903,9 @@ const PaystubDetailsForm = ({
                 <button
                   type="button"
                   onClick={() => setCurrentStep(3)}
-                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition"
+                  className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5"
                 >
-                  &lt; Back
+                  <ChevronLeft className="w-4 h-4" /> Back
                 </button>
                 <button
                   type="button"
@@ -919,7 +913,7 @@ const PaystubDetailsForm = ({
                   className="px-7 py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-[15px] shadow-sm transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Continue to Checkout</span>
-                  <span>&gt;</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
