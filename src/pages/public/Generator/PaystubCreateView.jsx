@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import PaystubFlowPage from "./components/common/PaystubFlowPage";
-import TemplateSelectionModal from "./components/common/TemplateSelectionModal";
+import PaystubFlowPage from "./components/common/flow/PaystubFlowPage";
+import TemplateSelectionModal from "./components/common/templatePicker/TemplateSelectionModal";
 import PaystubDetailsForm from "./components/sections/PaystubDetailsForm";
 import { usePaystubFormData } from "./hooks/usePaystubFormData";
 import { usePaystubFlowNavigation } from "./hooks/usePaystubFlowNavigation";

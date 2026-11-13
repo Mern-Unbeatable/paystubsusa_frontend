@@ -14,8 +14,8 @@ export async function listMyDocumentsApi({ q, type, sort, page, pageSize }, opti
   };
 }
 
-/** Short-lived signed URL for a rendered PDF the customer owns. */
-export async function downloadMyDocumentApi(id) {
-  const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.DOWNLOAD(id));
+/** Short-lived signed URL for a rendered PDF the customer (or the verified guest, via `options.headers`) owns. */
+export async function downloadMyDocumentApi(id, options = {}) {
+  const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.DOWNLOAD(id), undefined, options);
   return response.data?.data;
 }

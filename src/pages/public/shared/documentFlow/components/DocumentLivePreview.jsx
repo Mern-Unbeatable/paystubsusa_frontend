@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Lock, ZoomIn, ZoomOut } from "lucide-react";
-import PreviewWatermark from "../../../Generator/components/common/PreviewWatermark";
+import PreviewWatermark from "../../../Generator/components/common/preview/PreviewWatermark";
 
 const MIN_ZOOM = 70;
 const MAX_ZOOM = 120;
