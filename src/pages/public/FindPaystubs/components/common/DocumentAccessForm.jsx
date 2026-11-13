@@ -7,8 +7,17 @@ const inputClass =
 const linkClass =
   "text-xs font-semibold text-secondary hover:underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
-/** Guest access: email → emailed code → verified. `onSendCode`/`onVerify` resolve true on success. */
-const DocumentAccessForm = ({ verifiedEmail, codeSent, pending, onSendCode, onVerify, onReset }) => {
+const LOOKUP_MESSAGES = {
+  loading: "Looking for your documents...",
+  none: "We couldn't find any documents for this email yet.",
+  error: "Your documents couldn't be loaded.",
+};
+
+/**
+ * Guest access: email → emailed code → verified. `onSendCode`/`onVerify` resolve true on success.
+ * `lookupState` ("loading" | "none" | "error") explains why the documents table isn't shown yet.
+ */
+const DocumentAccessForm = ({ verifiedEmail, codeSent, pending, onSendCode, onVerify, onReset, lookupState, onRetry }) => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const busy = Boolean(pending);
@@ -38,8 +47,18 @@ const DocumentAccessForm = ({ verifiedEmail, codeSent, pending, onSendCode, onVe
             <div className="min-w-0 flex-1">
               <p className="text-[14px] font-semibold text-emerald-800">Email verified</p>
               <p className="text-[13px] text-emerald-700 break-all">
-                Showing documents for <strong>{verifiedEmail}</strong>.
+                {lookupState ? "Verified as" : "Showing documents for"} <strong>{verifiedEmail}</strong>.
               </p>
+              {lookupState && (
+                <p className={`mt-1.5 text-[13px] ${lookupState === "error" ? "text-rose-600" : "text-slate-600"}`}>
+                  {LOOKUP_MESSAGES[lookupState]}
+                  {lookupState === "error" && (
+                    <button type="button" onClick={onRetry} className={`${linkClass} ml-2`}>
+                      Try again
+                    </button>
+                  )}
+                </p>
+              )}
             </div>
             <button type="button" onClick={handleReset} className={`${linkClass} whitespace-nowrap`}>
               Use a different email

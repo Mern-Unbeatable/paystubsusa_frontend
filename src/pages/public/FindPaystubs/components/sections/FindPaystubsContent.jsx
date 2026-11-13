@@ -121,10 +121,13 @@ const FindPaystubsContent = () => {
             onSendCode={handleSendCode}
             onVerify={handleVerify}
             onReset={handleReset}
+            lookupState={lookupState}
+            onRetry={history.reload}
           />
         )}
 
-        {/* Bottom: My Documents Section */}
+        {/* Bottom: My Documents Section (only once there are documents to show) */}
+        {showDocuments && (
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -334,6 +337,7 @@ const FindPaystubsContent = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
 
       <DocumentPreviewModal
