@@ -7,6 +7,7 @@ import CheckoutSection from "./components/sections/CheckoutSection";
 import CheckoutPaySection from "./components/sections/CheckoutPaySection";
 import StripePaymentModal from "./components/sections/StripePaymentModal";
 import UnlimitedCheckoutSection from "./components/sections/UnlimitedCheckoutSection";
+import CreditsRemainingBanner from "./components/common/order/CreditsRemainingBanner";
 import { usePaystubOrder } from "./hooks/usePaystubOrder";
 import {
   findIncompleteField,
@@ -21,6 +22,7 @@ import { getErrorMessage } from "../../../api/errorNormalizer";
 import {
   clearCheckoutOrder,
   resetCheckout,
+  resumeCreditOrder,
   setPaymentStatus,
 } from "../../../features/public/checkout/checkoutSlice";
 import {
@@ -30,6 +32,7 @@ import {
 import { selectAuthUser } from "../../../features/auth/authSelectors";
 import {
   createCheckoutOrder,
+  findOrderWithCredits,
   sendCheckoutCode,
   verifyCheckoutCode,
 } from "../../../features/public/checkout/checkoutThunks";
@@ -46,7 +49,7 @@ const PaystubCheckoutContent = ({ template }) => {
   } = usePaystubOrder();
   const isUnlimited = currentPkg.productCode === "unlimited_monthly";
   const { formData, calculations } = usePaystubFormData();
-  const { guestToken, email, order, clientSecret } =
+  const { guestToken, email, order, clientSecret, credit } =
     useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
   const authUser = useSelector(selectAuthUser);
@@ -95,9 +98,35 @@ const PaystubCheckoutContent = ({ template }) => {
     [dispatch],
   );
 
+  // A resumed credit order is already paid but still needs this paystub redeemed on the package step.
   useEffect(() => {
-    if (paid) onPaymentSuccess();
+    if (paid && !credit) onPaymentSuccess();
   }, [paid]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Paid credits outlive the in-memory session; look them up again once the buyer is verified.
+  const [savedLookup, setSavedLookup] = useState(null);
+  useEffect(() => {
+    if (!verifiedEmail) return undefined;
+    let active = true;
+    dispatch(findOrderWithCredits()).then((action) => {
+      if (active && findOrderWithCredits.fulfilled.match(action))
+        setSavedLookup({ email: verifiedEmail, order: action.payload });
+    });
+    return () => {
+      active = false;
+    };
+  }, [verifiedEmail, dispatch]);
+  const savedCreditOrder =
+    savedLookup && savedLookup.email === verifiedEmail ? savedLookup.order : null;
+  const savedCredits =
+    savedCreditOrder?.entitlements.find(
+      (e) => e.documentType === "paystub" && e.creditsRemaining > 0,
+    ) ?? null;
+
+  const handleUseSavedCredit = () => {
+    dispatch(resumeCreditOrder(savedCreditOrder));
+    onBackToPackage();
+  };
 
   const fail = (error) => {
     toast.error(getErrorMessage(error));
@@ -178,6 +207,15 @@ const PaystubCheckoutContent = ({ template }) => {
       />
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div className="lg:col-span-7">
+          {savedCredits && (
+            <CreditsRemainingBanner
+              className="mb-4"
+              creditsRemaining={savedCredits.creditsRemaining}
+              description={`Already paid on order #${savedCreditOrder.orderNumber}. Use one for this paystub instead of paying again.`}
+              actionLabel="Use a Paystub"
+              onUseCredit={handleUseSavedCredit}
+            />
+          )}
           {isUnlimited ? (
             <UnlimitedCheckoutSection
               generating={isPreparingPayment}

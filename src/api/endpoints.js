@@ -32,6 +32,7 @@ export const API_ENDPOINTS = Object.freeze({
   }),
   ORDERS: Object.freeze({
     CREATE: "/orders",
+    LIST: "/orders",
     DETAILS: (id) => buildResourcePath("orders", id),
   }),
   PAYMENTS: Object.freeze({

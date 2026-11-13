@@ -24,6 +24,12 @@ export async function createOrderApi(body, { guestToken, idempotencyKey }) {
   return response.data?.data;
 }
 
+/** The buyer's own orders (the server scopes guests to their verified email); resolves to `{ data, meta }`. */
+export async function listOrdersApi(params, guestToken) {
+  const response = await httpClient.get(API_ENDPOINTS.ORDERS.LIST, { params, headers: guestAuth(guestToken) });
+  return response.data;
+}
+
 export async function getOrderApi(orderId, guestToken) {
   const response = await httpClient.get(API_ENDPOINTS.ORDERS.DETAILS(orderId), { headers: guestAuth(guestToken) });
   return response.data?.data;
