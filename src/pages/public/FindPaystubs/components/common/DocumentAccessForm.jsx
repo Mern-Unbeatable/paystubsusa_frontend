@@ -7,16 +7,20 @@ const inputClass =
 const linkClass =
   "text-xs font-semibold text-secondary hover:underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
-/** Guest access: email → emailed code → verified. `onSendCode`/`onVerify` resolve true on success. */
+/**
+ * Guest access: email → emailed code → verified. `onSendCode`/`onVerify` resolve true on success.
+ * `defaultEmail` restores the last email entered in this browser session.
+ */
 const DocumentAccessForm = ({
   verifiedEmail,
+  defaultEmail = "",
   codeSent,
   pending,
   onSendCode,
   onVerify,
   onReset,
 }) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
   const [code, setCode] = useState("");
   const busy = Boolean(pending);
 
@@ -30,6 +34,7 @@ const DocumentAccessForm = ({
   };
 
   const handleReset = () => {
+    setEmail("");
     setCode("");
     onReset();
   };

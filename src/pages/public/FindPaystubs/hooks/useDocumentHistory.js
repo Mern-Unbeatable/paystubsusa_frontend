@@ -1,60 +1,68 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { customerDocumentService } from "../../../../features/dash/customer/document/document.service";
 import { guestAuth } from "../../../../features/public/checkout/checkoutApi";
+import {
+  foundDocumentsKey,
+  isGuestOwner,
+  selectDocumentAccess,
+} from "../../../../features/public/documentAccess/documentAccessSelectors";
+import {
+  documentAccessExpired,
+  setFoundDocumentsFilter,
+} from "../../../../features/public/documentAccess/documentAccessSlice";
+import { fetchFoundDocuments } from "../../../../features/public/documentAccess/documentAccessThunks";
 
 const EMPTY_META = { page: 1, pageSize: 0, totalItems: 0, totalPages: 0 };
 
 /**
- * Documents of paid orders for the verified guest email (or the signed-in customer).
- * The API scopes the list and every download to the caller; `onSessionExpired` runs on a 401.
+ * Documents of paid orders for `owner` (verified guest email or signed-in account). Filters, page and the
+ * last results live in the store, so returning to the page shows them at once and refetches in the
+ * background; the API re-validates the session on that request. `onSessionExpired` runs on a guest 401.
  */
-export function useDocumentHistory({ enabled, guestToken, pageSize, onSessionExpired }) {
-  const [filters, setFilters] = useState({ type: "", q: "", sort: "-createdAt", page: 1 });
-  const [reloadKey, setReloadKey] = useState(0);
-  const [result, setResult] = useState({ key: null, documents: [], meta: EMPTY_META, error: null });
+export function useDocumentHistory({ owner, pageSize, onSessionExpired }) {
+  const dispatch = useDispatch();
+  const { filters, list, documentsOwner, session } = useSelector(selectDocumentAccess);
+  const guestToken = isGuestOwner(owner) ? session?.guestToken : null;
+  const key = foundDocumentsKey(owner, filters, pageSize);
   const expiredRef = useRef(onSessionExpired);
   useEffect(() => {
     expiredRef.current = onSessionExpired;
   }, [onSessionExpired]);
 
-  const requestKey = JSON.stringify({ guestToken, filters, pageSize, reloadKey });
-
-  const handleError = useCallback(
-    (error) => {
-      if (error?.status === 401 && guestToken) expiredRef.current?.();
-      throw error;
-    },
-    [guestToken],
+  const load = useCallback(
+    () =>
+      dispatch(fetchFoundDocuments({ owner, pageSize })).then((action) => {
+        if (fetchFoundDocuments.rejected.match(action) && action.payload?.status === 401 && isGuestOwner(owner)) {
+          expiredRef.current?.();
+        }
+      }),
+    [dispatch, owner, pageSize],
   );
 
+  // Runs on arrival (including Back) and whenever the owner, filters or page change.
   useEffect(() => {
-    if (!enabled) return undefined;
-    const controller = new AbortController();
-    customerDocumentService
-      .list({ ...filters, pageSize }, { signal: controller.signal, headers: guestAuth(guestToken) })
-      .then(({ documents, meta }) => setResult({ key: requestKey, documents, meta, error: null }))
-      .catch((error) => {
-        if (error?.isCanceled) return;
-        if (error?.status === 401 && guestToken) expiredRef.current?.();
-        setResult({ key: requestKey, documents: [], meta: EMPTY_META, error });
-      });
-    return () => controller.abort();
-  }, [enabled, requestKey]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (owner) load();
+  }, [key, owner, load]);
 
-  const setFilter = useCallback((name, value) => {
-    setFilters((prev) => ({ ...prev, [name]: value, page: name === "page" ? value : 1 }));
-  }, []);
+  const setFilter = useCallback((name, value) => dispatch(setFoundDocumentsFilter({ name, value })), [dispatch]);
 
   /** 5-minute signed URL; the server checks ownership, payment and readiness. */
   const getDownloadUrl = useCallback(
     async (id) => {
-      const data = await customerDocumentService
-        .download(id, { headers: guestAuth(guestToken) })
-        .catch(handleError);
-      if (!data?.url) throw new Error("Download link unavailable");
-      return data.url;
+      try {
+        const data = await customerDocumentService.download(id, { headers: guestAuth(guestToken) });
+        if (!data?.url) throw new Error("Download link unavailable");
+        return data.url;
+      } catch (error) {
+        if (error?.status === 401 && guestToken) {
+          dispatch(documentAccessExpired());
+          expiredRef.current?.();
+        }
+        throw error;
+      }
     },
-    [guestToken, handleError],
+    [guestToken, dispatch],
   );
 
   /** The signed URL forces a download, so previews load the PDF into a local object URL instead. */
@@ -67,15 +75,17 @@ export function useDocumentHistory({ enabled, guestToken, pageSize, onSessionExp
     [getDownloadUrl],
   );
 
-  const current = enabled && result.key === requestKey ? result : null;
+  const isOwn = Boolean(owner) && list.owner === owner;
+  const failed = isOwn && list.key === key && list.status === "failed";
   return {
     filters,
     setFilter,
-    documents: current?.documents ?? [],
-    meta: current?.meta ?? EMPTY_META,
-    loading: enabled && !current,
-    error: current?.error ?? null,
-    reload: () => setReloadKey((k) => k + 1),
+    documents: isOwn ? list.documents : [],
+    meta: isOwn ? list.meta : EMPTY_META,
+    loading: Boolean(owner) && list.loadedKey !== key && !failed,
+    error: failed ? list.error : null,
+    showDocuments: Boolean(owner) && documentsOwner === owner,
+    reload: load,
     getDownloadUrl,
     getPreviewUrl,
   };

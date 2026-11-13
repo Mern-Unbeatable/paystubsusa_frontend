@@ -8,6 +8,7 @@ import tabs from "../../../data/findPaystubs/tabs.json";
 import { useAuth } from "../../../../auth/hooks/useAuth";
 import { getErrorMessage } from "../../../../../api/errorNormalizer";
 import { DOCUMENT_TYPE_LABELS, formatDateTime } from "../../../../dash/admin/orders/utils/orderFormat";
+import { documentsOwnerOf } from "../../../../../features/public/documentAccess/documentAccessSelectors";
 import { useDocumentAccess } from "../../hooks/useDocumentAccess";
 import { useDocumentHistory } from "../../hooks/useDocumentHistory";
 import DocumentAccessForm from "../common/DocumentAccessForm";
@@ -18,27 +19,22 @@ import DocumentsStatusMessage from "../common/DocumentsStatusMessage";
 const SEARCH_DEBOUNCE_MS = 300;
 
 const FindPaystubsContent = () => {
-  const { isAuthenticated } = useAuth();
-  const access = useDocumentAccess();
-  const guestToken = access.session?.guestToken ?? null;
-  // Signed-in customers see their own documents; guests after verifying their email.
-  const canList = isAuthenticated || Boolean(guestToken);
-
-  const { reset: resetAccess } = access;
+  const { isAuthenticated, user } = useAuth();
   const handleSessionExpired = useCallback(() => {
-    resetAccess();
-    toast.error("Your verification expired. Please verify your email again.");
-  }, [resetAccess]);
+    toast.error("Your verification expired. Please verify your email again.", { id: "find-paystubs-expired" });
+  }, []);
+  const access = useDocumentAccess({ onExpired: handleSessionExpired });
+  // Signed-in customers see their own documents; guests after verifying their email.
+  const listOwner = documentsOwnerOf(access.session, isAuthenticated ? user : null);
 
   const history = useDocumentHistory({
-    enabled: canList,
-    guestToken,
+    owner: listOwner,
     pageSize: paginationConfig.itemsPerPage,
     onSessionExpired: handleSessionExpired,
   });
-  const { filters, setFilter, documents, meta, loading, error } = history;
+  const { filters, setFilter, documents, meta, loading, error, showDocuments } = history;
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(filters.q);
   const [previewDoc, setPreviewDoc] = useState(null);
   const [downloadingId, setDownloadingId] = useState(null);
 
@@ -71,11 +67,9 @@ const FindPaystubsContent = () => {
   };
 
   const handleReset = () => {
-    resetAccess();
+    access.reset();
     setPreviewDoc(null);
     setSearch("");
-    setFilter("q", "");
-    setFilter("type", "");
   };
 
   const handleDownload = async (doc) => {
@@ -95,12 +89,6 @@ const FindPaystubsContent = () => {
   const hasQuery = Boolean(filters.q || filters.type);
 
   // The table appears once the verified email (or account) is known to have documents, and stays while filtering.
-  const listOwner = guestToken ?? (isAuthenticated ? "account" : null);
-  const [documentsOwner, setDocumentsOwner] = useState(null);
-  if (listOwner && documentsOwner !== listOwner && !loading && !error && meta.totalItems > 0) {
-    setDocumentsOwner(listOwner);
-  }
-  const showDocuments = Boolean(listOwner) && documentsOwner === listOwner;
   let messageState = null;
   if (!listOwner) messageState = "locked";
   else if (!showDocuments) messageState = loading ? "loading" : error ? "error" : "none";
@@ -118,6 +106,7 @@ const FindPaystubsContent = () => {
         {!isAuthenticated && (
           <DocumentAccessForm
             verifiedEmail={access.session?.email}
+            defaultEmail={access.email}
             codeSent={access.codeSent}
             pending={access.pending}
             onSendCode={handleSendCode}
