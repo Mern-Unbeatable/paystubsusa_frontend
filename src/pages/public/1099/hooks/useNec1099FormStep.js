@@ -49,10 +49,20 @@ export function buildNec1099CreatePath(
 
 /** Scroll to the form/checkout block so the hero stays above the viewport. */
 export function scrollNec1099FlowIntoView() {
+  const run = () => {
+    const el = document.getElementById("nec1099-flow");
+    if (!el) return;
+    const navOffset = window.matchMedia("(min-width: 640px)").matches
+      ? 96
+      : 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - navOffset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  };
+  // Wait for the next step to paint, then scroll up past the hero.
   requestAnimationFrame(() => {
-    document
-      .getElementById("nec1099-flow")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    requestAnimationFrame(() => {
+      setTimeout(run, 40);
+    });
   });
 }
 
@@ -73,7 +83,6 @@ export function useNec1099FormStep() {
       },
       { replace: false },
     );
-    scrollNec1099FlowIntoView();
   };
 
   return { currentStep, setFormStep };

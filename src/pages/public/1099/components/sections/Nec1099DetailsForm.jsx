@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Lock } from "lucide-react";
 import DocumentLivePreview from "../../../shared/documentFlow/components/DocumentLivePreview";
 import DocumentOrderSummary from "../../../shared/documentFlow/components/DocumentOrderSummary";
 import { NEC1099_FLOW, NEC1099_FORM_STEPS } from "../../utils/nec1099Flow";
-import { useNec1099FormStep } from "../../hooks/useNec1099FormStep";
+import {
+  scrollNec1099FlowIntoView,
+  useNec1099FormStep,
+} from "../../hooks/useNec1099FormStep";
 import Nec1099Stepper from "../common/flow/Nec1099Stepper";
 import StepRibbon from "../common/flow/StepRibbon";
 import PayerStep from "../common/detailsForm/PayerStep";
@@ -18,6 +21,15 @@ const Nec1099DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
   const { formData, updateField } = form;
   const { Document } = NEC1099_FLOW;
   const showOrderSummary = currentStep === NEC1099_FORM_STEPS.REVIEW;
+  const skipScrollOnMount = useRef(true);
+
+  useEffect(() => {
+    if (skipScrollOnMount.current) {
+      skipScrollOnMount.current = false;
+      return;
+    }
+    scrollNec1099FlowIntoView();
+  }, [currentStep]);
 
   const handleStepperClick = (step) => {
     if (step <= NEC1099_FORM_STEPS.REVIEW) {

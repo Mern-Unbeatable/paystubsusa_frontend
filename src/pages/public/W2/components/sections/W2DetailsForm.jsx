@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Lock } from "lucide-react";
 import DocumentLivePreview from "../../../shared/documentFlow/components/DocumentLivePreview";
 import DocumentOrderSummary from "../../../shared/documentFlow/components/DocumentOrderSummary";
 import { W2_FLOW, W2_FORM_STEPS } from "../../utils/w2Flow";
-import { useW2FormStep } from "../../hooks/useW2FormStep";
+import {
+  scrollW2FlowIntoView,
+  useW2FormStep,
+} from "../../hooks/useW2FormStep";
 import W2Stepper from "../common/flow/W2Stepper";
 import StepRibbon from "../common/flow/StepRibbon";
 import EmployerStep from "../common/detailsForm/EmployerStep";
@@ -21,6 +24,15 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
   const { formData, updateField } = form;
   const { Document } = W2_FLOW;
   const showOrderSummary = currentStep === W2_FORM_STEPS.REVIEW;
+  const skipScrollOnMount = useRef(true);
+
+  useEffect(() => {
+    if (skipScrollOnMount.current) {
+      skipScrollOnMount.current = false;
+      return;
+    }
+    scrollW2FlowIntoView();
+  }, [currentStep]);
 
   const handleStepperClick = (step) => {
     if (step <= W2_FORM_STEPS.REVIEW) {

@@ -52,10 +52,20 @@ export function buildW2FormStepPath(formPath, step = FIRST) {
 
 /** Scroll to the form/checkout block so the hero stays above the viewport. */
 export function scrollW2FlowIntoView() {
+  const run = () => {
+    const el = document.getElementById("w2-flow");
+    if (!el) return;
+    const navOffset = window.matchMedia("(min-width: 640px)").matches
+      ? 96
+      : 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - navOffset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  };
+  // Wait for the next step to paint, then scroll up past the hero.
   requestAnimationFrame(() => {
-    document
-      .getElementById("w2-flow")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    requestAnimationFrame(() => {
+      setTimeout(run, 40);
+    });
   });
 }
 
@@ -81,7 +91,6 @@ export function useW2FormStep() {
       },
       { replace: false },
     );
-    scrollW2FlowIntoView();
   };
 
   return { currentStep, setFormStep };
