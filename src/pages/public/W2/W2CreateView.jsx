@@ -23,8 +23,7 @@ const W2CreateView = () => {
   const step = readW2Step(searchParams);
   const checkoutPhase = readW2CheckoutPhase(searchParams);
   const isCheckout = step === W2_PAGE_STEPS.CHECKOUT;
-  const isSuccess =
-    isCheckout && checkoutPhase === W2_CHECKOUT_PHASE.SUCCESS;
+  const isSuccess = isCheckout && checkoutPhase === W2_CHECKOUT_PHASE.SUCCESS;
 
   // Normalize bare `/w-2/create` → `?step=1`; step 5 without checkout → verifying.
   useEffect(() => {
@@ -54,9 +53,7 @@ const W2CreateView = () => {
   }, [searchParams, setSearchParams, isCheckout, checkoutPhase]);
 
   return (
-    <div
-      className={`w-full bg-white ${isSuccess ? "" : "min-h-screen"}`}
-    >
+    <div className={`w-full bg-white ${isSuccess ? "" : "min-h-screen"}`}>
       {!isCheckout ? <W2HeroSection /> : null}
 
       <section
