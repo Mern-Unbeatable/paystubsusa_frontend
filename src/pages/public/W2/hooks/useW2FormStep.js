@@ -50,6 +50,15 @@ export function buildW2FormStepPath(formPath, step = FIRST) {
   return buildW2CreatePath(formPath, step);
 }
 
+/** Scroll to the form/checkout block so the hero stays above the viewport. */
+export function scrollW2FlowIntoView() {
+  requestAnimationFrame(() => {
+    document
+      .getElementById("w2-flow")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
 /**
  * Form steps 1–4 on `/w-2/create?step=N`.
  * Step 5 is handled by the create page checkout panels.
@@ -72,7 +81,7 @@ export function useW2FormStep() {
       },
       { replace: false },
     );
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollW2FlowIntoView();
   };
 
   return { currentStep, setFormStep };

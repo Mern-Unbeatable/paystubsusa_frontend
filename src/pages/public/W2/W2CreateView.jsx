@@ -57,7 +57,8 @@ const W2CreateView = () => {
       {!isCheckout ? <W2HeroSection /> : null}
 
       <section
-        className={`w-full ${
+        id="w2-flow"
+        className={`w-full scroll-mt-20 sm:scroll-mt-24 ${
           isSuccess ? "py-8 sm:py-10 pb-12 sm:pb-14" : "py-10 sm:py-16"
         } ${
           isCheckout

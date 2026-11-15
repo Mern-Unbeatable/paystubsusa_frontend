@@ -60,7 +60,8 @@ const Nec1099CreateView = () => {
       {!isCheckout ? <Nec1099HeroSection /> : null}
 
       <section
-        className={`w-full ${
+        id="nec1099-flow"
+        className={`w-full scroll-mt-20 sm:scroll-mt-24 ${
           isSuccess ? "py-8 sm:py-10 pb-12 sm:pb-14" : "py-10 sm:py-16"
         } ${
           isCheckout

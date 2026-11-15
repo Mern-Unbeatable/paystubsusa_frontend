@@ -5,6 +5,7 @@ import { W2_FORM_STEPS, W2_FLOW, W2_PAGE_STEPS } from "../utils/w2Flow";
 import {
   W2_CHECKOUT_PHASE,
   buildW2CreatePath,
+  scrollW2FlowIntoView,
 } from "./useW2FormStep";
 
 /** Navigation callbacks for each transition in the W-2 flow. */
@@ -13,13 +14,20 @@ export function useW2FlowNavigation() {
   const dispatch = useDispatch();
   const { paths } = W2_FLOW;
 
-  const goToFormStep = (step) =>
+  const goToFormStep = (step) => {
     navigate(buildW2CreatePath(paths.form, step));
+    scrollW2FlowIntoView();
+  };
 
-  const goToCheckout = (phase = W2_CHECKOUT_PHASE.VERIFYING, { replace = false } = {}) =>
+  const goToCheckout = (
+    phase = W2_CHECKOUT_PHASE.VERIFYING,
+    { replace = false } = {},
+  ) => {
     navigate(buildW2CreatePath(paths.form, W2_PAGE_STEPS.CHECKOUT, phase), {
       replace,
     });
+    scrollW2FlowIntoView();
+  };
 
   return {
     onBackToFormStep: goToFormStep,
@@ -34,6 +42,7 @@ export function useW2FlowNavigation() {
     onStartOver: () => {
       dispatch(resetCheckout());
       navigate(buildW2CreatePath(paths.form, W2_FORM_STEPS.EMPLOYER));
+      scrollW2FlowIntoView();
     },
     goToStep: (step) => {
       if (step <= W2_FORM_STEPS.REVIEW) {

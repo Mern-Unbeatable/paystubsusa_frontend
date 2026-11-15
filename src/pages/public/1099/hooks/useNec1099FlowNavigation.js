@@ -9,6 +9,7 @@ import {
 import {
   NEC1099_CHECKOUT_PHASE,
   buildNec1099CreatePath,
+  scrollNec1099FlowIntoView,
 } from "./useNec1099FormStep";
 
 export function useNec1099FlowNavigation() {
@@ -16,17 +17,21 @@ export function useNec1099FlowNavigation() {
   const dispatch = useDispatch();
   const { paths } = NEC1099_FLOW;
 
-  const goToFormStep = (step) =>
+  const goToFormStep = (step) => {
     navigate(buildNec1099CreatePath(paths.form, step));
+    scrollNec1099FlowIntoView();
+  };
 
   const goToCheckout = (
     phase = NEC1099_CHECKOUT_PHASE.VERIFYING,
     { replace = false } = {},
-  ) =>
+  ) => {
     navigate(
       buildNec1099CreatePath(paths.form, NEC1099_PAGE_STEPS.CHECKOUT, phase),
       { replace },
     );
+    scrollNec1099FlowIntoView();
+  };
 
   return {
     onBackToFormStep: goToFormStep,
@@ -41,6 +46,7 @@ export function useNec1099FlowNavigation() {
     onStartOver: () => {
       dispatch(resetCheckout());
       navigate(buildNec1099CreatePath(paths.form, NEC1099_FORM_STEPS.PAYER));
+      scrollNec1099FlowIntoView();
     },
     goToStep: (step) => {
       if (step <= NEC1099_FORM_STEPS.REVIEW) {

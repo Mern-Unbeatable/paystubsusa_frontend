@@ -47,6 +47,15 @@ export function buildNec1099CreatePath(
   return `${formPath}?${params}`;
 }
 
+/** Scroll to the form/checkout block so the hero stays above the viewport. */
+export function scrollNec1099FlowIntoView() {
+  requestAnimationFrame(() => {
+    document
+      .getElementById("nec1099-flow")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
 export function useNec1099FormStep() {
   const [searchParams, setSearchParams] = useSearchParams();
   const rawStep = readNec1099Step(searchParams);
@@ -64,7 +73,7 @@ export function useNec1099FormStep() {
       },
       { replace: false },
     );
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollNec1099FlowIntoView();
   };
 
   return { currentStep, setFormStep };
