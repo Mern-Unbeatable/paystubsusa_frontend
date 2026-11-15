@@ -1,6 +1,7 @@
 export { default as HomeView } from "./Home/HomeView";
 export { default as GeneratorView } from "./Generator/GeneratorView";
 export { default as PaystubCreateView } from "./Generator/PaystubCreateView";
+export { default as PaystubCreateLegacyRedirect } from "./Generator/PaystubCreateLegacyRedirect";
 export { default as PaystubPackageView } from "./Generator/PaystubPackageView";
 export { default as PaystubCheckoutView } from "./Generator/PaystubCheckoutView";
 export { default as PaystubSuccessView } from "./Generator/PaystubSuccessView";

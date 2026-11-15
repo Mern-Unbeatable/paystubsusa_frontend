@@ -14,6 +14,11 @@ const PaystubCreateView = lazy(() =>
     default: module.PaystubCreateView,
   })),
 );
+const PaystubCreateLegacyRedirect = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.PaystubCreateLegacyRedirect,
+  })),
+);
 const PaystubPackageView = lazy(() =>
   import("../../pages/public").then((module) => ({
     default: module.PaystubPackageView,
@@ -163,6 +168,10 @@ export const publicRoutes = [
     element: createLazyRouteElement(PaystubCreateView),
   },
   {
+    path: PATHS.PUBLIC.paystubCreateLegacy,
+    element: createLazyRouteElement(PaystubCreateLegacyRedirect),
+  },
+  {
     path: PATHS.PUBLIC.paystubPackage,
     element: createLazyRouteElement(PaystubPackageView),
   },
@@ -172,6 +181,18 @@ export const publicRoutes = [
   },
   {
     path: PATHS.PUBLIC.paystubSuccess,
+    element: createLazyRouteElement(PaystubSuccessView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubPackageLegacy,
+    element: createLazyRouteElement(PaystubPackageView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubCheckoutLegacy,
+    element: createLazyRouteElement(PaystubCheckoutView),
+  },
+  {
+    path: PATHS.PUBLIC.paystubSuccessLegacy,
     element: createLazyRouteElement(PaystubSuccessView),
   },
   { path: PATHS.PUBLIC.w2, element: createLazyRouteElement(W2View) },

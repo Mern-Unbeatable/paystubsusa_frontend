@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { Lock } from "lucide-react";
 import TemplateDocumentPreview from "../common/preview/TemplateDocumentPreview";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
 import { findIncompleteField } from "../../hooks/usePaystubFormData";
+import {
+  scrollPaystubFlowIntoView,
+  usePaystubFormStep,
+} from "../../hooks/usePaystubFormStep";
 import PaystubStepper from "../common/flow/PaystubStepper";
 import StepRibbon from "../common/flow/StepRibbon";
 import EmployerStep from "../common/detailsForm/EmployerStep";
@@ -16,36 +20,52 @@ const FORM_STEP_COUNT = 4;
 const PaystubDetailsForm = ({
   template,
   form,
-  initialStep = PAYSTUB_FORM_STEPS.EMPLOYER,
   onBackToTemplates,
   onChangeTemplate,
   onContinueToPackage,
+  onStepClick,
 }) => {
   const selectedTemplateId = template.id;
-  const [currentStep, setStep] = useState(initialStep);
-  const setCurrentStep = (step) => {
-    setStep(step);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const { currentStep, setFormStep } = usePaystubFormStep();
+  const skipScrollOnMount = useRef(true);
+  const { formData, updateField, calculations } = form;
+
+  useEffect(() => {
+    if (skipScrollOnMount.current) {
+      skipScrollOnMount.current = false;
+      return;
+    }
+    scrollPaystubFlowIntoView();
+  }, [currentStep]);
+
   const openTemplatePicker = () => onChangeTemplate(currentStep);
+
   const handleContinueToPackage = () => {
-    const missing = findIncompleteField(form.formData);
+    const missing = findIncompleteField(formData);
     if (missing) {
       toast.error(`${missing.label} is required.`);
-      setCurrentStep(missing.step);
+      setFormStep(missing.step);
       return;
     }
     onContinueToPackage();
   };
-  const { formData, updateField, calculations } = form;
+
+  const handleStepperClick = (step) => {
+    if (step <= PAYSTUB_FORM_STEPS.REVIEW) {
+      setFormStep(step);
+      return;
+    }
+    onStepClick?.(step);
+  };
 
   return (
     <>
-      <PaystubStepper currentStep={currentStep} onStepClick={setCurrentStep} />
+      <PaystubStepper
+        currentStep={currentStep}
+        onStepClick={handleStepperClick}
+      />
 
-      {/* Main 2-Column Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* LEFT COLUMN: Form Card */}
         <div className="relative overflow-hidden lg:col-span-8 bg-white rounded-2xl p-6 pt-12 sm:p-8 sm:pt-12 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
           <StepRibbon>
             Step {currentStep} of {FORM_STEP_COUNT}
@@ -56,7 +76,7 @@ const PaystubDetailsForm = ({
               formData={formData}
               updateField={updateField}
               onBack={onBackToTemplates}
-              onNext={() => setCurrentStep(PAYSTUB_FORM_STEPS.EMPLOYEE)}
+              onNext={() => setFormStep(PAYSTUB_FORM_STEPS.EMPLOYEE)}
             />
           )}
 
@@ -64,16 +84,16 @@ const PaystubDetailsForm = ({
             <EmployeeStep
               formData={formData}
               updateField={updateField}
-              onBack={() => setCurrentStep(PAYSTUB_FORM_STEPS.EMPLOYER)}
-              onNext={() => setCurrentStep(PAYSTUB_FORM_STEPS.PAY)}
+              onBack={() => setFormStep(PAYSTUB_FORM_STEPS.EMPLOYER)}
+              onNext={() => setFormStep(PAYSTUB_FORM_STEPS.PAY)}
             />
           )}
 
           {currentStep === PAYSTUB_FORM_STEPS.PAY && (
             <PayDetailsStep
               form={form}
-              onBack={() => setCurrentStep(PAYSTUB_FORM_STEPS.EMPLOYEE)}
-              onNext={() => setCurrentStep(PAYSTUB_FORM_STEPS.REVIEW)}
+              onBack={() => setFormStep(PAYSTUB_FORM_STEPS.EMPLOYEE)}
+              onNext={() => setFormStep(PAYSTUB_FORM_STEPS.REVIEW)}
             />
           )}
 
@@ -82,15 +102,14 @@ const PaystubDetailsForm = ({
               template={template}
               formData={formData}
               calculations={calculations}
-              onEdit={setCurrentStep}
+              onEdit={setFormStep}
               onChangeTemplate={openTemplatePicker}
-              onBack={() => setCurrentStep(PAYSTUB_FORM_STEPS.PAY)}
+              onBack={() => setFormStep(PAYSTUB_FORM_STEPS.PAY)}
               onContinue={handleContinueToPackage}
             />
           )}
         </div>
 
-        {/* RIGHT COLUMN: The Sticky Live Preview */}
         <div className="lg:col-span-4 sticky top-32">
           <div className="flex items-center justify-between mb-3 px-1">
             <span className="text-[14px] font-bold text-slate-800">

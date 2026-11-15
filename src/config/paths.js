@@ -3,11 +3,20 @@ export const PATHS = {
   PUBLIC: {
     home: "/",
     paystubGenerator: "/paystub-generator",
-    paystubCreate: "/paystub-generator/:templateSlug/create",
+    /** Canonical create flow; form/package/checkout live as query params. */
+    paystubCreate: "/paystub-generator/create/:templateSlug",
+    /** Legacy nested paths; redirect into create query URLs. */
+    paystubCreateLegacy: "/paystub-generator/:templateSlug/create",
     paystubPackage: "/paystub-generator/:templateSlug/create/package",
     paystubCheckout: "/paystub-generator/:templateSlug/create/package/checkout",
     paystubSuccess:
       "/paystub-generator/:templateSlug/create/package/checkout/success",
+    /** Legacy create-first package/checkout paths (pre-query-param). */
+    paystubPackageLegacy: "/paystub-generator/create/:templateSlug/package",
+    paystubCheckoutLegacy:
+      "/paystub-generator/create/:templateSlug/package/checkout",
+    paystubSuccessLegacy:
+      "/paystub-generator/create/:templateSlug/package/checkout/success",
     w2: "/w-2",
     w2Create: "/w-2/create",
     /** Nav / marketing entry into the W-2 form. */
@@ -107,26 +116,31 @@ export const fromTemplateSlug = (templateSlug = "") =>
 
 export const TEMPLATE_QUERY_PARAM = "templateId";
 
-// "/paystub-generator?templateId=02-template"
-export const buildPaystubGeneratorPath = (templateId) =>
-  `${PATHS.PUBLIC.paystubGenerator}?${new URLSearchParams({
-    [TEMPLATE_QUERY_PARAM]: toTemplateSlug(templateId),
-  })}`;
+/** Listing page (no template query). Prefer create path after a template is chosen. */
+export const buildPaystubGeneratorPath = () => PATHS.PUBLIC.paystubGenerator;
 
 const fillTemplateSlug = (path, templateId) =>
   path.replace(":templateSlug", encodeURIComponent(toTemplateSlug(templateId)));
 
+/** Form step 1 on the canonical create URL. */
 export const buildPaystubCreatePath = (templateId) =>
-  fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId);
+  `${fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId)}?step=1`;
 
+/** Package selection: `?step=5&checkout=package`. */
 export const buildPaystubPackagePath = (templateId) =>
-  fillTemplateSlug(PATHS.PUBLIC.paystubPackage, templateId);
+  `${fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId)}?step=5&checkout=package`;
 
+/** Checkout verifying: `?step=6&checkout=verifying`. */
 export const buildPaystubCheckoutPath = (templateId) =>
-  fillTemplateSlug(PATHS.PUBLIC.paystubCheckout, templateId);
+  `${fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId)}?step=6&checkout=verifying`;
 
+/** Checkout success: `?step=6&checkout=success`. */
 export const buildPaystubSuccessPath = (templateId) =>
-  fillTemplateSlug(PATHS.PUBLIC.paystubSuccess, templateId);
+  `${fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId)}?step=6&checkout=success`;
+
+/** Bare create path without query (legacy redirect helpers). */
+export const buildPaystubCreateBasePath = (templateId) =>
+  fillTemplateSlug(PATHS.PUBLIC.paystubCreate, templateId);
 
 export const buildAdminTemplateEditPath = (id) =>
   PATHS.ADMIN.templateEdit.replace(":id", encodeURIComponent(id));

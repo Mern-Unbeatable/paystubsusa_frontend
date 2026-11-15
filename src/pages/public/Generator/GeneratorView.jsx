@@ -6,7 +6,6 @@ import {
   TEMPLATE_QUERY_PARAM,
   buildPaystubCreatePath,
   fromTemplateSlug,
-  toTemplateSlug,
 } from "../../../config/paths";
 import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
 import { getTemplateById, usePaystubTemplates } from "./utils/templateUtils";
@@ -14,13 +13,14 @@ import { LAST_TEMPLATE_STORAGE_KEY } from "./utils/generatorStorage";
 
 const GeneratorView = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { templates, defaultTemplateId } = usePaystubTemplates();
   const [lastTemplateId, setLastTemplateId] = useSessionStorageState(
     LAST_TEMPLATE_STORAGE_KEY,
     defaultTemplateId,
   );
 
+  // Optional legacy `?templateId=` only preselects — does not navigate.
   const queryTemplate = getTemplateById(
     fromTemplateSlug(searchParams.get(TEMPLATE_QUERY_PARAM) ?? ""),
     templates,
@@ -32,14 +32,6 @@ const GeneratorView = () => {
 
   const handleSelectTemplate = (id) => {
     setLastTemplateId(id);
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        next.set(TEMPLATE_QUERY_PARAM, toTemplateSlug(id));
-        return next;
-      },
-      { replace: true },
-    );
   };
 
   const handleContinue = () => {
@@ -48,10 +40,8 @@ const GeneratorView = () => {
 
   return (
     <div className="w-full min-h-screen bg-white">
-      {/* 1. Hero Section */}
       <GeneratorHeroSection />
 
-      {/* 2. Choose Your Paystub Template Section */}
       <TemplateSelectionSection
         selectedTemplateId={selectedTemplateId}
         onSelectTemplate={handleSelectTemplate}
