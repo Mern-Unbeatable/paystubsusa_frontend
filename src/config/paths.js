@@ -33,9 +33,19 @@ export const PATHS = {
     nec1099Success: "/1099-nec/create/checkout/success",
     nec1099SuccessLegacy: "/1099-nec/create/success",
     directDeposit: "/direct-deposit",
+    directDepositCreate: "/direct-deposit/create",
+    directDepositCreateStep1: "/direct-deposit/create?step=1",
+    directDepositCheckoutVerifying:
+      "/direct-deposit/create?step=5&checkout=verifying",
+    directDepositCheckoutVerified:
+      "/direct-deposit/create?step=5&checkout=verified",
+    directDepositCheckoutSuccess:
+      "/direct-deposit/create?step=5&checkout=success",
     directDepositPreview: "/direct-deposit/create/preview",
+    /** Legacy path routes; redirect into create query URLs. */
     directDepositCheckout: "/direct-deposit/create/checkout",
-    directDepositSuccess: "/direct-deposit/create/success",
+    directDepositSuccess: "/direct-deposit/create/checkout/success",
+    directDepositSuccessLegacy: "/direct-deposit/create/success",
     pricing: "/pricing",
     findPaystubs: "/find-paystubs",
     about: "/about",

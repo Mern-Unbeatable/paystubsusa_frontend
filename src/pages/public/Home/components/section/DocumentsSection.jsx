@@ -388,7 +388,7 @@ const DocumentsSection = () => {
                   Direct Deposit Slip
                 </h4>
                 <Link
-                  to={PATHS.PUBLIC.directDeposit}
+                  to={PATHS.PUBLIC.directDepositCreateStep1}
                   className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-secondary hover:underline"
                 >
                   <span>Create Slip</span>

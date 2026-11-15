@@ -42,7 +42,7 @@ const NAV_LINKS = [
   },
   {
     name: "Direct Deposit",
-    href: "/direct-deposit",
+    href: PATHS.PUBLIC.directDepositCreateStep1,
     icon: Landmark,
     match: ["/direct-deposit"],
   },

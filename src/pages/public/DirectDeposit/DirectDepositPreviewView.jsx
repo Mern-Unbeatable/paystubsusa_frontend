@@ -1,19 +1,17 @@
 import React from "react";
-import DocumentPreviewPage from "../shared/documentFlow/DocumentPreviewPage";
-import DirectDepositReviewSection from "./components/sections/DirectDepositReviewSection";
-import { useDirectDepositFormData } from "./hooks/useDirectDepositFormData";
-import { DIRECT_DEPOSIT_FLOW } from "./utils/directDepositFlow";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
+import { DD_FORM_STEPS } from "./utils/directDepositFlow";
+import { buildDirectDepositCreatePath } from "./hooks/useDirectDepositFormStep";
 
-const DirectDepositPreviewView = () => {
-  const { formData } = useDirectDepositFormData();
-
-  return (
-    <DocumentPreviewPage
-      flow={DIRECT_DEPOSIT_FLOW}
-      formData={formData}
-      ReviewSection={DirectDepositReviewSection}
-    />
-  );
-};
+const DirectDepositPreviewView = () => (
+  <Navigate
+    to={buildDirectDepositCreatePath(
+      PATHS.PUBLIC.directDepositCreate,
+      DD_FORM_STEPS.REVIEW,
+    )}
+    replace
+  />
+);
 
 export default DirectDepositPreviewView;

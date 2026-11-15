@@ -94,6 +94,11 @@ const DirectDepositView = lazy(() =>
     default: module.DirectDepositView,
   })),
 );
+const DirectDepositCreateView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.DirectDepositCreateView,
+  })),
+);
 const DirectDepositPreviewView = lazy(() =>
   import("../../pages/public").then((module) => ({
     default: module.DirectDepositPreviewView,
@@ -107,6 +112,11 @@ const DirectDepositCheckoutView = lazy(() =>
 const DirectDepositSuccessView = lazy(() =>
   import("../../pages/public").then((module) => ({
     default: module.DirectDepositSuccessView,
+  })),
+);
+const DirectDepositSuccessLegacyRedirect = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.DirectDepositSuccessLegacyRedirect,
   })),
 );
 const PricingView = lazy(() =>
@@ -211,6 +221,10 @@ export const publicRoutes = [
     element: createLazyRouteElement(DirectDepositView),
   },
   {
+    path: PATHS.PUBLIC.directDepositCreate,
+    element: createLazyRouteElement(DirectDepositCreateView),
+  },
+  {
     path: PATHS.PUBLIC.directDepositPreview,
     element: createLazyRouteElement(DirectDepositPreviewView),
   },
@@ -221,6 +235,10 @@ export const publicRoutes = [
   {
     path: PATHS.PUBLIC.directDepositSuccess,
     element: createLazyRouteElement(DirectDepositSuccessView),
+  },
+  {
+    path: PATHS.PUBLIC.directDepositSuccessLegacy,
+    element: createLazyRouteElement(DirectDepositSuccessLegacyRedirect),
   },
   { path: "pricing/:billing?", element: createLazyRouteElement(PricingView) },
   { path: "find-paystubs", element: createLazyRouteElement(FindPaystubsView) },

@@ -26,7 +26,7 @@ const LINK_BY_TYPE = {
   paystub: "/paystub-generator",
   w2: "/w-2/create?step=1",
   nec1099: "/1099-nec/create?step=1",
-  direct_deposit: "/direct-deposit",
+  direct_deposit: "/direct-deposit/create?step=1",
 };
 
 /** Pricing page data from GET /catalog/products. */
