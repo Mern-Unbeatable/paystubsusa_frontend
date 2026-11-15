@@ -54,11 +54,15 @@ const W2CreateView = () => {
   }, [searchParams, setSearchParams, isCheckout, checkoutPhase]);
 
   return (
-    <div className="w-full min-h-screen bg-white">
+    <div
+      className={`w-full bg-white ${isSuccess ? "" : "min-h-screen"}`}
+    >
       {!isCheckout ? <W2HeroSection /> : null}
 
       <section
-        className={`w-full py-10 sm:py-16 ${
+        className={`w-full ${
+          isSuccess ? "py-8 sm:py-10 pb-12 sm:pb-14" : "py-10 sm:py-16"
+        } ${
           isCheckout
             ? "bg-[#F7FAFF]"
             : "bg-[#F7FAFF] border-t border-slate-200/80"
