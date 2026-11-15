@@ -61,6 +61,8 @@ export const PATHS = {
     templateNew: "/admin/templates/new",
     templateEdit: "/admin/templates/:id/edit",
     pricing: "/admin/pricing",
+    settings: "/admin/settings",
+    settingsTable: (table) => `/admin/settings/${table}`,
     profile: "/admin/profile",
   },
 };

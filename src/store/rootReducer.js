@@ -10,6 +10,7 @@ import { adminDocumentReducer } from "../features/dash/admin/document/documentSl
 import { adminOverviewReducer } from "../features/dash/admin/overview/overviewSlice";
 import { adminContactReducer } from "../features/dash/admin/contact/contactSlice";
 import { adminGuestReducer } from "../features/dash/admin/guest/guestSlice";
+import { adminSystemReducer } from "../features/dash/admin/system/systemSlice";
 import { customerOverviewReducer } from "../features/dash/customer/overview/overviewSlice";
 import { customerDocumentReducer } from "../features/dash/customer/document/documentSlice";
 import { customerPaymentReducer } from "../features/dash/customer/payment/paymentSlice";
@@ -33,6 +34,7 @@ export const rootReducer = combineReducers({
   adminOverview: adminOverviewReducer,
   adminContact: adminContactReducer,
   adminGuest: adminGuestReducer,
+  adminSystem: adminSystemReducer,
   customerOverview: customerOverviewReducer,
   customerDocument: customerDocumentReducer,
   customerPayment: customerPaymentReducer,

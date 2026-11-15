@@ -70,6 +70,16 @@ const AdminProfileView = lazy(() =>
     default: module.AdminProfileView,
   })),
 );
+const AdminSettingsView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminSettingsView,
+  })),
+);
+const AdminSystemTableView = lazy(() =>
+  import("../../pages/dash/admin").then((module) => ({
+    default: module.AdminSystemTableView,
+  })),
+);
 
 export const adminRoutes = [
   {
@@ -134,6 +144,14 @@ export const adminRoutes = [
       {
         path: "pricing",
         element: createLazyRouteElement(AdminPricingPlansView),
+      },
+      {
+        path: "settings",
+        element: createLazyRouteElement(AdminSettingsView),
+      },
+      {
+        path: "settings/:table",
+        element: createLazyRouteElement(AdminSystemTableView),
       },
       {
         path: "profile",

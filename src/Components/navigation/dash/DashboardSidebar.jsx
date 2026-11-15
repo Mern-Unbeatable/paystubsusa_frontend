@@ -19,6 +19,7 @@ import {
   LayoutTemplate,
   Tag,
   Mail,
+  Settings,
   X,
 } from "lucide-react";
 
@@ -116,6 +117,12 @@ const ADMIN_NAV_ITEMS = [
     label: "Contacts",
     icon: Mail,
     path: "/admin/contacts",
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    path: "/admin/settings",
   },
   {
     id: "profile",

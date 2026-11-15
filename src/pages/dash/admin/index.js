@@ -11,3 +11,5 @@ export { default as AdminDocumentTemplatesView } from "./templates/AdminDocument
 export { default as AdminTemplateCreateView } from "./templates/AdminTemplateCreateView";
 export { default as AdminTemplateEditView } from "./templates/AdminTemplateEditView";
 export { default as AdminTransactionsView } from "./transactions/AdminTransactionsView";
+export { default as AdminSettingsView } from "./settings/AdminSettingsView";
+export { default as AdminSystemTableView } from "./settings/AdminSystemTableView";
