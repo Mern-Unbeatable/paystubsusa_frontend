@@ -70,12 +70,12 @@ const FooterLayout = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/1099-nec" className="hover:text-secondary transition-colors">
+                <Link to="/1099-nec/create?step=1" className="hover:text-secondary transition-colors">
                   1099 Generator
                 </Link>
               </li>
               <li>
-                <Link to="/direct-deposit" className="hover:text-secondary transition-colors">
+                <Link to="/direct-deposit/create?step=1" className="hover:text-secondary transition-colors">
                   Direct Deposit Slip
                 </Link>
               </li>

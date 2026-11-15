@@ -1,12 +1,23 @@
 import React from "react";
-import DocumentSuccessPage from "../shared/documentFlow/DocumentSuccessPage";
-import { useW2FormData } from "./hooks/useW2FormData";
-import { W2_FLOW } from "./utils/w2Flow";
+import { Navigate, useSearchParams } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
 
+/**
+ * Legacy `/w-2/create/checkout/success` → create success query URL.
+ * Preserves Stripe redirect query params (`payment_intent_client_secret`, etc.).
+ */
 const W2SuccessView = () => {
-  const { formData } = useW2FormData();
-
-  return <DocumentSuccessPage flow={W2_FLOW} formData={formData} />;
+  const [searchParams] = useSearchParams();
+  const next = new URLSearchParams(searchParams);
+  // Ensure canonical create success params win.
+  next.set("step", "5");
+  next.set("checkout", "success");
+  return (
+    <Navigate
+      to={`${PATHS.PUBLIC.w2Create}?${next.toString()}`}
+      replace
+    />
+  );
 };
 
 export default W2SuccessView;

@@ -5,19 +5,19 @@ const FORM_DATA_STORAGE_KEY = "directDepositGenerator.formData";
 // Defaults match the Figma mock so the live preview is populated on first load.
 const DEFAULT_FORM_DATA = {
   // Step 1: Employer Information
-  employerName: "Company Name",
+  employerName: "Acme Corporation",
   streetAddress: "123 Business Avenue",
-  city: "City",
-  state: "ST",
-  zipCode: "00000",
+  city: "Austin",
+  state: "TX",
+  zipCode: "78701",
   employerContact: "",
 
   // Step 2: Employee Information
-  employeeName: "Employee / Recipient Name",
+  employeeName: "Jane Doe",
   employeeAddress: "456 Residential Rd",
-  employeeCity: "City",
-  employeeState: "ST",
-  employeeZipCode: "00000",
+  employeeCity: "Austin",
+  employeeState: "TX",
+  employeeZipCode: "78704",
   employeeId: "EMP-8821",
 
   // Step 3: Deposit Details
@@ -27,7 +27,7 @@ const DEFAULT_FORM_DATA = {
   bankName: "Chase Bank",
   accountHolderName: "Employee Name",
   accountType: "Checking", // Checking | Savings
-  accountNumber: "•••• 0000",
+  accountNumber: "1234567890",
   depositAmount: "1,850.00",
   paymentDescription: "Bi-weekly Direct Deposit Payroll",
 

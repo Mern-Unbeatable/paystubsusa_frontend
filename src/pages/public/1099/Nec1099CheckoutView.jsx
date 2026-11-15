@@ -1,18 +1,9 @@
 import React from "react";
-import DocumentCheckoutPage from "../shared/documentFlow/DocumentCheckoutPage";
-import { useNec1099FormData } from "./hooks/useNec1099FormData";
-import { NEC1099_FLOW } from "./utils/nec1099Flow";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
 
-const Nec1099CheckoutView = () => {
-  const { formData, updateField } = useNec1099FormData();
-
-  return (
-    <DocumentCheckoutPage
-      flow={NEC1099_FLOW}
-      email={formData.email}
-      onEmailChange={(email) => updateField("email", email)}
-    />
-  );
-};
+const Nec1099CheckoutView = () => (
+  <Navigate to={PATHS.PUBLIC.nec1099CheckoutVerifying} replace />
+);
 
 export default Nec1099CheckoutView;

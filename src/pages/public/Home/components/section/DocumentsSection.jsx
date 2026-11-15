@@ -273,7 +273,7 @@ const DocumentsSection = () => {
                   tag: "Wage & Tax",
                   form: "W-2",
                   cta: "Create W-2",
-                  href: PATHS.PUBLIC.w2,
+                  href: PATHS.PUBLIC.w2CreateStep1,
                 },
                 {
                   key: "1099",
@@ -282,7 +282,7 @@ const DocumentsSection = () => {
                   tag: "Nonemployee",
                   form: "1099-NEC",
                   cta: "Create 1099",
-                  href: PATHS.PUBLIC.nec1099,
+                  href: PATHS.PUBLIC.nec1099CreateStep1,
                 },
               ].map((card) => (
                 <div
@@ -388,7 +388,7 @@ const DocumentsSection = () => {
                   Direct Deposit Slip
                 </h4>
                 <Link
-                  to={PATHS.PUBLIC.directDeposit}
+                  to={PATHS.PUBLIC.directDepositCreateStep1}
                   className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-secondary hover:underline"
                 >
                   <span>Create Slip</span>

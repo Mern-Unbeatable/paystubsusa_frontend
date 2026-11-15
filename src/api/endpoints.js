@@ -71,6 +71,10 @@ export const API_ENDPOINTS = Object.freeze({
     TEMPLATE: (id) => buildResourcePath("admin/templates", id),
     TEMPLATE_DEFAULT: (id) => `${buildResourcePath("admin/templates", id)}/default`,
     TEMPLATE_PREVIEW: (id) => `${buildResourcePath("admin/templates", id)}/preview`,
+    AUDIT_LOGS: "/admin/audit-logs",
+    SYSTEM_TABLE: (table) => buildResourcePath("admin/system", table),
+    SYSTEM_RECORD: (table, id) =>
+      `${buildResourcePath("admin/system", table)}/${encodeURIComponent(id)}`,
   }),
   USERS: Object.freeze({
     LIST: "/users",

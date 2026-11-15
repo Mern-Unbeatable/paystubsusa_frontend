@@ -1,17 +1,10 @@
 import React from "react";
-import DirectDepositHeroSection from "./components/sections/DirectDepositHeroSection";
-import DirectDepositGeneratorForm from "./components/sections/DirectDepositGeneratorForm";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
 
-const DirectDepositView = () => {
-  return (
-    <div className="w-full min-h-screen bg-white">
-      {/* Direct Deposit Hero Section */}
-      <DirectDepositHeroSection />
-
-      {/* 5-Step Direct Deposit Form Generator with Live Preview */}
-      <DirectDepositGeneratorForm />
-    </div>
-  );
-};
+/** `/direct-deposit` → `/direct-deposit/create?step=1`. */
+const DirectDepositView = () => (
+  <Navigate to={PATHS.PUBLIC.directDepositCreateStep1} replace />
+);
 
 export default DirectDepositView;

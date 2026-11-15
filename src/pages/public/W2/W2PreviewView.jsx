@@ -1,19 +1,15 @@
 import React from "react";
-import DocumentPreviewPage from "../shared/documentFlow/DocumentPreviewPage";
-import W2ReviewSection from "./components/sections/W2ReviewSection";
-import { useW2FormData } from "./hooks/useW2FormData";
-import { W2_FLOW } from "./utils/w2Flow";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
+import { W2_FORM_STEPS } from "./utils/w2Flow";
+import { buildW2CreatePath } from "./hooks/useW2FormStep";
 
-const W2PreviewView = () => {
-  const { formData } = useW2FormData();
-
-  return (
-    <DocumentPreviewPage
-      flow={W2_FLOW}
-      formData={formData}
-      ReviewSection={W2ReviewSection}
-    />
-  );
-};
+/** Legacy `/w-2/create/preview` → `/w-2/create?step=4`. */
+const W2PreviewView = () => (
+  <Navigate
+    to={buildW2CreatePath(PATHS.PUBLIC.w2Create, W2_FORM_STEPS.REVIEW)}
+    replace
+  />
+);
 
 export default W2PreviewView;

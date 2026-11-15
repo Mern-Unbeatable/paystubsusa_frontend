@@ -9,7 +9,7 @@ import { rememberLastTemplateId } from "../../../utils/generatorStorage";
  * from the URL, handles redirects / unknown ids, and renders the common layout.
  * `children` is a render function receiving the resolved template.
  */
-const PaystubFlowPage = ({ children }) => {
+const PaystubFlowPage = ({ children, compact = false }) => {
   const { templateSlug, template, redirectTo, loading } = usePaystubFlowRoute();
 
   useEffect(() => {
@@ -29,8 +29,15 @@ const PaystubFlowPage = ({ children }) => {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#F4F7FB] border-t border-slate-200/80 py-8 sm:py-14">
-      <div className="w-full max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-0 sm:py-12 select-none">
+    <div
+      className={`w-full bg-[#F4F7FB] border-t border-slate-200/80 ${
+        compact ? "py-8 sm:py-10 pb-12 sm:pb-14" : "min-h-screen py-8 sm:py-14"
+      }`}
+    >
+      <div
+        id="paystub-flow"
+        className="w-full max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-0 sm:py-12 select-none scroll-mt-20 sm:scroll-mt-24"
+      >
         {children(template)}
       </div>
     </div>

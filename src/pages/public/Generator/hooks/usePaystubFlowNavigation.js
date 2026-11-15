@@ -1,41 +1,93 @@
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "../../../../config/paths";
 import {
-  buildPaystubCheckoutPath,
-  buildPaystubCreatePath,
-  buildPaystubGeneratorPath,
-  buildPaystubPackagePath,
-  buildPaystubSuccessPath,
-} from "../../../../config/paths";
-import { PAYSTUB_FORM_STEPS, getFlowPathBuilder } from "../utils/paystubFlow";
-import { clearCheckoutOrder, resetCheckout } from "../../../../features/public/checkout/checkoutSlice";
+  PAYSTUB_FORM_STEPS,
+  PAYSTUB_PAGE_STEPS,
+} from "../utils/paystubFlow";
+import {
+  clearCheckoutOrder,
+  resetCheckout,
+} from "../../../../features/public/checkout/checkoutSlice";
+import {
+  PAYSTUB_CHECKOUT_PHASE,
+  buildPaystubCreateQueryPath,
+  scrollPaystubFlowIntoView,
+} from "./usePaystubFormStep";
 
 /** Navigation callbacks for each transition in the paystub flow. */
 export function usePaystubFlowNavigation(templateId) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+
+  const goToFormStep = (step) => {
+    navigate(buildPaystubCreateQueryPath(templateId, step));
+    scrollPaystubFlowIntoView();
+  };
+
+  const goToPackage = () => {
+    navigate(
+      buildPaystubCreateQueryPath(
+        templateId,
+        PAYSTUB_PAGE_STEPS.PACKAGE,
+        PAYSTUB_CHECKOUT_PHASE.PACKAGE,
+      ),
+    );
+    scrollPaystubFlowIntoView();
+  };
+
+  const goToCheckout = (
+    phase = PAYSTUB_CHECKOUT_PHASE.VERIFYING,
+    { replace = false } = {},
+  ) => {
+    navigate(
+      buildPaystubCreateQueryPath(
+        templateId,
+        PAYSTUB_PAGE_STEPS.CHECKOUT,
+        phase,
+      ),
+      { replace },
+    );
+    scrollPaystubFlowIntoView();
+  };
 
   return {
-    // Navigate before resetting so the success page never re-renders unpaid and bounces to checkout.
     onBackToTemplates: () => {
-      navigate(buildPaystubGeneratorPath(templateId));
+      navigate(PATHS.PUBLIC.paystubGenerator);
       dispatch(resetCheckout());
     },
-    /** Swaps the template while staying on the current flow page. */
-    onSwitchTemplate: (nextTemplateId, state) => {
+    /** Swaps the template while staying on the same step/checkout phase. */
+    onSwitchTemplate: (nextTemplateId, { step, checkoutPhase } = {}) => {
       dispatch(clearCheckoutOrder());
-      navigate(getFlowPathBuilder(pathname)(nextTemplateId), { replace: true, state });
+      const nextStep = step ?? PAYSTUB_FORM_STEPS.EMPLOYER;
+      navigate(
+        buildPaystubCreateQueryPath(nextTemplateId, nextStep, checkoutPhase),
+        { replace: true },
+      );
+      scrollPaystubFlowIntoView();
     },
-    onContinueToPackage: () => navigate(buildPaystubPackagePath(templateId)),
-    onBackToReview: () =>
-      navigate(buildPaystubCreatePath(templateId), {
-        state: { step: PAYSTUB_FORM_STEPS.REVIEW },
-      }),
-    onBackToFormStep: (step) =>
-      navigate(buildPaystubCreatePath(templateId), { state: { step } }),
-    onContinueToCheckout: () => navigate(buildPaystubCheckoutPath(templateId)),
-    onBackToPackage: () => navigate(buildPaystubPackagePath(templateId)),
-    onPaymentSuccess: () => navigate(buildPaystubSuccessPath(templateId), { replace: true }),
+    onContinueToPackage: goToPackage,
+    onBackToReview: () => goToFormStep(PAYSTUB_FORM_STEPS.REVIEW),
+    onBackToFormStep: goToFormStep,
+    onContinueToCheckout: () =>
+      goToCheckout(PAYSTUB_CHECKOUT_PHASE.VERIFYING),
+    onBackToPackage: goToPackage,
+    onCheckoutVerifying: (opts) =>
+      goToCheckout(PAYSTUB_CHECKOUT_PHASE.VERIFYING, opts),
+    onCheckoutVerified: (opts) =>
+      goToCheckout(PAYSTUB_CHECKOUT_PHASE.VERIFIED, opts),
+    onPaymentSuccess: () =>
+      goToCheckout(PAYSTUB_CHECKOUT_PHASE.SUCCESS, { replace: true }),
+    goToStep: (step) => {
+      if (step <= PAYSTUB_FORM_STEPS.REVIEW) {
+        goToFormStep(step);
+        return;
+      }
+      if (step === PAYSTUB_PAGE_STEPS.PACKAGE) {
+        goToPackage();
+        return;
+      }
+      goToCheckout(PAYSTUB_CHECKOUT_PHASE.VERIFYING);
+    },
   };
 }

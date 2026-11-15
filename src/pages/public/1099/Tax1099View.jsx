@@ -1,17 +1,10 @@
 import React from "react";
-import Nec1099HeroSection from "./components/sections/Nec1099HeroSection";
-import Nec1099GeneratorForm from "./components/sections/Nec1099GeneratorForm";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
 
-const Tax1099View = () => {
-  return (
-    <div className="w-full min-h-screen bg-white">
-      {/* 1099-NEC Hero Section */}
-      <Nec1099HeroSection />
-
-      {/* 5-Step 1099-NEC Form Generator with Live Preview */}
-      <Nec1099GeneratorForm />
-    </div>
-  );
-};
+/** `/1099-nec` → `/1099-nec/create?step=1`. */
+const Tax1099View = () => (
+  <Navigate to={PATHS.PUBLIC.nec1099CreateStep1} replace />
+);
 
 export default Tax1099View;

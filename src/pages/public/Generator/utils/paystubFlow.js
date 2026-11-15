@@ -25,6 +25,10 @@ const FLOW_ROUTES = [
   { path: PATHS.PUBLIC.paystubSuccess, buildPath: buildPaystubSuccessPath },
   { path: PATHS.PUBLIC.paystubCheckout, buildPath: buildPaystubCheckoutPath },
   { path: PATHS.PUBLIC.paystubPackage, buildPath: buildPaystubPackagePath },
+  {
+    path: PATHS.PUBLIC.paystubCreateLegacy,
+    buildPath: buildPaystubCreatePath,
+  },
   { path: PATHS.PUBLIC.paystubCreate, buildPath: buildPaystubCreatePath },
 ];
 

@@ -1,17 +1,10 @@
 import React from "react";
-import W2HeroSection from "./components/sections/W2HeroSection";
-import W2GeneratorForm from "./components/sections/W2GeneratorForm";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
 
-const W2View = () => {
-  return (
-    <div className="w-full min-h-screen bg-white">
-      {/* W-2 Hero Section */}
-      <W2HeroSection />
-
-      {/* 5-Step W-2 Form Generator with Live Preview */}
-      <W2GeneratorForm />
-    </div>
-  );
-};
+/** `/w-2` → `/w-2/create?step=1` (nav entry and legacy bookmarks). */
+const W2View = () => (
+  <Navigate to={PATHS.PUBLIC.w2CreateStep1} replace />
+);
 
 export default W2View;
