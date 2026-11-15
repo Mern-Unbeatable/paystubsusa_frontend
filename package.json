@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:renderer": "vite build --config vite.renderer.config.js",
+    "dev": "node init && vite",
+    "build": "node init && vite build",
+    "build:renderer": "node init && vite build --config vite.renderer.config.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
