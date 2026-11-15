@@ -9,6 +9,7 @@ export { default as W2CreateView } from "./W2/W2CreateView";
 export { default as W2PreviewView } from "./W2/W2PreviewView";
 export { default as W2CheckoutView } from "./W2/W2CheckoutView";
 export { default as W2SuccessView } from "./W2/W2SuccessView";
+export { default as W2SuccessLegacyRedirect } from "./W2/W2SuccessLegacyRedirect";
 export { default as Tax1099View } from "./1099/Tax1099View";
 export { default as Nec1099PreviewView } from "./1099/Nec1099PreviewView";
 export { default as Nec1099CheckoutView } from "./1099/Nec1099CheckoutView";

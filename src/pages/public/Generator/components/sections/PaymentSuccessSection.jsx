@@ -5,9 +5,9 @@ import SuccessCheckIcon from "../common/success/SuccessCheckIcon";
 import OrderDetailsCard from "../common/order/OrderDetailsCard";
 import CreditsRemainingBanner from "../common/order/CreditsRemainingBanner";
 
-const getSuccessTitle = ({ processing, redeemed }) => {
+const getSuccessTitle = ({ processing, redeemed, documentLabel }) => {
   if (processing) return "Payment Processing";
-  return redeemed ? "Paystub Created!" : "Payment Successful!";
+  return redeemed ? `${documentLabel} Created!` : "Payment Successful!";
 };
 
 const PaymentSuccessSection = ({
@@ -17,14 +17,21 @@ const PaymentSuccessSection = ({
   preparingDocument = false,
   redeemed = false,
   creditsRemaining = 0,
+  documentLabel = "Paystub",
+  downloadLabel,
+  startOverLabel,
   onUseCredit,
   onDownload,
   onStartOver,
 }) => {
   const hasCredits = !processing && creditsRemaining > 0;
-  const employeeName = (
-    <strong className="text-slate-800">{formData.employeeName}</strong>
+  const recipientName =
+    formData.employeeName ||
+    [formData.firstName, formData.lastName].filter(Boolean).join(" ");
+  const namedRecipient = (
+    <strong className="text-slate-800">{recipientName || "your document"}</strong>
   );
+  const noun = documentLabel.toLowerCase();
 
   return (
     <div className="relative max-w-lg mx-auto bg-white rounded-2xl p-8 border border-slate-200 shadow-lg text-center space-y-5 overflow-hidden animate-in zoom-in-95 duration-200">
@@ -35,16 +42,16 @@ const PaymentSuccessSection = ({
 
         <div className="space-y-1.5">
           <h2 className="text-2xl font-bold text-slate-900 animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.15s_both]">
-            {getSuccessTitle({ processing, redeemed })}
+            {getSuccessTitle({ processing, redeemed, documentLabel })}
           </h2>
           <p className="text-slate-500 text-[14px] animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.28s_both]">
             {processing ? (
               <>
-                We&apos;ll email your paystub for {employeeName} once the
+                We&apos;ll email your {noun} for {namedRecipient} once the
                 payment clears.
               </>
             ) : (
-              <>Your professional paystub for {employeeName} is ready.</>
+              <>Your professional {noun} for {namedRecipient} is ready.</>
             )}
           </p>
         </div>
@@ -73,7 +80,7 @@ const PaymentSuccessSection = ({
             ) : (
               <>
                 <Download className="w-4 h-4" />
-                <span>Download Paystub PDF</span>
+                <span>{downloadLabel || `Download ${documentLabel} PDF`}</span>
               </>
             )}
           </button>
@@ -84,7 +91,8 @@ const PaymentSuccessSection = ({
           >
             <Plus className="w-4 h-4" />
             <span>
-              {hasCredits ? "Start a New Order" : "Create Another Paystub"}
+              {startOverLabel ||
+                (hasCredits ? "Start a New Order" : `Create Another ${documentLabel}`)}
             </span>
           </button>
         </div>

@@ -1,7 +1,6 @@
 import STEPS from "../../data/w2/steps.json";
 import W2FormDocument from "../templates/W2FormDocument";
 import { PATHS } from "../../../../config/paths";
-import { createPaidFlag } from "../../shared/documentFlow/utils/documentFlow";
 
 /** Steps inside the details form on the create page. */
 export const W2_FORM_STEPS = {
@@ -19,16 +18,14 @@ export const W2_PAGE_STEPS = {
 const getEmployeeName = (formData) =>
   [formData.firstName, formData.lastName].filter(Boolean).join(" ");
 
-/** Everything the shared document-flow pages need to know about the W-2. */
 export const W2_FLOW = {
   steps: STEPS,
   paths: {
-    form: PATHS.PUBLIC.w2,
-    preview: PATHS.PUBLIC.w2,
+    form: PATHS.PUBLIC.w2Create,
+    // Checkout / success are query phases on the create URL (legacy path redirects remain).
     checkout: PATHS.PUBLIC.w2Checkout,
     success: PATHS.PUBLIC.w2Success,
   },
-  paidFlag: createPaidFlag("w2Generator.paid"),
   priceLabel: "$14.99",
   documentLabel: "Form W-2",
   orderTitle: "Form W-2 · Tax Year 2025",
@@ -41,7 +38,7 @@ export const W2_FLOW = {
     "W-2",
     formData.firstName,
     formData.lastName,
-    "2025",
+    String(formData.taxYear ?? new Date().getUTCFullYear() - 1),
   ],
   Document: W2FormDocument,
 };

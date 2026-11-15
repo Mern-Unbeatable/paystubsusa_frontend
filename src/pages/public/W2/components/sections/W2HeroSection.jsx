@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { Check, Shield, FileText } from "lucide-react";
+import { ArrowRight, Check, Shield, FileText } from "lucide-react";
 import gsap from "gsap";
 import featureItems from "../../../data/w2/heroFeatures.json";
 
-const W2HeroSection = () => {
+const W2HeroSection = ({ onContinue }) => {
   const heroRef = useRef(null);
   const eyebrowRef = useRef(null);
   const headingRef = useRef(null);
   const subtitleRef = useRef(null);
   const featuresRef = useRef(null);
+  const ctaRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -42,6 +43,12 @@ const W2HeroSection = () => {
             clearProps: "transform",
           },
           "-=0.35",
+        )
+        .fromTo(
+          ctaRef.current,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.55, clearProps: "transform" },
+          "-=0.25",
         );
     }, heroRef);
 
@@ -59,7 +66,6 @@ const W2HeroSection = () => {
         className="absolute -bottom-16 sm:-bottom-20 -left-16 sm:-left-20 w-[300px] sm:w-[420px] md:w-[460px] h-[300px] sm:h-[420px] md:h-[460px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
         aria-hidden="true"
       />
-
       <div
         className="absolute -top-16 sm:-top-20 -right-16 sm:-right-20 w-[340px] sm:w-[460px] md:w-[500px] h-[340px] sm:h-[460px] md:h-[500px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
         aria-hidden="true"
@@ -111,6 +117,19 @@ const W2HeroSection = () => {
             );
           })}
         </div>
+
+        {onContinue ? (
+          <div ref={ctaRef} className="mt-10 sm:mt-12">
+            <button
+              type="button"
+              onClick={onContinue}
+              className="bg-secondary hover:bg-[#0089e0] text-white font-semibold text-[15px] px-8 py-3.5 rounded-xl shadow-sm hover:shadow transition-all inline-flex items-center gap-2 cursor-pointer active:scale-98"
+            >
+              <span>Create Your W-2</span>
+              <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+            </button>
+          </div>
+        ) : null}
       </div>
     </section>
   );

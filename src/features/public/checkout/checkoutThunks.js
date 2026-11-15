@@ -20,9 +20,12 @@ export const verifyCheckoutCode = withErrors("checkout/verifyCode", (code, { get
 /** `items` and `formData` come from the flow; price and email are decided by the server. */
 export const createCheckoutOrder = withErrors(
   "checkout/createOrder",
-  ({ templateId, items, formData, idempotencyKey }, { getState }) =>
+  (
+    { documentType = "paystub", templateId, items, formData, idempotencyKey },
+    { getState },
+  ) =>
     checkoutService.createOrder(
-      { documentType: "paystub", templateId, items, formData, termsAccepted: true },
+      { documentType, templateId, items, formData, termsAccepted: true },
       { guestToken: getState().checkout.guestToken, idempotencyKey },
     ),
 );

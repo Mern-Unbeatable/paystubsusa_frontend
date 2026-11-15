@@ -2,13 +2,13 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { PATHS } from "../../../config/paths";
 import { W2_FORM_STEPS } from "./utils/w2Flow";
+import { buildW2CreatePath } from "./hooks/useW2FormStep";
 
-/** Legacy `/w-2/create/preview` → landing on the review step. */
+/** Legacy `/w-2/create/preview` → `/w-2/create?step=4`. */
 const W2PreviewView = () => (
   <Navigate
-    to={PATHS.PUBLIC.w2}
+    to={buildW2CreatePath(PATHS.PUBLIC.w2Create, W2_FORM_STEPS.REVIEW)}
     replace
-    state={{ step: W2_FORM_STEPS.REVIEW }}
   />
 );
 

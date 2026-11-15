@@ -157,7 +157,7 @@ const PaystubCheckoutContent = ({ template }) => {
           "This template is unavailable right now. Please try again later.",
       });
     setIsPreparingPayment(true);
-    const created = await dispatch(
+    let created = await dispatch(
       createCheckoutOrder({
         templateId: template.catalogId,
         items,
@@ -165,6 +165,36 @@ const PaystubCheckoutContent = ({ template }) => {
         idempotencyKey: idempotencyKeyRef.current,
       }),
     );
+    // Orphaned key after an API restart (or a twin in-flight click): wait briefly, then
+    // mint a new key so Pay Now is not stuck on IDEMPOTENCY_IN_PROGRESS for ~2 minutes.
+    if (
+      createCheckoutOrder.rejected.match(created) &&
+      created.payload?.code === "IDEMPOTENCY_IN_PROGRESS"
+    ) {
+      await new Promise((r) => setTimeout(r, 800));
+      created = await dispatch(
+        createCheckoutOrder({
+          templateId: template.catalogId,
+          items,
+          formData,
+          idempotencyKey: idempotencyKeyRef.current,
+        }),
+      );
+      if (
+        createCheckoutOrder.rejected.match(created) &&
+        created.payload?.code === "IDEMPOTENCY_IN_PROGRESS"
+      ) {
+        idempotencyKeyRef.current = crypto.randomUUID();
+        created = await dispatch(
+          createCheckoutOrder({
+            templateId: template.catalogId,
+            items,
+            formData,
+            idempotencyKey: idempotencyKeyRef.current,
+          }),
+        );
+      }
+    }
     setIsPreparingPayment(false);
     if (createCheckoutOrder.fulfilled.match(created)) {
       if (created.payload.payment) setPaymentOpen(true);

@@ -1,31 +1,46 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { W2_FORM_STEPS, W2_FLOW } from "../utils/w2Flow";
+import { resetCheckout } from "../../../../features/public/checkout/checkoutSlice";
+import { W2_FORM_STEPS, W2_FLOW, W2_PAGE_STEPS } from "../utils/w2Flow";
+import {
+  W2_CHECKOUT_PHASE,
+  buildW2CreatePath,
+} from "./useW2FormStep";
 
 /** Navigation callbacks for each transition in the W-2 flow. */
 export function useW2FlowNavigation() {
   const navigate = useNavigate();
-  const { paths, paidFlag } = W2_FLOW;
+  const dispatch = useDispatch();
+  const { paths } = W2_FLOW;
+
+  const goToFormStep = (step) =>
+    navigate(buildW2CreatePath(paths.form, step));
+
+  const goToCheckout = (phase = W2_CHECKOUT_PHASE.VERIFYING, { replace = false } = {}) =>
+    navigate(buildW2CreatePath(paths.form, W2_PAGE_STEPS.CHECKOUT, phase), {
+      replace,
+    });
 
   return {
-    onBackToFormStep: (step) => navigate(paths.form, { state: { step } }),
-    onBackToReview: () =>
-      navigate(paths.form, { state: { step: W2_FORM_STEPS.REVIEW } }),
-    onContinueToCheckout: () => navigate(paths.checkout),
-    onPaymentSuccess: () => {
-      paidFlag.markPaid();
-      navigate(paths.success, { replace: true });
-    },
+    onBackToFormStep: goToFormStep,
+    onBackToReview: () => goToFormStep(W2_FORM_STEPS.REVIEW),
+    onContinueToCheckout: () => goToCheckout(W2_CHECKOUT_PHASE.VERIFYING),
+    onCheckoutVerifying: (opts) =>
+      goToCheckout(W2_CHECKOUT_PHASE.VERIFYING, opts),
+    onCheckoutVerified: (opts) =>
+      goToCheckout(W2_CHECKOUT_PHASE.VERIFIED, opts),
+    onPaymentSuccess: () =>
+      goToCheckout(W2_CHECKOUT_PHASE.SUCCESS, { replace: true }),
     onStartOver: () => {
-      paidFlag.clearPaid();
-      navigate(paths.form);
+      dispatch(resetCheckout());
+      navigate(buildW2CreatePath(paths.form, W2_FORM_STEPS.EMPLOYER));
     },
-    /** Stepper clicks: form steps → landing with state; checkout → checkout route. */
     goToStep: (step) => {
       if (step <= W2_FORM_STEPS.REVIEW) {
-        navigate(paths.form, { state: { step } });
+        goToFormStep(step);
         return;
       }
-      navigate(paths.checkout);
+      goToCheckout(W2_CHECKOUT_PHASE.VERIFYING);
     },
   };
 }

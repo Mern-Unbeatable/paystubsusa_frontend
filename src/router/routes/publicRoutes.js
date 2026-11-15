@@ -54,6 +54,11 @@ const W2SuccessView = lazy(() =>
     default: module.W2SuccessView,
   })),
 );
+const W2SuccessLegacyRedirect = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.W2SuccessLegacyRedirect,
+  })),
+);
 const Tax1099View = lazy(() =>
   import("../../pages/public").then((module) => ({
     default: module.Tax1099View,
@@ -165,6 +170,10 @@ export const publicRoutes = [
   {
     path: PATHS.PUBLIC.w2Success,
     element: createLazyRouteElement(W2SuccessView),
+  },
+  {
+    path: PATHS.PUBLIC.w2SuccessLegacy,
+    element: createLazyRouteElement(W2SuccessLegacyRedirect),
   },
   { path: PATHS.PUBLIC.nec1099, element: createLazyRouteElement(Tax1099View) },
   {

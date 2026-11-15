@@ -273,7 +273,7 @@ const DocumentsSection = () => {
                   tag: "Wage & Tax",
                   form: "W-2",
                   cta: "Create W-2",
-                  href: PATHS.PUBLIC.w2,
+                  href: PATHS.PUBLIC.w2CreateStep1,
                 },
                 {
                   key: "1099",

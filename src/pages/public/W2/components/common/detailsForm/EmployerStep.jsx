@@ -9,7 +9,7 @@ import {
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
-const EmployerStep = ({ formData, updateField, onNext }) => (
+const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
   <div className="space-y-6">
     <StepHeader
       step={1}
@@ -111,7 +111,7 @@ const EmployerStep = ({ formData, updateField, onNext }) => (
       />
     </div>
 
-    <StepNav onNext={onNext} showBack={false} />
+    <StepNav onBack={onBack} onNext={onNext} showBack={Boolean(onBack)} />
   </div>
 );
 

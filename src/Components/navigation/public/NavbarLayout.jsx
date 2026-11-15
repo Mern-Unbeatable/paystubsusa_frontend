@@ -28,7 +28,12 @@ const NAV_LINKS = [
     icon: FileText,
     match: ["/paystub-generator", "/generator"],
   },
-  { name: "W-2", href: "/w-2", icon: FileSpreadsheet, match: ["/w-2", "/w2"] },
+  {
+    name: "W-2",
+    href: PATHS.PUBLIC.w2CreateStep1,
+    icon: FileSpreadsheet,
+    match: ["/w-2", "/w2"],
+  },
   {
     name: "1099-NEC",
     href: "/1099-nec",

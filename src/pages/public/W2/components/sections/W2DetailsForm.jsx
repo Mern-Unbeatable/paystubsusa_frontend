@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Lock } from "lucide-react";
 import DocumentLivePreview from "../../../shared/documentFlow/components/DocumentLivePreview";
 import DocumentOrderSummary from "../../../shared/documentFlow/components/DocumentOrderSummary";
 import { W2_FLOW, W2_FORM_STEPS } from "../../utils/w2Flow";
+import { useW2FormStep } from "../../hooks/useW2FormStep";
 import W2Stepper from "../common/flow/W2Stepper";
 import StepRibbon from "../common/flow/StepRibbon";
 import EmployerStep from "../common/detailsForm/EmployerStep";
@@ -13,28 +14,17 @@ import ReviewStep from "../common/detailsForm/ReviewStep";
 const FORM_STEP_COUNT = 4;
 
 /**
- * Landing-page form: steps 1–4 (employer → employee → wages → review) with live preview.
- * Mirrors Generator `PaystubDetailsForm` (without a separate create route).
+ * Create-page form: steps 1–4 driven by `?step=` on `/w-2/create`.
  */
-const W2DetailsForm = ({
-  form,
-  initialStep = W2_FORM_STEPS.EMPLOYER,
-  onContinueToCheckout,
-  onStepClick,
-}) => {
-  const [currentStep, setStep] = useState(initialStep);
-  const setCurrentStep = (step) => {
-    setStep(step);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
+const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
+  const { currentStep, setFormStep } = useW2FormStep();
   const { formData, updateField } = form;
   const { Document } = W2_FLOW;
   const showOrderSummary = currentStep === W2_FORM_STEPS.REVIEW;
 
   const handleStepperClick = (step) => {
     if (step <= W2_FORM_STEPS.REVIEW) {
-      setCurrentStep(step);
+      setFormStep(step);
       return;
     }
     onStepClick?.(step);
@@ -54,7 +44,7 @@ const W2DetailsForm = ({
             <EmployerStep
               formData={formData}
               updateField={updateField}
-              onNext={() => setCurrentStep(W2_FORM_STEPS.EMPLOYEE)}
+              onNext={() => setFormStep(W2_FORM_STEPS.EMPLOYEE)}
             />
           )}
 
@@ -62,8 +52,8 @@ const W2DetailsForm = ({
             <EmployeeStep
               formData={formData}
               updateField={updateField}
-              onBack={() => setCurrentStep(W2_FORM_STEPS.EMPLOYER)}
-              onNext={() => setCurrentStep(W2_FORM_STEPS.WAGES)}
+              onBack={() => setFormStep(W2_FORM_STEPS.EMPLOYER)}
+              onNext={() => setFormStep(W2_FORM_STEPS.WAGES)}
             />
           )}
 
@@ -71,16 +61,16 @@ const W2DetailsForm = ({
             <WageTaxStep
               formData={formData}
               updateField={updateField}
-              onBack={() => setCurrentStep(W2_FORM_STEPS.EMPLOYEE)}
-              onNext={() => setCurrentStep(W2_FORM_STEPS.REVIEW)}
+              onBack={() => setFormStep(W2_FORM_STEPS.EMPLOYEE)}
+              onNext={() => setFormStep(W2_FORM_STEPS.REVIEW)}
             />
           )}
 
           {currentStep === W2_FORM_STEPS.REVIEW && (
             <ReviewStep
               formData={formData}
-              onEdit={setCurrentStep}
-              onBack={() => setCurrentStep(W2_FORM_STEPS.WAGES)}
+              onEdit={setFormStep}
+              onBack={() => setFormStep(W2_FORM_STEPS.WAGES)}
               onContinue={onContinueToCheckout}
             />
           )}

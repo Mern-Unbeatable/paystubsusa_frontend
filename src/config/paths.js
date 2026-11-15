@@ -10,9 +10,17 @@ export const PATHS = {
       "/paystub-generator/:templateSlug/create/package/checkout/success",
     w2: "/w-2",
     w2Create: "/w-2/create",
+    /** Nav / marketing entry into the W-2 form. */
+    w2CreateStep1: "/w-2/create?step=1",
+    /** Canonical checkout / success live as query params on create. */
+    w2CheckoutVerifying: "/w-2/create?step=5&checkout=verifying",
+    w2CheckoutVerified: "/w-2/create?step=5&checkout=verified",
+    w2CheckoutSuccess: "/w-2/create?step=5&checkout=success",
     w2Preview: "/w-2/create/preview",
+    /** Legacy path routes; redirect into create query URLs. */
     w2Checkout: "/w-2/create/checkout",
-    w2Success: "/w-2/create/success",
+    w2Success: "/w-2/create/checkout/success",
+    w2SuccessLegacy: "/w-2/create/success",
     nec1099: "/1099-nec",
     nec1099Preview: "/1099-nec/create/preview",
     nec1099Checkout: "/1099-nec/create/checkout",
@@ -109,7 +117,7 @@ export const buildAdminTemplateEditPath = (id) =>
 // Legacy path -> canonical path. Rendered as <Navigate replace>.
 export const ALIASES = {
   generator: PATHS.PUBLIC.paystubGenerator,
-  w2: PATHS.PUBLIC.w2,
+  w2: PATHS.PUBLIC.w2CreateStep1,
   1099: PATHS.PUBLIC.nec1099,
   "find-your-paystubs": PATHS.PUBLIC.findPaystubs,
   "about-us": PATHS.PUBLIC.about,
