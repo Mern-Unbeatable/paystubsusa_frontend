@@ -1,7 +1,20 @@
 import STEPS from "../../data/w2/steps.json";
-import W2FormDocument from "../components/common/W2FormDocument";
+import W2FormDocument from "../templates/W2FormDocument";
 import { PATHS } from "../../../../config/paths";
 import { createPaidFlag } from "../../shared/documentFlow/utils/documentFlow";
+
+/** Steps inside the details form on the create page. */
+export const W2_FORM_STEPS = {
+  EMPLOYER: 1,
+  EMPLOYEE: 2,
+  WAGES: 3,
+  REVIEW: 4,
+};
+
+/** Stepper position of the page that follows the details form. */
+export const W2_PAGE_STEPS = {
+  CHECKOUT: 5,
+};
 
 const getEmployeeName = (formData) =>
   [formData.firstName, formData.lastName].filter(Boolean).join(" ");
@@ -11,7 +24,7 @@ export const W2_FLOW = {
   steps: STEPS,
   paths: {
     form: PATHS.PUBLIC.w2,
-    preview: PATHS.PUBLIC.w2Preview,
+    preview: PATHS.PUBLIC.w2,
     checkout: PATHS.PUBLIC.w2Checkout,
     success: PATHS.PUBLIC.w2Success,
   },

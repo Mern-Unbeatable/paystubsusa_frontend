@@ -5,6 +5,7 @@ export { default as PaystubPackageView } from "./Generator/PaystubPackageView";
 export { default as PaystubCheckoutView } from "./Generator/PaystubCheckoutView";
 export { default as PaystubSuccessView } from "./Generator/PaystubSuccessView";
 export { default as W2View } from "./W2/W2View";
+export { default as W2CreateView } from "./W2/W2CreateView";
 export { default as W2PreviewView } from "./W2/W2PreviewView";
 export { default as W2CheckoutView } from "./W2/W2CheckoutView";
 export { default as W2SuccessView } from "./W2/W2SuccessView";

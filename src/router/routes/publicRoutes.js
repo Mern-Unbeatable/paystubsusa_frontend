@@ -34,6 +34,11 @@ const W2View = lazy(() =>
     default: module.W2View,
   })),
 );
+const W2CreateView = lazy(() =>
+  import("../../pages/public").then((module) => ({
+    default: module.W2CreateView,
+  })),
+);
 const W2PreviewView = lazy(() =>
   import("../../pages/public").then((module) => ({
     default: module.W2PreviewView,
@@ -145,6 +150,10 @@ export const publicRoutes = [
     element: createLazyRouteElement(PaystubSuccessView),
   },
   { path: PATHS.PUBLIC.w2, element: createLazyRouteElement(W2View) },
+  {
+    path: PATHS.PUBLIC.w2Create,
+    element: createLazyRouteElement(W2CreateView),
+  },
   {
     path: PATHS.PUBLIC.w2Preview,
     element: createLazyRouteElement(W2PreviewView),

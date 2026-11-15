@@ -55,29 +55,24 @@ const W2HeroSection = () => {
       ref={heroRef}
       className="relative w-full bg-white pt-14 sm:pt-20 pb-16 sm:pb-24 overflow-hidden select-none"
     >
-      {/* Decorative Background Shapes matching Figma (identical to first hero section) */}
-      {/* Left soft circle - anchored to bottom-left */}
       <div
         className="absolute -bottom-16 sm:-bottom-20 -left-16 sm:-left-20 w-[300px] sm:w-[420px] md:w-[460px] h-[300px] sm:h-[420px] md:h-[460px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
         aria-hidden="true"
       />
 
-      {/* Right soft circle - anchored to top-right */}
       <div
         className="absolute -top-16 sm:-top-20 -right-16 sm:-right-20 w-[340px] sm:w-[460px] md:w-[500px] h-[340px] sm:h-[460px] md:h-[500px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
         aria-hidden="true"
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
-        {/* Eyebrow Tag */}
         <p
           ref={eyebrowRef}
           className="text-secondary font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.14em] mb-3.5 sm:mb-4"
         >
-          PAYSTUB GENERATOR
+          W-2 GENERATOR
         </p>
 
-        {/* Main Headline */}
         <h1
           ref={headingRef}
           className="text-3xl sm:text-4xl md:text-[46px] lg:text-[48px] font-bold text-[#092258] tracking-tight leading-[1.18] max-w-4xl mx-auto mb-4 sm:mb-5"
@@ -85,7 +80,6 @@ const W2HeroSection = () => {
           Create Your W-2 FORM
         </h1>
 
-        {/* Subtitle */}
         <p
           ref={subtitleRef}
           className="text-slate-500 text-[15px] sm:text-[16px] md:text-[17px] leading-relaxed font-normal max-w-2xl mx-auto mb-8 sm:mb-10"
@@ -93,7 +87,6 @@ const W2HeroSection = () => {
           Enter your tax information to prepare and generate your W-2 Document
         </p>
 
-        {/* 3 Features Row matching Figma */}
         <div
           ref={featuresRef}
           className="flex flex-wrap items-center justify-center gap-3 sm:gap-4.5"
@@ -111,7 +104,9 @@ const W2HeroSection = () => {
                 className="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-secondary/40 transition-all duration-200"
               >
                 <IconComponent className={iconClassName} />
-                <span className="text-[14px] sm:text-[14.5px] font-medium text-slate-700 whitespace-nowrap">{item.text}</span>
+                <span className="text-[14px] sm:text-[14.5px] font-medium text-slate-700 whitespace-nowrap">
+                  {item.text}
+                </span>
               </div>
             );
           })}

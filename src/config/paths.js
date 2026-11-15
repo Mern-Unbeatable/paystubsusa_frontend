@@ -9,6 +9,7 @@ export const PATHS = {
     paystubSuccess:
       "/paystub-generator/:templateSlug/create/package/checkout/success",
     w2: "/w-2",
+    w2Create: "/w-2/create",
     w2Preview: "/w-2/create/preview",
     w2Checkout: "/w-2/create/checkout",
     w2Success: "/w-2/create/success",

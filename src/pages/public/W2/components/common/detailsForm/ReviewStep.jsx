@@ -1,5 +1,7 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { W2_FORM_STEPS } from "../../../utils/w2Flow";
+import StepHeader from "./StepHeader";
+import StepNav from "./StepNav";
 
 const formatMoney = (value) => (value ? `$${value}` : "—");
 
@@ -28,25 +30,19 @@ const ReviewRow = ({ label, value }) => (
   </div>
 );
 
-/** Step 4 content: read-only summary of the entered W-2 details. */
-const W2ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
+/** Step 4: read-only summary before checkout. */
+const ReviewStep = ({ formData, onEdit, onBack, onContinue }) => (
   <div className="space-y-6">
-    {/* Step Header */}
-    <div className="flex items-start gap-3.5 pb-2">
-      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md bg-blue-50 text-secondary font-bold text-[13px] tracking-wide mt-0.5">
-        04
-      </span>
-      <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#092258]">
-          Review your document
-        </h2>
-        <p className="text-slate-400 text-[14px] mt-0.5">
-          Confirm everything is accurate before checkout.
-        </p>
-      </div>
-    </div>
+    <StepHeader
+      step={4}
+      title="Review your document"
+      subtitle="Confirm everything is accurate before checkout."
+    />
 
-    <ReviewCard title="Employer Details" onEdit={() => onEdit(1)}>
+    <ReviewCard
+      title="Employer Details"
+      onEdit={() => onEdit(W2_FORM_STEPS.EMPLOYER)}
+    >
       <ReviewRow label="Employer Name" value={formData.employerName} />
       <ReviewRow label="EIN" value={formData.ein} />
       <ReviewRow label="Street Address" value={formData.streetAddress} />
@@ -56,7 +52,10 @@ const W2ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       <ReviewRow label="Control Number" value={formData.controlNumber} />
     </ReviewCard>
 
-    <ReviewCard title="Employee Details" onEdit={() => onEdit(2)}>
+    <ReviewCard
+      title="Employee Details"
+      onEdit={() => onEdit(W2_FORM_STEPS.EMPLOYEE)}
+    >
       <ReviewRow label="First Name" value={formData.firstName} />
       <ReviewRow label="Middle Initial" value={formData.middleInitial} />
       <ReviewRow label="Last Name" value={formData.lastName} />
@@ -67,7 +66,10 @@ const W2ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       <ReviewRow label="ZIP Code" value={formData.employeeZip} />
     </ReviewCard>
 
-    <ReviewCard title="Wages & Taxes" onEdit={() => onEdit(3)}>
+    <ReviewCard
+      title="Wages & Taxes"
+      onEdit={() => onEdit(W2_FORM_STEPS.WAGES)}
+    >
       <ReviewRow
         label="Box 1 Wages, tips, other"
         value={formatMoney(formData.box1Wages)}
@@ -124,7 +126,10 @@ const W2ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       />
     </ReviewCard>
 
-    <ReviewCard title="State & Local" onEdit={() => onEdit(3)}>
+    <ReviewCard
+      title="State & Local"
+      onEdit={() => onEdit(W2_FORM_STEPS.WAGES)}
+    >
       <ReviewRow label="Box 15 State" value={formData.box15State} />
       <ReviewRow
         label="Box 16 State Wages"
@@ -145,25 +150,12 @@ const W2ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       <ReviewRow label="Box 20 Locality Name" value={formData.box20Locality} />
     </ReviewCard>
 
-    {/* Actions: < Back (left), Continue to Checkout (right) */}
-    <div className="flex items-center justify-between pt-6">
-      <button
-        type="button"
-        onClick={onBack}
-        className="px-6 py-3 rounded-xl border border-slate-200 text-slate-700 font-medium text-[14.5px] hover:bg-slate-50 transition cursor-pointer"
-      >
-        &lt; Back
-      </button>
-      <button
-        type="button"
-        onClick={onNext}
-        className="bg-secondary hover:bg-[#0089e0] text-white font-semibold text-[15px] px-8 py-3.5 rounded-xl shadow-sm hover:shadow transition-all inline-flex items-center gap-2 cursor-pointer active:scale-98"
-      >
-        <span>Continue to Checkout</span>
-        <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-      </button>
-    </div>
+    <StepNav
+      onBack={onBack}
+      onNext={onContinue}
+      nextLabel="Continue to Checkout"
+    />
   </div>
 );
 
-export default W2ReviewSection;
+export default ReviewStep;
