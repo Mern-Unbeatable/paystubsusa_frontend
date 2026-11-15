@@ -1,5 +1,7 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { NEC1099_FORM_STEPS } from "../../../utils/nec1099Flow";
+import StepHeader from "./StepHeader";
+import StepNav from "./StepNav";
 
 const formatMoney = (value) => (value ? `$${value}` : "—");
 
@@ -28,25 +30,17 @@ const ReviewRow = ({ label, value }) => (
   </div>
 );
 
-/** Step 4 content: read-only summary of the entered 1099-NEC details. */
-const Nec1099ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
+const ReviewStep = ({ formData, onEdit, onBack, onContinue }) => (
   <div className="space-y-6">
-    {/* Step Header */}
-    <div className="flex items-start gap-3.5 pb-2">
-      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md bg-blue-50 text-secondary font-bold text-[13px] tracking-wide mt-0.5">
-        04
-      </span>
-      <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#092258]">
-          Review your document
-        </h2>
-        <p className="text-slate-400 text-[14px] mt-0.5">
-          Confirm everything is accurate before checkout.
-        </p>
-      </div>
-    </div>
+    <StepHeader
+      title="Review your document"
+      subtitle="Confirm everything is accurate before checkout."
+    />
 
-    <ReviewCard title="Payer Details" onEdit={() => onEdit(1)}>
+    <ReviewCard
+      title="Payer Details"
+      onEdit={() => onEdit(NEC1099_FORM_STEPS.PAYER)}
+    >
       <ReviewRow label="Payer Name" value={formData.payerName} />
       <ReviewRow label="Street Address" value={formData.streetAddress} />
       <ReviewRow label="City" value={formData.city} />
@@ -56,7 +50,10 @@ const Nec1099ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       <ReviewRow label="Account Number" value={formData.accountNumber} />
     </ReviewCard>
 
-    <ReviewCard title="Recipient Details" onEdit={() => onEdit(2)}>
+    <ReviewCard
+      title="Recipient Details"
+      onEdit={() => onEdit(NEC1099_FORM_STEPS.RECIPIENT)}
+    >
       <ReviewRow label="Recipient Name" value={formData.recipientName} />
       <ReviewRow
         label="Street Address"
@@ -72,7 +69,10 @@ const Nec1099ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       />
     </ReviewCard>
 
-    <ReviewCard title="Compensation Details" onEdit={() => onEdit(3)}>
+    <ReviewCard
+      title="Compensation Details"
+      onEdit={() => onEdit(NEC1099_FORM_STEPS.COMPENSATION)}
+    >
       <ReviewRow
         label="Box 1 Compensation"
         value={formatMoney(formData.box1NonemployeeComp)}
@@ -105,25 +105,12 @@ const Nec1099ReviewSection = ({ formData, onEdit, onBack, onNext }) => (
       />
     </ReviewCard>
 
-    {/* Actions: < Back (left), Continue to Checkout > (right) */}
-    <div className="flex items-center justify-between pt-6">
-      <button
-        type="button"
-        onClick={onBack}
-        className="px-6 py-3 rounded-xl border border-slate-200 text-slate-700 font-medium text-[14.5px] hover:bg-slate-50 transition cursor-pointer"
-      >
-        &lt; Back
-      </button>
-      <button
-        type="button"
-        onClick={onNext}
-        className="bg-secondary hover:bg-[#0089e0] text-white font-semibold text-[15px] px-8 py-3.5 rounded-xl shadow-sm hover:shadow transition-all inline-flex items-center gap-2 cursor-pointer active:scale-98"
-      >
-        <span>Continue to Checkout</span>
-        <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-      </button>
-    </div>
+    <StepNav
+      onBack={onBack}
+      onNext={onContinue}
+      nextLabel="Continue to Checkout"
+    />
   </div>
 );
 
-export default Nec1099ReviewSection;
+export default ReviewStep;

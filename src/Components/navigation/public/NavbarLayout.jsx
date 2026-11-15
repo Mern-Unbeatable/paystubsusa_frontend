@@ -36,7 +36,7 @@ const NAV_LINKS = [
   },
   {
     name: "1099-NEC",
-    href: "/1099-nec",
+    href: PATHS.PUBLIC.nec1099CreateStep1,
     icon: Receipt,
     match: ["/1099-nec", "/1099"],
   },

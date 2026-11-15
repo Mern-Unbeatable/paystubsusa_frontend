@@ -282,7 +282,7 @@ const DocumentsSection = () => {
                   tag: "Nonemployee",
                   form: "1099-NEC",
                   cta: "Create 1099",
-                  href: PATHS.PUBLIC.nec1099,
+                  href: PATHS.PUBLIC.nec1099CreateStep1,
                 },
               ].map((card) => (
                 <div

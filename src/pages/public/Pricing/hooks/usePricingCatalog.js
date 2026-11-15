@@ -25,7 +25,7 @@ const CARD_COPY = {
 const LINK_BY_TYPE = {
   paystub: "/paystub-generator",
   w2: "/w-2/create?step=1",
-  nec1099: "/1099-nec",
+  nec1099: "/1099-nec/create?step=1",
   direct_deposit: "/direct-deposit",
 };
 

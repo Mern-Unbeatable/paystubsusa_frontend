@@ -1,12 +1,15 @@
 import React from "react";
-import DocumentSuccessPage from "../shared/documentFlow/DocumentSuccessPage";
-import { useNec1099FormData } from "./hooks/useNec1099FormData";
-import { NEC1099_FLOW } from "./utils/nec1099Flow";
+import { Navigate, useSearchParams } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
 
 const Nec1099SuccessView = () => {
-  const { formData } = useNec1099FormData();
-
-  return <DocumentSuccessPage flow={NEC1099_FLOW} formData={formData} />;
+  const [searchParams] = useSearchParams();
+  const next = new URLSearchParams(searchParams);
+  next.set("step", "5");
+  next.set("checkout", "success");
+  return (
+    <Navigate to={`${PATHS.PUBLIC.nec1099Create}?${next.toString()}`} replace />
+  );
 };
 
 export default Nec1099SuccessView;

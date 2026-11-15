@@ -1,19 +1,17 @@
 import React from "react";
-import DocumentPreviewPage from "../shared/documentFlow/DocumentPreviewPage";
-import Nec1099ReviewSection from "./components/sections/Nec1099ReviewSection";
-import { useNec1099FormData } from "./hooks/useNec1099FormData";
-import { NEC1099_FLOW } from "./utils/nec1099Flow";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../config/paths";
+import { NEC1099_FORM_STEPS } from "./utils/nec1099Flow";
+import { buildNec1099CreatePath } from "./hooks/useNec1099FormStep";
 
-const Nec1099PreviewView = () => {
-  const { formData } = useNec1099FormData();
-
-  return (
-    <DocumentPreviewPage
-      flow={NEC1099_FLOW}
-      formData={formData}
-      ReviewSection={Nec1099ReviewSection}
-    />
-  );
-};
+const Nec1099PreviewView = () => (
+  <Navigate
+    to={buildNec1099CreatePath(
+      PATHS.PUBLIC.nec1099Create,
+      NEC1099_FORM_STEPS.REVIEW,
+    )}
+    replace
+  />
+);
 
 export default Nec1099PreviewView;
