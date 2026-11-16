@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from "../../../../api/endpoints";
 import { httpClient } from "../../../../api/httpClient";
+import { resolveApiUrl } from "../../../../config/env";
 
 /** Search matches the title, document number, employer or recipient name. */
 export async function listDocumentsApi({ q, type, status, sort, page, pageSize }, options = {}) {
@@ -23,7 +24,8 @@ export async function getDocumentApi(id, options = {}) {
 /** Short-lived signed URL (audited server-side). */
 export async function downloadDocumentApi(id, options = {}) {
   const response = await httpClient.post(API_ENDPOINTS.ADMIN.DOCUMENT_DOWNLOAD(id), undefined, options);
-  return { url: response.data?.data?.url ?? null };
+  const url = response.data?.data?.url ?? null;
+  return { url: url ? resolveApiUrl(url) : null };
 }
 
 /** Queues a re-render from the stored form data. */

@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from "../../../../api/endpoints";
 import { httpClient } from "../../../../api/httpClient";
+import { resolveApiUrl } from "../../../../config/env";
 
 /** The signed-in customer's documents of paid orders. Search matches title, number, employer or employee. */
 export async function listMyDocumentsApi({ q, type, sort, page, pageSize }, options = {}) {
@@ -17,5 +18,7 @@ export async function listMyDocumentsApi({ q, type, sort, page, pageSize }, opti
 /** Short-lived signed URL for a rendered PDF the customer (or the verified guest, via `options.headers`) owns. */
 export async function downloadMyDocumentApi(id, options = {}) {
   const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.DOWNLOAD(id), undefined, options);
-  return response.data?.data;
+  const data = response.data?.data;
+  if (!data?.url) return data;
+  return { ...data, url: resolveApiUrl(data.url) };
 }

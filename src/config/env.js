@@ -21,3 +21,17 @@ export const ENV_CONFIG = Object.freeze({
     ? import.meta.env.STRIPE_PUBLISHABLE_KEY
     : "",
 });
+
+/**
+ * Resolves an API-relative path (e.g. `/local-files?...`, `/avatars/...`) against
+ * `apiBaseUrl`. Absolute http(s) URLs pass through unchanged for backwards compatibility.
+ */
+export function resolveApiUrl(pathOrUrl) {
+  if (!pathOrUrl) return pathOrUrl;
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  const base = ENV_CONFIG.apiBaseUrl.endsWith("/")
+    ? ENV_CONFIG.apiBaseUrl
+    : `${ENV_CONFIG.apiBaseUrl}/`;
+  const relative = String(pathOrUrl).replace(/^\//, "");
+  return new URL(relative, new URL(base, window.location.origin)).href;
+}
