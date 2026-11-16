@@ -5,17 +5,31 @@ import DocumentStatusPill from "./DocumentStatusPill";
 
 const Meta = ({ label, children, mono = false }) => (
   <div className="min-w-0">
-    <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">{label}</span>
-    <span className={`block text-sm sm:text-[15px] font-semibold text-slate-900 mt-1 break-words ${mono ? "font-mono" : ""}`}>
+    <span className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+      {label}
+    </span>
+    <span
+      className={`block text-sm sm:text-[15px] font-semibold text-slate-900 mt-1 break-words ${mono ? "font-mono" : ""}`}
+    >
       {children}
     </span>
   </div>
 );
 
 /** Shows the real rendered PDF; documents that aren't ready yet show their status instead. */
-const DocumentPreviewModal = ({ doc, downloading, getPreviewUrl, onDownload, onClose }) => {
+const DocumentPreviewModal = ({
+  doc,
+  downloading,
+  getPreviewUrl,
+  onDownload,
+  onClose,
+}) => {
   const ready = doc?.status === "ready";
-  const [preview, setPreview] = useState({ id: null, src: null, failed: false });
+  const [preview, setPreview] = useState({
+    id: null,
+    src: null,
+    failed: false,
+  });
 
   useEffect(() => {
     if (!doc?.id || !ready) return undefined;
@@ -27,7 +41,9 @@ const DocumentPreviewModal = ({ doc, downloading, getPreviewUrl, onDownload, onC
         if (active) setPreview({ id: doc.id, src, failed: false });
         else URL.revokeObjectURL(src);
       })
-      .catch(() => active && setPreview({ id: doc.id, src: null, failed: true }));
+      .catch(
+        () => active && setPreview({ id: doc.id, src: null, failed: true }),
+      );
     return () => {
       active = false;
       if (created) URL.revokeObjectURL(created);
@@ -47,11 +63,26 @@ const DocumentPreviewModal = ({ doc, downloading, getPreviewUrl, onDownload, onC
       </p>
     );
   } else if (current?.src) {
-    body = <iframe title={`Preview of ${doc.title}`} src={current.src} className="w-full h-[55vh] min-h-[320px] rounded-lg bg-white border border-slate-200" />;
+    body = (
+      <iframe
+        title={`Preview of ${doc.title}`}
+        src={current.src}
+        className="w-full h-[55vh] min-h-[320px] rounded-lg bg-white border border-slate-200"
+      />
+    );
   } else if (current?.failed) {
-    body = <p className="text-sm text-slate-500 text-center px-6">Preview unavailable. You can still download the PDF.</p>;
+    body = (
+      <p className="text-sm text-slate-500 text-center px-6">
+        Preview unavailable. You can still download the PDF.
+      </p>
+    );
   } else {
-    body = <span className="w-6 h-6 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin" aria-label="Loading preview" />;
+    body = (
+      <span
+        className="w-6 h-6 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin"
+        aria-label="Loading preview"
+      />
+    );
   }
 
   return (
@@ -67,7 +98,10 @@ const DocumentPreviewModal = ({ doc, downloading, getPreviewUrl, onDownload, onC
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-3 pb-3">
-          <h3 id="find-doc-title" className="font-extrabold text-slate-900 text-xl sm:text-2xl tracking-tight">
+          <h3
+            id="find-doc-title"
+            className="font-extrabold text-slate-900 text-xl sm:text-2xl tracking-tight"
+          >
             Document Details
           </h3>
           <button
@@ -106,7 +140,7 @@ const DocumentPreviewModal = ({ doc, downloading, getPreviewUrl, onDownload, onC
             onClick={onClose}
             className="px-6 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition cursor-pointer"
           >
-            Back to Documents
+            Cancel
           </button>
           <button
             type="button"

@@ -45,7 +45,7 @@ const DEFAULT_FORM_DATA = {
 };
 
 const sumAmounts = (items) =>
-  items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+  (items ?? []).reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
 
 export const calculatePaystub = (formData) => {
   let regularEarnings = 0;

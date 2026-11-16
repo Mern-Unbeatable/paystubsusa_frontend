@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from "../../../api/endpoints";
 import { httpClient } from "../../../api/httpClient";
+import { resolveApiUrl } from "../../../config/env";
 
 // Without a guest token the request falls back to the signed-in user's Bearer token.
 export const guestAuth = (guestToken) => (guestToken ? { Authorization: `Guest ${guestToken}` } : {});
@@ -46,5 +47,7 @@ export async function downloadDocumentApi(documentId, guestToken) {
   const response = await httpClient.post(API_ENDPOINTS.DOCUMENTS.DOWNLOAD(documentId), undefined, {
     headers: guestAuth(guestToken),
   });
-  return response.data?.data;
+  const data = response.data?.data;
+  if (!data?.url) return data;
+  return { ...data, url: resolveApiUrl(data.url) };
 }
