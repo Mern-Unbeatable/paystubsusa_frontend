@@ -203,25 +203,6 @@ const ReviewStep = ({
       </ReviewCard>
     </div>
 
-    {formData.directDeposit?.enabled && (
-      <ReviewCard
-        title="Direct Deposit Slip"
-        icon={FileText}
-        onEdit={() => onEdit(PAYSTUB_FORM_STEPS.PAY)}
-      >
-        <p className="text-[13px] text-slate-700">
-          {formData.directDeposit.bankName || "Bank"} · Net deposit{" "}
-          <span className="font-bold">{formatCurrency(calculations.netPay)}</span>
-        </p>
-        <p className="text-[12px] text-slate-500 mt-1">
-          Account ••••
-          {String(formData.directDeposit.accountNumber || "")
-            .replace(/\D/g, "")
-            .slice(-4) || "----"}
-        </p>
-      </ReviewCard>
-    )}
-
     {/* Modern Dark Navy Net Pay Banner */}
     <div className="relative overflow-hidden bg-gradient-to-br from-[#092258] to-[#113a82] text-white rounded-2xl p-6 sm:p-7 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
       {/* Subtle background decoration */}

@@ -161,16 +161,18 @@ const PaystubCheckoutPanel = ({ template }) => {
     if (!verifyCheckoutCode.fulfilled.match(verified)) fail(verified.payload);
   };
 
-  const createOrder = (idempotencyKey) =>
-    dispatch(
-      createCheckoutOrder({
-        documentType: "paystub",
-        templateId: template.catalogId,
-        items,
-        formData: toApiFormData(),
-        idempotencyKey,
-      }),
-    );
+  const createOrder = (idempotencyKey) => {
+    const payload = {
+      documentType: "paystub",
+      templateId: template.catalogId,
+      items,
+      formData: toApiFormData(),
+      idempotencyKey,
+    };
+    // Temporary: inspect checkout submit shape in the browser console.
+    console.log("[paystub checkout submit]", payload);
+    return dispatch(createCheckoutOrder(payload));
+  };
 
   const handlePayNow = async () => {
     if (order && clientSecret) {

@@ -105,34 +105,6 @@ const REQUIRED_FIELDS = [
   { step: 3, key: "hourlyRate", label: "Hourly rate", when: (d) => d.payType === "Hourly" },
   { step: 3, key: "regularHours", label: "Regular hours", when: (d) => d.payType === "Hourly" },
   { step: 3, key: "salaryAmount", label: "Gross salary amount", when: (d) => d.payType !== "Hourly" },
-  {
-    step: 3,
-    key: "bankName",
-    label: "Bank name",
-    when: (d) => d.directDeposit?.enabled,
-    read: (d) => d.directDeposit?.bankName,
-  },
-  {
-    step: 3,
-    key: "accountHolderName",
-    label: "Account holder name",
-    when: (d) => d.directDeposit?.enabled,
-    read: (d) => d.directDeposit?.accountHolderName,
-  },
-  {
-    step: 3,
-    key: "routingNumber",
-    label: "Routing number",
-    when: (d) => d.directDeposit?.enabled,
-    read: (d) => d.directDeposit?.routingNumber,
-  },
-  {
-    step: 3,
-    key: "accountNumber",
-    label: "Account number",
-    when: (d) => d.directDeposit?.enabled,
-    read: (d) => d.directDeposit?.accountNumber,
-  },
 ];
 
 const toFlatFormData = (formDataOrSteps) => {
@@ -149,6 +121,22 @@ export const findIncompleteFields = (formDataOrSteps) => {
     const value = f.read ? f.read(flat) : flat[f.key];
     return !String(value ?? "").trim();
   });
+};
+
+/** Bank fields required when purchasing the Direct Deposit Slip on the package step. */
+const DD_BANK_FIELDS = [
+  { key: "bankName", label: "Bank name" },
+  { key: "accountHolderName", label: "Account holder name" },
+  { key: "routingNumber", label: "Routing number" },
+  { key: "accountNumber", label: "Account number" },
+];
+
+export const findIncompleteDirectDepositFields = (formDataOrSteps) => {
+  const flat = toFlatFormData(formDataOrSteps);
+  const dd = flat.directDeposit ?? {};
+  return DD_BANK_FIELDS.filter(
+    (f) => !String(dd[f.key] ?? "").trim(),
+  ).map((f) => ({ ...f, step: 5 }));
 };
 
 /** First empty required field as `{ step, label }`, or null when the form is complete. */

@@ -8,14 +8,13 @@ import PaystubStepper from "../common/flow/PaystubStepper";
 import { PAYSTUB_PAGE_STEPS } from "../../utils/paystubFlow";
 import {
   findIncompleteField,
-  findIncompleteFields,
+  findIncompleteDirectDepositFields,
   usePaystubFormData,
 } from "../../hooks/usePaystubFormData";
 import { usePaystubOrder } from "../../hooks/usePaystubOrder";
 import { usePaystubFlowNavigation } from "../../hooks/usePaystubFlowNavigation";
 import { useActiveSubscription } from "../../hooks/useActiveSubscription";
 import { PAYSTUB_CHECKOUT_PHASE } from "../../hooks/usePaystubFormStep";
-import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
 import { getErrorMessage } from "../../../../../api/errorNormalizer";
 import {
   cancelCreditRedeem,
@@ -33,7 +32,8 @@ import {
 /** Step 5: package selection — URL `?step=5&checkout=package`. */
 const PaystubPackagePanel = ({ template }) => {
   const dispatch = useDispatch();
-  const { formData, calculations, toApiFormData } = usePaystubFormData();
+  const { formData, calculations, toApiFormData, updateDirectDeposit } =
+    usePaystubFormData();
   const order = usePaystubOrder();
   const {
     onBackToReview,
@@ -44,6 +44,7 @@ const PaystubPackagePanel = ({ template }) => {
     goToStep,
   } = usePaystubFlowNavigation(template.id);
   const [isTemplateModalOpen, setTemplateModalOpen] = useState(false);
+  const [ddFieldErrors, setDdFieldErrors] = useState({});
   const checkout = useSelector(selectCheckout);
   const credits = useSelector(selectCheckoutCredits);
   const usingCredit = Boolean(
@@ -123,26 +124,51 @@ const PaystubPackagePanel = ({ template }) => {
           calculations={calculations}
           order={order}
           hasUnlimited={hasUnlimited}
+          fieldErrors={ddFieldErrors}
+          onUpdateDirectDeposit={(patch) => {
+            setDdFieldErrors((prev) => {
+              const next = { ...prev };
+              Object.keys(patch).forEach((key) => {
+                delete next[key];
+              });
+              return next;
+            });
+            updateDirectDeposit(patch);
+          }}
           onBackToReview={onBackToReview}
           onChangeTemplate={() => setTemplateModalOpen(true)}
           onContinueToCheckout={() => {
             if (order.includeDdSlip) {
-              const bankMissing = findIncompleteFields(formData).filter((f) =>
-                [
-                  "bankName",
-                  "accountHolderName",
-                  "routingNumber",
-                  "accountNumber",
-                ].includes(f.key),
-              );
-              if (!formData.directDeposit?.enabled || bankMissing.length > 0) {
-                toast.error(
-                  "Add complete bank details in Pay Details before purchasing the Direct Deposit Slip.",
+              if (!formData.directDeposit?.enabled) {
+                updateDirectDeposit({ enabled: true });
+              }
+              const bankMissing = findIncompleteDirectDepositFields(formData);
+              if (bankMissing.length > 0) {
+                setDdFieldErrors(
+                  Object.fromEntries(
+                    bankMissing.map((f) => [f.key, f.label]),
+                  ),
                 );
-                onBackToFormStep(PAYSTUB_FORM_STEPS.PAY);
+                toast.error(
+                  "Complete the Direct Deposit bank details before continuing.",
+                );
+                requestAnimationFrame(() => {
+                  document
+                    .getElementById(`paystub-field-${bankMissing[0].key}`)
+                    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
                 return;
               }
             }
+            setDdFieldErrors({});
+            // Temporary: inspect package → checkout payload in the browser console.
+            console.log("[paystub package continue]", {
+              items: order.items,
+              includeDdSlip: order.includeDdSlip,
+              formData: toApiFormData(),
+              summaryLines: order.summaryLines,
+              grandTotal: order.grandTotal,
+            });
             onContinueToCheckout();
           }}
         />

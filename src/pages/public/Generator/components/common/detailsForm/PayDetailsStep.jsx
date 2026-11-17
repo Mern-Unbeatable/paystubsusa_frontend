@@ -34,15 +34,12 @@ const moneyInputClass =
   "w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
 const plainInputClass =
   "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
-const ddInputClass =
-  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400";
 
 const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
   const {
     formData,
     setFormData,
     updateField,
-    updateDirectDeposit,
     calculations,
     handleAddTax,
     handleRemoveTax,
@@ -52,7 +49,6 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
     handleAddDeduction,
     handleRemoveDeduction,
   } = form;
-  const dd = formData.directDeposit ?? {};
 
   return (
     <div className="space-y-6 animate-in fade-in-50 duration-200">
@@ -467,77 +463,6 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
           </button>
         </SectionCard>
       </div>
-
-      {/* ================= Optional Direct Deposit bank details ================= */}
-      <SectionCard
-        icon={Landmark}
-        title="Direct Deposit Slip"
-        description="Collect bank details here. Add the $1.99 slip as a paid option on the package step — bank info alone does not include it on the PDF."
-        headerRight={
-          <button
-            type="button"
-            role="switch"
-            aria-checked={Boolean(dd.enabled)}
-            aria-label="Enter direct deposit bank details"
-            onClick={() => updateDirectDeposit({ enabled: !dd.enabled })}
-            className={`inline-flex items-center shrink-0 select-none rounded-xl transition cursor-pointer active:scale-[0.98] `}
-          >
-            <span
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-                dd.enabled ? "bg-[#1E60F2]" : "bg-slate-300"
-              }`}
-              aria-hidden="true"
-            >
-              <span
-                className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                  dd.enabled ? "translate-x-[22px]" : "translate-x-[3px]"
-                }`}
-              />
-            </span>
-          </button>
-        }
-      >
-        {dd.enabled ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              ["bankName", "Bank name", "e.g. Chase"],
-              ["accountHolderName", "Account holder", "Name on the account"],
-              ["routingNumber", "Routing number", "9 digits"],
-              ["accountNumber", "Account number", "4–17 digits"],
-              ["checkNumber", "Check / advice # (optional)", "e.g. 100245"],
-            ].map(([key, label, placeholder]) => (
-              <div
-                key={key}
-                id={`paystub-field-${key}`}
-                className={key === "checkNumber" ? "sm:col-span-2" : ""}
-              >
-                <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
-                  {label}
-                  {!label.includes("optional") && (
-                    <span className="text-rose-500"> *</span>
-                  )}
-                </label>
-                <input
-                  type="text"
-                  value={dd[key] ?? ""}
-                  onChange={(e) =>
-                    updateDirectDeposit({ [key]: e.target.value })
-                  }
-                  placeholder={placeholder}
-                  aria-invalid={Boolean(fieldErrors[key])}
-                  className={fieldClassName(ddInputClass, fieldErrors[key])}
-                />
-                <FieldError errors={fieldErrors} name={key} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-[13px] text-slate-500">
-            Turn on the switch to enter bank details for the optional paid
-            Direct Deposit Slip.
-          </p>
-        )}
-      </SectionCard>
 
       {/* ================= Totals Bar ================= */}
       <div className="bg-[#092258] rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">

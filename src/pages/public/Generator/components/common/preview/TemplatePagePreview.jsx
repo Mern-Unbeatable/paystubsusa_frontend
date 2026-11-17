@@ -34,7 +34,7 @@ const TemplatePagePreview = ({ template, data, framed, className }) =>
       className={className}
     >
       <PaystubThumbnail template={template} framed={false} data={data ?? SAMPLE_VARIANT_DATA} />
-      <DirectDepositSlip data={data ?? SAMPLE_VARIANT_DATA} />
+      <DirectDepositSlip data={data ?? SAMPLE_VARIANT_DATA} compact />
     </A4PreviewPage>
   );
 
