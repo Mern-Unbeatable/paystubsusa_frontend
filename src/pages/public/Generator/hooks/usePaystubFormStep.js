@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   PAYSTUB_FORM_STEPS,
@@ -99,18 +100,21 @@ export function usePaystubFormStep() {
   const currentStep =
     rawStep >= FIRST && rawStep <= LAST_FORM ? rawStep : FIRST;
 
-  const setFormStep = (step) => {
-    const nextStep = step >= FIRST && step <= LAST_FORM ? step : FIRST;
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        next.set(PAYSTUB_STEP_QUERY_PARAM, String(nextStep));
-        next.delete(PAYSTUB_CHECKOUT_QUERY_PARAM);
-        return next;
-      },
-      { replace: false },
-    );
-  };
+  const setFormStep = useCallback(
+    (step) => {
+      const nextStep = step >= FIRST && step <= LAST_FORM ? step : FIRST;
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          next.set(PAYSTUB_STEP_QUERY_PARAM, String(nextStep));
+          next.delete(PAYSTUB_CHECKOUT_QUERY_PARAM);
+          return next;
+        },
+        { replace: false },
+      );
+    },
+    [setSearchParams],
+  );
 
   return { currentStep, setFormStep };
 }

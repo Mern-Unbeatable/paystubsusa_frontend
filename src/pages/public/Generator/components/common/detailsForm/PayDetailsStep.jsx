@@ -15,6 +15,7 @@ import { formatCurrency } from "../../../utils/formatCurrency";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 import SectionCard from "./SectionCard";
+import { FieldError, fieldClassName } from "./fieldValidation";
 
 const ADDITIONAL_EARNING_TYPES = [
   "Overtime",
@@ -25,7 +26,18 @@ const ADDITIONAL_EARNING_TYPES = [
   "Custom",
 ];
 
-const PayDetailsStep = ({ form, onBack, onNext }) => {
+const dateInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
+const selectInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-10 transition";
+const moneyInputClass =
+  "w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
+const plainInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
+const ddInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400";
+
+const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
   const {
     formData,
     setFormData,
@@ -49,7 +61,7 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
       {/* ================= SECTION 1: Dates & Frequency ================= */}
       <SectionCard icon={CalendarDays} title="Pay Schedule">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
+          <div id="paystub-field-payPeriodStart">
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               Start Date <span className="text-rose-500">*</span>
             </label>
@@ -57,10 +69,12 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               type="date"
               value={formData.payPeriodStart}
               onChange={(e) => updateField("payPeriodStart", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+              aria-invalid={Boolean(fieldErrors.payPeriodStart)}
+              className={fieldClassName(dateInputClass, fieldErrors.payPeriodStart)}
             />
+            <FieldError errors={fieldErrors} name="payPeriodStart" />
           </div>
-          <div>
+          <div id="paystub-field-payPeriodEnd">
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               End Date <span className="text-rose-500">*</span>
             </label>
@@ -68,10 +82,12 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               type="date"
               value={formData.payPeriodEnd}
               onChange={(e) => updateField("payPeriodEnd", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+              aria-invalid={Boolean(fieldErrors.payPeriodEnd)}
+              className={fieldClassName(dateInputClass, fieldErrors.payPeriodEnd)}
             />
+            <FieldError errors={fieldErrors} name="payPeriodEnd" />
           </div>
-          <div>
+          <div id="paystub-field-payDate">
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               Pay Date <span className="text-rose-500">*</span>
             </label>
@@ -79,67 +95,72 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               type="date"
               value={formData.payDate}
               onChange={(e) => updateField("payDate", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+              aria-invalid={Boolean(fieldErrors.payDate)}
+              className={fieldClassName(dateInputClass, fieldErrors.payDate)}
             />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
-            Pay Frequency <span className="text-rose-500">*</span>
-          </label>
-          <div className="relative">
-            <select
-              value={formData.payFrequency}
-              onChange={(e) => updateField("payFrequency", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-10 transition"
-            >
-              {payFrequencyOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <FieldError errors={fieldErrors} name="payDate" />
           </div>
         </div>
       </SectionCard>
 
       {/* ================= SECTION 2: Earnings ================= */}
       <SectionCard icon={Banknote} title="Compensation">
-        <div>
-          <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
-            Pay Type <span className="text-rose-500">*</span>
-          </label>
-          <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl max-w-sm">
-            <button
-              type="button"
-              onClick={() => updateField("payType", "Hourly")}
-              className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
-                formData.payType === "Hourly"
-                  ? "bg-white text-[#1E60F2] shadow-sm"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              Hourly
-            </button>
-            <button
-              type="button"
-              onClick={() => updateField("payType", "Salary")}
-              className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
-                formData.payType === "Salary"
-                  ? "bg-white text-[#1E60F2] shadow-sm"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              Salary
-            </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div id="paystub-field-payFrequency">
+            <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+              Pay Frequency <span className="text-rose-500">*</span>
+            </label>
+            <div className="relative">
+              <select
+                value={formData.payFrequency}
+                onChange={(e) => updateField("payFrequency", e.target.value)}
+                aria-invalid={Boolean(fieldErrors.payFrequency)}
+                className={fieldClassName(selectInputClass, fieldErrors.payFrequency)}
+              >
+                {payFrequencyOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+            <FieldError errors={fieldErrors} name="payFrequency" />
+          </div>
+          <div>
+            <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+              Pay Type <span className="text-rose-500">*</span>
+            </label>
+            <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl">
+              <button
+                type="button"
+                onClick={() => updateField("payType", "Hourly")}
+                className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
+                  formData.payType === "Hourly"
+                    ? "bg-white text-[#1E60F2] shadow-sm"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                Hourly
+              </button>
+              <button
+                type="button"
+                onClick={() => updateField("payType", "Salary")}
+                className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
+                  formData.payType === "Salary"
+                    ? "bg-white text-[#1E60F2] shadow-sm"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                Salary
+              </button>
+            </div>
           </div>
         </div>
 
         {formData.payType === "Hourly" ? (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
-            <div>
+            <div id="paystub-field-hourlyRate">
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                 Hourly Rate <span className="text-rose-500">*</span>
               </label>
@@ -152,11 +173,13 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                   value={formData.hourlyRate}
                   onChange={(e) => updateField("hourlyRate", e.target.value)}
                   placeholder="200"
-                  className="w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+                  aria-invalid={Boolean(fieldErrors.hourlyRate)}
+                  className={fieldClassName(moneyInputClass, fieldErrors.hourlyRate)}
                 />
               </div>
+              <FieldError errors={fieldErrors} name="hourlyRate" />
             </div>
-            <div>
+            <div id="paystub-field-regularHours">
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                 Regular Hours <span className="text-rose-500">*</span>
               </label>
@@ -165,8 +188,10 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                 value={formData.regularHours}
                 onChange={(e) => updateField("regularHours", e.target.value)}
                 placeholder="80"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+                aria-invalid={Boolean(fieldErrors.regularHours)}
+                className={fieldClassName(plainInputClass, fieldErrors.regularHours)}
               />
+              <FieldError errors={fieldErrors} name="regularHours" />
             </div>
             <div>
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
@@ -186,7 +211,10 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
             </div>
           </div>
         ) : (
-          <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+          <div
+            id="paystub-field-salaryAmount"
+            className="animate-in fade-in slide-in-from-top-2 duration-200"
+          >
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               Gross Salary Amount <span className="text-rose-500">*</span>
             </label>
@@ -199,9 +227,11 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                 value={formData.salaryAmount}
                 onChange={(e) => updateField("salaryAmount", e.target.value)}
                 placeholder="22000"
-                className="w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+                aria-invalid={Boolean(fieldErrors.salaryAmount)}
+                className={fieldClassName(moneyInputClass, fieldErrors.salaryAmount)}
               />
             </div>
+            <FieldError errors={fieldErrors} name="salaryAmount" />
           </div>
         )}
 
@@ -313,11 +343,7 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
       {/* ================= SECTION 3: Taxes & Deductions ================= */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Taxes */}
-        <SectionCard
-          icon={Landmark}
-          title="Tax Withholdings"
-          description="Enter withholding amounts for this pay period."
-        >
+        <SectionCard icon={Landmark} title="Tax Withholdings">
           <div className="space-y-2.5">
             {formData.taxes.map((t) => (
               <div key={t.id} className="flex items-center gap-2">
@@ -432,11 +458,12 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
             type="button"
             role="switch"
             aria-checked={Boolean(dd.enabled)}
+            aria-label="Include direct deposit slip"
             onClick={() => updateDirectDeposit({ enabled: !dd.enabled })}
-            className={`inline-flex items-center gap-2.5 shrink-0 select-none rounded-xl border px-3.5 py-2 text-[13px] font-semibold transition cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E60F2]/40 ${
+            className={`inline-flex items-center shrink-0 select-none rounded-xl border p-2 transition cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E60F2]/40 ${
               dd.enabled
-                ? "border-[#1E60F2]/30 bg-blue-50 text-[#1E60F2] hover:bg-blue-100"
-                : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                ? "border-[#1E60F2]/30 bg-blue-50 hover:bg-blue-100"
+                : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
             }`}
           >
             <span
@@ -451,7 +478,6 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                 }`}
               />
             </span>
-            Include slip
           </button>
         }
       >
@@ -464,7 +490,11 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               ["accountNumber", "Account number", "4–17 digits"],
               ["checkNumber", "Check / advice # (optional)", "e.g. 100245"],
             ].map(([key, label, placeholder]) => (
-              <div key={key} className={key === "checkNumber" ? "sm:col-span-2" : ""}>
+              <div
+                key={key}
+                id={`paystub-field-${key}`}
+                className={key === "checkNumber" ? "sm:col-span-2" : ""}
+              >
                 <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                   {label}
                   {!label.includes("optional") && <span className="text-rose-500"> *</span>}
@@ -474,14 +504,16 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                   value={dd[key] ?? ""}
                   onChange={(e) => updateDirectDeposit({ [key]: e.target.value })}
                   placeholder={placeholder}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+                  aria-invalid={Boolean(fieldErrors[key])}
+                  className={fieldClassName(ddInputClass, fieldErrors[key])}
                 />
+                <FieldError errors={fieldErrors} name={key} />
               </div>
             ))}
           </div>
         ) : (
           <p className="text-[13px] text-slate-500">
-            Turn on Include slip to add bank details to the PDF.
+            Turn on the switch to add bank details to the PDF.
           </p>
         )}
       </SectionCard>

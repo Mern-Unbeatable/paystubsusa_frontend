@@ -4,20 +4,31 @@ import US_STATES from "../../../../data/shared/usStates.json";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 import SectionCard from "./SectionCard";
+import { FieldError, fieldClassName } from "./fieldValidation";
 
 const MARITAL_STATUS_OPTIONS = ["Single", "Married", "Head of Household"];
 const EXEMPTION_OPTIONS = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
 
 const inputClass =
   "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400";
+const selectClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8 transition";
+const iconInputClass =
+  "w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400";
 
-const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
+const EmployeeStep = ({
+  formData,
+  updateField,
+  fieldErrors = {},
+  onBack,
+  onNext,
+}) => (
   <div className="space-y-6 animate-in fade-in-50 duration-200">
     <StepHeader title="Employee Information" />
 
     <SectionCard icon={User} title="Personal Details">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
+        <div id="paystub-field-employeeName">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             Employee Name <span className="text-rose-500">*</span>
           </label>
@@ -26,8 +37,10 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.employeeName}
             onChange={(e) => updateField("employeeName", e.target.value)}
             placeholder="e.g. Jane Doe"
-            className={inputClass}
+            aria-invalid={Boolean(fieldErrors.employeeName)}
+            className={fieldClassName(inputClass, fieldErrors.employeeName)}
           />
+          <FieldError errors={fieldErrors} name="employeeName" />
         </div>
         <div>
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
@@ -38,7 +51,7 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             <select
               value={formData.maritalStatus ?? ""}
               onChange={(e) => updateField("maritalStatus", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8 transition"
+              className={selectClass}
             >
               <option value="">Select status</option>
               {MARITAL_STATUS_OPTIONS.map((status) => (
@@ -65,11 +78,11 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
               value={formData.employeePhone ?? ""}
               onChange={(e) => updateField("employeePhone", e.target.value)}
               placeholder="(555) 123-4567"
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+              className={iconInputClass}
             />
           </div>
         </div>
-        <div>
+        <div id="paystub-field-exemptions">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             Exemptions <span className="text-rose-500">*</span>
           </label>
@@ -77,7 +90,8 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             <select
               value={formData.exemptions ?? ""}
               onChange={(e) => updateField("exemptions", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8 transition"
+              aria-invalid={Boolean(fieldErrors.exemptions)}
+              className={fieldClassName(selectClass, fieldErrors.exemptions)}
             >
               {EXEMPTION_OPTIONS.map((n) => (
                 <option key={n} value={n}>
@@ -87,6 +101,7 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             </select>
             <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
+          <FieldError errors={fieldErrors} name="exemptions" />
         </div>
       </div>
 
@@ -120,7 +135,7 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
               value={formData.employeeId}
               onChange={(e) => updateField("employeeId", e.target.value)}
               placeholder="e.g. EMP-002"
-              className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+              className={iconInputClass}
             />
           </div>
         </div>
@@ -132,7 +147,7 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
       title="Address"
       description="This will appear on the generated paystub."
     >
-      <div>
+      <div id="paystub-field-employeeAddress">
         <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
           Street Address <span className="text-rose-500">*</span>
         </label>
@@ -143,13 +158,15 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.employeeAddress}
             onChange={(e) => updateField("employeeAddress", e.target.value)}
             placeholder="e.g. 123 Main Street, Apt 4B"
-            className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+            aria-invalid={Boolean(fieldErrors.employeeAddress)}
+            className={fieldClassName(iconInputClass, fieldErrors.employeeAddress)}
           />
         </div>
+        <FieldError errors={fieldErrors} name="employeeAddress" />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-        <div className="sm:col-span-6">
+        <div className="sm:col-span-6" id="paystub-field-employeeCity">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             City <span className="text-rose-500">*</span>
           </label>
@@ -158,10 +175,12 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.employeeCity}
             onChange={(e) => updateField("employeeCity", e.target.value)}
             placeholder="e.g. New York"
-            className={inputClass}
+            aria-invalid={Boolean(fieldErrors.employeeCity)}
+            className={fieldClassName(inputClass, fieldErrors.employeeCity)}
           />
+          <FieldError errors={fieldErrors} name="employeeCity" />
         </div>
-        <div className="sm:col-span-3">
+        <div className="sm:col-span-3" id="paystub-field-employeeState">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             State <span className="text-rose-500">*</span>
           </label>
@@ -169,7 +188,8 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             <select
               value={formData.employeeState}
               onChange={(e) => updateField("employeeState", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8 transition"
+              aria-invalid={Boolean(fieldErrors.employeeState)}
+              className={fieldClassName(selectClass, fieldErrors.employeeState)}
             >
               {US_STATES.map((st) => (
                 <option key={st} value={st}>
@@ -179,8 +199,9 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             </select>
             <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
+          <FieldError errors={fieldErrors} name="employeeState" />
         </div>
-        <div className="sm:col-span-3">
+        <div className="sm:col-span-3" id="paystub-field-employeeZip">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             ZIP Code <span className="text-rose-500">*</span>
           </label>
@@ -189,8 +210,10 @@ const EmployeeStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.employeeZip}
             onChange={(e) => updateField("employeeZip", e.target.value)}
             placeholder="e.g. 10001"
-            className={inputClass}
+            aria-invalid={Boolean(fieldErrors.employeeZip)}
+            className={fieldClassName(inputClass, fieldErrors.employeeZip)}
           />
+          <FieldError errors={fieldErrors} name="employeeZip" />
         </div>
       </div>
     </SectionCard>

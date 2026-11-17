@@ -32,6 +32,8 @@ export function usePaystubFlowNavigation(templateId) {
         PAYSTUB_PAGE_STEPS.PACKAGE,
         PAYSTUB_CHECKOUT_PHASE.PACKAGE,
       ),
+      // Sync update so package isn't blocked by review-step state work.
+      { flushSync: true },
     );
     scrollPaystubFlowIntoView();
   };

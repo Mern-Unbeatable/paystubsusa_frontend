@@ -1,9 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Lock } from "lucide-react";
 import TemplateDocumentPreview from "../common/preview/TemplateDocumentPreview";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
-import { findIncompleteField } from "../../hooks/usePaystubFormData";
+import {
+  findIncompleteFields,
+  savePaystubFormDataLocally,
+} from "../../hooks/usePaystubFormData";
 import {
   scrollPaystubFlowIntoView,
   usePaystubFormStep,
@@ -14,8 +17,26 @@ import EmployerStep from "../common/detailsForm/EmployerStep";
 import EmployeeStep from "../common/detailsForm/EmployeeStep";
 import PayDetailsStep from "../common/detailsForm/PayDetailsStep";
 import ReviewStep from "../common/detailsForm/ReviewStep";
+import { toFieldErrorMap } from "../common/detailsForm/fieldValidation";
 
 const FORM_STEP_COUNT = 4;
+const LOCAL_SAVE_TOAST_ID = "paystub-form-local-save";
+const MISSING_FIELDS_TOAST_ID = "paystub-form-missing-fields";
+
+const missingFieldsMessage = (missing) => {
+  if (missing.length === 1) return `${missing[0].label} is required.`;
+  const labels = missing.map((f) => f.label);
+  if (labels.length <= 3) return `Please complete: ${labels.join(", ")}.`;
+  return `Please complete ${labels.length} required fields (e.g. ${labels.slice(0, 3).join(", ")}).`;
+};
+
+const scrollToField = (key) => {
+  requestAnimationFrame(() => {
+    document
+      .getElementById(`paystub-field-${key}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+};
 
 const PaystubDetailsForm = ({
   template,
@@ -28,7 +49,10 @@ const PaystubDetailsForm = ({
   const selectedTemplateId = template.id;
   const { currentStep, setFormStep } = usePaystubFormStep();
   const skipScrollOnMount = useRef(true);
-  const { formData, updateField, calculations } = form;
+  const notifiedLocalSave = useRef(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const { formData, steps, updateField, updateDirectDeposit, calculations } =
+    form;
 
   useEffect(() => {
     if (skipScrollOnMount.current) {
@@ -38,19 +62,97 @@ const PaystubDetailsForm = ({
     scrollPaystubFlowIntoView();
   }, [currentStep]);
 
+  const markIncomplete = (missing) => {
+    setFieldErrors(toFieldErrorMap(missing));
+    toast.error(missingFieldsMessage(missing), {
+      id: MISSING_FIELDS_TOAST_ID,
+      duration: 5000,
+    });
+    setFormStep(missing[0].step);
+    setTimeout(() => scrollToField(missing[0].key), 120);
+  };
+
+  useEffect(() => {
+    if (currentStep !== PAYSTUB_FORM_STEPS.REVIEW) {
+      notifiedLocalSave.current = false;
+      return;
+    }
+
+    const missing = findIncompleteFields(formData);
+    if (missing.length > 0) {
+      markIncomplete(missing);
+      return;
+    }
+
+    // Only clear when something is marked — `setFieldErrors({})` every time
+    // re-renders forever (new object) and blocks navigating to package/checkout.
+    setFieldErrors((prev) => (Object.keys(prev).length === 0 ? prev : {}));
+    try {
+      savePaystubFormDataLocally(steps);
+      if (notifiedLocalSave.current) return;
+      notifiedLocalSave.current = true;
+      toast.success(
+        "Your paystub data has been saved locally on this device.",
+        { id: LOCAL_SAVE_TOAST_ID, duration: 4000 },
+      );
+    } catch {
+      toast.error(
+        "Couldn't save your data locally. Storage may be full or unavailable.",
+        { id: LOCAL_SAVE_TOAST_ID },
+      );
+    }
+  }, [currentStep, formData, steps]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const openTemplatePicker = () => onChangeTemplate(currentStep);
 
+  const clearFieldError = (key) => {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
+
+  const handleUpdateField = (field, value) => {
+    clearFieldError(field);
+    updateField(field, value);
+  };
+
+  const handleUpdateDirectDeposit = (patch) => {
+    Object.keys(patch).forEach(clearFieldError);
+    updateDirectDeposit(patch);
+  };
+
+  const ensureCompleteOrFocus = () => {
+    const missing = findIncompleteFields(formData);
+    if (missing.length === 0) {
+      setFieldErrors({});
+      return true;
+    }
+    markIncomplete(missing);
+    return false;
+  };
+
+  const goToReview = () => {
+    if (!ensureCompleteOrFocus()) return;
+    setFormStep(PAYSTUB_FORM_STEPS.REVIEW);
+  };
+
   const handleContinueToPackage = () => {
-    const missing = findIncompleteField(formData);
-    if (missing) {
-      toast.error(`${missing.label} is required.`);
-      setFormStep(missing.step);
+    const missing = findIncompleteFields(formData);
+    if (missing.length > 0) {
+      markIncomplete(missing);
       return;
     }
     onContinueToPackage();
   };
 
   const handleStepperClick = (step) => {
+    if (step === PAYSTUB_FORM_STEPS.REVIEW) {
+      goToReview();
+      return;
+    }
     if (step <= PAYSTUB_FORM_STEPS.REVIEW) {
       setFormStep(step);
       return;
@@ -74,7 +176,8 @@ const PaystubDetailsForm = ({
           {currentStep === PAYSTUB_FORM_STEPS.EMPLOYER && (
             <EmployerStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onBack={onBackToTemplates}
               onNext={() => setFormStep(PAYSTUB_FORM_STEPS.EMPLOYEE)}
             />
@@ -83,7 +186,8 @@ const PaystubDetailsForm = ({
           {currentStep === PAYSTUB_FORM_STEPS.EMPLOYEE && (
             <EmployeeStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onBack={() => setFormStep(PAYSTUB_FORM_STEPS.EMPLOYER)}
               onNext={() => setFormStep(PAYSTUB_FORM_STEPS.PAY)}
             />
@@ -91,9 +195,14 @@ const PaystubDetailsForm = ({
 
           {currentStep === PAYSTUB_FORM_STEPS.PAY && (
             <PayDetailsStep
-              form={form}
+              form={{
+                ...form,
+                updateField: handleUpdateField,
+                updateDirectDeposit: handleUpdateDirectDeposit,
+              }}
+              fieldErrors={fieldErrors}
               onBack={() => setFormStep(PAYSTUB_FORM_STEPS.EMPLOYEE)}
-              onNext={() => setFormStep(PAYSTUB_FORM_STEPS.REVIEW)}
+              onNext={goToReview}
             />
           )}
 

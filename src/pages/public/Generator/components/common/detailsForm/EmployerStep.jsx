@@ -12,8 +12,22 @@ import CompanyLogoField from "../form/CompanyLogoField";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 import SectionCard from "./SectionCard";
+import { FieldError, fieldClassName } from "./fieldValidation";
 
-const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
+const baseInput =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400";
+const baseInputIcon =
+  "w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400";
+const baseSelect =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8 transition";
+
+const EmployerStep = ({
+  formData,
+  updateField,
+  fieldErrors = {},
+  onBack,
+  onNext,
+}) => (
   <div className="space-y-6 animate-in fade-in-50 duration-200">
     <StepHeader title="Employer Information" />
 
@@ -23,7 +37,7 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
         onChange={(logo) => updateField("companyLogo", logo)}
       />
 
-      <div>
+      <div id="paystub-field-companyName">
         <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
           Company / Employer Name <span className="text-rose-500">*</span>
         </label>
@@ -34,9 +48,11 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.companyName}
             onChange={(e) => updateField("companyName", e.target.value)}
             placeholder="e.g. Acme Corporation"
-            className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+            aria-invalid={Boolean(fieldErrors.companyName)}
+            className={fieldClassName(baseInputIcon, fieldErrors.companyName)}
           />
         </div>
+        <FieldError errors={fieldErrors} name="companyName" />
       </div>
 
       <div>
@@ -51,7 +67,7 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.companyPhone ?? ""}
             onChange={(e) => updateField("companyPhone", e.target.value)}
             placeholder="(555) 123-4567"
-            className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+            className={baseInputIcon}
           />
         </div>
       </div>
@@ -62,7 +78,7 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
       title="Company Address"
       description="This will appear at the top of the paystub."
     >
-      <div>
+      <div id="paystub-field-companyAddress">
         <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
           Street Address <span className="text-rose-500">*</span>
         </label>
@@ -71,12 +87,14 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
           value={formData.companyAddress}
           onChange={(e) => updateField("companyAddress", e.target.value)}
           placeholder="e.g. 123 Main Street, Suite 400"
-          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+          aria-invalid={Boolean(fieldErrors.companyAddress)}
+          className={fieldClassName(baseInput, fieldErrors.companyAddress)}
         />
+        <FieldError errors={fieldErrors} name="companyAddress" />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-        <div className="sm:col-span-6">
+        <div className="sm:col-span-6" id="paystub-field-companyCity">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             City <span className="text-rose-500">*</span>
           </label>
@@ -85,10 +103,12 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.companyCity}
             onChange={(e) => updateField("companyCity", e.target.value)}
             placeholder="e.g. New York"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+            aria-invalid={Boolean(fieldErrors.companyCity)}
+            className={fieldClassName(baseInput, fieldErrors.companyCity)}
           />
+          <FieldError errors={fieldErrors} name="companyCity" />
         </div>
-        <div className="sm:col-span-3">
+        <div className="sm:col-span-3" id="paystub-field-companyState">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             State <span className="text-rose-500">*</span>
           </label>
@@ -96,7 +116,8 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             <select
               value={formData.companyState}
               onChange={(e) => updateField("companyState", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-8 transition"
+              aria-invalid={Boolean(fieldErrors.companyState)}
+              className={fieldClassName(baseSelect, fieldErrors.companyState)}
             >
               {US_STATES.map((st) => (
                 <option key={st} value={st}>
@@ -106,8 +127,9 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             </select>
             <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
+          <FieldError errors={fieldErrors} name="companyState" />
         </div>
-        <div className="sm:col-span-3">
+        <div className="sm:col-span-3" id="paystub-field-companyZip">
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             ZIP Code <span className="text-rose-500">*</span>
           </label>
@@ -116,8 +138,10 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.companyZip}
             onChange={(e) => updateField("companyZip", e.target.value)}
             placeholder="e.g. 10001"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+            aria-invalid={Boolean(fieldErrors.companyZip)}
+            className={fieldClassName(baseInput, fieldErrors.companyZip)}
           />
+          <FieldError errors={fieldErrors} name="companyZip" />
         </div>
       </div>
     </SectionCard>
@@ -136,7 +160,7 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
           value={formData.companyEin}
           onChange={(e) => updateField("companyEin", e.target.value)}
           placeholder="e.g. 12-3456789"
-          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+          className={baseInput}
         />
         <p className="text-[12px] text-slate-400 mt-1.5 flex items-center gap-1">
           <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>

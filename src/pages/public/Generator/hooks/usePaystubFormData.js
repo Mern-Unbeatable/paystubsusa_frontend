@@ -8,16 +8,44 @@ import {
 } from "../utils/paystubFormShape";
 
 const FORM_DATA_STORAGE_KEY = "paystubGenerator.formData";
+/** Durable copy written when the user reaches the review step. */
+export const FORM_DATA_LOCAL_STORAGE_KEY = "paystubGenerator.formData.local";
+
+const parseStoredSteps = (raw) => {
+  if (raw === null) return null;
+  const parsed = JSON.parse(raw);
+  return coerceToSteps(parsed?.steps ?? parsed);
+};
 
 const readSteps = () => {
   if (typeof window === "undefined") return structuredClone(DEFAULT_STEPS);
   try {
-    const raw = window.sessionStorage.getItem(FORM_DATA_STORAGE_KEY);
-    return coerceToSteps(raw === null ? null : JSON.parse(raw));
+    const fromSession = parseStoredSteps(
+      window.sessionStorage.getItem(FORM_DATA_STORAGE_KEY),
+    );
+    if (fromSession) return fromSession;
+    const fromLocal = parseStoredSteps(
+      window.localStorage.getItem(FORM_DATA_LOCAL_STORAGE_KEY),
+    );
+    if (fromLocal) return fromLocal;
+    return structuredClone(DEFAULT_STEPS);
   } catch {
     return structuredClone(DEFAULT_STEPS);
   }
 };
+
+/** Persist the current step payload to localStorage (review checkpoint). */
+export function savePaystubFormDataLocally(stepsOrPayload) {
+  const payload =
+    stepsOrPayload?.schemaVersion && stepsOrPayload?.steps
+      ? stepsOrPayload
+      : toPaystubApiFormData(stepsOrPayload);
+  window.localStorage.setItem(
+    FORM_DATA_LOCAL_STORAGE_KEY,
+    JSON.stringify(payload),
+  );
+  return payload;
+}
 
 const sumAmounts = (items) =>
   (items ?? []).reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
@@ -107,21 +135,25 @@ const REQUIRED_FIELDS = [
   },
 ];
 
-/** First empty required field as `{ step, label }`, or null when the form is complete. */
-export const findIncompleteField = (formDataOrSteps) => {
-  const flat = formDataOrSteps?.employer
-    ? flattenSteps(formDataOrSteps)
-    : formDataOrSteps?.steps
-      ? flattenSteps(formDataOrSteps.steps)
-      : formDataOrSteps;
-  return (
-    REQUIRED_FIELDS.find((f) => {
-      if (f.when && !f.when(flat)) return false;
-      const value = f.read ? f.read(flat) : flat[f.key];
-      return !String(value ?? "").trim();
-    }) ?? null
-  );
+const toFlatFormData = (formDataOrSteps) => {
+  if (formDataOrSteps?.employer) return flattenSteps(formDataOrSteps);
+  if (formDataOrSteps?.steps) return flattenSteps(formDataOrSteps.steps);
+  return formDataOrSteps;
 };
+
+/** All empty required fields as `{ step, key, label }[]`. */
+export const findIncompleteFields = (formDataOrSteps) => {
+  const flat = toFlatFormData(formDataOrSteps);
+  return REQUIRED_FIELDS.filter((f) => {
+    if (f.when && !f.when(flat)) return false;
+    const value = f.read ? f.read(flat) : flat[f.key];
+    return !String(value ?? "").trim();
+  });
+};
+
+/** First empty required field as `{ step, label }`, or null when the form is complete. */
+export const findIncompleteField = (formDataOrSteps) =>
+  findIncompleteFields(formDataOrSteps)[0] ?? null;
 
 /** Paystub details shared across every page of the generator flow. */
 export function usePaystubFormData() {
