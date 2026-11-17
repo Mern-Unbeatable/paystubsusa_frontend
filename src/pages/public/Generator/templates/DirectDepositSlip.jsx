@@ -81,8 +81,9 @@ const CutScissors = ({ size }) => (
  * Detachable direct-deposit advice printed under the paystub.
  * Layout matches classic payroll stubs: company block, deposit summary, detail columns.
  * `compact` — match variant thumbnail type; omit for full-page document templates.
+ * `embedded` — placed inside a template slot (e.g. template 09); skips outer top margin.
  */
-const DirectDepositSlip = ({ data, compact = false }) => {
+const DirectDepositSlip = ({ data, compact = false, embedded = false }) => {
   const dd = data?.directDeposit;
   if (!shouldRenderDirectDepositSlip(dd)) return null;
 
@@ -115,7 +116,7 @@ const DirectDepositSlip = ({ data, compact = false }) => {
   return (
     <div
       style={{
-        marginTop: s.marginTop,
+        marginTop: embedded ? 0 : s.marginTop,
         fontFamily: "Arial, Helvetica, sans-serif",
         color: "#0f172a",
         fontSize: s.body,
