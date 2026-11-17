@@ -25,6 +25,20 @@ const DD_FIELDS = [
   ["checkNumber", "Check / advice # (optional)", "e.g. 100245"],
 ];
 
+/** Digit-only fields with hard max length (matches server paystub DD validation). */
+const DD_DIGIT_LIMITS = {
+  routingNumber: 9,
+  accountNumber: 17,
+  checkNumber: 12,
+};
+
+const sanitizeDdFieldValue = (key, raw) => {
+  const value = String(raw ?? "");
+  const max = DD_DIGIT_LIMITS[key];
+  if (!max) return value;
+  return value.replace(/\D/g, "").slice(0, max);
+};
+
 const PackageSelectionSection = ({
   template,
   formData,
@@ -327,9 +341,14 @@ const PackageSelectionSection = ({
                         </label>
                         <input
                           type="text"
+                          inputMode={DD_DIGIT_LIMITS[key] ? "numeric" : "text"}
+                          autoComplete="off"
+                          maxLength={DD_DIGIT_LIMITS[key] ?? undefined}
                           value={dd[key] ?? ""}
                           onChange={(e) =>
-                            onUpdateDirectDeposit?.({ [key]: e.target.value })
+                            onUpdateDirectDeposit?.({
+                              [key]: sanitizeDdFieldValue(key, e.target.value),
+                            })
                           }
                           placeholder={placeholder}
                           aria-invalid={Boolean(fieldErrors[key])}
