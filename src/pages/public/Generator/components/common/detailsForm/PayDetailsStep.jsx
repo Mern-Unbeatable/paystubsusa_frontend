@@ -16,6 +16,15 @@ import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 import SectionCard from "./SectionCard";
 
+const ADDITIONAL_EARNING_TYPES = [
+  "Overtime",
+  "Holiday",
+  "Vacation",
+  "Bonus",
+  "Tips",
+  "Custom",
+];
+
 const PayDetailsStep = ({ form, onBack, onNext }) => {
   const {
     formData,
@@ -198,71 +207,106 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
 
         {/* Additional Earnings */}
         <div className="pt-4 border-t border-slate-100">
-          <h4 className="font-semibold text-slate-800 text-[14px] mb-3">
-            Additional Earnings
+          <h4 className="font-semibold text-slate-800 text-[14px] mb-1">
+            Add new earning to paystubs
           </h4>
-          <div className="space-y-3">
-            {formData.additionalEarnings.map((earning) => (
-              <div
-                key={earning.id}
-                className="flex items-center gap-2 animate-in fade-in"
-              >
-                <input
-                  type="text"
-                  value={earning.desc}
-                  placeholder="Description (e.g. Bonus)"
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setFormData((prev) => ({
-                      ...prev,
-                      additionalEarnings: prev.additionalEarnings.map((item) =>
-                        item.id === earning.id ? { ...item, desc: val } : item,
-                      ),
-                    }));
-                  }}
-                  className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
-                />
-                <div className="relative w-32">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">
-                    $
-                  </span>
-                  <input
-                    type="number"
-                    value={earning.amount}
-                    placeholder="0.00"
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setFormData((prev) => ({
-                        ...prev,
-                        additionalEarnings: prev.additionalEarnings.map(
-                          (item) =>
-                            item.id === earning.id
-                              ? { ...item, amount: val }
-                              : item,
-                        ),
-                      }));
-                    }}
-                    className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
-                  />
-                </div>
+          <p className="text-[12px] text-slate-400 mb-3">
+            Choose a type to add a line item for this pay period.
+          </p>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {ADDITIONAL_EARNING_TYPES.map((type) => {
+              const alreadyAdded =
+                type !== "Custom" &&
+                formData.additionalEarnings.some((e) => e.desc === type);
+              return (
                 <button
+                  key={type}
                   type="button"
-                  onClick={() => handleRemoveEarning(earning.id)}
-                  className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
-                  aria-label="Remove earning"
+                  disabled={alreadyAdded}
+                  onClick={() => handleAddEarning(type)}
+                  className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[13px] font-semibold transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 ${
+                    type === "Custom"
+                      ? "border-[#1E60F2]/30 bg-blue-50 text-[#1E60F2] hover:bg-blue-100"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  }`}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
+                  {type}
                 </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
-          <button
-            type="button"
-            onClick={handleAddEarning}
-            className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#1E60F2] hover:text-[#1550cf] transition cursor-pointer"
-          >
-            <Plus className="w-3.5 h-3.5" /> Add earning
-          </button>
+
+          {formData.additionalEarnings.length > 0 && (
+            <div className="space-y-3">
+              {formData.additionalEarnings.map((earning) => {
+                const isPreset = ADDITIONAL_EARNING_TYPES.includes(earning.desc);
+                return (
+                  <div
+                    key={earning.id}
+                    className="flex items-center gap-2 animate-in fade-in"
+                  >
+                    {isPreset ? (
+                      <span className="flex-1 px-3.5 py-2 rounded-xl border border-slate-100 bg-slate-50 text-[14px] font-medium text-slate-700">
+                        {earning.desc}
+                      </span>
+                    ) : (
+                      <input
+                        type="text"
+                        value={earning.desc}
+                        placeholder="Custom earning name"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setFormData((prev) => ({
+                            ...prev,
+                            additionalEarnings: prev.additionalEarnings.map(
+                              (item) =>
+                                item.id === earning.id
+                                  ? { ...item, desc: val }
+                                  : item,
+                            ),
+                          }));
+                        }}
+                        className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
+                      />
+                    )}
+                    <div className="relative w-32">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">
+                        $
+                      </span>
+                      <input
+                        type="number"
+                        value={earning.amount}
+                        placeholder="0.00"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setFormData((prev) => ({
+                            ...prev,
+                            additionalEarnings: prev.additionalEarnings.map(
+                              (item) =>
+                                item.id === earning.id
+                                  ? { ...item, amount: val }
+                                  : item,
+                            ),
+                          }));
+                        }}
+                        className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveEarning(earning.id)}
+                      className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
+                      aria-label="Remove earning"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </SectionCard>
 

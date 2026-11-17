@@ -105,33 +105,28 @@ const ReviewStep = ({
           {formData.employeeCity}, {formData.employeeState}{" "}
           {formData.employeeZip}
         </p>
-        {(formData.employeePhone ||
-          formData.employeeId ||
-          formData.exemptions ||
-          formData.maritalStatus) && (
-          <div className="mt-2.5 flex flex-wrap gap-2">
-            {formData.employeePhone && (
-              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
-                Phone: {formData.employeePhone}
-              </div>
-            )}
-            {formData.employeeId && (
-              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
-                ID: {formData.employeeId}
-              </div>
-            )}
-            {formData.exemptions && (
-              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
-                Exemptions: {formData.exemptions}
-              </div>
-            )}
-            {formData.maritalStatus && (
-              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
-                Marital status: {formData.maritalStatus}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="mt-2.5 flex flex-wrap gap-2">
+          {formData.employeePhone && (
+            <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+              Phone: {formData.employeePhone}
+            </div>
+          )}
+          {formData.employeeId && (
+            <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+              ID: {formData.employeeId}
+            </div>
+          )}
+          {formData.exemptions && (
+            <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+              Exemptions: {formData.exemptions}
+            </div>
+          )}
+          {formData.maritalStatus && (
+            <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+              Marital status: {formData.maritalStatus}
+            </div>
+          )}
+        </div>
       </ReviewCard>
     </div>
 
