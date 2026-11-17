@@ -14,31 +14,22 @@ import { PAYSTUB_FORM_STEPS } from "../../../utils/paystubFlow";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
-// Redesigned ReviewCard with icons and better hover states
-const ReviewCard = ({
-  title,
-  icon: Icon,
-  onEdit,
-  className = "mb-3",
-  children,
-}) => (
-  <div className="group p-4 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm transition-all duration-200">
-    <div className={`flex items-center justify-between ${className}`}>
-      <div className="flex items-center gap-2">
-        {Icon && (
-          <Icon className="w-4 h-4 text-slate-400 group-hover:text-[#1E60F2] transition-colors" />
-        )}
-        <h4 className="font-bold text-slate-800 text-[14px]">{title}</h4>
+const ReviewCard = ({ title, icon: Icon, onEdit, children }) => (
+  <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:border-slate-300 hover:shadow-sm transition-all duration-200">
+    <div className="flex items-center justify-between gap-3 px-4 py-3 bg-slate-100 border-b border-slate-200">
+      <div className="flex items-center gap-2 min-w-0">
+        {Icon && <Icon className="w-4 h-4 text-[#1E60F2] shrink-0" />}
+        <h4 className="font-semibold text-slate-800 text-[14px]">{title}</h4>
       </div>
       <button
         type="button"
         onClick={onEdit}
-        className="flex items-center gap-1 text-[#1E60F2] text-[12px] font-semibold bg-blue-50/0 hover:bg-blue-50 px-2 py-1 rounded-md transition cursor-pointer"
+        className="flex items-center gap-1 text-[#1E60F2] text-[12px] font-semibold bg-white hover:bg-blue-50 border border-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
       >
         <Pencil className="w-3 h-3" /> Edit
       </button>
     </div>
-    <div className="mt-1">{children}</div>
+    <div className="p-4">{children}</div>
   </div>
 );
 
@@ -114,9 +105,31 @@ const ReviewStep = ({
           {formData.employeeCity}, {formData.employeeState}{" "}
           {formData.employeeZip}
         </p>
-        {formData.employeeId && (
-          <div className="mt-2.5 inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
-            ID: {formData.employeeId}
+        {(formData.employeePhone ||
+          formData.employeeId ||
+          formData.exemptions ||
+          formData.maritalStatus) && (
+          <div className="mt-2.5 flex flex-wrap gap-2">
+            {formData.employeePhone && (
+              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+                Phone: {formData.employeePhone}
+              </div>
+            )}
+            {formData.employeeId && (
+              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+                ID: {formData.employeeId}
+              </div>
+            )}
+            {formData.exemptions && (
+              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+                Exemptions: {formData.exemptions}
+              </div>
+            )}
+            {formData.maritalStatus && (
+              <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
+                Marital status: {formData.maritalStatus}
+              </div>
+            )}
           </div>
         )}
       </ReviewCard>
@@ -194,6 +207,25 @@ const ReviewStep = ({
         </div>
       </ReviewCard>
     </div>
+
+    {formData.directDeposit?.enabled && (
+      <ReviewCard
+        title="Direct Deposit Slip"
+        icon={FileText}
+        onEdit={() => onEdit(PAYSTUB_FORM_STEPS.PAY)}
+      >
+        <p className="text-[13px] text-slate-700">
+          {formData.directDeposit.bankName || "Bank"} · Net deposit{" "}
+          <span className="font-bold">{formatCurrency(calculations.netPay)}</span>
+        </p>
+        <p className="text-[12px] text-slate-500 mt-1">
+          Account ••••
+          {String(formData.directDeposit.accountNumber || "")
+            .replace(/\D/g, "")
+            .slice(-4) || "----"}
+        </p>
+      </ReviewCard>
+    )}
 
     {/* Modern Dark Navy Net Pay Banner */}
     <div className="relative overflow-hidden bg-gradient-to-br from-[#092258] to-[#113a82] text-white rounded-2xl p-6 sm:p-7 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">

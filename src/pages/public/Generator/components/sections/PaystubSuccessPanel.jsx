@@ -62,7 +62,7 @@ const PaystubSuccessPanel = ({ template }) => {
   const paid = useSelector(selectCheckoutPaid);
   const { formData, calculations } = usePaystubFormData();
   const credits = useSelector(selectCheckoutCredits);
-  const { onBackToTemplates, onBackToFormStep, onCheckoutVerifying } =
+  const { onStartOver, onBackToFormStep, onCheckoutVerifying } =
     usePaystubFlowNavigation(template.id);
   const [searchParams] = useSearchParams();
   const redirectSecret = searchParams.get("payment_intent_client_secret");
@@ -147,7 +147,7 @@ const PaystubSuccessPanel = ({ template }) => {
         creditsRemaining={credits?.creditsRemaining ?? 0}
         onUseCredit={handleUseCredit}
         onDownload={handleDownload}
-        onStartOver={onBackToTemplates}
+        onStartOver={onStartOver}
       />
       <PrintablePaystub
         template={template}

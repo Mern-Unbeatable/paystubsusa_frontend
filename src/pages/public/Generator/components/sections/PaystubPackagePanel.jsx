@@ -31,7 +31,7 @@ import {
 /** Step 5: package selection — URL `?step=5&checkout=package`. */
 const PaystubPackagePanel = ({ template }) => {
   const dispatch = useDispatch();
-  const { formData, calculations } = usePaystubFormData();
+  const { formData, calculations, toApiFormData } = usePaystubFormData();
   const order = usePaystubOrder();
   const {
     onBackToReview,
@@ -75,7 +75,7 @@ const PaystubPackagePanel = ({ template }) => {
     inFlightRef.current = true;
     setRedeeming(true);
     const action = await dispatch(
-      redeemPaystubCredit({ templateId: template.catalogId, formData }),
+      redeemPaystubCredit({ templateId: template.catalogId, formData: toApiFormData() }),
     );
     if (redeemPaystubCredit.fulfilled.match(action)) {
       onPaymentSuccess();

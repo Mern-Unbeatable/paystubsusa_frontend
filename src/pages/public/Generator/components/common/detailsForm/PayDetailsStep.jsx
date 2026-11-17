@@ -14,12 +14,14 @@ import payFrequencyOptions from "../../../../data/generator/payFrequencyOptions.
 import { formatCurrency } from "../../../utils/formatCurrency";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
+import SectionCard from "./SectionCard";
 
 const PayDetailsStep = ({ form, onBack, onNext }) => {
   const {
     formData,
     setFormData,
     updateField,
+    updateDirectDeposit,
     calculations,
     handleAddTax,
     handleRemoveTax,
@@ -29,20 +31,14 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
     handleAddDeduction,
     handleRemoveDeduction,
   } = form;
+  const dd = formData.directDeposit ?? {};
 
   return (
     <div className="space-y-6 animate-in fade-in-50 duration-200">
       <StepHeader title="Pay Details" />
 
       {/* ================= SECTION 1: Dates & Frequency ================= */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <CalendarDays className="w-4 h-4 text-[#1E60F2]" />
-          <h3 className="font-semibold text-slate-800 text-[15px]">
-            Pay Schedule
-          </h3>
-        </div>
-
+      <SectionCard icon={CalendarDays} title="Pay Schedule">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
@@ -98,17 +94,10 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
             <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
-      </div>
+      </SectionCard>
 
       {/* ================= SECTION 2: Earnings ================= */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Banknote className="w-4 h-4 text-[#1E60F2]" />
-          <h3 className="font-semibold text-slate-800 text-[15px]">
-            Compensation
-          </h3>
-        </div>
-
+      <SectionCard icon={Banknote} title="Compensation">
         <div>
           <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
             Pay Type <span className="text-rose-500">*</span>
@@ -275,24 +264,16 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
             <Plus className="w-3.5 h-3.5" /> Add earning
           </button>
         </div>
-      </div>
+      </SectionCard>
 
       {/* ================= SECTION 3: Taxes & Deductions ================= */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Taxes */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-          <div className="flex items-center gap-2">
-            <Landmark className="w-4 h-4 text-[#1E60F2]" />
-            <div>
-              <h3 className="font-semibold text-slate-800 text-[15px]">
-                Tax Withholdings
-              </h3>
-              <p className="text-slate-400 text-[12px] mt-0.5">
-                Enter withholding amounts for this pay period.
-              </p>
-            </div>
-          </div>
-
+        <SectionCard
+          icon={Landmark}
+          title="Tax Withholdings"
+          description="Enter withholding amounts for this pay period."
+        >
           <div className="space-y-2.5">
             {formData.taxes.map((t) => (
               <div key={t.id} className="flex items-center gap-2">
@@ -331,17 +312,10 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
           >
             <Plus className="w-3.5 h-3.5" /> Add tax
           </button>
-        </div>
+        </SectionCard>
 
         {/* Deductions */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-          <div className="flex items-center gap-2">
-            <Receipt className="w-4 h-4 text-[#1E60F2]" />
-            <h3 className="font-semibold text-slate-800 text-[15px]">
-              Other Deductions
-            </h3>
-          </div>
-
+        <SectionCard icon={Receipt} title="Other Deductions">
           <div className="space-y-2.5">
             {formData.deductions.map((d) => (
               <div
@@ -401,8 +375,72 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
           >
             <Plus className="w-3.5 h-3.5" /> Add deduction
           </button>
-        </div>
+        </SectionCard>
       </div>
+
+      {/* ================= Optional Direct Deposit Slip ================= */}
+      <SectionCard
+        icon={Landmark}
+        title="Direct Deposit Slip"
+        description="Optional detachable slip on the PDF. Net pay comes from the totals below."
+        headerRight={
+          <button
+            type="button"
+            role="switch"
+            aria-checked={Boolean(dd.enabled)}
+            onClick={() => updateDirectDeposit({ enabled: !dd.enabled })}
+            className={`inline-flex items-center gap-2.5 shrink-0 select-none rounded-xl border px-3.5 py-2 text-[13px] font-semibold transition cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E60F2]/40 ${
+              dd.enabled
+                ? "border-[#1E60F2]/30 bg-blue-50 text-[#1E60F2] hover:bg-blue-100"
+                : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+            }`}
+          >
+            <span
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                dd.enabled ? "bg-[#1E60F2]" : "bg-slate-300"
+              }`}
+              aria-hidden="true"
+            >
+              <span
+                className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                  dd.enabled ? "translate-x-4" : "translate-x-0.5"
+                }`}
+              />
+            </span>
+            Include slip
+          </button>
+        }
+      >
+        {dd.enabled ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              ["bankName", "Bank name", "e.g. Chase"],
+              ["accountHolderName", "Account holder", "Name on the account"],
+              ["routingNumber", "Routing number", "9 digits"],
+              ["accountNumber", "Account number", "4–17 digits"],
+              ["checkNumber", "Check / advice # (optional)", "e.g. 100245"],
+            ].map(([key, label, placeholder]) => (
+              <div key={key} className={key === "checkNumber" ? "sm:col-span-2" : ""}>
+                <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+                  {label}
+                  {!label.includes("optional") && <span className="text-rose-500"> *</span>}
+                </label>
+                <input
+                  type="text"
+                  value={dd[key] ?? ""}
+                  onChange={(e) => updateDirectDeposit({ [key]: e.target.value })}
+                  placeholder={placeholder}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400"
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[13px] text-slate-500">
+            Turn on Include slip to add bank details to the PDF.
+          </p>
+        )}
+      </SectionCard>
 
       {/* ================= Totals Bar ================= */}
       <div className="bg-[#092258] rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">

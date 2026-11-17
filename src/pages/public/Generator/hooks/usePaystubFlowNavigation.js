@@ -56,6 +56,11 @@ export function usePaystubFlowNavigation(templateId) {
       navigate(PATHS.PUBLIC.paystubGenerator);
       dispatch(resetCheckout());
     },
+    /** Create another stub on the same template, starting at pay details. */
+    onStartOver: () => {
+      dispatch(resetCheckout());
+      goToFormStep(PAYSTUB_FORM_STEPS.PAY);
+    },
     /** Swaps the template while staying on the same step/checkout phase. */
     onSwitchTemplate: (nextTemplateId, { step, checkoutPhase } = {}) => {
       dispatch(clearCheckoutOrder());

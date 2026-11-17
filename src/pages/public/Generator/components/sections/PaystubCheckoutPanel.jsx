@@ -56,7 +56,7 @@ const PaystubCheckoutPanel = ({ template }) => {
     currentPkg,
   } = usePaystubOrder();
   const isUnlimited = currentPkg.productCode === "unlimited_monthly";
-  const { formData, calculations } = usePaystubFormData();
+  const { formData, calculations, toApiFormData } = usePaystubFormData();
   const { guestToken, email, order, clientSecret, credit } =
     useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
@@ -167,7 +167,7 @@ const PaystubCheckoutPanel = ({ template }) => {
         documentType: "paystub",
         templateId: template.catalogId,
         items,
-        formData,
+        formData: toApiFormData(),
         idempotencyKey,
       }),
     );
