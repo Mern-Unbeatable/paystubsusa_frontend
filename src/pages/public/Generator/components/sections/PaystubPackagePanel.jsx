@@ -8,12 +8,14 @@ import PaystubStepper from "../common/flow/PaystubStepper";
 import { PAYSTUB_PAGE_STEPS } from "../../utils/paystubFlow";
 import {
   findIncompleteField,
+  findIncompleteFields,
   usePaystubFormData,
 } from "../../hooks/usePaystubFormData";
 import { usePaystubOrder } from "../../hooks/usePaystubOrder";
 import { usePaystubFlowNavigation } from "../../hooks/usePaystubFlowNavigation";
 import { useActiveSubscription } from "../../hooks/useActiveSubscription";
 import { PAYSTUB_CHECKOUT_PHASE } from "../../hooks/usePaystubFormStep";
+import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
 import { getErrorMessage } from "../../../../../api/errorNormalizer";
 import {
   cancelCreditRedeem,
@@ -123,7 +125,26 @@ const PaystubPackagePanel = ({ template }) => {
           hasUnlimited={hasUnlimited}
           onBackToReview={onBackToReview}
           onChangeTemplate={() => setTemplateModalOpen(true)}
-          onContinueToCheckout={onContinueToCheckout}
+          onContinueToCheckout={() => {
+            if (order.includeDdSlip) {
+              const bankMissing = findIncompleteFields(formData).filter((f) =>
+                [
+                  "bankName",
+                  "accountHolderName",
+                  "routingNumber",
+                  "accountNumber",
+                ].includes(f.key),
+              );
+              if (!formData.directDeposit?.enabled || bankMissing.length > 0) {
+                toast.error(
+                  "Add complete bank details in Pay Details before purchasing the Direct Deposit Slip.",
+                );
+                onBackToFormStep(PAYSTUB_FORM_STEPS.PAY);
+                return;
+              }
+            }
+            onContinueToCheckout();
+          }}
         />
       )}
       <TemplateSelectionModal

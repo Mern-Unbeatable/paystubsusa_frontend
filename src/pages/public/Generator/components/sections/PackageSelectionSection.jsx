@@ -1,9 +1,17 @@
 import React from "react";
-import { Check, CheckCircle2, Minus, Plus, Layers } from "lucide-react";
+import {
+  Check,
+  CheckCircle2,
+  Minus,
+  Plus,
+  Layers,
+  Landmark,
+} from "lucide-react";
 import { FileText } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import OrderSummaryCard from "../common/order/OrderSummaryCard";
+import { PAYSTUB_DD_SLIP_PRICE } from "../../hooks/usePaystubOrder";
 
 const PackageSelectionSection = ({
   template,
@@ -20,6 +28,8 @@ const PackageSelectionSection = ({
     setSelectedPackage,
     additionalCount,
     setAdditionalCount,
+    includeDdSlip,
+    setIncludeDdSlip,
     summaryLines,
     grandTotal,
   } = order;
@@ -208,6 +218,63 @@ const PackageSelectionSection = ({
                 </button>
               </div>
             </div>
+          )}
+
+          {!unlimitedSelected && (
+            <button
+              type="button"
+              role="switch"
+              aria-checked={Boolean(includeDdSlip)}
+              aria-label="Add Direct Deposit Slip"
+              onClick={() => setIncludeDdSlip((prev) => !prev)}
+              className={`w-full text-left rounded-xl p-4 sm:p-5 border flex items-center gap-4 transition cursor-pointer ${
+                includeDdSlip
+                  ? "border-[#1E60F2] bg-blue-50/40 shadow-sm border-2"
+                  : "border-slate-200 bg-slate-50 hover:border-slate-300"
+              }`}
+            >
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                  includeDdSlip
+                    ? "bg-[#1E60F2] text-white"
+                    : "bg-white text-slate-500 border border-slate-200"
+                }`}
+              >
+                <Landmark className="w-5 h-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="flex items-start justify-between gap-3">
+                  <span>
+                    <span className="block font-bold text-slate-800 text-[15px]">
+                      Direct Deposit Slip
+                    </span>
+                    <span className="block text-slate-500 text-[13px] mt-0.5">
+                      Detachable advice on your paystub PDF. Requires bank
+                      details from Pay Details.
+                    </span>
+                  </span>
+                  <span className="shrink-0 font-bold text-slate-900 text-[15px]">
+                    ${PAYSTUB_DD_SLIP_PRICE.toFixed(2)}
+                  </span>
+                </span>
+              </span>
+              <span
+                className={`inline-flex items-center shrink-0 select-none rounded-xl p-1.5`}
+                aria-hidden="true"
+              >
+                <span
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+                    includeDdSlip ? "bg-[#1E60F2]" : "bg-slate-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                      includeDdSlip ? "translate-x-[22px]" : "translate-x-[3px]"
+                    }`}
+                  />
+                </span>
+              </span>
+            </button>
           )}
 
           {/* Actions: Back (left), Continue (right) */}

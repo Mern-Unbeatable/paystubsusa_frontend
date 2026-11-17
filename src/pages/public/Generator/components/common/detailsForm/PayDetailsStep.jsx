@@ -70,7 +70,10 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
               value={formData.payPeriodStart}
               onChange={(e) => updateField("payPeriodStart", e.target.value)}
               aria-invalid={Boolean(fieldErrors.payPeriodStart)}
-              className={fieldClassName(dateInputClass, fieldErrors.payPeriodStart)}
+              className={fieldClassName(
+                dateInputClass,
+                fieldErrors.payPeriodStart,
+              )}
             />
             <FieldError errors={fieldErrors} name="payPeriodStart" />
           </div>
@@ -83,7 +86,10 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
               value={formData.payPeriodEnd}
               onChange={(e) => updateField("payPeriodEnd", e.target.value)}
               aria-invalid={Boolean(fieldErrors.payPeriodEnd)}
-              className={fieldClassName(dateInputClass, fieldErrors.payPeriodEnd)}
+              className={fieldClassName(
+                dateInputClass,
+                fieldErrors.payPeriodEnd,
+              )}
             />
             <FieldError errors={fieldErrors} name="payPeriodEnd" />
           </div>
@@ -115,7 +121,10 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
                 value={formData.payFrequency}
                 onChange={(e) => updateField("payFrequency", e.target.value)}
                 aria-invalid={Boolean(fieldErrors.payFrequency)}
-                className={fieldClassName(selectInputClass, fieldErrors.payFrequency)}
+                className={fieldClassName(
+                  selectInputClass,
+                  fieldErrors.payFrequency,
+                )}
               >
                 {payFrequencyOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -174,7 +183,10 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
                   onChange={(e) => updateField("hourlyRate", e.target.value)}
                   placeholder="200"
                   aria-invalid={Boolean(fieldErrors.hourlyRate)}
-                  className={fieldClassName(moneyInputClass, fieldErrors.hourlyRate)}
+                  className={fieldClassName(
+                    moneyInputClass,
+                    fieldErrors.hourlyRate,
+                  )}
                 />
               </div>
               <FieldError errors={fieldErrors} name="hourlyRate" />
@@ -189,7 +201,10 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
                 onChange={(e) => updateField("regularHours", e.target.value)}
                 placeholder="80"
                 aria-invalid={Boolean(fieldErrors.regularHours)}
-                className={fieldClassName(plainInputClass, fieldErrors.regularHours)}
+                className={fieldClassName(
+                  plainInputClass,
+                  fieldErrors.regularHours,
+                )}
               />
               <FieldError errors={fieldErrors} name="regularHours" />
             </div>
@@ -228,7 +243,10 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
                 onChange={(e) => updateField("salaryAmount", e.target.value)}
                 placeholder="22000"
                 aria-invalid={Boolean(fieldErrors.salaryAmount)}
-                className={fieldClassName(moneyInputClass, fieldErrors.salaryAmount)}
+                className={fieldClassName(
+                  moneyInputClass,
+                  fieldErrors.salaryAmount,
+                )}
               />
             </div>
             <FieldError errors={fieldErrors} name="salaryAmount" />
@@ -271,7 +289,9 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
           {formData.additionalEarnings.length > 0 && (
             <div className="space-y-3">
               {formData.additionalEarnings.map((earning) => {
-                const isPreset = ADDITIONAL_EARNING_TYPES.includes(earning.desc);
+                const isPreset = ADDITIONAL_EARNING_TYPES.includes(
+                  earning.desc,
+                );
                 return (
                   <div
                     key={earning.id}
@@ -448,33 +468,29 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
         </SectionCard>
       </div>
 
-      {/* ================= Optional Direct Deposit Slip ================= */}
+      {/* ================= Optional Direct Deposit bank details ================= */}
       <SectionCard
         icon={Landmark}
         title="Direct Deposit Slip"
-        description="Optional detachable slip on the PDF. Net pay comes from the totals below."
+        description="Collect bank details here. Add the $1.99 slip as a paid option on the package step — bank info alone does not include it on the PDF."
         headerRight={
           <button
             type="button"
             role="switch"
             aria-checked={Boolean(dd.enabled)}
-            aria-label="Include direct deposit slip"
+            aria-label="Enter direct deposit bank details"
             onClick={() => updateDirectDeposit({ enabled: !dd.enabled })}
-            className={`inline-flex items-center shrink-0 select-none rounded-xl border p-2 transition cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E60F2]/40 ${
-              dd.enabled
-                ? "border-[#1E60F2]/30 bg-blue-50 hover:bg-blue-100"
-                : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
-            }`}
+            className={`inline-flex items-center shrink-0 select-none rounded-xl transition cursor-pointer active:scale-[0.98] `}
           >
             <span
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
                 dd.enabled ? "bg-[#1E60F2]" : "bg-slate-300"
               }`}
               aria-hidden="true"
             >
               <span
-                className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
-                  dd.enabled ? "translate-x-4" : "translate-x-0.5"
+                className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                  dd.enabled ? "translate-x-[22px]" : "translate-x-[3px]"
                 }`}
               />
             </span>
@@ -497,12 +513,16 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
               >
                 <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                   {label}
-                  {!label.includes("optional") && <span className="text-rose-500"> *</span>}
+                  {!label.includes("optional") && (
+                    <span className="text-rose-500"> *</span>
+                  )}
                 </label>
                 <input
                   type="text"
                   value={dd[key] ?? ""}
-                  onChange={(e) => updateDirectDeposit({ [key]: e.target.value })}
+                  onChange={(e) =>
+                    updateDirectDeposit({ [key]: e.target.value })
+                  }
                   placeholder={placeholder}
                   aria-invalid={Boolean(fieldErrors[key])}
                   className={fieldClassName(ddInputClass, fieldErrors[key])}
@@ -513,7 +533,8 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
           </div>
         ) : (
           <p className="text-[13px] text-slate-500">
-            Turn on the switch to add bank details to the PDF.
+            Turn on the switch to enter bank details for the optional paid
+            Direct Deposit Slip.
           </p>
         )}
       </SectionCard>

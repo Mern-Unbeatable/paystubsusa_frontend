@@ -10,6 +10,7 @@ import {
   TemplateDocument,
   hasTemplateDocument,
 } from "../../../templates";
+import DirectDepositSlip from "../../../templates/DirectDepositSlip";
 
 // Same page margin the PDF uses around the variant templates (01–08).
 const VARIANT_PAGE_MARGIN = 32;
@@ -33,6 +34,7 @@ const TemplatePagePreview = ({ template, data, framed, className }) =>
       className={className}
     >
       <PaystubThumbnail template={template} framed={false} data={data ?? SAMPLE_VARIANT_DATA} />
+      <DirectDepositSlip data={data ?? SAMPLE_VARIANT_DATA} />
     </A4PreviewPage>
   );
 

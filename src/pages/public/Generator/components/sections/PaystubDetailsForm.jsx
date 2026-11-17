@@ -91,10 +91,10 @@ const PaystubDetailsForm = ({
       savePaystubFormDataLocally(steps);
       if (notifiedLocalSave.current) return;
       notifiedLocalSave.current = true;
-      toast.success(
-        "Your paystub data has been saved locally on this device.",
-        { id: LOCAL_SAVE_TOAST_ID, duration: 4000 },
-      );
+      toast.success("Your paystub data has been saved.", {
+        id: LOCAL_SAVE_TOAST_ID,
+        duration: 4000,
+      });
     } catch {
       toast.error(
         "Couldn't save your data locally. Storage may be full or unavailable.",
