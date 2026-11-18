@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import PrintablePaystub from "../common/print/PrintablePaystub";
+import TemplateDocumentPreview from "../common/preview/TemplateDocumentPreview";
 import PaymentSuccessSection from "./PaymentSuccessSection";
 import { usePaystubFormData } from "../../hooks/usePaystubFormData";
-import { usePaystubOrder } from "../../hooks/usePaystubOrder";
+import {
+  PAYSTUB_DD_SLIP_PRODUCT_CODE,
+  usePaystubOrder,
+} from "../../hooks/usePaystubOrder";
 import { usePaystubFlowNavigation } from "../../hooks/usePaystubFlowNavigation";
 import { downloadPaystubPdf } from "../../utils/downloadPaystubPdf";
 import { stripePromise } from "../../utils/stripeClient";
@@ -62,7 +66,7 @@ const PaystubSuccessPanel = ({ template }) => {
   const paid = useSelector(selectCheckoutPaid);
   const { formData, calculations } = usePaystubFormData();
   const credits = useSelector(selectCheckoutCredits);
-  const { onBackToTemplates, onBackToFormStep, onCheckoutVerifying } =
+  const { onStartOver, onBackToFormStep, onCheckoutVerifying } =
     usePaystubFlowNavigation(template.id);
   const [searchParams] = useSearchParams();
   const redirectSecret = searchParams.get("payment_intent_client_secret");
@@ -136,25 +140,55 @@ const PaystubSuccessPanel = ({ template }) => {
     checkoutEmail: checkout.order?.email ?? checkout.email ?? pkg.checkoutEmail,
   };
 
+  const ddSlipPurchased = Boolean(
+    checkout.order?.items?.some(
+      (item) => item.productCode === PAYSTUB_DD_SLIP_PRODUCT_CODE,
+    ) || pkg.includeDdSlip,
+  );
+  // Match server PDF entitlement so success preview shows the DD slip when purchased.
+  const previewFormData = {
+    ...formData,
+    directDeposit: {
+      ...(formData.directDeposit ?? {}),
+      enabled: ddSlipPurchased
+        ? true
+        : Boolean(formData.directDeposit?.enabled),
+      includeInPdf: ddSlipPurchased,
+    },
+  };
+
   return (
-    <>
-      <PaymentSuccessSection
-        formData={formData}
-        order={summary}
-        processing={processing}
-        preparingDocument={!readyDocument && waitingForDocument}
-        redeemed={Boolean(checkout.lastDocumentId)}
-        creditsRemaining={credits?.creditsRemaining ?? 0}
-        onUseCredit={handleUseCredit}
-        onDownload={handleDownload}
-        onStartOver={onBackToTemplates}
-      />
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="lg:col-span-5">
+        <PaymentSuccessSection
+          formData={formData}
+          order={summary}
+          processing={processing}
+          preparingDocument={!readyDocument && waitingForDocument}
+          redeemed={Boolean(checkout.lastDocumentId)}
+          creditsRemaining={credits?.creditsRemaining ?? 0}
+          onUseCredit={handleUseCredit}
+          onDownload={handleDownload}
+          onStartOver={onStartOver}
+        />
+      </div>
+      <div className="lg:col-span-7">
+        <p className="text-[14px] font-bold text-slate-800 mb-3 px-1">
+          Your paystub
+        </p>
+        <TemplateDocumentPreview
+          key={`success-preview-${ddSlipPurchased ? "dd" : "plain"}`}
+          template={template}
+          formData={previewFormData}
+          calculations={calculations}
+        />
+      </div>
       <PrintablePaystub
         template={template}
-        formData={formData}
+        formData={previewFormData}
         calculations={calculations}
       />
-    </>
+    </div>
   );
 };
 

@@ -33,6 +33,7 @@ const initialValues = (template) =>
         documentType: "paystub",
         renderer: "variant",
         variant: DEFAULT_VARIANT,
+        // 0 = append after existing templates of this type (server resolves to max+1).
         sortOrder: "0",
         isActive: true,
       };

@@ -3,7 +3,7 @@ import { useSessionStorageState } from "../../../../hooks/useSessionStorageState
 const FORM_DATA_STORAGE_KEY = "directDepositGenerator.formData";
 
 // Defaults match the Figma mock so the live preview is populated on first load.
-const DEFAULT_FORM_DATA = {
+export const DIRECT_DEPOSIT_SAMPLE_FORM_DATA = {
   // Step 1: Employer Information
   employerName: "Acme Corporation",
   streetAddress: "123 Business Avenue",
@@ -39,7 +39,7 @@ const DEFAULT_FORM_DATA = {
 export function useDirectDepositFormData() {
   const [formData, setFormData] = useSessionStorageState(
     FORM_DATA_STORAGE_KEY,
-    DEFAULT_FORM_DATA,
+    DIRECT_DEPOSIT_SAMPLE_FORM_DATA,
   );
 
   const updateField = (field, value) =>

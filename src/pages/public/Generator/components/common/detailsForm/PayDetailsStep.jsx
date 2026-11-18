@@ -14,8 +14,28 @@ import payFrequencyOptions from "../../../../data/generator/payFrequencyOptions.
 import { formatCurrency } from "../../../utils/formatCurrency";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
+import SectionCard from "./SectionCard";
+import { FieldError, fieldClassName } from "./fieldValidation";
 
-const PayDetailsStep = ({ form, onBack, onNext }) => {
+const ADDITIONAL_EARNING_TYPES = [
+  "Overtime",
+  "Holiday",
+  "Vacation",
+  "Bonus",
+  "Tips",
+  "Custom",
+];
+
+const dateInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
+const selectInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-10 transition";
+const moneyInputClass =
+  "w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
+const plainInputClass =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition";
+
+const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
   const {
     formData,
     setFormData,
@@ -35,16 +55,9 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
       <StepHeader title="Pay Details" />
 
       {/* ================= SECTION 1: Dates & Frequency ================= */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <CalendarDays className="w-4 h-4 text-[#1E60F2]" />
-          <h3 className="font-semibold text-slate-800 text-[15px]">
-            Pay Schedule
-          </h3>
-        </div>
-
+      <SectionCard icon={CalendarDays} title="Pay Schedule">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
+          <div id="paystub-field-payPeriodStart">
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               Start Date <span className="text-rose-500">*</span>
             </label>
@@ -52,10 +65,15 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               type="date"
               value={formData.payPeriodStart}
               onChange={(e) => updateField("payPeriodStart", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+              aria-invalid={Boolean(fieldErrors.payPeriodStart)}
+              className={fieldClassName(
+                dateInputClass,
+                fieldErrors.payPeriodStart,
+              )}
             />
+            <FieldError errors={fieldErrors} name="payPeriodStart" />
           </div>
-          <div>
+          <div id="paystub-field-payPeriodEnd">
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               End Date <span className="text-rose-500">*</span>
             </label>
@@ -63,10 +81,15 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               type="date"
               value={formData.payPeriodEnd}
               onChange={(e) => updateField("payPeriodEnd", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+              aria-invalid={Boolean(fieldErrors.payPeriodEnd)}
+              className={fieldClassName(
+                dateInputClass,
+                fieldErrors.payPeriodEnd,
+              )}
             />
+            <FieldError errors={fieldErrors} name="payPeriodEnd" />
           </div>
-          <div>
+          <div id="paystub-field-payDate">
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               Pay Date <span className="text-rose-500">*</span>
             </label>
@@ -74,74 +97,75 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
               type="date"
               value={formData.payDate}
               onChange={(e) => updateField("payDate", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+              aria-invalid={Boolean(fieldErrors.payDate)}
+              className={fieldClassName(dateInputClass, fieldErrors.payDate)}
             />
+            <FieldError errors={fieldErrors} name="payDate" />
           </div>
         </div>
-
-        <div>
-          <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
-            Pay Frequency <span className="text-rose-500">*</span>
-          </label>
-          <div className="relative">
-            <select
-              value={formData.payFrequency}
-              onChange={(e) => updateField("payFrequency", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 bg-white appearance-none cursor-pointer pr-10 transition"
-            >
-              {payFrequencyOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-        </div>
-      </div>
+      </SectionCard>
 
       {/* ================= SECTION 2: Earnings ================= */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Banknote className="w-4 h-4 text-[#1E60F2]" />
-          <h3 className="font-semibold text-slate-800 text-[15px]">
-            Compensation
-          </h3>
-        </div>
-
-        <div>
-          <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
-            Pay Type <span className="text-rose-500">*</span>
-          </label>
-          <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl max-w-sm">
-            <button
-              type="button"
-              onClick={() => updateField("payType", "Hourly")}
-              className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
-                formData.payType === "Hourly"
-                  ? "bg-white text-[#1E60F2] shadow-sm"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              Hourly
-            </button>
-            <button
-              type="button"
-              onClick={() => updateField("payType", "Salary")}
-              className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
-                formData.payType === "Salary"
-                  ? "bg-white text-[#1E60F2] shadow-sm"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              Salary
-            </button>
+      <SectionCard icon={Banknote} title="Compensation">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div id="paystub-field-payFrequency">
+            <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+              Pay Frequency <span className="text-rose-500">*</span>
+            </label>
+            <div className="relative">
+              <select
+                value={formData.payFrequency}
+                onChange={(e) => updateField("payFrequency", e.target.value)}
+                aria-invalid={Boolean(fieldErrors.payFrequency)}
+                className={fieldClassName(
+                  selectInputClass,
+                  fieldErrors.payFrequency,
+                )}
+              >
+                {payFrequencyOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+            <FieldError errors={fieldErrors} name="payFrequency" />
+          </div>
+          <div>
+            <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+              Pay Type <span className="text-rose-500">*</span>
+            </label>
+            <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl">
+              <button
+                type="button"
+                onClick={() => updateField("payType", "Hourly")}
+                className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
+                  formData.payType === "Hourly"
+                    ? "bg-white text-[#1E60F2] shadow-sm"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                Hourly
+              </button>
+              <button
+                type="button"
+                onClick={() => updateField("payType", "Salary")}
+                className={`py-2 text-[14px] font-semibold rounded-lg transition cursor-pointer ${
+                  formData.payType === "Salary"
+                    ? "bg-white text-[#1E60F2] shadow-sm"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                Salary
+              </button>
+            </div>
           </div>
         </div>
 
         {formData.payType === "Hourly" ? (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
-            <div>
+            <div id="paystub-field-hourlyRate">
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                 Hourly Rate <span className="text-rose-500">*</span>
               </label>
@@ -154,11 +178,16 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                   value={formData.hourlyRate}
                   onChange={(e) => updateField("hourlyRate", e.target.value)}
                   placeholder="200"
-                  className="w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+                  aria-invalid={Boolean(fieldErrors.hourlyRate)}
+                  className={fieldClassName(
+                    moneyInputClass,
+                    fieldErrors.hourlyRate,
+                  )}
                 />
               </div>
+              <FieldError errors={fieldErrors} name="hourlyRate" />
             </div>
-            <div>
+            <div id="paystub-field-regularHours">
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                 Regular Hours <span className="text-rose-500">*</span>
               </label>
@@ -167,8 +196,13 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                 value={formData.regularHours}
                 onChange={(e) => updateField("regularHours", e.target.value)}
                 placeholder="80"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+                aria-invalid={Boolean(fieldErrors.regularHours)}
+                className={fieldClassName(
+                  plainInputClass,
+                  fieldErrors.regularHours,
+                )}
               />
+              <FieldError errors={fieldErrors} name="regularHours" />
             </div>
             <div>
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
@@ -188,7 +222,10 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
             </div>
           </div>
         ) : (
-          <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+          <div
+            id="paystub-field-salaryAmount"
+            className="animate-in fade-in slide-in-from-top-2 duration-200"
+          >
             <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
               Gross Salary Amount <span className="text-rose-500">*</span>
             </label>
@@ -201,98 +238,128 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
                 value={formData.salaryAmount}
                 onChange={(e) => updateField("salaryAmount", e.target.value)}
                 placeholder="22000"
-                className="w-full pl-7 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] text-slate-800 transition"
+                aria-invalid={Boolean(fieldErrors.salaryAmount)}
+                className={fieldClassName(
+                  moneyInputClass,
+                  fieldErrors.salaryAmount,
+                )}
               />
             </div>
+            <FieldError errors={fieldErrors} name="salaryAmount" />
           </div>
         )}
 
         {/* Additional Earnings */}
         <div className="pt-4 border-t border-slate-100">
-          <h4 className="font-semibold text-slate-800 text-[14px] mb-3">
-            Additional Earnings
+          <h4 className="font-semibold text-slate-800 text-[14px] mb-1">
+            Add new earning to paystubs
           </h4>
-          <div className="space-y-3">
-            {formData.additionalEarnings.map((earning) => (
-              <div
-                key={earning.id}
-                className="flex items-center gap-2 animate-in fade-in"
-              >
-                <input
-                  type="text"
-                  value={earning.desc}
-                  placeholder="Description (e.g. Bonus)"
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setFormData((prev) => ({
-                      ...prev,
-                      additionalEarnings: prev.additionalEarnings.map((item) =>
-                        item.id === earning.id ? { ...item, desc: val } : item,
-                      ),
-                    }));
-                  }}
-                  className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
-                />
-                <div className="relative w-32">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">
-                    $
-                  </span>
-                  <input
-                    type="number"
-                    value={earning.amount}
-                    placeholder="0.00"
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setFormData((prev) => ({
-                        ...prev,
-                        additionalEarnings: prev.additionalEarnings.map(
-                          (item) =>
-                            item.id === earning.id
-                              ? { ...item, amount: val }
-                              : item,
-                        ),
-                      }));
-                    }}
-                    className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
-                  />
-                </div>
+          <p className="text-[12px] text-slate-400 mb-3">
+            Choose a type to add a line item for this pay period.
+          </p>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {ADDITIONAL_EARNING_TYPES.map((type) => {
+              const alreadyAdded =
+                type !== "Custom" &&
+                formData.additionalEarnings.some((e) => e.desc === type);
+              return (
                 <button
+                  key={type}
                   type="button"
-                  onClick={() => handleRemoveEarning(earning.id)}
-                  className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
-                  aria-label="Remove earning"
+                  disabled={alreadyAdded}
+                  onClick={() => handleAddEarning(type)}
+                  className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[13px] font-semibold transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 ${
+                    type === "Custom"
+                      ? "border-[#1E60F2]/30 bg-blue-50 text-[#1E60F2] hover:bg-blue-100"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  }`}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
+                  {type}
                 </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
-          <button
-            type="button"
-            onClick={handleAddEarning}
-            className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#1E60F2] hover:text-[#1550cf] transition cursor-pointer"
-          >
-            <Plus className="w-3.5 h-3.5" /> Add earning
-          </button>
+
+          {formData.additionalEarnings.length > 0 && (
+            <div className="space-y-3">
+              {formData.additionalEarnings.map((earning) => {
+                const isPreset = ADDITIONAL_EARNING_TYPES.includes(
+                  earning.desc,
+                );
+                return (
+                  <div
+                    key={earning.id}
+                    className="flex items-center gap-2 animate-in fade-in"
+                  >
+                    {isPreset ? (
+                      <span className="flex-1 px-3.5 py-2 rounded-xl border border-slate-100 bg-slate-50 text-[14px] font-medium text-slate-700">
+                        {earning.desc}
+                      </span>
+                    ) : (
+                      <input
+                        type="text"
+                        value={earning.desc}
+                        placeholder="Custom earning name"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setFormData((prev) => ({
+                            ...prev,
+                            additionalEarnings: prev.additionalEarnings.map(
+                              (item) =>
+                                item.id === earning.id
+                                  ? { ...item, desc: val }
+                                  : item,
+                            ),
+                          }));
+                        }}
+                        className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
+                      />
+                    )}
+                    <div className="relative w-32">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">
+                        $
+                      </span>
+                      <input
+                        type="number"
+                        value={earning.amount}
+                        placeholder="0.00"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setFormData((prev) => ({
+                            ...prev,
+                            additionalEarnings: prev.additionalEarnings.map(
+                              (item) =>
+                                item.id === earning.id
+                                  ? { ...item, amount: val }
+                                  : item,
+                            ),
+                          }));
+                        }}
+                        className="w-full pl-7 pr-3 py-2 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-1 focus:ring-[#1E60F2] outline-none text-[14px] transition"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveEarning(earning.id)}
+                      className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
+                      aria-label="Remove earning"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
-      </div>
+      </SectionCard>
 
       {/* ================= SECTION 3: Taxes & Deductions ================= */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Taxes */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-          <div className="flex items-center gap-2">
-            <Landmark className="w-4 h-4 text-[#1E60F2]" />
-            <div>
-              <h3 className="font-semibold text-slate-800 text-[15px]">
-                Tax Withholdings
-              </h3>
-              <p className="text-slate-400 text-[12px] mt-0.5">
-                Enter withholding amounts for this pay period.
-              </p>
-            </div>
-          </div>
-
+        <SectionCard icon={Landmark} title="Tax Withholdings">
           <div className="space-y-2.5">
             {formData.taxes.map((t) => (
               <div key={t.id} className="flex items-center gap-2">
@@ -331,17 +398,10 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
           >
             <Plus className="w-3.5 h-3.5" /> Add tax
           </button>
-        </div>
+        </SectionCard>
 
         {/* Deductions */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-          <div className="flex items-center gap-2">
-            <Receipt className="w-4 h-4 text-[#1E60F2]" />
-            <h3 className="font-semibold text-slate-800 text-[15px]">
-              Other Deductions
-            </h3>
-          </div>
-
+        <SectionCard icon={Receipt} title="Other Deductions">
           <div className="space-y-2.5">
             {formData.deductions.map((d) => (
               <div
@@ -401,7 +461,7 @@ const PayDetailsStep = ({ form, onBack, onNext }) => {
           >
             <Plus className="w-3.5 h-3.5" /> Add deduction
           </button>
-        </div>
+        </SectionCard>
       </div>
 
       {/* ================= Totals Bar ================= */}

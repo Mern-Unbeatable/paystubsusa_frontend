@@ -6,6 +6,7 @@ import {
   PAYSTUB_PAGE_STEPS,
 } from "../utils/paystubFlow";
 import {
+  beginAnotherPaystub,
   clearCheckoutOrder,
   resetCheckout,
 } from "../../../../features/public/checkout/checkoutSlice";
@@ -32,6 +33,8 @@ export function usePaystubFlowNavigation(templateId) {
         PAYSTUB_PAGE_STEPS.PACKAGE,
         PAYSTUB_CHECKOUT_PHASE.PACKAGE,
       ),
+      // Sync update so package isn't blocked by review-step state work.
+      { flushSync: true },
     );
     scrollPaystubFlowIntoView();
   };
@@ -55,6 +58,11 @@ export function usePaystubFlowNavigation(templateId) {
     onBackToTemplates: () => {
       navigate(PATHS.PUBLIC.paystubGenerator);
       dispatch(resetCheckout());
+    },
+    /** Create another stub on the same template, starting at package selection. */
+    onStartOver: () => {
+      dispatch(beginAnotherPaystub());
+      goToPackage();
     },
     /** Swaps the template while staying on the same step/checkout phase. */
     onSwitchTemplate: (nextTemplateId, { step, checkoutPhase } = {}) => {

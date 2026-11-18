@@ -36,6 +36,15 @@ const checkoutSlice = createSlice({
       state.paymentStatus = null;
       state.lastDocumentId = null;
     },
+    // Create Another: drop the paid order so checkout does not bounce to success,
+    // but keep guestToken/email so remaining credits can be found without re-OTP.
+    beginAnotherPaystub: (state) => {
+      state.order = null;
+      state.clientSecret = null;
+      state.paymentStatus = null;
+      state.credit = null;
+      state.lastDocumentId = null;
+    },
     setPaymentStatus: (state, action) => {
       state.paymentStatus = action.payload;
     },
@@ -87,6 +96,7 @@ const checkoutSlice = createSlice({
 export const {
   resetCheckout,
   clearCheckoutOrder,
+  beginAnotherPaystub,
   setPaymentStatus,
   startCreditRedeem,
   cancelCreditRedeem,

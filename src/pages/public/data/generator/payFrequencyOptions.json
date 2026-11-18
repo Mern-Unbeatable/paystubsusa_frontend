@@ -1,6 +1,10 @@
 [
-  "Semi-Monthly",
-  "Bi-Weekly",
-  "Weekly",
-  "Monthly"
+  { "value": "Daily", "label": "Daily" },
+  { "value": "Weekly", "label": "Weekly (ex: every Friday)" },
+  { "value": "Bi-Weekly", "label": "Bi-Weekly (ex: every other Wednesday)" },
+  { "value": "Semi-Monthly", "label": "Semi-Monthly (ex: 1st and 15th)" },
+  { "value": "Monthly", "label": "Monthly (ex: 1st of month only)" },
+  { "value": "Quarterly", "label": "Quarterly" },
+  { "value": "Semi-Annually", "label": "Semi-Annually" },
+  { "value": "Annually", "label": "Annually" }
 ]

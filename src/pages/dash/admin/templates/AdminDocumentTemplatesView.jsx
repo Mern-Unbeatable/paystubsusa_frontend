@@ -57,8 +57,17 @@ const AdminDocumentTemplatesView = () => {
     toast.success(`${template.title} was deleted.`);
   };
 
+  const byListOrder = (a, b) =>
+    a.sortOrder - b.sortOrder ||
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime() ||
+    String(a.code).localeCompare(String(b.code));
+
   const groups = Object.entries(DOCUMENT_TYPE_LABELS)
-    .map(([type, label]) => ({ type, label, items: templates.filter((t) => t.documentType === type) }))
+    .map(([type, label]) => ({
+      type,
+      label,
+      items: templates.filter((t) => t.documentType === type).slice().sort(byListOrder),
+    }))
     .filter((group) => group.items.length > 0);
   const showSkeleton = loading && templates.length === 0;
   const target = dialog?.template;

@@ -7,7 +7,9 @@ const CreditsRemainingBanner = ({
   actionLabel = "Create Next Paystub",
   className = "",
 }) => (
-  <div className={`p-4 rounded-xl border border-blue-100 bg-blue-50/60 text-left flex items-center justify-between gap-3 animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.5s_both] ${className}`}>
+  <div
+    className={`p-4 rounded-xl border border-blue-100 bg-blue-50/60 text-left flex items-center justify-between gap-3 animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.5s_both] ${className}`}
+  >
     <div className="text-[13px]">
       <p className="font-bold text-slate-800">
         {creditsRemaining} paystub{creditsRemaining === 1 ? "" : "s"} left in

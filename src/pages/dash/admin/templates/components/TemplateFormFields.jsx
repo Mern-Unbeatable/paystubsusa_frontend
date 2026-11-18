@@ -211,16 +211,25 @@ export const TemplateImageField = ({ form }) => {
 
 /** Sort order and availability. */
 export const TemplatePublishFields = ({ form, compact = false }) => {
-  const { template, values, errors, submitting, set } = form;
+  const { template, isCreate, values, errors, submitting, set } = form;
   return (
     <div className={`grid grid-cols-1 gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
-      <Field id="template-sort" label="Sort order" error={errors.sortOrder} hint="Lower numbers appear first.">
+      <Field
+        id="template-sort"
+        label="Sort order"
+        error={errors.sortOrder}
+        hint={
+          isCreate
+            ? "New templates are placed at the end automatically. You can change this after create."
+            : "Lower numbers appear first in the template list."
+        }
+      >
         <input
           id="template-sort"
           inputMode="numeric"
-          value={values.sortOrder}
+          value={isCreate ? "auto (end)" : values.sortOrder}
           onChange={set("sortOrder")}
-          disabled={submitting}
+          disabled={submitting || isCreate}
           {...a11y(errors, "sortOrder", "template-sort")}
           className={`${inputClass} ${inputState(errors.sortOrder)}`}
         />

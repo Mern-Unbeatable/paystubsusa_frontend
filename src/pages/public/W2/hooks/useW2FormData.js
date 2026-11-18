@@ -3,7 +3,7 @@ import { useSessionStorageState } from "../../../../hooks/useSessionStorageState
 const FORM_DATA_STORAGE_KEY = "w2Generator.formData";
 
 // Defaults match the Figma mock so the live preview is populated on first load.
-const DEFAULT_FORM_DATA = {
+export const W2_SAMPLE_FORM_DATA = {
   // Step 1: Employer Information
   ein: "12-3456789",
   employerName: "Northwind Logistics LLC",
@@ -55,7 +55,7 @@ const DEFAULT_FORM_DATA = {
 export function useW2FormData() {
   const [formData, setFormData] = useSessionStorageState(
     FORM_DATA_STORAGE_KEY,
-    DEFAULT_FORM_DATA,
+    W2_SAMPLE_FORM_DATA,
   );
 
   const updateField = (field, value) =>

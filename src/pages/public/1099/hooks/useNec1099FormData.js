@@ -3,7 +3,7 @@ import { useSessionStorageState } from "../../../../hooks/useSessionStorageState
 const FORM_DATA_STORAGE_KEY = "nec1099Generator.formData";
 
 // Defaults match the Figma mock so the live preview is populated on first load.
-const DEFAULT_FORM_DATA = {
+export const NEC1099_SAMPLE_FORM_DATA = {
   // Step 1: Payer Information
   payerName: "Acme Creative Studio LLC",
   streetAddress: "100 Innovation Way",
@@ -42,7 +42,7 @@ const DEFAULT_FORM_DATA = {
 export function useNec1099FormData() {
   const [formData, setFormData] = useSessionStorageState(
     FORM_DATA_STORAGE_KEY,
-    DEFAULT_FORM_DATA,
+    NEC1099_SAMPLE_FORM_DATA,
   );
 
   const updateField = (field, value) =>

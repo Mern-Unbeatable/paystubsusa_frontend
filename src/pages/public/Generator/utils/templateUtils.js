@@ -29,9 +29,19 @@ export function usePaystubTemplates() {
 
   return useMemo(() => {
     const ready = status === "succeeded" || status === "failed";
-    const usable = rows.filter(
-      (t) => t.renderer === "variant" || FULL_PAGE_RENDERERS.has(t.renderer),
-    );
+    const usable = rows
+      .filter(
+        (t) => t.renderer === "variant" || FULL_PAGE_RENDERERS.has(t.renderer),
+      )
+      // Match admin/catalog order: sortOrder, then oldest first within a tie.
+      .slice()
+      .sort(
+        (a, b) =>
+          (a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
+          new Date(a.createdAt || 0).getTime() -
+            new Date(b.createdAt || 0).getTime() ||
+          String(a.code).localeCompare(String(b.code)),
+      );
     if (usable.length === 0) return { ...BUNDLED, ready };
     return {
       templates: usable.map(toGeneratorTemplate),

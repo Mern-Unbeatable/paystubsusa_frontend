@@ -1,9 +1,43 @@
-import React from "react";
-import { Check, CheckCircle2, Minus, Plus, Layers } from "lucide-react";
+import React, { useEffect } from "react";
+import {
+  Check,
+  CheckCircle2,
+  Minus,
+  Plus,
+  Layers,
+  Landmark,
+} from "lucide-react";
 import { FileText } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import OrderSummaryCard from "../common/order/OrderSummaryCard";
+import { PAYSTUB_DD_SLIP_PRICE } from "../../hooks/usePaystubOrder";
+import { FieldError, fieldClassName } from "../common/detailsForm/fieldValidation";
+
+const DD_INPUT_CLASS =
+  "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#1E60F2] focus:ring-2 focus:ring-[#1E60F2]/10 outline-none text-[14px] text-slate-800 transition placeholder:text-slate-400 bg-white";
+
+const DD_FIELDS = [
+  ["bankName", "Bank name", "e.g. Chase"],
+  ["accountHolderName", "Account holder", "Name on the account"],
+  ["routingNumber", "Routing number", "9 digits"],
+  ["accountNumber", "Account number", "4–17 digits"],
+  ["checkNumber", "Check / advice # (optional)", "e.g. 100245"],
+];
+
+/** Digit-only fields with hard max length (matches server paystub DD validation). */
+const DD_DIGIT_LIMITS = {
+  routingNumber: 9,
+  accountNumber: 17,
+  checkNumber: 12,
+};
+
+const sanitizeDdFieldValue = (key, raw) => {
+  const value = String(raw ?? "");
+  const max = DD_DIGIT_LIMITS[key];
+  if (!max) return value;
+  return value.replace(/\D/g, "").slice(0, max);
+};
 
 const PackageSelectionSection = ({
   template,
@@ -11,6 +45,8 @@ const PackageSelectionSection = ({
   calculations,
   order,
   hasUnlimited = false,
+  fieldErrors = {},
+  onUpdateDirectDeposit,
   onBackToReview,
   onChangeTemplate,
   onContinueToCheckout,
@@ -20,10 +56,39 @@ const PackageSelectionSection = ({
     setSelectedPackage,
     additionalCount,
     setAdditionalCount,
+    includeDdSlip,
+    setIncludeDdSlip,
     summaryLines,
     grandTotal,
   } = order;
   const unlimitedSelected = selectedPackage === "unlimited";
+  // Template 10 (check-statement) never renders a DD slip.
+  const ddSlipSupported = template?.document !== "check-statement";
+  const dd = formData.directDeposit ?? {};
+
+  useEffect(() => {
+    if (ddSlipSupported || !includeDdSlip) return;
+    setIncludeDdSlip(false);
+    onUpdateDirectDeposit?.({ enabled: false });
+  }, [
+    ddSlipSupported,
+    includeDdSlip,
+    setIncludeDdSlip,
+    onUpdateDirectDeposit,
+  ]);
+
+  // Unlimited cannot buy the add-on — keep form `enabled` in sync so checkout items match preview.
+  useEffect(() => {
+    if (!unlimitedSelected || !dd.enabled) return;
+    onUpdateDirectDeposit?.({ enabled: false });
+  }, [unlimitedSelected, dd.enabled, onUpdateDirectDeposit]);
+
+  const toggleDdSlip = () => {
+    if (!ddSlipSupported || unlimitedSelected) return;
+    const next = !includeDdSlip;
+    setIncludeDdSlip(next);
+    onUpdateDirectDeposit?.({ enabled: next });
+  };
 
   return (
     <div className="animate-in fade-in-50 duration-200">
@@ -207,6 +272,117 @@ const PackageSelectionSection = ({
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
+            </div>
+          )}
+
+          {!unlimitedSelected && ddSlipSupported && (
+            <div
+              className={`rounded-xl border overflow-hidden transition ${
+                includeDdSlip
+                  ? "border-[#1E60F2] border-2 bg-blue-50/40 shadow-sm"
+                  : "border-slate-200 bg-slate-50"
+              }`}
+            >
+              <button
+                type="button"
+                role="switch"
+                aria-checked={Boolean(includeDdSlip)}
+                aria-expanded={Boolean(includeDdSlip)}
+                aria-controls="package-dd-bank-fields"
+                aria-label="Add Direct Deposit Slip"
+                onClick={toggleDdSlip}
+                className="w-full text-left p-4 sm:p-5 flex items-center gap-4 cursor-pointer hover:bg-white/40 transition"
+              >
+                <span
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                    includeDdSlip
+                      ? "bg-[#1E60F2] text-white"
+                      : "bg-white text-slate-500 border border-slate-200"
+                  }`}
+                >
+                  <Landmark className="w-5 h-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-start justify-between gap-3">
+                    <span>
+                      <span className="block font-bold text-slate-800 text-[15px]">
+                        Direct Deposit Slip
+                      </span>
+                      <span className="block text-slate-500 text-[13px] mt-0.5">
+                        Detachable advice on your paystub PDF. Turn on to enter
+                        bank details below.
+                      </span>
+                    </span>
+                    <span className="shrink-0 font-bold text-slate-900 text-[15px]">
+                      ${PAYSTUB_DD_SLIP_PRICE.toFixed(2)}
+                    </span>
+                  </span>
+                </span>
+                <span
+                  className="inline-flex items-center shrink-0 select-none rounded-xl p-1.5"
+                  aria-hidden="true"
+                >
+                  <span
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+                      includeDdSlip ? "bg-[#1E60F2]" : "bg-slate-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                        includeDdSlip
+                          ? "translate-x-[22px]"
+                          : "translate-x-[3px]"
+                      }`}
+                    />
+                  </span>
+                </span>
+              </button>
+
+              {includeDdSlip && (
+                <div
+                  id="package-dd-bank-fields"
+                  className="border-t border-[#1E60F2]/20 bg-white px-4 sm:px-5 py-4"
+                >
+                  <p className="text-[13px] text-slate-500 mb-4">
+                    Enter the bank details that appear on the detachable slip.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {DD_FIELDS.map(([key, label, placeholder]) => (
+                      <div
+                        key={key}
+                        id={`paystub-field-${key}`}
+                        className={key === "checkNumber" ? "sm:col-span-2" : ""}
+                      >
+                        <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+                          {label}
+                          {!label.includes("optional") && (
+                            <span className="text-rose-500"> *</span>
+                          )}
+                        </label>
+                        <input
+                          type="text"
+                          inputMode={DD_DIGIT_LIMITS[key] ? "numeric" : "text"}
+                          autoComplete="off"
+                          maxLength={DD_DIGIT_LIMITS[key] ?? undefined}
+                          value={dd[key] ?? ""}
+                          onChange={(e) =>
+                            onUpdateDirectDeposit?.({
+                              [key]: sanitizeDdFieldValue(key, e.target.value),
+                            })
+                          }
+                          placeholder={placeholder}
+                          aria-invalid={Boolean(fieldErrors[key])}
+                          className={fieldClassName(
+                            DD_INPUT_CLASS,
+                            fieldErrors[key],
+                          )}
+                        />
+                        <FieldError errors={fieldErrors} name={key} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
