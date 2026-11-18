@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Check,
   CheckCircle2,
@@ -62,9 +62,23 @@ const PackageSelectionSection = ({
     grandTotal,
   } = order;
   const unlimitedSelected = selectedPackage === "unlimited";
+  // Template 10 (check-statement) never renders a DD slip.
+  const ddSlipSupported = template?.document !== "check-statement";
   const dd = formData.directDeposit ?? {};
 
+  useEffect(() => {
+    if (ddSlipSupported || !includeDdSlip) return;
+    setIncludeDdSlip(false);
+    onUpdateDirectDeposit?.({ enabled: false });
+  }, [
+    ddSlipSupported,
+    includeDdSlip,
+    setIncludeDdSlip,
+    onUpdateDirectDeposit,
+  ]);
+
   const toggleDdSlip = () => {
+    if (!ddSlipSupported) return;
     const next = !includeDdSlip;
     setIncludeDdSlip(next);
     onUpdateDirectDeposit?.({ enabled: next });
@@ -255,7 +269,7 @@ const PackageSelectionSection = ({
             </div>
           )}
 
-          {!unlimitedSelected && (
+          {!unlimitedSelected && ddSlipSupported && (
             <div
               className={`rounded-xl border overflow-hidden transition ${
                 includeDdSlip

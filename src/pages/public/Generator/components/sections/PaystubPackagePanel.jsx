@@ -138,7 +138,8 @@ const PaystubPackagePanel = ({ template }) => {
           onBackToReview={onBackToReview}
           onChangeTemplate={() => setTemplateModalOpen(true)}
           onContinueToCheckout={() => {
-            if (order.includeDdSlip) {
+            const ddSlipSupported = template?.document !== "check-statement";
+            if (ddSlipSupported && order.includeDdSlip) {
               if (!formData.directDeposit?.enabled) {
                 updateDirectDeposit({ enabled: true });
               }

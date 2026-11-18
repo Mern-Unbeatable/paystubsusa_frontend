@@ -48,29 +48,33 @@ const TemplatePreviewModal = ({ template, onClose, onUseTemplate, footer }) => {
             {template.title} preview
           </h3>
           <div className="flex shrink-0 items-center gap-2">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={showDepositSlip}
-              aria-label="Deposit slip"
-              onClick={() => setShowDepositSlip((v) => !v)}
-              className="inline-flex items-center gap-2 rounded-lg px-1.5 py-1 text-[13px] font-semibold text-slate-600 cursor-pointer"
-            >
-              <Landmark className="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span>Deposit slip preview</span>
-              <span
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-                  showDepositSlip ? "bg-[#1E60F2]" : "bg-slate-300"
-                }`}
-                aria-hidden="true"
+            {template?.document !== "check-statement" ? (
+              <button
+                type="button"
+                role="switch"
+                aria-checked={showDepositSlip}
+                aria-label="Deposit slip"
+                onClick={() => setShowDepositSlip((v) => !v)}
+                className="inline-flex items-center gap-2 rounded-lg px-1.5 py-1 text-[13px] font-semibold text-slate-600 cursor-pointer"
               >
+                <Landmark className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span>Deposit slip preview</span>
                 <span
-                  className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                    showDepositSlip ? "translate-x-[22px]" : "translate-x-[3px]"
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
+                    showDepositSlip ? "bg-[#1E60F2]" : "bg-slate-300"
                   }`}
-                />
-              </span>
-            </button>
+                  aria-hidden="true"
+                >
+                  <span
+                    className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                      showDepositSlip
+                        ? "translate-x-[22px]"
+                        : "translate-x-[3px]"
+                    }`}
+                  />
+                </span>
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={onClose}

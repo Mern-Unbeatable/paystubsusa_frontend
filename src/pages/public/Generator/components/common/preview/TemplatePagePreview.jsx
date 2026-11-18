@@ -11,6 +11,7 @@ import {
   hasTemplateDocument,
 } from "../../../templates";
 import DirectDepositSlip from "../../../templates/DirectDepositSlip";
+import { shouldRenderDirectDepositSlip } from "../../../templates/shouldRenderDirectDepositSlip";
 
 // Same page margin the PDF uses around the variant templates (01–08).
 const VARIANT_PAGE_MARGIN = 32;
@@ -59,19 +60,28 @@ const withDepositSlip = (base, showDepositSlip) => {
 };
 
 /**
- * Any template on a standard A4 preview page. `showDepositSlip` turns on the
- * in-template / under-stub direct-deposit slip (09/10 embed it in-body).
+ * Any template on a standard A4 preview page.
+ * Pass `showDepositSlip` only from the template picker modal (forces sample DD).
+ * Live form preview omits it and keeps `data.directDeposit` from the builders.
  */
 const TemplatePagePreview = ({
   template,
   data,
   framed,
   className,
-  showDepositSlip = false,
+  showDepositSlip,
 }) => {
   const isFullPage = hasTemplateDocument(template);
   const base = data ?? (isFullPage ? SAMPLE_PAYSTUB_DOCUMENT : SAMPLE_VARIANT_DATA);
-  const pageData = withDepositSlip(base, showDepositSlip);
+  const pageData =
+    typeof showDepositSlip === "boolean"
+      ? withDepositSlip(base, showDepositSlip)
+      : base;
+  const showVariantDd =
+    !isFullPage &&
+    (typeof showDepositSlip === "boolean"
+      ? showDepositSlip
+      : shouldRenderDirectDepositSlip(pageData.directDeposit));
 
   return (
     <div className={className}>
@@ -90,7 +100,7 @@ const TemplatePagePreview = ({
             framed={false}
             data={pageData}
           />
-          {showDepositSlip ? (
+          {showVariantDd ? (
             <DirectDepositSlip data={pageData} compact />
           ) : null}
         </A4PreviewPage>
