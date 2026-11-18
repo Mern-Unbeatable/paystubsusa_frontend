@@ -15,27 +15,88 @@ import DirectDepositSlip from "../../../templates/DirectDepositSlip";
 // Same page margin the PDF uses around the variant templates (01–08).
 const VARIANT_PAGE_MARGIN = 32;
 
-const SAMPLE_VARIANT_DATA = { ...stubData, company: { ...stubData.company, logo: SAMPLE_LOGO } };
+const SAMPLE_VARIANT_DATA = {
+  ...stubData,
+  company: { ...stubData.company, logo: SAMPLE_LOGO },
+};
+
+/** Sample DD used only when the preview modal toggles the deposit slip on. */
+const PREVIEW_DIRECT_DEPOSIT = {
+  enabled: true,
+  includeInPdf: true,
+  bankName: "Chase Bank",
+  accountHolderName: "Jordan A. Miller",
+  accountNumber: "123456789",
+  routingNumber: "021000021",
+  checkNumber: "1001",
+  netPayText: "$1,908.62",
+};
+
+const withDepositSlip = (base, showDepositSlip) => {
+  if (!showDepositSlip) {
+    return {
+      ...base,
+      directDeposit: { enabled: false, includeInPdf: false },
+    };
+  }
+  const net =
+    base.totals?.net ||
+    base.netPay ||
+    base.summary?.net ||
+    PREVIEW_DIRECT_DEPOSIT.netPayText;
+  const holder =
+    base.employee?.name ||
+    base.employeeName ||
+    PREVIEW_DIRECT_DEPOSIT.accountHolderName;
+  return {
+    ...base,
+    directDeposit: {
+      ...PREVIEW_DIRECT_DEPOSIT,
+      accountHolderName: holder,
+      netPayText: net,
+    },
+  };
+};
 
 /**
- * Any template on a standard A4 preview page. `data` is the template's own data shape
- * (`buildPaystubDocument` / `buildThumbnailData`); sample data is shown when omitted.
+ * Any template on a standard A4 preview page. `showDepositSlip` turns on the
+ * in-template / under-stub direct-deposit slip (09/10 embed it in-body).
  */
-const TemplatePagePreview = ({ template, data, framed, className }) =>
-  hasTemplateDocument(template) ? (
-    <A4PreviewPage contentWidth={DOCUMENT_PAGE.width} framed={framed} className={className}>
-      <TemplateDocument template={template} data={data ?? SAMPLE_PAYSTUB_DOCUMENT} />
-    </A4PreviewPage>
-  ) : (
-    <A4PreviewPage
-      contentWidth={VARIANT_TEMPLATE_WIDTH}
-      inset={VARIANT_PAGE_MARGIN}
-      framed={framed}
-      className={className}
-    >
-      <PaystubThumbnail template={template} framed={false} data={data ?? SAMPLE_VARIANT_DATA} />
-      <DirectDepositSlip data={data ?? SAMPLE_VARIANT_DATA} compact />
-    </A4PreviewPage>
+const TemplatePagePreview = ({
+  template,
+  data,
+  framed,
+  className,
+  showDepositSlip = false,
+}) => {
+  const isFullPage = hasTemplateDocument(template);
+  const base = data ?? (isFullPage ? SAMPLE_PAYSTUB_DOCUMENT : SAMPLE_VARIANT_DATA);
+  const pageData = withDepositSlip(base, showDepositSlip);
+
+  return (
+    <div className={className}>
+      {isFullPage ? (
+        <A4PreviewPage contentWidth={DOCUMENT_PAGE.width} framed={framed}>
+          <TemplateDocument template={template} data={pageData} />
+        </A4PreviewPage>
+      ) : (
+        <A4PreviewPage
+          contentWidth={VARIANT_TEMPLATE_WIDTH}
+          inset={VARIANT_PAGE_MARGIN}
+          framed={framed}
+        >
+          <PaystubThumbnail
+            template={template}
+            framed={false}
+            data={pageData}
+          />
+          {showDepositSlip ? (
+            <DirectDepositSlip data={pageData} compact />
+          ) : null}
+        </A4PreviewPage>
+      )}
+    </div>
   );
+};
 
 export default TemplatePagePreview;
