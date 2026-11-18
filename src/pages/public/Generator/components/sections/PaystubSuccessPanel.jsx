@@ -65,7 +65,7 @@ const PaystubSuccessPanel = ({ template }) => {
   const pkg = usePaystubOrder();
   const checkout = useSelector(selectCheckout);
   const paid = useSelector(selectCheckoutPaid);
-  const { formData, calculations } = usePaystubFormData();
+  const { formData, calculations, updateDirectDeposit } = usePaystubFormData();
   const credits = useSelector(selectCheckoutCredits);
   const { onBackToFormStep, onCheckoutVerifying } =
     usePaystubFlowNavigation(template.id);
@@ -119,15 +119,30 @@ const PaystubSuccessPanel = ({ template }) => {
   // Both post-success CTAs resume the create flow on Pay Details (`?step=3`).
   const goToPayDetails = () => onBackToFormStep(PAYSTUB_FORM_STEPS.PAY);
 
+  const resetDdToggle = () => {
+    pkg.setIncludeDdSlip(false);
+    updateDirectDeposit({ enabled: false });
+  };
+
   const handleUseCredit = () => {
     dispatch(startCreditRedeem({ entitlementId: credits.id }));
+    // Next stub must opt in again — don't inherit prior toggle/enabled.
+    resetDdToggle();
     goToPayDetails();
   };
 
   const handleStartOver = () => {
     dispatch(beginAnotherPaystub());
+    resetDdToggle();
     goToPayDetails();
   };
+
+  // Paid order lines are the source of truth — not session toggle leftovers.
+  const ddSlipPurchased = Boolean(
+    checkout.order?.items?.some(
+      (item) => item.productCode === PAYSTUB_DD_SLIP_PRODUCT_CODE,
+    ),
+  );
 
   const handleDownload = async () => {
     if (!readyDocument) {
@@ -147,21 +162,15 @@ const PaystubSuccessPanel = ({ template }) => {
     packageName: checkout.order?.summary ?? pkg.currentPkg.name,
     orderNumber: checkout.order?.orderNumber,
     checkoutEmail: checkout.order?.email ?? checkout.email ?? pkg.checkoutEmail,
+    includeDdSlip: ddSlipPurchased,
   };
 
-  const ddSlipPurchased = Boolean(
-    checkout.order?.items?.some(
-      (item) => item.productCode === PAYSTUB_DD_SLIP_PRODUCT_CODE,
-    ) || pkg.includeDdSlip,
-  );
-  // Match server PDF entitlement so success preview shows the DD slip when purchased.
+  // Preview / print must match the paid PDF: slip only when the add-on was purchased.
   const previewFormData = {
     ...formData,
     directDeposit: {
       ...(formData.directDeposit ?? {}),
-      enabled: ddSlipPurchased
-        ? true
-        : Boolean(formData.directDeposit?.enabled),
+      enabled: ddSlipPurchased,
       includeInPdf: ddSlipPurchased,
     },
   };

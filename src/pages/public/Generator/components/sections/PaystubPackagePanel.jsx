@@ -139,13 +139,10 @@ const PaystubPackagePanel = ({ template }) => {
           onChangeTemplate={() => setTemplateModalOpen(true)}
           onContinueToCheckout={() => {
             const ddSlipSupported = template?.document !== "check-statement";
+            // Only the package toggle buys the slip — never stale form `enabled`.
             const wantsDd =
-              ddSlipSupported &&
-              !order.isUnlimited &&
-              (order.includeDdSlip ||
-                Boolean(formData.directDeposit?.enabled));
+              ddSlipSupported && !order.isUnlimited && order.includeDdSlip;
             if (wantsDd) {
-              if (!order.includeDdSlip) order.setIncludeDdSlip(true);
               if (!formData.directDeposit?.enabled) {
                 updateDirectDeposit({ enabled: true });
               }
@@ -172,6 +169,8 @@ const PaystubPackagePanel = ({ template }) => {
                 });
                 return;
               }
+            } else if (formData.directDeposit?.enabled) {
+              updateDirectDeposit({ enabled: false });
             }
             setDdFieldErrors({});
             onContinueToCheckout();
