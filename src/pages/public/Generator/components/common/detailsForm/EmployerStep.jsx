@@ -71,6 +71,24 @@ const EmployerStep = ({
           />
         </div>
       </div>
+
+      <div id="paystub-field-checkSigner">
+        <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
+          Who signs the check? <span className="text-rose-500">*</span>
+        </label>
+        <input
+          type="text"
+          value={formData.checkSigner ?? ""}
+          onChange={(e) => updateField("checkSigner", e.target.value)}
+          placeholder="e.g. John Smith"
+          aria-invalid={Boolean(fieldErrors.checkSigner)}
+          className={fieldClassName(baseInput, fieldErrors.checkSigner)}
+        />
+        <FieldError errors={fieldErrors} name="checkSigner" />
+        <p className="text-[12px] text-slate-400 mt-1.5">
+          Appears as the authorized signature on check-style templates.
+        </p>
+      </div>
     </SectionCard>
 
     <SectionCard

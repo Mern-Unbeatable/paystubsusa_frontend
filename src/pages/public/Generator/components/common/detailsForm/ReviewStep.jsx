@@ -84,6 +84,11 @@ const ReviewStep = ({
           <br />
           {formData.companyCity}, {formData.companyState} {formData.companyZip}
         </p>
+        {formData.checkSigner && (
+          <p className="text-[12px] text-slate-500 mt-2">
+            Check signer: {formData.checkSigner}
+          </p>
+        )}
         {formData.companyEin && (
           <div className="mt-2.5 inline-flex items-center px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[11px] font-medium text-slate-500">
             EIN: {formData.companyEin}

@@ -49,7 +49,7 @@ const PaystubDetailsForm = ({
   const selectedTemplateId = template.id;
   const { currentStep, setFormStep } = usePaystubFormStep();
   const skipScrollOnMount = useRef(true);
-  const notifiedLocalSave = useRef(false);
+  const prevStepRef = useRef(currentStep);
   const [fieldErrors, setFieldErrors] = useState({});
   const { formData, steps, updateField, updateDirectDeposit, calculations } =
     form;
@@ -73,10 +73,10 @@ const PaystubDetailsForm = ({
   };
 
   useEffect(() => {
-    if (currentStep !== PAYSTUB_FORM_STEPS.REVIEW) {
-      notifiedLocalSave.current = false;
-      return;
-    }
+    const previousStep = prevStepRef.current;
+    prevStepRef.current = currentStep;
+
+    if (currentStep !== PAYSTUB_FORM_STEPS.REVIEW) return;
 
     const missing = findIncompleteFields(formData);
     if (missing.length > 0) {
@@ -89,12 +89,14 @@ const PaystubDetailsForm = ({
     setFieldErrors((prev) => (Object.keys(prev).length === 0 ? prev : {}));
     try {
       savePaystubFormDataLocally(steps);
-      if (notifiedLocalSave.current) return;
-      notifiedLocalSave.current = true;
-      toast.success("Your paystub data has been saved.", {
-        id: LOCAL_SAVE_TOAST_ID,
-        duration: 4000,
-      });
+      // Toast only on pay details → review (3 → 4). Back from package (5 → 4)
+      // remounts on review and still saves silently.
+      if (previousStep === PAYSTUB_FORM_STEPS.PAY) {
+        toast.success("Your paystub data has been saved.", {
+          id: LOCAL_SAVE_TOAST_ID,
+          duration: 4000,
+        });
+      }
     } catch {
       toast.error(
         "Couldn't save your data locally. Storage may be full or unavailable.",

@@ -92,6 +92,7 @@ const REQUIRED_FIELDS = [
   { step: 1, key: "companyCity", label: "Company city" },
   { step: 1, key: "companyState", label: "Company state" },
   { step: 1, key: "companyZip", label: "Company ZIP code" },
+  { step: 1, key: "checkSigner", label: "Who signs the check" },
   { step: 2, key: "employeeName", label: "Employee name" },
   { step: 2, key: "exemptions", label: "Exemptions" },
   { step: 2, key: "employeeAddress", label: "Employee address" },
