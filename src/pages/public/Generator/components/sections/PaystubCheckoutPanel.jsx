@@ -8,7 +8,10 @@ import CheckoutPaySection from "./CheckoutPaySection";
 import StripePaymentModal from "./StripePaymentModal";
 import UnlimitedCheckoutSection from "./UnlimitedCheckoutSection";
 import CreditsRemainingBanner from "../common/order/CreditsRemainingBanner";
-import { usePaystubOrder } from "../../hooks/usePaystubOrder";
+import {
+  PAYSTUB_DD_SLIP_PRODUCT_CODE,
+  usePaystubOrder,
+} from "../../hooks/usePaystubOrder";
 import {
   findIncompleteField,
   usePaystubFormData,
@@ -54,6 +57,8 @@ const PaystubCheckoutPanel = ({ template }) => {
     items,
     summaryLines,
     currentPkg,
+    setIncludeDdSlip,
+    isUnlimited: orderUnlimited,
   } = usePaystubOrder();
   const isUnlimited = currentPkg.productCode === "unlimited_monthly";
   const { formData, calculations, toApiFormData } = usePaystubFormData();
@@ -162,15 +167,26 @@ const PaystubCheckoutPanel = ({ template }) => {
   };
 
   const createOrder = (idempotencyKey) => {
+    const formData = toApiFormData();
+    const ddEnabled = Boolean(formData.steps?.directDeposit?.enabled);
+    // Keep add-on line in sync with the form toggle (session flag can drift).
+    if (ddEnabled && !orderUnlimited && template?.document !== "check-statement") {
+      setIncludeDdSlip(true);
+    }
+    const orderItems =
+      ddEnabled &&
+      !orderUnlimited &&
+      template?.document !== "check-statement" &&
+      !items.some((i) => i.productCode === PAYSTUB_DD_SLIP_PRODUCT_CODE)
+        ? [...items, { productCode: PAYSTUB_DD_SLIP_PRODUCT_CODE, quantity: 1 }]
+        : items;
     const payload = {
       documentType: "paystub",
       templateId: template.catalogId,
-      items,
-      formData: toApiFormData(),
+      items: orderItems,
+      formData,
       idempotencyKey,
     };
-    // Temporary: inspect checkout submit shape in the browser console.
-    console.log("[paystub checkout submit]", payload);
     return dispatch(createCheckoutOrder(payload));
   };
 

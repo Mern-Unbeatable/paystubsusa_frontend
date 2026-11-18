@@ -77,8 +77,14 @@ const PackageSelectionSection = ({
     onUpdateDirectDeposit,
   ]);
 
+  // Unlimited cannot buy the add-on — keep form `enabled` in sync so checkout items match preview.
+  useEffect(() => {
+    if (!unlimitedSelected || !dd.enabled) return;
+    onUpdateDirectDeposit?.({ enabled: false });
+  }, [unlimitedSelected, dd.enabled, onUpdateDirectDeposit]);
+
   const toggleDdSlip = () => {
-    if (!ddSlipSupported) return;
+    if (!ddSlipSupported || unlimitedSelected) return;
     const next = !includeDdSlip;
     setIncludeDdSlip(next);
     onUpdateDirectDeposit?.({ enabled: next });

@@ -139,11 +139,23 @@ const PaystubPackagePanel = ({ template }) => {
           onChangeTemplate={() => setTemplateModalOpen(true)}
           onContinueToCheckout={() => {
             const ddSlipSupported = template?.document !== "check-statement";
-            if (ddSlipSupported && order.includeDdSlip) {
+            const wantsDd =
+              ddSlipSupported &&
+              !order.isUnlimited &&
+              (order.includeDdSlip ||
+                Boolean(formData.directDeposit?.enabled));
+            if (wantsDd) {
+              if (!order.includeDdSlip) order.setIncludeDdSlip(true);
               if (!formData.directDeposit?.enabled) {
                 updateDirectDeposit({ enabled: true });
               }
-              const bankMissing = findIncompleteDirectDepositFields(formData);
+              const bankMissing = findIncompleteDirectDepositFields({
+                ...formData,
+                directDeposit: {
+                  ...(formData.directDeposit ?? {}),
+                  enabled: true,
+                },
+              });
               if (bankMissing.length > 0) {
                 setDdFieldErrors(
                   Object.fromEntries(
@@ -162,14 +174,6 @@ const PaystubPackagePanel = ({ template }) => {
               }
             }
             setDdFieldErrors({});
-            // Temporary: inspect package → checkout payload in the browser console.
-            console.log("[paystub package continue]", {
-              items: order.items,
-              includeDdSlip: order.includeDdSlip,
-              formData: toApiFormData(),
-              summaryLines: order.summaryLines,
-              grandTotal: order.grandTotal,
-            });
             onContinueToCheckout();
           }}
         />
