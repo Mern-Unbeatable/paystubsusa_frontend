@@ -16,6 +16,7 @@ import { stripePromise } from "../../utils/stripeClient";
 import { getErrorMessage } from "../../../../../api/errorNormalizer";
 import { PAYSTUB_FORM_STEPS } from "../../utils/paystubFlow";
 import {
+  beginAnotherPaystub,
   setPaymentStatus,
   startCreditRedeem,
 } from "../../../../../features/public/checkout/checkoutSlice";
@@ -66,7 +67,7 @@ const PaystubSuccessPanel = ({ template }) => {
   const paid = useSelector(selectCheckoutPaid);
   const { formData, calculations } = usePaystubFormData();
   const credits = useSelector(selectCheckoutCredits);
-  const { onStartOver, onBackToFormStep, onCheckoutVerifying } =
+  const { onBackToFormStep, onCheckoutVerifying } =
     usePaystubFlowNavigation(template.id);
   const [searchParams] = useSearchParams();
   const redirectSecret = searchParams.get("payment_intent_client_secret");
@@ -115,9 +116,17 @@ const PaystubSuccessPanel = ({ template }) => {
       )
     : documents.find((d) => d.status === "ready");
 
+  // Both post-success CTAs resume the create flow on Pay Details (`?step=3`).
+  const goToPayDetails = () => onBackToFormStep(PAYSTUB_FORM_STEPS.PAY);
+
   const handleUseCredit = () => {
     dispatch(startCreditRedeem({ entitlementId: credits.id }));
-    onBackToFormStep(PAYSTUB_FORM_STEPS.EMPLOYER);
+    goToPayDetails();
+  };
+
+  const handleStartOver = () => {
+    dispatch(beginAnotherPaystub());
+    goToPayDetails();
   };
 
   const handleDownload = async () => {
@@ -169,7 +178,7 @@ const PaystubSuccessPanel = ({ template }) => {
           creditsRemaining={credits?.creditsRemaining ?? 0}
           onUseCredit={handleUseCredit}
           onDownload={handleDownload}
-          onStartOver={onStartOver}
+          onStartOver={handleStartOver}
         />
       </div>
       <div className="lg:col-span-7">
