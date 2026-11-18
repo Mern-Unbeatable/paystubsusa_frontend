@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { normalizeThunkError } from "../../../api/errorNormalizer";
 import { publicTemplateService } from "./publicTemplate.service";
 
-/** Loads one document type's templates once per session; later calls are no-ops. */
+/** Loads one document type's templates. Skips only while an identical request is in flight. */
 export const fetchPublicTemplates = createAsyncThunk(
   "publicTemplate/fetchPublicTemplates",
   async (documentType, { rejectWithValue, signal }) => {
@@ -15,7 +15,7 @@ export const fetchPublicTemplates = createAsyncThunk(
   {
     condition: (documentType, { getState }) => {
       const status = getState().publicTemplate.byType[documentType]?.status;
-      return status !== "loading" && status !== "succeeded";
+      return status !== "loading";
     },
   },
 );

@@ -56,8 +56,10 @@ export const livePreviewTemplate = (form) => ({
   code: form.values.code,
   title: form.values.title || "Untitled template",
   subtitle: form.values.subtitle,
+  documentType: form.values.documentType,
   renderer: form.values.renderer,
   variant: formVariant(form),
+  previewImageUrl: form.existing?.previewImageUrl,
 });
 
 export const VARIANT_FIELDS = [
