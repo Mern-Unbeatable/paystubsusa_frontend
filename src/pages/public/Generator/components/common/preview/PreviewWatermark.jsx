@@ -130,8 +130,8 @@ const PreviewWatermark = ({
                   textLength={Math.min(room, fontSize * 0.6 * text.length)}
                   lengthAdjust="spacingAndGlyphs"
                   fontSize={fontSize}
-                  // fontFamily={fontFamily}
-                  // fontWeight={fontWeight}
+                  fontFamily={fontFamily}
+                  fontWeight={fontWeight}
                   fill={fill}
                 >
                   {text}
