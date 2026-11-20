@@ -46,13 +46,22 @@ const DetailRow = ({ label, children }) => (
 );
 
 const OrderDetailsCard = ({ order }) => {
-  const { grandTotal, packageName, orderNumber, checkoutEmail } = order;
+  const {
+    grandTotal,
+    packageName,
+    orderNumber,
+    checkoutEmail,
+    includeDdSlip,
+  } = order;
 
   return (
     <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-left text-[13px] space-y-1.5 animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.4s_both]">
       {orderNumber && <DetailRow label="Order Number">#{orderNumber}</DetailRow>}
       <DetailRow label="Order Total">{formatCurrency(grandTotal)}</DetailRow>
       <DetailRow label="Document Package">{packageName}</DetailRow>
+      {includeDdSlip ? (
+        <DetailRow label="Direct Deposit Slip">Included</DetailRow>
+      ) : null}
       <DetailRow label="Delivery Email">
         {checkoutEmail || "Delivered to your email"}
       </DetailRow>
