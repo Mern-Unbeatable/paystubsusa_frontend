@@ -44,6 +44,7 @@ const PackageSelectionSection = ({
   calculations,
   order,
   hasUnlimited = false,
+  planAvailable = true,
   fieldErrors = {},
   onUpdateDirectDeposit,
   onBackToReview,
@@ -118,8 +119,8 @@ const PackageSelectionSection = ({
             </div>
           )}
 
-          {/* 3 Package Cards Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Package cards: Unlimited is omitted entirely when Admin deactivates the plan. */}
+          <div className={`grid grid-cols-1 gap-4 ${planAvailable || hasUnlimited ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
             {/* Package 1: 1 Paystub */}
             <div
               onClick={() => setSelectedPackage("1paystub")}
@@ -180,54 +181,54 @@ const PackageSelectionSection = ({
               </div>
             </div>
 
-            {/* Package 3: Unlimited Access (Premium Focus) */}
-            <div
-              onClick={() => setSelectedPackage("unlimited")}
-              className={`relative bg-white rounded-2xl p-5 border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[160px] ${
-                selectedPackage === "unlimited"
-                  ? "border-emerald-500 shadow-lg shadow-emerald-500/10 ring-4 ring-emerald-500/10"
-                  : "border-slate-200 hover:border-emerald-300 hover:shadow-sm"
-              }`}
-            >
-              {/* Subtle Background Pattern for Premium Feel */}
-              <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-emerald-50/40 via-transparent to-transparent pointer-events-none" />
+            {(planAvailable || hasUnlimited) && (
+              <div
+                onClick={() => setSelectedPackage("unlimited")}
+                className={`relative bg-white rounded-2xl p-5 border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[160px] ${
+                  selectedPackage === "unlimited"
+                    ? "border-emerald-500 shadow-lg shadow-emerald-500/10 ring-4 ring-emerald-500/10"
+                    : "border-slate-200 hover:border-emerald-300 hover:shadow-sm"
+                }`}
+              >
+                <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-emerald-50/40 via-transparent to-transparent pointer-events-none" />
 
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 bg-emerald-500 text-white text-[11px] font-bold py-1 px-3.5 rounded-full shadow-md whitespace-nowrap tracking-wide">
-                BEST FOR PROS
-              </span>
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 bg-emerald-500 text-white text-[11px] font-bold py-1 px-3.5 rounded-full shadow-md whitespace-nowrap tracking-wide">
+                  BEST FOR PROS
+                </span>
 
-              {selectedPackage === "unlimited" && (
-                <Check className="w-5 h-5 text-emerald-500 stroke-[3] absolute top-4 right-4 z-10" />
-              )}
-
-              <div className="relative z-10">
-                <h3 className="font-bold text-slate-800 text-[15px] flex items-center gap-1.5">
-                  Unlimited Access
-                </h3>
-                {hasUnlimited ? (
-                  <p className="text-2xl sm:text-[28px] font-bold text-emerald-600 mt-1 mb-2">
-                    Included
-                  </p>
-                ) : (
-                  <div className="mt-1 mb-2">
-                    <span className="text-2xl sm:text-[28px] font-bold text-slate-900">
-                      $199
-                    </span>
-                    <span className="text-[13px] font-medium text-slate-500">
-                      /month
-                    </span>
-                  </div>
+                {selectedPackage === "unlimited" && (
+                  <Check className="w-5 h-5 text-emerald-500 stroke-[3] absolute top-4 right-4 z-10" />
                 )}
-              </div>
 
-              <div className="relative z-10">
-                <p className="text-slate-500 text-[13px] leading-snug">
-                  {hasUnlimited
-                    ? "Your subscription is active and ready."
-                    : "All document types, unlimited edits & downloads."}
-                </p>
+                <div className="relative z-10">
+                  <h3 className="font-bold text-slate-800 text-[15px] flex items-center gap-1.5">
+                    Unlimited Access
+                  </h3>
+                  {hasUnlimited ? (
+                    <p className="text-2xl sm:text-[28px] font-bold text-emerald-600 mt-1 mb-2">
+                      Included
+                    </p>
+                  ) : (
+                    <div className="mt-1 mb-2">
+                      <span className="text-2xl sm:text-[28px] font-bold text-slate-900">
+                        $199
+                      </span>
+                      <span className="text-[13px] font-medium text-slate-500">
+                        /month
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative z-10">
+                  <p className="text-slate-500 text-[13px] leading-snug">
+                    {hasUnlimited
+                      ? "Your subscription is active and ready."
+                      : "All document types, unlimited edits & downloads."}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Additional Paystubs Stepper Box - Redesigned for better UX */}

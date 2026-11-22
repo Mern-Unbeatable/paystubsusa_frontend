@@ -9,11 +9,16 @@ import {
   selectMySubscription,
   selectMySubscriptionError,
   selectMySubscriptionLoading,
+  selectSubscriptionPlan,
 } from "../../../../../features/dash/customer/subscription/subscriptionSelectors";
 import { fetchMySubscription } from "../../../../../features/dash/customer/subscription/subscriptionThunks";
 import { rememberSubscriptionReturn } from "../../../../../features/dash/customer/subscription/subscriptionReturn";
 import SubscriptionCheckoutModal from "../../../../../Components/modal/SubscriptionCheckoutModal";
-import { isSubscriptionActive } from "../../hooks/useActiveSubscription";
+import {
+  isBillingEligible,
+  isPlanAvailable,
+  isSubscriptionActive,
+} from "../../hooks/useActiveSubscription";
 
 const card = "bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 animate-in fade-in-50 duration-200";
 const primaryButton =
@@ -27,12 +32,14 @@ const ACTIVATION_MAX_POLLS = 12;
 /**
  * Checkout for the Unlimited package: no card payment for the document itself. Subscribers create
  * it for $0; everyone else signs in and subscribes in the Stripe checkout dialog first.
+ * When Admin deactivates unlimited_monthly globally, benefits and subscribe CTAs are withheld.
  */
 const UnlimitedCheckoutSection = ({ generating, onGenerate }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(selectAuthUser);
   const subscription = useSelector(selectMySubscription);
+  const plan = useSelector(selectSubscriptionPlan);
   const loading = useSelector(selectMySubscriptionLoading);
   const error = useSelector(selectMySubscriptionError);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -40,7 +47,10 @@ const UnlimitedCheckoutSection = ({ generating, onGenerate }) => {
   const [pollCount, setPollCount] = useState(0);
   const isCustomer = user?.role === "customer";
   const isActive = isSubscriptionActive(subscription);
-  const stillActivating = activating && !isActive && pollCount < ACTIVATION_MAX_POLLS;
+  const planAvailable = isPlanAvailable(subscription, plan);
+  const billingEligible = isBillingEligible(subscription);
+  const accessDisabledByAdmin = billingEligible && !planAvailable;
+  const stillActivating = activating && !isActive && planAvailable && pollCount < ACTIVATION_MAX_POLLS;
 
   useEffect(() => {
     if (!isCustomer) return undefined;
@@ -108,7 +118,31 @@ const UnlimitedCheckoutSection = ({ generating, onGenerate }) => {
     );
   }
 
-  const activationTimedOut = activating && !isActive && !stillActivating;
+  const activationTimedOut = activating && !isActive && planAvailable && !stillActivating;
+
+  if (!isActive && !planAvailable) {
+    return (
+      <div className={card}>
+        <div className="flex items-start gap-3 p-3.5 rounded-xl bg-amber-50 border border-amber-100">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="min-w-0">
+            <p className="text-[14px] font-semibold text-amber-900">Unlimited Access is temporarily unavailable</p>
+            <p className="text-[13px] text-amber-800 mt-0.5">
+              {accessDisabledByAdmin
+                ? "Unlimited access is currently disabled by the administrator. Your Stripe subscription is unchanged; benefits return automatically when Unlimited is reactivated."
+                : "The Unlimited plan is not available right now. Choose a one-time paystub package to continue."}
+            </p>
+          </div>
+        </div>
+        <Link
+          to={PATHS.CUSTOMER.subscription}
+          className="w-full py-3.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-[15px] transition flex items-center justify-center"
+        >
+          View subscription status
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className={card}>

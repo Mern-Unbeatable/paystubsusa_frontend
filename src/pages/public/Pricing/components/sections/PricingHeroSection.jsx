@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-const PricingHeroSection = () => {
+const PricingHeroSection = ({ subscriptionAvailable = true }) => {
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -41,7 +41,9 @@ const PricingHeroSection = () => {
 
         {/* Subtitle */}
         <p className="mt-4 sm:mt-5 text-base sm:text-lg text-slate-500 max-w-2xl mx-auto text-center leading-relaxed font-normal">
-          Pay only for the documents you need, or get unlimited access with a monthly subscription.
+          {subscriptionAvailable
+            ? "Pay only for the documents you need, or get unlimited access with a monthly subscription."
+            : "Pay only for the documents you need — clear one-time pricing, no subscription required."}
         </p>
       </div>
     </section>

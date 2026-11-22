@@ -11,6 +11,11 @@ import { formatMoney, formatShortDate } from '../../../../utils/format';
 import { subscriptionStatusLabel } from '../CustomerOverview/utils/overviewFormat';
 import { useMySubscription } from './hooks/useMySubscription';
 import SubscriptionCheckoutModal from '../../../../Components/modal/SubscriptionCheckoutModal';
+import {
+  isBillingEligible,
+  isPlanAvailable,
+  isSubscriptionActive,
+} from '../../../public/Generator/hooks/useActiveSubscription';
 
 // Marketing copy for the Unlimited plan; the catalog stores price and interval only.
 const PLAN_FEATURES = [
@@ -55,13 +60,16 @@ const SubscriptionView = () => {
     return () => request.abort();
   }, [loadSubscription]);
 
-  const isActive = subscription?.status === 'active' || subscription?.status === 'past_due';
+  const accessActive = isSubscriptionActive(subscription);
+  const billingEligible = isBillingEligible(subscription);
+  const planAvailable = isPlanAvailable(subscription, plan);
+  const accessDisabledByAdmin = Boolean(subscription) && billingEligible && !planAvailable;
 
   useEffect(() => {
-    if (checkoutResult !== 'success' || isActive) return undefined;
+    if (checkoutResult !== 'success' || accessActive) return undefined;
     const timers = CHECKOUT_RECHECK_MS.map((ms) => setTimeout(loadSubscription, ms));
     return () => timers.forEach(clearTimeout);
-  }, [checkoutResult, isActive, loadSubscription]);
+  }, [checkoutResult, accessActive, loadSubscription]);
 
   const dismissCheckoutNotice = () => {
     const next = new URLSearchParams(searchParams);
@@ -96,7 +104,8 @@ const SubscriptionView = () => {
   const price = shown ? formatMoney(shown.amountCents, shown.currency) : null;
   const interval = shown?.interval;
   const status = subscription?.status;
-  const canSubscribe = !isActive && Boolean(plan);
+  // Never prompt a new subscribe while Admin has deactivated Unlimited globally.
+  const canSubscribe = !accessActive && planAvailable && Boolean(plan);
   const periodEnd = subscription?.currentPeriodEnd ? formatShortDate(subscription.currentPeriodEnd) : '—';
 
   const metadata = subscription
@@ -108,7 +117,11 @@ const SubscriptionView = () => {
         },
         {
           label: 'Next billing date',
-          value: isActive && !subscription.cancelAtPeriodEnd ? periodEnd : 'No upcoming charge',
+          value: billingEligible && !subscription.cancelAtPeriodEnd ? periodEnd : 'No upcoming charge',
+        },
+        {
+          label: 'Unlimited access',
+          value: accessActive ? 'Available' : accessDisabledByAdmin ? 'Disabled by administrator' : 'Unavailable',
         },
         {
           label: 'Payment method',
@@ -132,11 +145,11 @@ const SubscriptionView = () => {
             <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <div>
               <span>
-                {isActive
+                {accessActive
                   ? 'Your Unlimited subscription is active. Thank you!'
                   : 'Payment received. We are activating your subscription; this can take a few seconds.'}
               </span>
-              {isActive && returnTo && (
+              {accessActive && returnTo && (
                 <Link
                   to={returnTo}
                   onClick={clearSubscriptionReturn}
@@ -158,6 +171,18 @@ const SubscriptionView = () => {
           <button type="button" onClick={dismissCheckoutNotice} aria-label="Dismiss" className="cursor-pointer text-slate-500 hover:text-slate-800">
             <X className="w-4 h-4" />
           </button>
+        </div>
+      )}
+
+      {accessDisabledByAdmin && (
+        <div className="flex items-start gap-2.5 rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="status">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold">Unlimited access is currently disabled by the administrator.</p>
+            <p className="mt-0.5 text-amber-800">
+              Your Stripe billing status remains {subscriptionStatusLabel(status).toLowerCase()}. Benefits will return automatically when Unlimited is reactivated, as long as your subscription stays eligible.
+            </p>
+          </div>
         </div>
       )}
 
@@ -217,15 +242,26 @@ const SubscriptionView = () => {
                 {status && (
                   <span
                     className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${STATUS_PILL[status] ?? STATUS_PILL.canceled}`}
+                    title="Stripe billing status"
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[status] ?? STATUS_DOT.canceled}`} />
-                    <span>{subscriptionStatusLabel(status)}</span>
+                    <span>Billing: {subscriptionStatusLabel(status)}</span>
+                  </span>
+                )}
+                {subscription && (
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${
+                      accessActive ? STATUS_PILL.active : STATUS_PILL.canceled
+                    }`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${accessActive ? STATUS_DOT.active : STATUS_DOT.canceled}`} />
+                    <span>Access: {accessActive ? 'Active' : 'Inactive'}</span>
                   </span>
                 )}
                 {subscription?.cancelAtPeriodEnd && status !== 'canceled' && (
                   <span className="text-xs text-amber-200">Cancels on {periodEnd}</span>
                 )}
-                {status === 'past_due' && (
+                {status === 'past_due' && planAvailable && (
                   <span className="text-xs text-amber-200">Your last payment failed. Update your card to keep access.</span>
                 )}
               </div>
@@ -261,7 +297,7 @@ const SubscriptionView = () => {
 
           <div className="lg:col-span-5 bg-white/5 backdrop-blur-xs rounded-2xl p-5 sm:p-6 border border-white/10">
             <h3 className="text-xs font-semibold text-slate-200 mb-3.5">
-              {isActive ? 'Included with your plan' : 'What you get'}
+              {accessActive ? 'Included with your plan' : 'What you get'}
             </h3>
             <ul className="space-y-2.5">
               {PLAN_FEATURES.map((feature) => (
@@ -279,7 +315,7 @@ const SubscriptionView = () => {
 
       {metadata.length > 0 && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-5 sm:p-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
             {metadata.map((item) => (
               <div key={item.label}>
                 <span className="text-xs font-medium text-slate-400 block mb-1">{item.label}</span>

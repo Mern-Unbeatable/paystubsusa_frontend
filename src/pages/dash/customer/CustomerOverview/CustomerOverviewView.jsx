@@ -28,6 +28,7 @@ import {
   paymentStatusLabel,
   subscriptionStatusLabel,
 } from "./utils/overviewFormat";
+import { useActiveSubscription } from "../../../public/Generator/hooks/useActiveSubscription";
 
 const TOAST_DURATION_MS = 3000;
 const SUBSCRIPTION_TONES = {
@@ -40,6 +41,7 @@ const SUBSCRIPTION_TONES = {
 
 const CustomerOverviewView = () => {
   const { dashboard, loading, error, loadDashboard, getDownloadUrl } = useCustomerOverview();
+  const { planAvailable } = useActiveSubscription();
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [downloadingId, setDownloadingId] = useState(null);
   const [toast, setToast] = useState(null);
@@ -78,12 +80,13 @@ const CustomerOverviewView = () => {
 
   const stats = dashboard?.stats;
   const showSkeleton = loading && !dashboard;
+  const showSubscriptionCard = planAvailable;
   const statCards = useMemo(() => {
     const total = stats?.totalDocuments ?? 0;
     const paystubs = stats?.paystubDocuments ?? 0;
     const subscription = stats?.subscription;
     const placeholder = showSkeleton ? "…" : null;
-    return [
+    const cards = [
       {
         title: "Total Documents",
         value: placeholder ?? total.toLocaleString(),
@@ -102,15 +105,27 @@ const CustomerOverviewView = () => {
         change: "Successful purchases",
         icon: CreditCard,
       },
-      {
-        title: "Subscription Status",
-        value: placeholder ?? (subscription ? subscriptionStatusLabel(subscription.status) : "None"),
-        change: subscription?.planName ?? "No active subscription",
-        icon: Star,
-        tone: placeholder ? "default" : SUBSCRIPTION_TONES[subscription?.status] ?? "neutral",
-      },
     ];
-  }, [stats, showSkeleton]);
+    if (showSubscriptionCard) {
+      cards.push({
+        title: "Subscription Status",
+        value: placeholder
+          ?? (subscription?.accessActive
+            ? subscriptionStatusLabel(subscription.status)
+            : "None"),
+        change: subscription?.accessActive
+          ? (subscription.planName ?? "Unlimited Access")
+          : "No active subscription",
+        icon: Star,
+        tone: placeholder
+          ? "default"
+          : subscription?.accessActive
+            ? SUBSCRIPTION_TONES[subscription?.status] ?? "neutral"
+            : "neutral",
+      });
+    }
+    return cards;
+  }, [stats, showSkeleton, showSubscriptionCard]);
 
   const documentColumns = useMemo(
     () => [
@@ -216,7 +231,11 @@ const CustomerOverviewView = () => {
 
       <DashboardHeader
         title="Welcome Back!"
-        description="Manage your documents, review purchases, and access your subscription."
+        description={
+          showSubscriptionCard
+            ? "Manage your documents, review purchases, and access your subscription."
+            : "Manage your documents and review purchases."
+        }
         action={
           <Link
             to="/paystub-generator"
@@ -237,7 +256,11 @@ const CustomerOverviewView = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <div
+        className={`grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 ${
+          showSubscriptionCard ? "lg:grid-cols-4" : "lg:grid-cols-3"
+        }`}
+      >
         {statCards.map((stat) => (
           <StatCard key={stat.title} title={stat.title} value={stat.value} change={stat.change} icon={stat.icon} tone={stat.tone} />
         ))}

@@ -36,9 +36,9 @@ export function usePricingCatalog() {
   const status = useSelector(selectCatalogStatus);
   const error = useSelector(selectCatalogError);
 
-  const load = useCallback(() => dispatch(fetchCatalogProducts()), [dispatch]);
+  // Force refresh so Admin Active/Inactive toggles are reflected without a full page reload.
+  const load = useCallback(() => dispatch(fetchCatalogProducts({ force: true })), [dispatch]);
 
-  // Not aborted on unmount: the result is cached for the session, and aborting would race the dedupe condition.
   useEffect(() => {
     load();
   }, [load]);

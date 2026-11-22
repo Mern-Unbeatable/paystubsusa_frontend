@@ -197,7 +197,7 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
                 {plan.planName}
               </Field>
               <Field
-                label="Plan status"
+                label="Billing status"
                 icon={CircleDot}
                 hint={
                   plan.cancelAtPeriodEnd ? "Cancels at period end" : undefined
@@ -206,6 +206,17 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
                 <span className="capitalize">
                   {plan.status.replace(/_/g, " ")}
                 </span>
+              </Field>
+              <Field
+                label="App access"
+                icon={CircleDot}
+                hint={
+                  plan.planAvailable === false
+                    ? "Unlimited product is inactive in Pricing Plans"
+                    : undefined
+                }
+              >
+                {plan.accessActive ? "Active" : "Inactive"}
               </Field>
               <Field
                 label={plan.cancelAtPeriodEnd ? "Ends" : "Renews"}

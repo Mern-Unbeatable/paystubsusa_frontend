@@ -253,9 +253,11 @@ const AdminPricingPlansView = () => {
         <p className="text-sm leading-relaxed text-slate-600">
           {target?.isActive
             ? target?.kind === "subscription"
-              ? `New customers won't be able to subscribe to ${target?.name}. Existing subscriptions keep renewing.`
+              ? `Deactivating ${target?.name} immediately disables Unlimited benefits for all customers, including those with an active Stripe subscription. Stripe billing is not canceled and renewals continue until managed in Stripe. Reactivating restores access for eligible subscribers.`
               : `${target?.name} will be hidden from checkout. Existing orders and documents are not affected.`
-            : `${target?.name} will be available in checkout again at ${target ? formatPrice(target) : ""}.`}
+            : target?.kind === "subscription"
+              ? `${target?.name} will be available again. Eligible customers whose Stripe subscription is still active or past due regain Unlimited access automatically.`
+              : `${target?.name} will be available in checkout again at ${target ? formatPrice(target) : ""}.`}
         </p>
       </ConfirmModal>
 

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logoImg from "../../../assets/logo.png";
 import { useAuth } from "../../../pages/auth/hooks/useAuth";
 import { PATHS } from "../../../config/paths";
 import { ENV_CONFIG } from "../../../config/env";
 import { toast } from "react-hot-toast";
+import { useActiveSubscription } from "../../../pages/public/Generator/hooks/useActiveSubscription";
 import {
   LayoutGrid,
   FileText,
@@ -298,11 +299,20 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
   const location = useLocation();
   const { user, logout } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { planAvailable } = useActiveSubscription();
 
   const effectiveRole = role || user?.role || "customer";
   const portalMeta =
     PORTAL_META[effectiveRole === "admin" ? "admin" : "customer"];
-  const navItems = getNavItems(effectiveRole);
+  // Hide customer Subscription nav when Admin Pricing Plans has Unlimited Inactive.
+  const navItems = useMemo(
+    () =>
+      getNavItems(effectiveRole).filter(
+        (item) =>
+          !(effectiveRole === "customer" && item.id === "subscription" && !planAvailable),
+      ),
+    [effectiveRole, planAvailable],
+  );
 
   const handleLogout = async () => {
     if (isLoggingOut) {

@@ -2,10 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { normalizeThunkError } from "../../../api/errorNormalizer";
 import { publicCatalogService } from "./publicCatalog.service";
 
-/** Loads the product catalog once per session; later calls are no-ops unless the last one failed. */
+/**
+ * Loads the product catalog. Cached for the session unless `{ force: true }` (e.g. pricing /
+ * home after Admin toggles Unlimited Active/Inactive).
+ */
 export const fetchCatalogProducts = createAsyncThunk(
   "publicCatalog/fetchProducts",
-  async (_, { rejectWithValue, signal }) => {
+  async (_arg, { rejectWithValue, signal }) => {
     try {
       return await publicCatalogService.listProducts({ signal });
     } catch (error) {
@@ -13,9 +16,11 @@ export const fetchCatalogProducts = createAsyncThunk(
     }
   },
   {
-    condition: (_, { getState }) => {
+    condition: (arg, { getState }) => {
       const status = getState().publicCatalog.status;
-      return status !== "loading" && status !== "succeeded";
+      if (status === "loading") return false;
+      if (arg?.force) return true;
+      return status !== "succeeded";
     },
   },
 );
