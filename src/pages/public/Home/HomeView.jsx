@@ -30,10 +30,10 @@ const HomeView = () => {
       <PricingSection />
 
       {/* 7. Why Us Section */}
-      <WhyUsSection />
+      {/* <WhyUsSection /> */}
 
       {/* 8. Testimonials Section */}
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
     </div>
   );
 };

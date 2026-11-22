@@ -8,9 +8,8 @@ import {
   Landmark,
 } from "lucide-react";
 import { FileText } from "lucide-react";
-import { ChevronLeft } from "lucide-react";
-import { ChevronRight } from "lucide-react";
 import OrderSummaryCard from "../common/order/OrderSummaryCard";
+import DocumentStepNav from "../../../shared/documentFlow/components/DocumentStepNav";
 import { PAYSTUB_DD_SLIP_PRICE } from "../../hooks/usePaystubOrder";
 import { FieldError, fieldClassName } from "../common/detailsForm/fieldValidation";
 
@@ -386,24 +385,13 @@ const PackageSelectionSection = ({
             </div>
           )}
 
-          {/* Actions: Back (left), Continue (right) */}
-          <div className="flex items-center justify-between pt-6 mt-2 border-t border-slate-200/80">
-            <button
-              type="button"
-              onClick={onBackToReview}
-              className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5"
-            >
-              <ChevronLeft className="w-4 h-4" /> Back
-            </button>
-            <button
-              type="button"
-              onClick={onContinueToCheckout}
-              className="px-8 py-3.5 rounded-xl bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-[15px] shadow-md shadow-[#009BFB]/20 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2 cursor-pointer"
-            >
-              <span>Continue</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+          <DocumentStepNav
+            onBack={onBackToReview}
+            onNext={onContinueToCheckout}
+            nextLabel="Continue"
+            variant="final"
+            className="sm:pt-6 sm:mt-2"
+          />
         </div>
 
         {/* Right Column: Order Summary Card */}

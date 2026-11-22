@@ -31,7 +31,9 @@ const PaystubFlowPage = ({ children, compact = false }) => {
   return (
     <div
       className={`w-full bg-[#F4F7FB] border-t border-slate-200/80 ${
-        compact ? "py-8 sm:py-10 pb-12 sm:pb-14" : "min-h-screen py-8 sm:py-14"
+        compact
+          ? "py-8 sm:py-10 pb-12 sm:pb-14"
+          : "min-h-screen py-8 pb-24 sm:py-14 sm:pb-14"
       }`}
     >
       <div

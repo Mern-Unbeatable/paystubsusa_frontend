@@ -1,16 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router';
-import logoImg from '../../../assets/logo.png';
-import { FaLinkedinIn, FaInstagram, FaFacebookF } from 'react-icons/fa';
+import React from "react";
+import { Link } from "react-router";
+import logoImg from "../../../assets/logo.png";
+import { FaLinkedinIn, FaInstagram, FaFacebookF } from "react-icons/fa";
 
 const FooterLayout = () => {
   return (
-    <footer className="w-full bg-[#F8FAFC] border-t border-slate-100">
+    <footer className="w-full bg-[#EBF1F8] border-t border-slate-100">
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-16 sm:py-20">
-        
         {/* Exact 4-Column Layout from Figma */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
-          
           {/* Column 1: Logo, Tagline & Social Icons */}
           <div className="lg:col-span-5 flex flex-col items-start pr-0 lg:pr-8">
             <Link to="/" className="inline-block mb-4">
@@ -24,7 +22,8 @@ const FooterLayout = () => {
             </Link>
 
             <p className="text-slate-500 text-[14px] leading-relaxed max-w-xs mb-5 font-normal">
-              An online platform for generating paystubs, W-2s, 1099s and direct deposit slips.
+              An online platform for generating paystubs, W-2s, 1099s and direct
+              deposit slips.
             </p>
 
             {/* Social Icons */}
@@ -60,27 +59,42 @@ const FooterLayout = () => {
             </h4>
             <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
-                <Link to="/paystub-generator" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/paystub-generator"
+                  className="hover:text-secondary transition-colors"
+                >
                   Paystub Generator
                 </Link>
               </li>
               <li>
-                <Link to="/w-2" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/w-2"
+                  className="hover:text-secondary transition-colors"
+                >
                   W-2 Generator
                 </Link>
               </li>
               <li>
-                <Link to="/1099-nec/create?step=1" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/1099-nec/create?step=1"
+                  className="hover:text-secondary transition-colors"
+                >
                   1099 Generator
                 </Link>
               </li>
               <li>
-                <Link to="/direct-deposit/create?step=1" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/direct-deposit/create?step=1"
+                  className="hover:text-secondary transition-colors"
+                >
                   Direct Deposit Slip
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/pricing"
+                  className="hover:text-secondary transition-colors"
+                >
                   Pricing
                 </Link>
               </li>
@@ -94,12 +108,18 @@ const FooterLayout = () => {
             </h4>
             <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
-                <Link to="/about" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/about"
+                  className="hover:text-secondary transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/contact"
+                  className="hover:text-secondary transition-colors"
+                >
                   Contact Us
                 </Link>
               </li>
@@ -108,25 +128,27 @@ const FooterLayout = () => {
 
           {/* Column 4: Legal */}
           <div className="lg:col-span-2">
-            <h4 className="font-bold text-slate-900 text-[15px] mb-4">
-              Legal
-            </h4>
+            <h4 className="font-bold text-slate-900 text-[15px] mb-4">Legal</h4>
             <ul className="space-y-3 text-[14px] text-slate-600">
               <li>
-                <Link to="/terms-conditions" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/terms-conditions"
+                  className="hover:text-secondary transition-colors"
+                >
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="hover:text-secondary transition-colors">
+                <Link
+                  to="/privacy-policy"
+                  className="hover:text-secondary transition-colors"
+                >
                   Privacy policy
                 </Link>
               </li>
             </ul>
           </div>
-
         </div>
-
       </div>
     </footer>
   );

@@ -242,7 +242,7 @@ const ReviewStep = ({
     <StepNav
       onBack={onBack}
       onNext={onContinue}
-      nextLabel="Continue to Checkout"
+      nextLabel="Checkout"
       variant="final"
     />
   </div>

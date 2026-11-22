@@ -494,7 +494,12 @@ const PayDetailsStep = ({ form, fieldErrors = {}, onBack, onNext }) => {
         </div>
       </div>
 
-      <StepNav onBack={onBack} onNext={onNext} className="pt-4" />
+      <StepNav
+        onBack={onBack}
+        nextLabel="Save & Preview"
+        onNext={onNext}
+        className="sm:pt-4"
+      />
     </div>
   );
 };
