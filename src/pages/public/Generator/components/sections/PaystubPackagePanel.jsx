@@ -52,7 +52,11 @@ const PaystubPackagePanel = ({ template }) => {
   );
   const [redeeming, setRedeeming] = useState(false);
   const inFlightRef = useRef(false);
-  const { isActive: hasUnlimited, planAvailable, loading: subscriptionLoading } = useActiveSubscription();
+  const {
+    isActive: hasUnlimited,
+    planAvailable,
+    loading: subscriptionLoading,
+  } = useActiveSubscription();
   const unlimitedPreselectedRef = useRef(false);
 
   useEffect(() => {
