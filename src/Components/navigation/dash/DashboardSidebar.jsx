@@ -304,13 +304,15 @@ const DashboardSidebar = ({ role, mobileOpen = false, setMobileOpen }) => {
   const effectiveRole = role || user?.role || "customer";
   const portalMeta =
     PORTAL_META[effectiveRole === "admin" ? "admin" : "customer"];
-  // Hide customer Subscription nav when Admin Pricing Plans has Unlimited Inactive.
+  // Hide Subscription(s) nav when Admin Pricing Plans has Unlimited Inactive.
   const navItems = useMemo(
     () =>
-      getNavItems(effectiveRole).filter(
-        (item) =>
-          !(effectiveRole === "customer" && item.id === "subscription" && !planAvailable),
-      ),
+      getNavItems(effectiveRole).filter((item) => {
+        if (planAvailable) return true;
+        if (effectiveRole === "customer" && item.id === "subscription") return false;
+        if (effectiveRole === "admin" && item.id === "subscriptions") return false;
+        return true;
+      }),
     [effectiveRole, planAvailable],
   );
 

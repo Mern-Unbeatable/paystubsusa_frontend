@@ -63,14 +63,17 @@ export function useActiveSubscription() {
     [catalogProducts],
   );
 
-  // Prefer subscription DTO / customer plan; fall back to public catalog (guests + marketing surfaces).
+  // Prefer subscription DTO / customer plan; fall back to public catalog (guests + marketing / admin).
   const resolvedPlan = plan ?? catalogPlan;
-  const availabilityLoading = (isCustomer && subscriptionLoading) || catalogLoading;
-  // Hide Unlimited until we know the global product is Active — avoids showing it while Inactive.
+  // Keep using existing catalog products while a force-refresh is in flight so Active UI
+  // does not flash hidden. Only the first load (empty catalog) waits.
+  const waitingForFirstCatalog = catalogStatus === "idle" || (catalogLoading && catalogProducts.length === 0);
+  const waitingForCustomerSub = isCustomer && subscriptionLoading && !subscription && typeof subscription?.planAvailable !== "boolean";
+  const availabilityLoading = waitingForFirstCatalog || waitingForCustomerSub;
   const planAvailable = availabilityLoading ? false : isPlanAvailable(subscription, resolvedPlan);
 
   useEffect(() => {
-    // Force so Admin Active/Inactive changes are picked up without a full reload.
+    // Force so Admin Active/Inactive toggles are picked up without a full reload.
     dispatch(fetchCatalogProducts({ force: true }));
   }, [dispatch]);
 

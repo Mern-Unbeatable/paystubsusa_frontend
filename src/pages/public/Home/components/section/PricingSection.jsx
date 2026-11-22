@@ -4,15 +4,21 @@ import { Link } from "react-router";
 import gsap from "gsap";
 import { PATHS } from "../../../../../config/paths";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import oneTimeItems from "../../../data/home/pricingOneTimeItems.json";
 import subscriptionFeatures from "../../../data/home/pricingSubscriptionFeatures.json";
 import { usePricingCatalog } from "../../../Pricing/hooks/usePricingCatalog";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const PriceRowSkeleton = () => (
+  <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 last:border-b-0">
+    <span className="h-4 w-28 animate-pulse rounded bg-slate-100" />
+    <span className="h-4 w-14 animate-pulse rounded bg-slate-100" />
+  </div>
+);
+
 const PricingSection = () => {
   const sectionRef = useRef(null);
-  const { unlimited, loading } = usePricingCatalog();
+  const { unlimited, oneTimeItems, loading } = usePricingCatalog();
   const showUnlimited = Boolean(unlimited);
 
   useEffect(() => {
@@ -108,23 +114,25 @@ const PricingSection = () => {
                 </p>
 
                 <div className="overflow-hidden rounded-2xl border border-slate-100">
-                  {oneTimeItems.map((item, i) => (
-                    <div
-                      key={item.name}
-                      className={`flex items-center justify-between px-4 py-3.5 text-sm transition-colors duration-150 hover:bg-slate-50 sm:text-[15px] ${
-                        i !== oneTimeItems.length - 1
-                          ? "border-b border-slate-100"
-                          : ""
-                      }`}
-                    >
-                      <span className="font-medium text-slate-700">
-                        {item.name}
-                      </span>
-                      <span className="font-bold tracking-tight text-slate-900">
-                        {item.price}
-                      </span>
-                    </div>
-                  ))}
+                  {loading && oneTimeItems.length === 0
+                    ? Array.from({ length: 5 }, (_, i) => <PriceRowSkeleton key={i} />)
+                    : oneTimeItems.map((item, i) => (
+                        <div
+                          key={item.code}
+                          className={`flex items-center justify-between px-4 py-3.5 text-sm transition-colors duration-150 hover:bg-slate-50 sm:text-[15px] ${
+                            i !== oneTimeItems.length - 1
+                              ? "border-b border-slate-100"
+                              : ""
+                          }`}
+                        >
+                          <span className="font-medium text-slate-700">
+                            {item.name}
+                          </span>
+                          <span className="font-bold tracking-tight text-slate-900">
+                            {item.price}
+                          </span>
+                        </div>
+                      ))}
                 </div>
               </div>
 

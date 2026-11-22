@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import {
   DashboardHeader,
@@ -26,6 +26,7 @@ import {
 } from "./utils/customerFormat";
 import { formatShortDate } from "../../../../utils/format";
 import { useUrlFilters } from "../../../../hooks/useUrlFilters";
+import { useActiveSubscription } from "../../../public/Generator/hooks/useActiveSubscription";
 
 const URL_SELECTS = {
   status: STATUS_OPTIONS.map((o) => o.value),
@@ -37,6 +38,7 @@ const URL_SELECTS = {
 /** Customer accounts only; the API never lists admins. */
 const AdminCustomersView = () => {
   const { users, meta, loading, error, loadUsers } = useUsers();
+  const { planAvailable } = useActiveSubscription();
   const { filters, setFilter: updateFilter, resetFilters: resetUserFilters } = useUrlFilters(URL_SELECTS);
   const [search, setSearch] = useState(filters.q);
   const [urlQ, setUrlQ] = useState(filters.q);
@@ -61,6 +63,13 @@ const AdminCustomersView = () => {
     return () => request.abort();
   }, [filters, reloadKey, loadUsers]);
 
+  // Drop a stale subscription filter when Unlimited is globally Inactive.
+  useEffect(() => {
+    if (!planAvailable && filters.subscription) {
+      updateFilter("subscription", "", { replace: true });
+    }
+  }, [planAvailable, filters.subscription, updateFilter]);
+
   // A link past the last page, or a suspension under a status filter shrinking the list, lands on the last real page.
   useEffect(() => {
     if (!loading && meta.totalPages > 0 && filters.page > meta.totalPages) {
@@ -84,23 +93,33 @@ const AdminCustomersView = () => {
     <UserRowActions user={user} onView={setViewing} onChangeStatus={setChangingStatus} />
   );
 
-  const columns = [
-    { header: "User", render: (user) => <UserIdentity user={user} /> },
-    {
-      header: "Email",
-      render: (user) => <span className="block max-w-[16rem] truncate">{user.email}</span>,
-    },
-    { header: "Role", render: () => <RoleBadge /> },
-    { header: "Status", render: (user) => <UserStatusBadge user={user} /> },
-    { header: "Email verification", render: (user) => <EmailVerifiedBadge user={user} /> },
-    { header: "Subscription", render: (user) => <SubscriptionBadge status={user.subscriptionStatus} /> },
-    {
-      header: "Joined",
-      render: (user) => formatShortDate(user.createdAt),
-      cellClassName: "whitespace-nowrap text-slate-500",
-    },
-    { header: "Actions", align: "right", render: actions },
-  ];
+  const columns = useMemo(() => {
+    const cols = [
+      { header: "User", render: (user) => <UserIdentity user={user} /> },
+      {
+        header: "Email",
+        render: (user) => <span className="block max-w-[16rem] truncate">{user.email}</span>,
+      },
+      { header: "Role", render: () => <RoleBadge /> },
+      { header: "Status", render: (user) => <UserStatusBadge user={user} /> },
+      { header: "Email verification", render: (user) => <EmailVerifiedBadge user={user} /> },
+    ];
+    if (planAvailable) {
+      cols.push({
+        header: "Subscription",
+        render: (user) => <SubscriptionBadge status={user.subscriptionStatus} />,
+      });
+    }
+    cols.push(
+      {
+        header: "Joined",
+        render: (user) => formatShortDate(user.createdAt),
+        cellClassName: "whitespace-nowrap text-slate-500",
+      },
+      { header: "Actions", align: "right", render: actions },
+    );
+    return cols;
+  }, [planAvailable]);
 
   const renderMobileRow = (user) => (
     <div className="flex items-start justify-between gap-3">
@@ -110,7 +129,7 @@ const AdminCustomersView = () => {
           <RoleBadge />
           <UserStatusBadge user={user} />
           <EmailVerifiedBadge user={user} />
-          <SubscriptionBadge status={user.subscriptionStatus} />
+          {planAvailable && <SubscriptionBadge status={user.subscriptionStatus} />}
         </div>
         <p className="text-xs text-slate-400">Joined {formatShortDate(user.createdAt)}</p>
       </div>
@@ -119,7 +138,7 @@ const AdminCustomersView = () => {
   );
 
   const hasQuery = Boolean(
-    filters.q || filters.status || filters.subscription || filters.emailVerified,
+    filters.q || filters.status || (planAvailable && filters.subscription) || filters.emailVerified,
   );
 
   return (
@@ -169,6 +188,7 @@ const AdminCustomersView = () => {
             filters={filters}
             onFilterChange={updateFilter}
             onReset={resetFilters}
+            showSubscriptionFilter={planAvailable}
           />
         }
         columns={columns}
@@ -195,6 +215,7 @@ const AdminCustomersView = () => {
         key={viewing?.id ?? "none"}
         user={viewing}
         onClose={() => setViewing(null)}
+        showSubscription={planAvailable}
         onChangeStatus={(user) => {
           setViewing(null);
           setChangingStatus(user);

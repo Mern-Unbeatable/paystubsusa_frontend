@@ -24,6 +24,7 @@ import { formatCents, formatMoney } from "../../../../utils/format";
 import { DOCUMENT_TYPE_LABELS, formatDateTime } from "../orders/utils/orderFormat";
 import OrderStatusBadge from "../orders/components/OrderStatusBadge";
 import { useAdminOverview } from "./hooks/useAdminOverview";
+import { useActiveSubscription } from "../../../public/Generator/hooks/useActiveSubscription";
 
 const RANGES = [
   { value: "12m", label: "Last 12 months" },
@@ -96,7 +97,15 @@ const AdminOverviewView = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const range = searchParams.get("range") === "6m" ? "6m" : "12m";
   const { dashboard, loading, error, loadDashboard } = useAdminOverview();
+  const { planAvailable } = useActiveSubscription();
   const [reloadKey, setReloadKey] = useState(0);
+  const kpiCards = useMemo(
+    () =>
+      planAvailable
+        ? KPI_CARDS
+        : KPI_CARDS.filter((card) => card.key !== "activeSubscriptions"),
+    [planAvailable],
+  );
 
   useEffect(() => {
     const request = loadDashboard(range);
@@ -157,8 +166,12 @@ const AdminOverviewView = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        {KPI_CARDS.map((card) => {
+      <div
+        className={`grid grid-cols-2 sm:grid-cols-3 gap-4 ${
+          planAvailable ? "lg:grid-cols-6" : "lg:grid-cols-5"
+        }`}
+      >
+        {kpiCards.map((card) => {
           const Icon = card.icon;
           const value = kpis?.[card.key] ?? 0;
           return (
