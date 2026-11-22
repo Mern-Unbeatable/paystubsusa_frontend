@@ -1,6 +1,7 @@
 import React from "react";
-import { ChevronLeft, Ticket } from "lucide-react";
+import { Ticket } from "lucide-react";
 import OrderSummaryCard from "../common/order/OrderSummaryCard";
+import DocumentStepNav from "../../../shared/documentFlow/components/DocumentStepNav";
 
 /** Package step while spending a paystub credit: no package choice and no payment. */
 const CreditRedeemSection = ({
@@ -50,25 +51,17 @@ const CreditRedeemSection = ({
             Buy a new package instead
           </button>
 
-          <div className="flex items-center justify-between pt-5 border-t border-slate-200/80">
-            <button
-              type="button"
-              onClick={onBackToReview}
-              disabled={submitting}
-              className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer disabled:opacity-60 inline-flex items-center gap-1.5"
-            >
-              <ChevronLeft className="w-4 h-4" /> Back
-            </button>
-            <button
-              type="button"
-              onClick={onRedeem}
-              disabled={submitting}
-              className="px-7 py-3 rounded-lg bg-[#009BFB] hover:bg-[#0089e0] text-white font-semibold text-[14px] shadow-sm transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {submitting && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              <span>{submitting ? "Creating paystub..." : "Create Paystub (1 credit)"}</span>
-            </button>
-          </div>
+          <DocumentStepNav
+            onBack={onBackToReview}
+            onNext={onRedeem}
+            nextLabel={
+              submitting ? "Creating paystub..." : "Create Paystub (1 credit)"
+            }
+            variant="final"
+            backDisabled={submitting}
+            nextDisabled={submitting}
+            className="sm:pt-5"
+          />
         </div>
 
         <OrderSummaryCard

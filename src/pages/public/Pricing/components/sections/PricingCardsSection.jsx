@@ -72,6 +72,8 @@ const LoadError = ({ message, onRetry }) => (
 
 const PricingCardsSection = ({ billingType, onBillingChange }) => {
   const { cards, pack, addonPrice, unlimited, loading, error, retry } = usePricingCatalog();
+  const showSubscriptionTab = Boolean(unlimited);
+  const showMonthly = billingType === "monthly" && showSubscriptionTab;
 
   return (
     <section className="w-full bg-[#F7FAFF] pt-2 pb-24 border-t border-slate-100">
@@ -112,50 +114,35 @@ const PricingCardsSection = ({ billingType, onBillingChange }) => {
           </div>
         )}
 
-        {/* Toggle Switcher: One-Time Purchase vs Monthly Subscription */}
-        <div className="flex justify-center">
-          <div className="bg-[#EAF2FA] p-1 sm:p-1.5 rounded-xl inline-flex gap-1 border border-slate-200/60 shadow-xs">
-            <button
-              type="button"
-              onClick={() => onBillingChange("one-time")}
-              className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
-                billingType === "one-time" ? "bg-white text-secondary shadow-xs" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              One-Time Purchase
-            </button>
-            <button
-              type="button"
-              onClick={() => onBillingChange("monthly")}
-              className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
-                billingType === "monthly" ? "bg-white text-secondary shadow-xs" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              Monthly Subscription
-            </button>
+        {/* Hide Monthly Subscription tab when Unlimited product is globally inactive. */}
+        {showSubscriptionTab && (
+          <div className="flex justify-center">
+            <div className="bg-[#EAF2FA] p-1 sm:p-1.5 rounded-xl inline-flex gap-1 border border-slate-200/60 shadow-xs">
+              <button
+                type="button"
+                onClick={() => onBillingChange("one-time")}
+                className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
+                  !showMonthly ? "bg-white text-secondary shadow-xs" : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                One-Time Purchase
+              </button>
+              <button
+                type="button"
+                onClick={() => onBillingChange("monthly")}
+                className={`px-6 sm:px-8 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
+                  showMonthly ? "bg-white text-secondary shadow-xs" : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                Monthly Subscription
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {error ? (
           <LoadError message={error} onRetry={retry} />
-        ) : billingType === "one-time" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch" aria-busy={loading}>
-            {loading
-              ? Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)
-              : cards.map((card) => <PriceCard key={card.id} card={card} />)}
-
-            {!loading && addonPrice && (
-              <div className="bg-[#EEF6FF] rounded-2xl border border-blue-100 p-6 sm:p-7 flex flex-col justify-center">
-                <span className="text-sm font-semibold text-secondary">Need more paystubs?</span>
-                <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-2 tracking-tight">{addonPrice}</div>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                  per additional paystub{pack ? ` after the first ${pack.quantity === 3 ? "three" : pack.quantity}` : ""}
-                </p>
-              </div>
-            )}
-          </div>
-        ) : (
-          /* Monthly Subscription View: Big Dark Navy Plan Card */
+        ) : showMonthly ? (
           <div className="w-full bg-[#172E57] rounded-2xl p-8 sm:p-12 relative overflow-hidden text-white shadow-xl">
             <div
               className="absolute -top-32 -right-32 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-[#1E3A6E] opacity-50 pointer-events-none"
@@ -172,16 +159,8 @@ const PricingCardsSection = ({ billingType, onBillingChange }) => {
               </h3>
 
               <div className="mt-4 mb-6 flex items-baseline gap-1.5">
-                {loading ? (
-                  <Skeleton className="h-12 w-32 bg-white/20" />
-                ) : unlimited ? (
-                  <>
-                    <span className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">{unlimited.price}</span>
-                    <span className="text-slate-300 text-base font-normal">/ {unlimited.interval}</span>
-                  </>
-                ) : (
-                  <span className="text-lg font-semibold text-slate-300">Not available right now</span>
-                )}
+                <span className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">{unlimited.price}</span>
+                <span className="text-slate-300 text-base font-normal">/ {unlimited.interval}</span>
               </div>
 
               <div className="h-px bg-slate-700/60 max-w-xl my-6" />
@@ -195,19 +174,33 @@ const PricingCardsSection = ({ billingType, onBillingChange }) => {
                 ))}
               </div>
 
-              {unlimited && (
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <Link
-                    to="/customer/subscription"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0"
-                  >
-                    <span>Get Unlimited Access</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                  <span className="text-xs sm:text-sm text-slate-300">Cancel anytime • Secure checkout</span>
-                </div>
-              )}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <Link
+                  to="/customer/subscription"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-secondary hover:bg-[#0089e0] text-white font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  <span>Get Unlimited Access</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+                <span className="text-xs sm:text-sm text-slate-300">Cancel anytime • Secure checkout</span>
+              </div>
             </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch" aria-busy={loading}>
+            {loading
+              ? Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)
+              : cards.map((card) => <PriceCard key={card.id} card={card} />)}
+
+            {!loading && addonPrice && (
+              <div className="bg-[#EEF6FF] rounded-2xl border border-blue-100 p-6 sm:p-7 flex flex-col justify-center">
+                <span className="text-sm font-semibold text-secondary">Need more paystubs?</span>
+                <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-2 tracking-tight">{addonPrice}</div>
+                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                  per additional paystub{pack ? ` after the first ${pack.quantity === 3 ? "three" : pack.quantity}` : ""}
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

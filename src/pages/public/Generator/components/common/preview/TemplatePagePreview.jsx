@@ -72,7 +72,8 @@ const TemplatePagePreview = ({
   showDepositSlip,
 }) => {
   const isFullPage = hasTemplateDocument(template);
-  const base = data ?? (isFullPage ? SAMPLE_PAYSTUB_DOCUMENT : SAMPLE_VARIANT_DATA);
+  const base =
+    data ?? (isFullPage ? SAMPLE_PAYSTUB_DOCUMENT : SAMPLE_VARIANT_DATA);
   const pageData =
     typeof showDepositSlip === "boolean"
       ? withDepositSlip(base, showDepositSlip)
@@ -100,9 +101,7 @@ const TemplatePagePreview = ({
             framed={false}
             data={pageData}
           />
-          {showVariantDd ? (
-            <DirectDepositSlip data={pageData} compact />
-          ) : null}
+          {showVariantDd ? <DirectDepositSlip data={pageData} compact /> : null}
         </A4PreviewPage>
       )}
     </div>

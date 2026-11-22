@@ -401,7 +401,7 @@ const NavbarLayout = () => {
   return (
     <>
       {/* Top Special Offer Announcement Bar */}
-      <div className="w-full bg-secondary text-white text-sm sm:text-[15px] py-2.5 px-4 text-center font-medium tracking-wide shadow-inner">
+      <div className="w-full bg-secondary text-white text-xs sm:text-[15px] py-2.5 px-4 text-center font-medium tracking-wide shadow-inner">
         <span>
           Special Offer: Get 3 Paystubs for{" "}
           <strong className="font-bold text-white underline decoration-white/70 underline-offset-2">
@@ -415,7 +415,7 @@ const NavbarLayout = () => {
       <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-50 shadow transition-all">
         <nav className="w-full">
           <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
-            <div className="flex items-center justify-between h-20 sm:h-24">
+            <div className="flex items-center justify-between h-14 sm:h-24">
               {/* Logo - Exactly matching Footer Logo size */}
               <div className="flex-shrink-0 flex items-center">
                 <Link

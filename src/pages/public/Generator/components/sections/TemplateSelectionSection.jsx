@@ -50,7 +50,7 @@ const TemplateSelectionSection = ({
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#F0F5FA] py-14 sm:py-20 select-none border-t border-slate-200/60"
+      className="w-full bg-[#F0F5FA] py-14 sm:py-20 pb-28 sm:pb-20 select-none border-t border-slate-200/60"
     >
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
         {/* Section Header matching Figma */}
@@ -77,12 +77,13 @@ const TemplateSelectionSection = ({
           ))}
         </div>
 
+        {/* Desktop / tablet: in-flow CTA */}
         {onContinue && (
-          <div className="mt-10 sm:mt-12 flex justify-center">
+          <div className="mt-10 sm:mt-12 hidden sm:flex justify-center">
             <button
               type="button"
               onClick={onContinue}
-              className="w-full sm:w-auto px-8 py-3 rounded-lg bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[15px] shadow-sm transition inline-flex items-center justify-center gap-2 cursor-pointer"
+              className="w-auto px-8 py-3 rounded-lg bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[15px] shadow-sm transition inline-flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Continue to Create Paystub</span>
               <ArrowRight className="w-4 h-4" />
@@ -90,6 +91,20 @@ const TemplateSelectionSection = ({
           </div>
         )}
       </div>
+
+      {/* Mobile: fixed CTA once a template is selected */}
+      {onContinue && selectedTemplate && (
+        <div className="sm:hidden fixed inset-x-0 bottom-0 z-40 border-t border-slate-200/80 bg-white/95 backdrop-blur-sm px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)]">
+          <button
+            type="button"
+            onClick={onContinue}
+            className="w-full px-8 py-3 rounded-lg bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[15px] shadow-sm transition inline-flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Continue to Create Paystub</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       <TemplatePreviewModal
         template={previewTemplate}

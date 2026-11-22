@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf } from "@reduxjs/toolkit";
+import { logoutUser } from "../../../auth/authThunks";
 import { fetchMySubscription } from "./subscriptionThunks";
 
 const initialState = {
@@ -11,10 +12,16 @@ const initialState = {
   requestId: null,
 };
 
+const isForceLogout = (action) => action.type === "auth/forceLogout";
+
 const customerSubscriptionSlice = createSlice({
   name: "customerSubscription",
   initialState,
-  reducers: {},
+  reducers: {
+    clearMySubscription() {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMySubscription.pending, (state, action) => {
@@ -41,8 +48,12 @@ const customerSubscriptionSlice = createSlice({
         state.loading = false;
         state.status = action.meta.aborted ? "idle" : "failed";
         state.error = action.meta.aborted ? null : action.payload || null;
-      });
+      })
+      // Avoid stale Unlimited access after logout / session expiry.
+      .addMatcher(isAnyOf(logoutUser.fulfilled, logoutUser.rejected), () => initialState)
+      .addMatcher(isForceLogout, () => initialState);
   },
 });
 
+export const { clearMySubscription } = customerSubscriptionSlice.actions;
 export const customerSubscriptionReducer = customerSubscriptionSlice.reducer;

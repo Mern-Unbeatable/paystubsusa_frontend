@@ -170,7 +170,7 @@ const PaystubDetailsForm = ({
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="relative overflow-hidden lg:col-span-8 bg-white rounded-2xl p-6 pt-12 sm:p-8 sm:pt-12 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+        <div className="relative overflow-hidden lg:col-span-8 bg-white rounded-2xl p-4 sm:p-6 pt-12 pb-5 md:p-8 sm:pt-12 border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
           <StepRibbon>
             Step {currentStep} of {FORM_STEP_COUNT}
           </StepRibbon>

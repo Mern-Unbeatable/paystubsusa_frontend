@@ -13,6 +13,16 @@ const ADDON_CODE = "paystub_additional";
 const PACK_CODE = "paystub_pack_3";
 const UNLIMITED_CODE = "unlimited_monthly";
 
+/** Homepage one-time summary rows; labels are display-only, prices always come from the catalog. */
+const HOME_ONE_TIME_ROWS = [
+  { code: "paystub_single", name: "1 Paystub" },
+  { code: "paystub_pack_3", name: "3 Paystubs" },
+  { code: "paystub_additional", name: "Each additional Paystub" },
+  { code: "paystub_dd_slip", name: "Direct Deposit Slip" },
+  { code: "w2_single", name: "W-2" },
+  { code: "nec1099_single", name: "1099" },
+];
+
 // Marketing copy and links per product; price, name and badge always come from the catalog.
 const CARD_COPY = {
   paystub_single: { feature: "Generate 1 professional paystub", btnText: "Create Paystub" },
@@ -36,9 +46,9 @@ export function usePricingCatalog() {
   const status = useSelector(selectCatalogStatus);
   const error = useSelector(selectCatalogError);
 
-  const load = useCallback(() => dispatch(fetchCatalogProducts()), [dispatch]);
+  // Force refresh so Admin Active/Inactive toggles are reflected without a full page reload.
+  const load = useCallback(() => dispatch(fetchCatalogProducts({ force: true })), [dispatch]);
 
-  // Not aborted on unmount: the result is cached for the session, and aborting would race the dedupe condition.
   useEffect(() => {
     load();
   }, [load]);
@@ -63,8 +73,14 @@ export function usePricingCatalog() {
     const pack = byCode[PACK_CODE];
     const addon = byCode[ADDON_CODE];
     const unlimited = byCode[UNLIMITED_CODE];
+    const oneTimeItems = HOME_ONE_TIME_ROWS.flatMap((row) => {
+      const product = byCode[row.code];
+      if (!product) return [];
+      return [{ code: row.code, name: row.name, price: price(product) }];
+    });
     return {
       cards,
+      oneTimeItems,
       pack: pack ? { name: pack.name, price: price(pack), badge: pack.badge, quantity: pack.creditQuantity } : null,
       addonPrice: price(addon),
       unlimited: unlimited ? { price: price(unlimited).replace(/\.00$/, ""), interval: unlimited.interval ?? "month" } : null,

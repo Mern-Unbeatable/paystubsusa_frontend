@@ -55,7 +55,7 @@ const TemplateSelectionModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-6 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 xs:p-2 sm:p-4 md:p-6 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
@@ -63,16 +63,19 @@ const TemplateSelectionModal = ({
         aria-modal="true"
         aria-labelledby={titleId}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-2xl w-full max-w-5xl h-full max-h-[min(900px,calc(100dvh-1.5rem))] sm:max-h-[min(900px,calc(100dvh-3rem))] flex flex-col overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 select-none"
+        className="bg-white rounded-t-2xl xs:rounded-2xl w-full max-w-5xl h-[95dvh] xs:h-[92dvh] sm:h-full max-h-[min(900px,calc(100dvh-0rem))] xs:max-h-[min(900px,calc(100dvh-1rem))] sm:max-h-[min(900px,calc(100dvh-2rem))] md:max-h-[min(900px,calc(100dvh-3rem))] flex flex-col overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 select-none"
       >
         {/* Header */}
-        <div className="shrink-0 flex items-start justify-between gap-4 px-5 sm:px-7 py-4 sm:py-5 border-b border-slate-200/80">
-          <div>
-            <h2 id={titleId} className="text-lg sm:text-xl font-bold text-[#092258]">
+        <div className="shrink-0 flex items-start justify-between gap-3 sm:gap-4 px-4 xs:px-5 sm:px-6 md:px-7 py-3.5 xs:py-4 sm:py-4.5 md:py-5 border-b border-slate-200/80">
+          <div className="min-w-0">
+            <h2
+              id={titleId}
+              className="text-base xs:text-lg sm:text-xl font-bold text-[#092258] leading-snug truncate"
+            >
               {title}
             </h2>
             {description && (
-              <p className="mt-0.5 text-slate-500 text-[13px] sm:text-[14px]">
+              <p className="mt-0.5 text-slate-500 text-[12.5px] xs:text-[13px] sm:text-[14px] leading-snug">
                 {description}
               </p>
             )}
@@ -80,19 +83,19 @@ const TemplateSelectionModal = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 -mr-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition cursor-pointer"
+            className="shrink-0 p-1.5 -mr-1 xs:-mr-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition cursor-pointer"
             aria-label="Close template selection"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4.5 h-4.5 xs:w-5 xs:h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#F0F5FA] px-4 sm:px-7 py-5 sm:py-6">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[#F0F5FA] px-3 xs:px-4 sm:px-5 md:px-7 py-4 xs:py-5 sm:py-6">
           <div
             role="radiogroup"
             aria-label="Paystub templates"
-            className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 pt-1.5 pr-1.5"
+            className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-4.5 md:gap-5 pt-1 pr-0.5 xs:pr-1 sm:pt-1.5 sm:pr-1.5"
           >
             {templates.map((template) => (
               <TemplateCard
@@ -107,23 +110,28 @@ const TemplateSelectionModal = ({
         </div>
 
         {/* Footer */}
-        <div className="shrink-0 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 sm:px-7 py-3.5 sm:py-4 border-t border-slate-200/80 bg-white">
-          <p className="text-[13px] sm:text-[14px] text-slate-500 text-center sm:text-left">
+        <div className="shrink-0 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2.5 xs:gap-3 px-4 xs:px-5 sm:px-6 md:px-7 py-3 xs:py-3.5 sm:py-4 border-t border-slate-200/80 bg-white">
+          <p className="text-[12px] xs:text-[12.5px] sm:text-[13px] md:text-[14px] text-slate-500 text-center sm:text-left min-w-0 truncate">
             {draftTemplate ? (
               <>
                 Selected:{" "}
-                <strong className="text-slate-800">{draftTemplate.title}</strong>
-                <span className="text-slate-400"> · {draftTemplate.subtitle}</span>
+                <strong className="text-slate-800">
+                  {draftTemplate.title}
+                </strong>
+                <span className="text-slate-400">
+                  {" "}
+                  · {draftTemplate.subtitle}
+                </span>
               </>
             ) : (
               "No template selected"
             )}
           </p>
-          <div className="flex gap-2.5">
+          <div className="flex gap-2 xs:gap-2.5 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 sm:flex-none px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer"
+              className="flex-1 sm:flex-none px-4 xs:px-5 py-2 xs:py-2.5 rounded-lg border border-slate-200 text-slate-700 font-medium text-[13px] xs:text-[13.5px] sm:text-[14px] hover:bg-slate-50 transition cursor-pointer"
             >
               Cancel
             </button>
@@ -131,7 +139,7 @@ const TemplateSelectionModal = ({
               type="button"
               onClick={handleConfirm}
               disabled={!draftTemplate}
-              className="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[14px] shadow-sm transition cursor-pointer disabled:bg-slate-300 disabled:shadow-none disabled:cursor-not-allowed"
+              className="flex-1 sm:flex-none px-5 xs:px-6 py-2 xs:py-2.5 rounded-lg bg-[#1E60F2] hover:bg-[#1550cf] text-white font-semibold text-[13px] xs:text-[13.5px] sm:text-[14px] shadow-sm transition cursor-pointer disabled:bg-slate-300 disabled:shadow-none disabled:cursor-not-allowed"
             >
               {confirmLabel}
             </button>

@@ -51,7 +51,10 @@ const PreviewWatermark = ({
   // Longest centre line that stays inside the box at this tilt.
   const rad = (angle * Math.PI) / 180;
   const fitLength = size
-    ? Math.min(size.width / Math.cos(rad), (2 * Math.min(cy, size.height - cy)) / Math.sin(rad)) * 0.9
+    ? Math.min(
+        size.width / Math.cos(rad),
+        (2 * Math.min(cy, size.height - cy)) / Math.sin(rad),
+      ) * 0.9
     : 0;
   const maxCenterFontSize = fitLength / (0.6 * text.length);
 
@@ -61,7 +64,8 @@ const PreviewWatermark = ({
   const offsets = lines.map((l) => l.offset * shortSide);
   const bandFontSize = Math.min(baseFontSize, maxCenterFontSize);
   const bandTop = Math.min(...offsets) - bandFontSize * 0.9;
-  const bandHeight = Math.max(...offsets) - Math.min(...offsets) + bandFontSize * 1.8;
+  const bandHeight =
+    Math.max(...offsets) - Math.min(...offsets) + bandFontSize * 1.8;
 
   return (
     <div

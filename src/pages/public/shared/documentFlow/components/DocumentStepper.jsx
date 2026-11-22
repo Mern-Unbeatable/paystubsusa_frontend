@@ -59,7 +59,7 @@ const DocumentStepper = ({ steps, currentStep, onStepClick }) => {
                   )}
                 </div>
                 <span
-                  className={`mt-2 text-[12px] sm:text-[13px] font-medium transition-colors text-center whitespace-nowrap ${
+                  className={`mt-2 hidden sm:block text-[13px] font-medium transition-colors text-center whitespace-nowrap ${
                     isActive
                       ? "text-[#1E60F2] font-semibold"
                       : isCompleted

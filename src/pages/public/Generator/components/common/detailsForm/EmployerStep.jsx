@@ -187,7 +187,7 @@ const EmployerStep = ({
       </div>
     </SectionCard>
 
-    <StepNav onBack={onBack} onNext={onNext} className="pt-2" />
+    <StepNav onBack={onBack} onNext={onNext} className="sm:pt-2" />
   </div>
 );
 

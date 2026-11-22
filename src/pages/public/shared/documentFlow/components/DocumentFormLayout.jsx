@@ -20,7 +20,7 @@ const DocumentFormLayout = ({
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-7 xl:col-span-8">
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 sm:p-8 md:p-10">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-6 pb-5 sm:p-8 sm:pb-8 md:p-10">
             {children}
           </div>
         </div>

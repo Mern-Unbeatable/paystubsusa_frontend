@@ -66,7 +66,7 @@ const Skeleton = () => (
 );
 
 /** `user` is the list row (shown immediately); orders and plan details load from the API. */
-const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
+const UserDetailsModal = ({ user, onClose, onChangeStatus, showSubscription = true }) => {
   const { details: loaded, loadUserDetails } = useUsers();
   const [attempt, setAttempt] = useState(0);
   const userId = user?.id;
@@ -146,9 +146,11 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
             <Field label="Email verification" icon={MailCheck}>
               <EmailVerifiedBadge user={record} />
             </Field>
-            <Field label="Subscription" icon={Repeat}>
-              <SubscriptionBadge status={record.subscriptionStatus} />
-            </Field>
+            {showSubscription && (
+              <Field label="Subscription" icon={Repeat}>
+                <SubscriptionBadge status={record.subscriptionStatus} />
+              </Field>
+            )}
           </Section>
 
           <Section title="Activity" icon={Activity}>
@@ -170,7 +172,7 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
             </Field>
           </Section>
 
-          {pending && (
+          {showSubscription && pending && (
             <Section title="Latest plan" icon={CreditCard}>
               <Field label="Plan" icon={Package}>
                 <Skeleton />
@@ -180,14 +182,14 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
               </Field>
             </Section>
           )}
-          {details && !plan && (
+          {showSubscription && details && !plan && (
             <Section title="Latest plan" icon={CreditCard}>
               <Field label="Plan" icon={Package}>
                 No subscription history
               </Field>
             </Section>
           )}
-          {plan && (
+          {showSubscription && plan && (
             <Section title="Latest plan" icon={CreditCard}>
               <Field
                 label="Plan"
@@ -197,7 +199,7 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
                 {plan.planName}
               </Field>
               <Field
-                label="Plan status"
+                label="Billing status"
                 icon={CircleDot}
                 hint={
                   plan.cancelAtPeriodEnd ? "Cancels at period end" : undefined
@@ -206,6 +208,17 @@ const UserDetailsModal = ({ user, onClose, onChangeStatus }) => {
                 <span className="capitalize">
                   {plan.status.replace(/_/g, " ")}
                 </span>
+              </Field>
+              <Field
+                label="App access"
+                icon={CircleDot}
+                hint={
+                  plan.planAvailable === false
+                    ? "Unlimited product is inactive in Pricing Plans"
+                    : undefined
+                }
+              >
+                {plan.accessActive ? "Active" : "Inactive"}
               </Field>
               <Field
                 label={plan.cancelAtPeriodEnd ? "Ends" : "Renews"}

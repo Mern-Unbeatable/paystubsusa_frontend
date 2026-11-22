@@ -67,8 +67,9 @@ const PaystubSuccessPanel = ({ template }) => {
   const paid = useSelector(selectCheckoutPaid);
   const { formData, calculations, updateDirectDeposit } = usePaystubFormData();
   const credits = useSelector(selectCheckoutCredits);
-  const { onBackToFormStep, onCheckoutVerifying } =
-    usePaystubFlowNavigation(template.id);
+  const { onBackToFormStep, onCheckoutVerifying } = usePaystubFlowNavigation(
+    template.id,
+  );
   const [searchParams] = useSearchParams();
   const redirectSecret = searchParams.get("payment_intent_client_secret");
   const [checkingRedirect, setCheckingRedirect] = useState(

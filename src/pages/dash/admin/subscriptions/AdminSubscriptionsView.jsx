@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { Navigate } from "react-router";
 import { Eye, RefreshCw } from "lucide-react";
 import {
   DashboardFilterToolbar,
@@ -9,6 +10,8 @@ import {
 import { useUrlFilters } from "../../../../hooks/useUrlFilters";
 import { describeRequestError } from "../../customer/Profile/utils/profileFormat";
 import { formatMoney, formatShortDate } from "../../../../utils/format";
+import { PATHS } from "../../../../config/paths";
+import { useActiveSubscription } from "../../../public/Generator/hooks/useActiveSubscription";
 import { useAdminSubscriptions } from "./hooks/useAdminSubscriptions";
 import SubscriptionStatusBadge from "./components/SubscriptionStatusBadge";
 import SubscriptionDetailsModal from "./components/SubscriptionDetailsModal";
@@ -19,6 +22,7 @@ const SELECTS = [{ key: "status", label: "Filter by status", options: SUBSCRIPTI
 const URL_SELECTS = { status: SUBSCRIPTION_STATUS_OPTIONS.map((o) => o.value) };
 
 const AdminSubscriptionsView = () => {
+  const { planAvailable, loading: planLoading } = useActiveSubscription();
   const { subscriptions, meta, loading, error, loadSubscriptions } = useAdminSubscriptions();
   const { filters, setFilter, resetFilters: resetUrlFilters } = useUrlFilters(URL_SELECTS);
   const [search, setSearch] = useState(filters.q);
@@ -114,6 +118,10 @@ const AdminSubscriptionsView = () => {
   );
 
   const hasQuery = Boolean(filters.q || filters.status);
+
+  if (!planLoading && !planAvailable) {
+    return <Navigate to={PATHS.ADMIN.overview} replace />;
+  }
 
   return (
     <div className="space-y-6">

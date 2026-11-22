@@ -52,7 +52,11 @@ const PaystubPackagePanel = ({ template }) => {
   );
   const [redeeming, setRedeeming] = useState(false);
   const inFlightRef = useRef(false);
-  const { isActive: hasUnlimited } = useActiveSubscription();
+  const {
+    isActive: hasUnlimited,
+    planAvailable,
+    loading: subscriptionLoading,
+  } = useActiveSubscription();
   const unlimitedPreselectedRef = useRef(false);
 
   useEffect(() => {
@@ -60,6 +64,15 @@ const PaystubPackagePanel = ({ template }) => {
     unlimitedPreselectedRef.current = true;
     order.setSelectedPackage("unlimited");
   }, [hasUnlimited]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // If Admin disabled Unlimited while this session had it selected, fall back to a one-time package.
+  useEffect(() => {
+    if (subscriptionLoading || hasUnlimited || planAvailable) return;
+    if (order.selectedPackage === "unlimited") {
+      unlimitedPreselectedRef.current = false;
+      order.setSelectedPackage("3paystubs");
+    }
+  }, [subscriptionLoading, hasUnlimited, planAvailable, order.selectedPackage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleRedeem = async () => {
     if (inFlightRef.current) return;
@@ -78,7 +91,10 @@ const PaystubPackagePanel = ({ template }) => {
     inFlightRef.current = true;
     setRedeeming(true);
     const action = await dispatch(
-      redeemPaystubCredit({ templateId: template.catalogId, formData: toApiFormData() }),
+      redeemPaystubCredit({
+        templateId: template.catalogId,
+        formData: toApiFormData(),
+      }),
     );
     if (redeemPaystubCredit.fulfilled.match(action)) {
       onPaymentSuccess();
@@ -124,6 +140,7 @@ const PaystubPackagePanel = ({ template }) => {
           calculations={calculations}
           order={order}
           hasUnlimited={hasUnlimited}
+          planAvailable={planAvailable}
           fieldErrors={ddFieldErrors}
           onUpdateDirectDeposit={(patch) => {
             setDdFieldErrors((prev) => {
@@ -155,9 +172,7 @@ const PaystubPackagePanel = ({ template }) => {
               });
               if (bankMissing.length > 0) {
                 setDdFieldErrors(
-                  Object.fromEntries(
-                    bankMissing.map((f) => [f.key, f.label]),
-                  ),
+                  Object.fromEntries(bankMissing.map((f) => [f.key, f.label])),
                 );
                 toast.error(
                   "Complete the Direct Deposit bank details before continuing.",
