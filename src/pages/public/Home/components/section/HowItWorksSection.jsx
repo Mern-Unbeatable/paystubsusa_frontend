@@ -50,7 +50,7 @@ const HowItWorksSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-white py-16 sm:py-20 lg:py-28"
+      className="relative w-full overflow-hidden bg-white py-10 sm:py-16 lg:py-20"
     >
       {/* Subtle background pattern */}
       <div
@@ -65,7 +65,7 @@ const HowItWorksSection = () => {
 
       <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="how-header mx-auto mb-14 max-w-2xl text-center sm:mb-18">
+        <div className="how-header mx-auto mb-8 max-w-2xl text-center sm:mb-12 lg:mb-14">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-secondary/20 bg-secondary/5 px-3.5 py-1.5 text-secondary">
             <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em]">
@@ -73,7 +73,7 @@ const HowItWorksSection = () => {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[44px]">
+          <h2 className="text-[1.75rem] font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[44px]">
             How It{" "}
             <span className="relative inline-block">
               Works
@@ -94,7 +94,7 @@ const HowItWorksSection = () => {
             </span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-xl text-base font-normal leading-relaxed text-slate-600 sm:text-[17px]">
+          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-[15px] font-normal leading-relaxed text-slate-600 sm:text-[17px]">
             Create your documents through a simple three-step process.
           </p>
         </div>
@@ -113,12 +113,12 @@ const HowItWorksSection = () => {
             <div className="flex-1 border-t-2 border-dashed border-blue-200" />
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
+          <div className="relative z-10 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3 lg:gap-8">
             {steps.map((item, idx) => {
               const IconComp = ICON_MAP[item.iconKey];
               return (
                 <div key={item.stepNumber} className="how-step-card h-full">
-                  <div className="group relative flex h-full flex-col items-center rounded-[28px] border border-slate-100 bg-white p-8 text-center shadow-[0_4px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:border-secondary/20 hover:shadow-[0_24px_50px_-24px_rgba(15,23,42,0.18)] sm:p-10">
+                  <div className="group relative flex h-full flex-col items-center rounded-2xl sm:rounded-[28px] border border-slate-100 bg-white p-5 text-center shadow-[0_4px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:border-secondary/20 hover:shadow-[0_24px_50px_-24px_rgba(15,23,42,0.18)] sm:p-8 lg:p-10">
                     {/* Step Number Badge */}
                     <div className="absolute right-6 top-6 flex h-8 w-8 items-center justify-center rounded-full border border-secondary/20 bg-secondary/5 text-[12px] font-bold text-secondary">
                       {String(idx + 1).padStart(2, "0")}

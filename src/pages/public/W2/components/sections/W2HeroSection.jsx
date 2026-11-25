@@ -60,57 +60,57 @@ const W2HeroSection = ({ onContinue }) => {
   return (
     <section
       ref={heroRef}
-      className="relative w-full bg-white pt-14 sm:pt-20 pb-16 sm:pb-24 overflow-hidden select-none"
+      className="relative w-full bg-white pt-10 sm:pt-16 lg:pt-20 pb-10 sm:pb-16 lg:pb-24 overflow-hidden select-none"
     >
       <div
-        className="absolute -bottom-16 sm:-bottom-20 -left-16 sm:-left-20 w-[300px] sm:w-[420px] md:w-[460px] h-[300px] sm:h-[420px] md:h-[460px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
+        className="absolute -bottom-16 sm:-bottom-20 -left-16 sm:-left-20 w-[240px] sm:w-[420px] md:w-[460px] h-[240px] sm:h-[420px] md:h-[460px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
         aria-hidden="true"
       />
       <div
-        className="absolute -top-16 sm:-top-20 -right-16 sm:-right-20 w-[340px] sm:w-[460px] md:w-[500px] h-[340px] sm:h-[460px] md:h-[500px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
+        className="absolute -top-16 sm:-top-20 -right-16 sm:-right-20 w-[260px] sm:w-[460px] md:w-[500px] h-[260px] sm:h-[460px] md:h-[500px] rounded-full bg-[#F1F7FF] pointer-events-none -z-0"
         aria-hidden="true"
       />
 
-      <div className="relative z-10 max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 text-center">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p
           ref={eyebrowRef}
-          className="text-secondary font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.14em] mb-3.5 sm:mb-4"
+          className="text-secondary font-bold text-[11px] sm:text-[14px] uppercase tracking-[0.14em] mb-2.5 sm:mb-4"
         >
           W-2 GENERATOR
         </p>
 
         <h1
           ref={headingRef}
-          className="text-3xl sm:text-4xl md:text-[46px] lg:text-[48px] font-bold text-[#092258] tracking-tight leading-[1.18] max-w-4xl mx-auto mb-4 sm:mb-5"
+          className="text-[1.65rem] leading-[1.2] sm:text-4xl md:text-[46px] lg:text-[48px] font-bold text-[#092258] tracking-tight sm:leading-[1.18] max-w-4xl mx-auto mb-3 sm:mb-5 px-1"
         >
           Create Your W-2 FORM
         </h1>
 
         <p
           ref={subtitleRef}
-          className="text-slate-500 text-[15px] sm:text-[16px] md:text-[17px] leading-relaxed font-normal max-w-2xl mx-auto mb-8 sm:mb-10"
+          className="text-slate-500 text-[14px] sm:text-[16px] md:text-[17px] leading-relaxed font-normal max-w-2xl mx-auto mb-6 sm:mb-10 px-1"
         >
           Enter your tax information to prepare and generate your W-2 Document
         </p>
 
         <div
           ref={featuresRef}
-          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4.5"
+          className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 max-w-sm sm:max-w-none mx-auto"
         >
           {featureItems.map((item, idx) => {
             const IconComponent = ICON_MAP[item.iconKey];
             const iconClassName =
               item.iconKey === "Check"
-                ? "w-4 h-4 text-secondary stroke-[2.5]"
-                : "w-4 h-4 text-secondary stroke-[2]";
+                ? "w-4 h-4 text-secondary stroke-[2.5] shrink-0"
+                : "w-4 h-4 text-secondary stroke-[2] shrink-0";
 
             return (
               <div
                 key={idx}
-                className="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-secondary/40 transition-all duration-200"
+                className="inline-flex items-center justify-center sm:justify-start gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2.5 rounded-full bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-sm hover:border-secondary/40 transition-all duration-200 w-full sm:w-auto"
               >
                 <IconComponent className={iconClassName} />
-                <span className="text-[14px] sm:text-[14.5px] font-medium text-slate-700 whitespace-nowrap">
+                <span className="text-[13.5px] sm:text-[14.5px] font-medium text-slate-700 text-left sm:whitespace-nowrap">
                   {item.text}
                 </span>
               </div>
@@ -119,11 +119,11 @@ const W2HeroSection = ({ onContinue }) => {
         </div>
 
         {onContinue ? (
-          <div ref={ctaRef} className="mt-10 sm:mt-12">
+          <div ref={ctaRef} className="mt-7 sm:mt-12 px-1">
             <button
               type="button"
               onClick={onContinue}
-              className="bg-secondary hover:bg-[#0089e0] text-white font-semibold text-[15px] px-8 py-3.5 rounded-xl shadow-sm hover:shadow transition-all inline-flex items-center gap-2 cursor-pointer active:scale-98"
+              className="w-full sm:w-auto bg-secondary hover:bg-[#0089e0] text-white font-semibold text-[15px] px-8 py-3.5 rounded-xl shadow-sm hover:shadow transition-all inline-flex items-center justify-center gap-2 cursor-pointer active:scale-98"
             >
               <span>Create Your W-2</span>
               <ArrowRight className="w-4 h-4 stroke-[2.5]" />

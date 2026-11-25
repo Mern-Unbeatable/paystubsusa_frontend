@@ -85,7 +85,7 @@ const DocumentsSection = () => {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[44px]">
+          <h2 className="text-[1.75rem] font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-[44px]">
             Solutions for{" "}
             <span className="bg-gradient-to-r from-secondary to-blue-400 bg-clip-text text-transparent">
               Every Need
@@ -101,7 +101,7 @@ const DocumentsSection = () => {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8">
           {/* ── Left: Featured Paystub Card ── */}
-          <div className="docs-featured-card group relative flex flex-col justify-between overflow-hidden rounded-[30px] border border-primary/20 bg-gradient-to-b from-primary to-[#0b2a5c] p-6 text-white shadow-[0_24px_60px_-30px_rgba(2,20,50,0.6)] sm:p-7 lg:col-span-5">
+          <div className="docs-featured-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-[30px] border border-primary/20 bg-gradient-to-b from-primary to-[#0b2a5c] p-5 text-white shadow-[0_24px_60px_-30px_rgba(2,20,50,0.6)] sm:p-7 lg:col-span-5">
             {/* Decorative top-right glow */}
             <div
               aria-hidden="true"
@@ -131,21 +131,21 @@ const DocumentsSection = () => {
               </p>
 
               {/* Mock Paystub Preview */}
-              <div className="rounded-2xl border border-white/60 bg-white p-5 text-slate-800 shadow-xl ring-1 ring-black/5 sm:p-6">
+              <div className="rounded-2xl border border-white/60 bg-white p-4 text-slate-800 shadow-xl ring-1 ring-black/5 sm:p-6 overflow-hidden">
                 {/* Statement Header */}
-                <div className="flex items-start justify-between border-b border-slate-100 pb-3">
-                  <div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between border-b border-slate-100 pb-3">
+                  <div className="min-w-0">
                     <span className="block text-[11px] font-bold uppercase tracking-wider text-secondary">
                       Earnings Statement
                     </span>
                     <h4 className="mt-0.5 text-sm font-bold text-slate-900">
                       Acme Logistics LLC
                     </h4>
-                    <p className="text-[12.5px] text-slate-500">
+                    <p className="text-[12px] sm:text-[12.5px] text-slate-500 break-words">
                       1200 Market St, Austin, TX 78701
                     </p>
                   </div>
-                  <div className="space-y-0.5 text-right text-[12px] text-slate-500">
+                  <div className="space-y-0.5 sm:text-right text-[12px] text-slate-500 shrink-0">
                     <p className="text-[11px] uppercase tracking-wide text-slate-400">
                       Pay Period
                     </p>
@@ -162,7 +162,7 @@ const DocumentsSection = () => {
                 </div>
 
                 {/* Employee / Employer */}
-                <div className="grid grid-cols-2 gap-4 border-b border-slate-100 py-3 text-[12.5px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 border-b border-slate-100 py-3 text-[12.5px]">
                   <div>
                     <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
                       Employee
@@ -188,26 +188,26 @@ const DocumentsSection = () => {
                 </div>
 
                 {/* Gross / Deductions */}
-                <div className="grid grid-cols-2 gap-4 border-b border-slate-100 py-3 text-[12.5px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 border-b border-slate-100 py-3 text-[12.5px]">
                   <div>
                     <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-400">
                       Gross Earnings
                     </span>
-                    <div className="flex justify-between py-0.5 text-slate-600">
+                    <div className="flex justify-between gap-2 py-0.5 text-slate-600">
                       <span>Regular (80 hrs)</span>
-                      <span className="font-medium text-slate-800">
+                      <span className="font-medium text-slate-800 shrink-0">
                         $2,400.00
                       </span>
                     </div>
-                    <div className="flex justify-between py-0.5 text-slate-600">
+                    <div className="flex justify-between gap-2 py-0.5 text-slate-600">
                       <span>Overtime (4 hrs)</span>
-                      <span className="font-medium text-slate-800">
+                      <span className="font-medium text-slate-800 shrink-0">
                         $270.00
                       </span>
                     </div>
-                    <div className="mt-1 flex justify-between border-t border-slate-100 pt-1.5 font-bold text-slate-900">
+                    <div className="mt-1 flex justify-between gap-2 border-t border-slate-100 pt-1.5 font-bold text-slate-900">
                       <span>Total Gross</span>
-                      <span>$2,670.00</span>
+                      <span className="shrink-0">$2,670.00</span>
                     </div>
                   </div>
                   <div>
@@ -222,10 +222,10 @@ const DocumentsSection = () => {
                     ].map(([label, val]) => (
                       <div
                         key={label}
-                        className="flex justify-between py-0.5 text-slate-600"
+                        className="flex justify-between gap-2 py-0.5 text-slate-600"
                       >
                         <span>{label}</span>
-                        <span className="font-medium text-slate-800">
+                        <span className="font-medium text-slate-800 shrink-0">
                           {val}
                         </span>
                       </div>
@@ -250,7 +250,7 @@ const DocumentsSection = () => {
             <div className="relative mt-6">
               <Link
                 to={PATHS.PUBLIC.paystubGenerator}
-                className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-[14px] font-semibold text-[#1d63ff] shadow-lg shadow-black/10 transition-all duration-200 hover:bg-slate-50 hover:shadow-black/20 sm:w-auto"
+                className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-[14px] font-semibold text-[#1d63ff] shadow-lg shadow-black/10 transition-all duration-200 hover:bg-slate-50 hover:shadow-black/20"
               >
                 <span>Create Paystub</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
@@ -383,7 +383,7 @@ const DocumentsSection = () => {
               </div>
 
               {/* Footer */}
-              <div className="flex items-center justify-between pt-1">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-1">
                 <h4 className="text-lg font-bold text-slate-900">
                   Direct Deposit Slip
                 </h4>
