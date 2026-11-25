@@ -198,7 +198,7 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
             </div>
           )}
 
-          <DocumentLivePreview>
+          <DocumentLivePreview maxWidthClass="max-w-[540px]">
             <Document formData={formData} />
           </DocumentLivePreview>
 

@@ -27,7 +27,7 @@ const W2OrderSummaryCard = ({
         </p>
         {action ? <div className="ml-auto">{action}</div> : null}
       </div>
-      <DocumentLivePreview>
+      <DocumentLivePreview maxWidthClass="max-w-[540px]">
         <W2FormDocument formData={formData} />
       </DocumentLivePreview>
     </div>

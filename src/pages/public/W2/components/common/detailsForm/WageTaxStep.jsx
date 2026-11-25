@@ -1,7 +1,6 @@
 import React from "react";
 import {
   ChevronDown,
-  Plus,
   DollarSign,
   FileText,
   MapPin,
@@ -157,26 +156,48 @@ const WageTaxStep = ({
         />
       </div>
 
-      {/* Box 13 - Statutory Employee */}
-      <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition">
-        <input
-          type="checkbox"
-          id="box13-statutory"
-          checked={formData.box13StatutoryEmployee}
-          onChange={(e) =>
-            updateField("box13StatutoryEmployee", e.target.checked)
-          }
-          className="w-4 h-4 rounded text-[#1E60F2] border-slate-300 focus:ring-[#1E60F2] cursor-pointer"
-        />
-        <label
-          htmlFor="box13-statutory"
-          className="text-[14px] text-slate-800 font-medium cursor-pointer select-none flex-1"
-        >
-          Box 13 – Statutory employee
-        </label>
-        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-          Check if applies
-        </span>
+      {/* Box 13 – Statutory / Retirement / Third-party sick pay */}
+      <div className="space-y-2">
+        <p className="text-[13px] font-semibold text-slate-700">Box 13</p>
+        {[
+          {
+            id: "box13-statutory",
+            field: "box13StatutoryEmployee",
+            label: "Statutory employee",
+          },
+          {
+            id: "box13-retirement",
+            field: "box13RetirementPlan",
+            label: "Retirement plan",
+          },
+          {
+            id: "box13-third-party",
+            field: "box13ThirdPartySickPay",
+            label: "Third-party sick pay",
+          },
+        ].map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition"
+          >
+            <input
+              type="checkbox"
+              id={item.id}
+              checked={Boolean(formData[item.field])}
+              onChange={(e) => updateField(item.field, e.target.checked)}
+              className="w-4 h-4 rounded text-[#1E60F2] border-slate-300 focus:ring-[#1E60F2] cursor-pointer"
+            />
+            <label
+              htmlFor={item.id}
+              className="text-[14px] text-slate-800 font-medium cursor-pointer select-none flex-1"
+            >
+              {item.label}
+            </label>
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              Check if applies
+            </span>
+          </div>
+        ))}
       </div>
 
       {/* Box 12 */}
@@ -197,30 +218,39 @@ const WageTaxStep = ({
           onChange={(v) => updateField("box12Amount", v)}
         />
       </div>
+
+      {/* Box 14 – Other */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div>
+          <label className={BOX_LABEL_CLASS}>Box 14 – Other</label>
+          <input
+            type="text"
+            value={formData.box14Description ?? ""}
+            onChange={(e) => updateField("box14Description", e.target.value)}
+            placeholder="e.g. Union dues"
+            className={FIELD_CLASS}
+          />
+        </div>
+        <MoneyField
+          label="Box 14 – Amount"
+          value={formData.box14Amount ?? ""}
+          onChange={(v) => updateField("box14Amount", v)}
+        />
+      </div>
     </div>
 
     {/* ================= Section 3: State & Local Reporting ================= */}
     <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-[#1E60F2]" />
-          <div>
-            <h3 className="font-semibold text-slate-800 text-[15px]">
-              State & Local Reporting
-            </h3>
-            <p className="text-[12px] text-slate-400 mt-0.5">
-              Add applicable state and local values.
-            </p>
-          </div>
+      <div className="flex items-center gap-2">
+        <MapPin className="w-4 h-4 text-[#1E60F2]" />
+        <div>
+          <h3 className="font-semibold text-slate-800 text-[15px]">
+            State & Local Reporting
+          </h3>
+          <p className="text-[12px] text-slate-400 mt-0.5">
+            Add applicable state and local values.
+          </p>
         </div>
-        <button
-          type="button"
-          onClick={() => alert("Additional state reporting added.")}
-          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 text-[13px] font-semibold transition cursor-pointer w-full sm:w-auto"
-        >
-          <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-          <span>Add state</span>
-        </button>
       </div>
 
       <div className="space-y-4 pt-2">

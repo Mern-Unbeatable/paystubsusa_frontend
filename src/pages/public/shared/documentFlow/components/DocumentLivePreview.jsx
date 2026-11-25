@@ -7,7 +7,7 @@ const MAX_ZOOM = 120;
 const ZOOM_STEP = 10;
 
 /** Live preview card with zoom controls around the rendered form (`children`). */
-const DocumentLivePreview = ({ children }) => {
+const DocumentLivePreview = ({ children, maxWidthClass = "max-w-[480px]" }) => {
   const [zoomLevel, setZoomLevel] = useState(90);
 
   const handleZoom = (delta) =>
@@ -54,7 +54,7 @@ const DocumentLivePreview = ({ children }) => {
       {/* Inner Preview Canvas (#F1F9FF matching Figma) */}
       <div className="p-4 sm:p-5 bg-[#F1F9FF] flex items-center justify-center overflow-x-auto min-h-[360px]">
         <div
-          className="relative transition-transform duration-200 origin-top shadow-md bg-white border border-slate-300 w-full max-w-[480px]"
+          className={`relative transition-transform duration-200 origin-top shadow-md bg-white border border-slate-300 w-full ${maxWidthClass}`}
           style={{ transform: `scale(${zoomLevel / 100})` }}
         >
           {children}

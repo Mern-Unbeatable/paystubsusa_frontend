@@ -35,8 +35,12 @@ export const W2_SAMPLE_FORM_DATA = {
   box10DependentCare: "",
   box11NonqualifiedPlans: "",
   box13StatutoryEmployee: false,
+  box13RetirementPlan: false,
+  box13ThirdPartySickPay: false,
   box12Code: "DD",
   box12Amount: "6,200.00",
+  box14Description: "",
+  box14Amount: "",
 
   // State reporting
   box15State: "CA",
