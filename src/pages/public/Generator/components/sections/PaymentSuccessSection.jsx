@@ -20,6 +20,7 @@ const PaymentSuccessSection = ({
   documentLabel = "Paystub",
   downloadLabel,
   startOverLabel,
+  centered = false,
   onUseCredit,
   onDownload,
   onStartOver,
@@ -34,7 +35,11 @@ const PaymentSuccessSection = ({
   const noun = documentLabel.toLowerCase();
 
   return (
-    <div className="relative w-full max-w-lg mx-auto lg:mx-0 bg-white rounded-2xl p-8 border border-slate-200 shadow-lg text-center space-y-5 overflow-hidden animate-in zoom-in-95 duration-200">
+    <div
+      className={`relative w-full max-w-lg bg-white rounded-2xl p-8 border border-slate-200 shadow-lg text-center space-y-5 overflow-hidden animate-in zoom-in-95 duration-200 ${
+        centered ? "mx-auto" : "mx-auto lg:mx-0"
+      }`}
+    >
       {!processing && <ConfettiOverlay active={preparingDocument} />}
 
       <div className="relative space-y-5">
