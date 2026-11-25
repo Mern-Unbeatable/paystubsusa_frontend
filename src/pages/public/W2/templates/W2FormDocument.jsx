@@ -151,18 +151,22 @@ const W2FormDocument = ({ formData }) => (
         </div>
 
         {/* Row 7 & 8 */}
-        <div className="grid grid-cols-2 border-b border-slate-400 text-slate-400">
-          <div className="p-1 border-r border-slate-400 min-h-[22px]">
-            <span className="text-[7px] block">7. Social security tips</span>
-            <span className="text-[7.5px] text-slate-700 block text-right">
+        <div className="grid grid-cols-2 border-b border-slate-400 text-[7.5px] min-h-[26px]">
+          <div className="p-1 border-r border-slate-400 flex flex-col">
+            <span className="text-[7px] text-slate-500 block">
+              7. Social security tips
+            </span>
+            <span className="font-semibold block text-right mt-auto">
               {formData.box7SocialSecurityTips
                 ? `$${formData.box7SocialSecurityTips}`
                 : ""}
             </span>
           </div>
-          <div className="p-1 min-h-[22px]">
-            <span className="text-[7px] block">8. Allocated tips</span>
-            <span className="text-[7.5px] text-slate-700 block text-right">
+          <div className="p-1 flex flex-col">
+            <span className="text-[7px] text-slate-500 block">
+              8. Allocated tips
+            </span>
+            <span className="font-semibold block text-right mt-auto">
               {formData.box8AllocatedTips
                 ? `$${formData.box8AllocatedTips}`
                 : ""}
@@ -170,19 +174,28 @@ const W2FormDocument = ({ formData }) => (
           </div>
         </div>
 
+        {/* Box 9 — IRS retired (left blank on current W-2) */}
+        <div className="p-1 border-b border-slate-400 min-h-[18px] bg-slate-50/80">
+          <span className="text-[7px] text-slate-400">9.</span>
+        </div>
+
         {/* Row 10 & 11 */}
-        <div className="grid grid-cols-2 border-b border-slate-400 text-slate-400">
-          <div className="p-1 border-r border-slate-400 min-h-[22px]">
-            <span className="text-[7px] block">10. Dependent care</span>
-            <span className="text-[7.5px] text-slate-700 block text-right">
+        <div className="grid grid-cols-2 border-b border-slate-400 text-[7.5px] min-h-[26px]">
+          <div className="p-1 border-r border-slate-400 flex flex-col">
+            <span className="text-[7px] text-slate-500 block">
+              10. Dependent care
+            </span>
+            <span className="font-semibold block text-right mt-auto">
               {formData.box10DependentCare
                 ? `$${formData.box10DependentCare}`
                 : ""}
             </span>
           </div>
-          <div className="p-1 min-h-[22px]">
-            <span className="text-[7px] block">11. Nonqualified plans</span>
-            <span className="text-[7.5px] text-slate-700 block text-right">
+          <div className="p-1 flex flex-col">
+            <span className="text-[7px] text-slate-500 block">
+              11. Nonqualified plans
+            </span>
+            <span className="font-semibold block text-right mt-auto">
               {formData.box11NonqualifiedPlans
                 ? `$${formData.box11NonqualifiedPlans}`
                 : ""}
@@ -311,15 +324,19 @@ const W2FormDocument = ({ formData }) => (
     </div>
 
     {/* Official IRS Title Footer */}
-    <div className="pt-2 flex items-center justify-between font-bold text-[8.5px]">
-      <div className="flex items-baseline gap-1">
-        <span className="text-[11px] font-black text-slate-900">W-2</span>
-        <span className="text-[8px] text-slate-600 font-medium">
+    <div className="pt-2 flex items-center justify-between gap-2 leading-none">
+      <div className="flex items-center gap-1.5">
+        <span className="text-[11px] font-black text-slate-900 leading-none">
+          W-2
+        </span>
+        <span className="text-[8px] text-slate-600 font-medium leading-none">
           Wage and Tax Statement
         </span>
-        <span className="text-[11px] font-black text-slate-900 ml-1">2025</span>
+        <span className="text-[11px] font-black text-slate-900 leading-none">
+          {formData.taxYear || 2025}
+        </span>
       </div>
-      <span className="text-[7px] text-slate-500 font-normal">
+      <span className="text-[7px] text-slate-500 font-normal leading-none">
         Department of the Treasury—Internal Revenue Service
       </span>
     </div>
