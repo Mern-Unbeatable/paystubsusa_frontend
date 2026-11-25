@@ -3,7 +3,6 @@ import {
   ChevronDown,
   Plus,
   DollarSign,
-  ShieldCheck,
   FileText,
   MapPin,
 } from "lucide-react";
@@ -13,12 +12,31 @@ import {
   FIELD_CLASS,
   SELECT_CLASS,
 } from "../../../utils/formFieldClass";
+import { fieldClassName } from "../../../../Generator/components/common/detailsForm/fieldValidation";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
-const MoneyField = ({ label, value, onChange, icon: Icon }) => (
-  <div>
-    <label className={BOX_LABEL_CLASS}>{label}</label>
+const RequiredMark = () => (
+  <span className="text-rose-500" aria-hidden="true">
+    {" "}
+    *
+  </span>
+);
+
+const MoneyField = ({
+  id,
+  label,
+  value,
+  onChange,
+  icon: Icon,
+  error,
+  required = false,
+}) => (
+  <div id={id}>
+    <label className={BOX_LABEL_CLASS}>
+      {label}
+      {required ? <RequiredMark /> : null}
+    </label>
     <div className="relative">
       {Icon ? (
         <Icon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none z-10" />
@@ -32,13 +50,25 @@ const MoneyField = ({ label, value, onChange, icon: Icon }) => (
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="0.00"
-        className={`${FIELD_CLASS} pl-10`}
+        aria-invalid={Boolean(error)}
+        className={fieldClassName(`${FIELD_CLASS} pl-10`, error)}
       />
     </div>
+    {error && (
+      <p className="text-[12px] text-rose-500 mt-1.5" role="alert">
+        {error} is required
+      </p>
+    )}
   </div>
 );
 
-const WageTaxStep = ({ formData, updateField, onBack, onNext }) => (
+const WageTaxStep = ({
+  formData,
+  fieldErrors = {},
+  updateField,
+  onBack,
+  onNext,
+}) => (
   <div className="space-y-6 animate-in fade-in-50 duration-200">
     <StepHeader
       step={3}
@@ -57,14 +87,20 @@ const WageTaxStep = ({ formData, updateField, onBack, onNext }) => (
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <MoneyField
+          id="w2-field-box1Wages"
           label="Box 1 – Wages, tips, other compensation"
           value={formData.box1Wages}
           onChange={(v) => updateField("box1Wages", v)}
+          error={fieldErrors.box1Wages}
+          required
         />
         <MoneyField
+          id="w2-field-box2FederalTax"
           label="Box 2 – Federal income tax withheld"
           value={formData.box2FederalTax}
           onChange={(v) => updateField("box2FederalTax", v)}
+          error={fieldErrors.box2FederalTax}
+          required
         />
         <MoneyField
           label="Box 3 – Social Security wages"

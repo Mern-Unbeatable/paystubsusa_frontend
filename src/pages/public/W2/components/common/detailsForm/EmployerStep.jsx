@@ -13,10 +13,27 @@ import {
   LABEL_CLASS,
   SELECT_CLASS,
 } from "../../../utils/formFieldClass";
+import {
+  FieldError,
+  fieldClassName,
+} from "../../../../Generator/components/common/detailsForm/fieldValidation";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
-const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
+const RequiredMark = () => (
+  <span className="text-rose-500" aria-hidden="true">
+    {" "}
+    *
+  </span>
+);
+
+const EmployerStep = ({
+  formData,
+  fieldErrors = {},
+  updateField,
+  onBack,
+  onNext,
+}) => (
   <div className="space-y-6 animate-in fade-in-50 duration-200">
     <StepHeader
       step={1}
@@ -33,8 +50,11 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
         </h3>
       </div>
 
-      <div>
-        <label className={LABEL_CLASS}>Employer Name</label>
+      <div id="w2-field-employerName">
+        <label className={LABEL_CLASS}>
+          Employer Name
+          <RequiredMark />
+        </label>
         <div className="relative">
           <Building2 className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none z-10" />
           <input
@@ -42,14 +62,17 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.employerName}
             onChange={(e) => updateField("employerName", e.target.value)}
             placeholder="e.g. Acme Corporation"
-            className={`${FIELD_CLASS} pl-10`}
+            aria-invalid={Boolean(fieldErrors.employerName)}
+            className={fieldClassName(`${FIELD_CLASS} pl-10`, fieldErrors.employerName)}
           />
         </div>
+        <FieldError errors={fieldErrors} name="employerName" />
       </div>
 
-      <div>
+      <div id="w2-field-ein">
         <label className={LABEL_CLASS}>
           Employer Identification Number (EIN)
+          <RequiredMark />
         </label>
         <div className="relative">
           <Hash className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none z-10" />
@@ -58,13 +81,17 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             value={formData.ein}
             onChange={(e) => updateField("ein", e.target.value)}
             placeholder="e.g. 12-3456789"
-            className={`${FIELD_CLASS} pl-10`}
+            aria-invalid={Boolean(fieldErrors.ein)}
+            className={fieldClassName(`${FIELD_CLASS} pl-10`, fieldErrors.ein)}
           />
         </div>
-        <p className="text-[12px] text-slate-400 mt-1.5 flex items-center gap-1.5">
-          <Info className="w-3.5 h-3.5" />
-          9-digit federal tax ID, where applicable.
-        </p>
+        <FieldError errors={fieldErrors} name="ein" />
+        {!fieldErrors.ein && (
+          <p className="text-[12px] text-slate-400 mt-1.5 flex items-center gap-1.5">
+            <Info className="w-3.5 h-3.5" />
+            9-digit federal tax ID, where applicable.
+          </p>
+        )}
       </div>
     </div>
 
@@ -77,41 +104,55 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             Company Address
           </h3>
           <p className="text-[12px] text-slate-400 mt-0.5">
-            This will appear on the generated paystub.
+            This will appear on the generated document.
           </p>
         </div>
       </div>
 
-      <div>
-        <label className={LABEL_CLASS}>Street Address</label>
+      <div id="w2-field-streetAddress">
+        <label className={LABEL_CLASS}>
+          Street Address
+          <RequiredMark />
+        </label>
         <input
           type="text"
           value={formData.streetAddress}
           onChange={(e) => updateField("streetAddress", e.target.value)}
           placeholder="e.g. 123 Main Street, Suite 400"
-          className={FIELD_CLASS}
+          aria-invalid={Boolean(fieldErrors.streetAddress)}
+          className={fieldClassName(FIELD_CLASS, fieldErrors.streetAddress)}
         />
+        <FieldError errors={fieldErrors} name="streetAddress" />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-        <div className="sm:col-span-5">
-          <label className={LABEL_CLASS}>City</label>
+        <div className="sm:col-span-5" id="w2-field-city">
+          <label className={LABEL_CLASS}>
+            City
+            <RequiredMark />
+          </label>
           <input
             type="text"
             value={formData.city}
             onChange={(e) => updateField("city", e.target.value)}
             placeholder="e.g. New York"
-            className={FIELD_CLASS}
+            aria-invalid={Boolean(fieldErrors.city)}
+            className={fieldClassName(FIELD_CLASS, fieldErrors.city)}
           />
+          <FieldError errors={fieldErrors} name="city" />
         </div>
 
-        <div className="sm:col-span-4">
-          <label className={LABEL_CLASS}>State</label>
+        <div className="sm:col-span-4" id="w2-field-state">
+          <label className={LABEL_CLASS}>
+            State
+            <RequiredMark />
+          </label>
           <div className="relative">
             <select
               value={formData.state}
               onChange={(e) => updateField("state", e.target.value)}
-              className={SELECT_CLASS}
+              aria-invalid={Boolean(fieldErrors.state)}
+              className={fieldClassName(SELECT_CLASS, fieldErrors.state)}
             >
               <option value="">Select</option>
               {US_STATES.map((st) => (
@@ -122,17 +163,23 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
             </select>
             <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
+          <FieldError errors={fieldErrors} name="state" />
         </div>
 
-        <div className="sm:col-span-3">
-          <label className={LABEL_CLASS}>ZIP Code</label>
+        <div className="sm:col-span-3" id="w2-field-zipCode">
+          <label className={LABEL_CLASS}>
+            ZIP Code
+            <RequiredMark />
+          </label>
           <input
             type="text"
             value={formData.zipCode}
             onChange={(e) => updateField("zipCode", e.target.value)}
             placeholder="e.g. 10001"
-            className={FIELD_CLASS}
+            aria-invalid={Boolean(fieldErrors.zipCode)}
+            className={fieldClassName(FIELD_CLASS, fieldErrors.zipCode)}
           />
+          <FieldError errors={fieldErrors} name="zipCode" />
         </div>
       </div>
     </div>
@@ -156,7 +203,7 @@ const EmployerStep = ({ formData, updateField, onBack, onNext }) => (
           className={FIELD_CLASS}
         />
         <p className="text-[12px] text-slate-400 mt-1.5">
-          A unique identifier for internal tracking (appears on the stub).
+          A unique identifier for internal tracking.
         </p>
       </div>
     </div>
