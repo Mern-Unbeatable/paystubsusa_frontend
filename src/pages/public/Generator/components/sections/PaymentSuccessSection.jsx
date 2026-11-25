@@ -26,6 +26,8 @@ const PaymentSuccessSection = ({
   onStartOver,
 }) => {
   const hasCredits = !processing && creditsRemaining > 0;
+  // Package still has uses left — use "Create Next Paystub", not a new paid order.
+  const hideStartOver = hasCredits && creditsRemaining <= 2;
   const recipientName =
     formData.employeeName ||
     [formData.firstName, formData.lastName].filter(Boolean).join(" ");
@@ -89,17 +91,21 @@ const PaymentSuccessSection = ({
               </>
             )}
           </button>
-          <button
-            type="button"
-            onClick={onStartOver}
-            className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium text-[14px] transition flex items-center justify-center gap-2 cursor-pointer animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.7s_both]"
-          >
-            <Plus className="w-4 h-4" />
-            <span>
-              {startOverLabel ||
-                (hasCredits ? "Start a New Order" : `Create Another ${documentLabel}`)}
-            </span>
-          </button>
+          {!hideStartOver && (
+            <button
+              type="button"
+              onClick={onStartOver}
+              className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium text-[14px] transition flex items-center justify-center gap-2 cursor-pointer animate-[dropIn_0.6s_cubic-bezier(0.34,1.56,0.64,1)_0.7s_both]"
+            >
+              <Plus className="w-4 h-4" />
+              <span>
+                {startOverLabel ||
+                  (hasCredits
+                    ? "Start a New Order"
+                    : `Create Another ${documentLabel}`)}
+              </span>
+            </button>
+          )}
         </div>
       </div>
     </div>
