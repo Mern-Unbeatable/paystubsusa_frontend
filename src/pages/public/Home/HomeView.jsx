@@ -5,8 +5,8 @@ import DocumentsSection from "./components/section/DocumentsSection";
 import HowItWorksSection from "./components/section/HowItWorksSection";
 import SpecialOfferSection from "./components/section/SpecialOfferSection";
 import PricingSection from "./components/section/PricingSection";
-import WhyUsSection from "./components/section/WhyUsSection";
-import TestimonialsSection from "./components/section/TestimonialsSection";
+// import WhyUsSection from "./components/section/WhyUsSection";
+// import TestimonialsSection from "./components/section/TestimonialsSection";
 
 const HomeView = () => {
   return (

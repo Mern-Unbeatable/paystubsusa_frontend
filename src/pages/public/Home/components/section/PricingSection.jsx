@@ -101,7 +101,9 @@ const PricingSection = () => {
           }`}
           aria-busy={loading}
         >
-          <div className={`pricing-card ${showUnlimited ? "lg:col-span-7" : ""}`}>
+          <div
+            className={`pricing-card ${showUnlimited ? "lg:col-span-7" : ""}`}
+          >
             <div className="group relative flex h-full flex-col justify-between rounded-3xl border border-slate-200/90 bg-white p-8 shadow-[0_4px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_24px_50px_-24px_rgba(15,23,42,0.16)] sm:p-10">
               <div>
                 <div className="mb-2 flex items-center gap-2">
@@ -115,7 +117,9 @@ const PricingSection = () => {
 
                 <div className="overflow-hidden rounded-2xl border border-slate-100">
                   {loading && oneTimeItems.length === 0
-                    ? Array.from({ length: 5 }, (_, i) => <PriceRowSkeleton key={i} />)
+                    ? Array.from({ length: 5 }, (_, i) => (
+                        <PriceRowSkeleton key={i} />
+                      ))
                     : oneTimeItems.map((item, i) => (
                         <div
                           key={item.code}
