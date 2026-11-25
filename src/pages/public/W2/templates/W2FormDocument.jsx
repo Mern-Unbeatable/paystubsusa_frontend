@@ -156,49 +156,51 @@ const W2FormDocument = ({ formData }) => (
           </div>
         </div>
 
-        <div className="px-1 py-px min-h-[12px] leading-none">
-          <span className="text-[7px] text-slate-400">9.</span>
+        <div className="px-1 leading-none h-[8px]">
+          <span className="text-[6.5px] text-slate-400">9.</span>
         </div>
       </div>
     </div>
 
-    {/* Box f | 10, 11, 12 (f height matches 10–12 stack; double divider) */}
+    {/* Box f | 10+11 top row, 12 below — compact so f bottom stays tight */}
     <div className="grid grid-cols-12 border-b border-slate-400 items-stretch">
-      <div className="col-span-5 px-1 py-0.5 border-r border-slate-400 min-h-[60px]">
+      <div className="col-span-5 px-1 py-0.5 border-r border-slate-400 leading-none">
         <span className="text-[7.5px] text-slate-500 block">
           f. Employee's address and ZIP code
         </span>
-        <p className="text-[8px] leading-snug">
+        <p className="text-[8px] leading-tight mt-px">
           {formData.employeeAddress || "88 Pine Ave"}
         </p>
-        <p className="text-[8px] leading-snug">
+        <p className="text-[8px] leading-tight">
           {formData.employeeCity || "Oakland"},{" "}
           {formData.employeeState || "CA"} {formData.employeeZip || "94607"}
         </p>
       </div>
 
       <div className="col-span-7 flex flex-col text-[7.5px]">
-        <div className="px-1 py-0.5 border-b border-slate-400 flex flex-col justify-between flex-1 min-h-0">
-          <span className="text-[7px] text-slate-500 block leading-none">
-            10. Dependent care
-          </span>
-          <span className="font-semibold block text-right leading-none">
-            {formData.box10DependentCare
-              ? `$${formData.box10DependentCare}`
-              : ""}
-          </span>
+        <div className="grid grid-cols-2 border-b border-slate-400 min-h-[20px]">
+          <div className="px-1 py-px border-r border-slate-400 flex flex-col justify-between gap-px">
+            <span className="text-[7px] text-slate-500 block leading-none">
+              10. Dependent care
+            </span>
+            <span className="font-semibold block text-right leading-none">
+              {formData.box10DependentCare
+                ? `$${formData.box10DependentCare}`
+                : ""}
+            </span>
+          </div>
+          <div className="px-1 py-px flex flex-col justify-between gap-px">
+            <span className="text-[7px] text-slate-500 block leading-none">
+              11. Nonqualified plans
+            </span>
+            <span className="font-semibold block text-right leading-none">
+              {formData.box11NonqualifiedPlans
+                ? `$${formData.box11NonqualifiedPlans}`
+                : ""}
+            </span>
+          </div>
         </div>
-        <div className="px-1 py-0.5 border-b border-slate-400 flex flex-col justify-between flex-1 min-h-0">
-          <span className="text-[7px] text-slate-500 block leading-none">
-            11. Nonqualified plans
-          </span>
-          <span className="font-semibold block text-right leading-none">
-            {formData.box11NonqualifiedPlans
-              ? `$${formData.box11NonqualifiedPlans}`
-              : ""}
-          </span>
-        </div>
-        <div className="px-1 py-0.5 flex flex-col justify-between flex-1 min-h-0">
+        <div className="px-1 py-px flex flex-col justify-between min-h-[20px] gap-px">
           <span className="text-[7px] text-slate-500 leading-none">
             12. {formData.box12Code || "DD"}
           </span>
