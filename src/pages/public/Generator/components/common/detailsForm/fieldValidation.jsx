@@ -24,9 +24,6 @@ export function FieldError({ errors, name }) {
 
 export function toFieldErrorMap(missingFields) {
   return Object.fromEntries(
-    missingFields.map((f) => [
-      f.key,
-      f.message ?? `${f.label} is required`,
-    ]),
+    missingFields.map((f) => [f.key, f.message ?? `${f.label} is required`]),
   );
 }
