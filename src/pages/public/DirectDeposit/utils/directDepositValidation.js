@@ -61,6 +61,31 @@ export function normalizeAccountNumber(value) {
 }
 
 const ACCOUNT_NUMBER = /^\d{4,17}$/;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** Same rule as server `zip()` — 5 digits or ZIP+4. */
+const ZIP = /^\d{5}(-\d{4})?$/;
+
+/** Format digits into `12345` or `12345-6789` while typing. */
+export function formatZipInput(value) {
+  const digits = String(value || "")
+    .replace(/\D/g, "")
+    .slice(0, 9);
+  if (digits.length <= 5) return digits;
+  return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+}
+
+export function isValidZip(value) {
+  return ZIP.test(String(value || "").trim());
+}
+
+/** Optional contact: email or phone (10–15 digits) when provided. */
+export function isValidEmployerContact(value) {
+  const v = String(value || "").trim();
+  if (!v) return true;
+  if (EMAIL.test(v)) return true;
+  const digits = v.replace(/\D/g, "");
+  return digits.length >= 10 && digits.length <= 15;
+}
 
 /** All incomplete or invalid required fields (order matches form steps). */
 export function findIncompleteDirectDepositFields(formData) {
@@ -82,6 +107,36 @@ export function findIncompleteDirectDepositFields(formData) {
       label: "Account number",
       message: "Account number must be 4–17 digits",
       step: DD_FORM_STEPS.DEPOSIT,
+    });
+  }
+  if (!isValidEmployerContact(formData.employerContact)) {
+    formatted.push({
+      key: "employerContact",
+      field: "employerContact",
+      label: "Employer contact",
+      message: "Enter a valid email or phone number",
+      step: DD_FORM_STEPS.EMPLOYER,
+    });
+  }
+  if (!isBlank(formData.zipCode) && !isValidZip(formData.zipCode)) {
+    formatted.push({
+      key: "zipCode",
+      field: "zipCode",
+      label: "Employer ZIP",
+      message: "Employer ZIP must be a 5-digit ZIP code",
+      step: DD_FORM_STEPS.EMPLOYER,
+    });
+  }
+  if (
+    !isBlank(formData.employeeZipCode) &&
+    !isValidZip(formData.employeeZipCode)
+  ) {
+    formatted.push({
+      key: "employeeZipCode",
+      field: "employeeZipCode",
+      label: "Employee ZIP",
+      message: "Employee ZIP must be a 5-digit ZIP code",
+      step: DD_FORM_STEPS.EMPLOYEE,
     });
   }
 

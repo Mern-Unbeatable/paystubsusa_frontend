@@ -4,7 +4,7 @@ import DocumentStepNav from "../../../../shared/documentFlow/components/Document
 const StepNav = ({
   onBack,
   onNext,
-  nextLabel = "Save & Continue",
+  nextLabel = "Continue",
   showBack = true,
   className = "sm:pt-6",
   ...rest

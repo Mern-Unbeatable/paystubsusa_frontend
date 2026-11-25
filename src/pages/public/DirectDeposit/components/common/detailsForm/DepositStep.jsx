@@ -290,7 +290,11 @@ const DepositStep = ({
       </div>
     </div>
 
-    <StepNav onBack={onBack} onNext={onNext} />
+    <StepNav
+      onBack={onBack}
+      onNext={onNext}
+      nextLabel="Save & Continue"
+    />
   </div>
   );
 };

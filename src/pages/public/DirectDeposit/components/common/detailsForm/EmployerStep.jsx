@@ -16,6 +16,7 @@ import {
   FieldError,
   fieldClassName,
 } from "../../../../Generator/components/common/detailsForm/fieldValidation";
+import { formatZipInput } from "../../../utils/directDepositValidation";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
@@ -144,8 +145,13 @@ const EmployerStep = ({
           </label>
           <input
             type="text"
+            inputMode="numeric"
+            autoComplete="postal-code"
+            maxLength={10}
             value={formData.zipCode}
-            onChange={(e) => updateField("zipCode", e.target.value)}
+            onChange={(e) =>
+              updateField("zipCode", formatZipInput(e.target.value))
+            }
             placeholder="e.g. 78701"
             aria-invalid={Boolean(fieldErrors.zipCode)}
             className={fieldClassName(FIELD_CLASS, fieldErrors.zipCode)}
@@ -156,7 +162,7 @@ const EmployerStep = ({
     </div>
 
     <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
-      <div>
+      <div id="dd-field-employerContact">
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-[14px] font-semibold text-slate-800">
             Employer Contact
@@ -172,9 +178,19 @@ const EmployerStep = ({
             value={formData.employerContact}
             onChange={(e) => updateField("employerContact", e.target.value)}
             placeholder="e.g. payroll@company.com"
-            className={`${FIELD_CLASS} pl-10`}
+            aria-invalid={Boolean(fieldErrors.employerContact)}
+            className={fieldClassName(
+              `${FIELD_CLASS} pl-10`,
+              fieldErrors.employerContact,
+            )}
           />
         </div>
+        <FieldError errors={fieldErrors} name="employerContact" />
+        {!fieldErrors.employerContact && (
+          <p className="text-[12px] text-slate-400 mt-1.5">
+            Email or phone number, if provided.
+          </p>
+        )}
       </div>
     </div>
 

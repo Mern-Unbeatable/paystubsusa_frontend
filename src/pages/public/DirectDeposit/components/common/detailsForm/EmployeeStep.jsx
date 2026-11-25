@@ -10,6 +10,7 @@ import {
   FieldError,
   fieldClassName,
 } from "../../../../Generator/components/common/detailsForm/fieldValidation";
+import { formatZipInput } from "../../../utils/directDepositValidation";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
@@ -148,8 +149,13 @@ const EmployeeStep = ({
           </label>
           <input
             type="text"
+            inputMode="numeric"
+            autoComplete="postal-code"
+            maxLength={10}
             value={formData.employeeZipCode}
-            onChange={(e) => updateField("employeeZipCode", e.target.value)}
+            onChange={(e) =>
+              updateField("employeeZipCode", formatZipInput(e.target.value))
+            }
             placeholder="e.g. 78704"
             aria-invalid={Boolean(fieldErrors.employeeZipCode)}
             className={fieldClassName(FIELD_CLASS, fieldErrors.employeeZipCode)}
