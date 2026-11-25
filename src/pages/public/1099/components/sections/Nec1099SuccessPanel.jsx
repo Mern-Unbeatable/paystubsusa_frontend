@@ -127,17 +127,20 @@ const Nec1099SuccessPanel = () => {
 
   return (
     <>
-      <PaymentSuccessSection
-        formData={{ employeeName: formData.recipientName, ...formData }}
-        order={summary}
-        processing={processing}
-        preparingDocument={!readyDocument && waitingForDocument}
-        documentLabel="1099-NEC"
-        downloadLabel="Download 1099-NEC PDF"
-        startOverLabel="Create Another 1099-NEC"
-        onDownload={handleDownload}
-        onStartOver={onStartOver}
-      />
+      <div className="w-full flex justify-center py-4 sm:py-8">
+        <PaymentSuccessSection
+          formData={{ employeeName: formData.recipientName, ...formData }}
+          order={summary}
+          processing={processing}
+          preparingDocument={!readyDocument && waitingForDocument}
+          documentLabel="1099-NEC"
+          downloadLabel="Download 1099-NEC PDF"
+          startOverLabel="Create Another 1099-NEC"
+          centered
+          onDownload={handleDownload}
+          onStartOver={onStartOver}
+        />
+      </div>
       <PrintableDocument>
         <Document formData={formData} />
       </PrintableDocument>

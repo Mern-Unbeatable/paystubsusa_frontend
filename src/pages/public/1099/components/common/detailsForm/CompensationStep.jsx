@@ -6,12 +6,21 @@ import {
   FIELD_CLASS,
   SELECT_CLASS,
 } from "../../../utils/formFieldClass";
+import { fieldClassName } from "../../../../Generator/components/common/detailsForm/fieldValidation";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
-const MoneyField = ({ label, value, onChange }) => (
-  <div>
-    <label className={BOX_LABEL_CLASS}>{label}</label>
+const MoneyField = ({ id, label, value, onChange, error, required = false }) => (
+  <div id={id}>
+    <label className={BOX_LABEL_CLASS}>
+      {label}
+      {required ? (
+        <span className="text-rose-500" aria-hidden="true">
+          {" "}
+          *
+        </span>
+      ) : null}
+    </label>
     <div className="relative">
       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-medium z-10">
         $
@@ -21,13 +30,25 @@ const MoneyField = ({ label, value, onChange }) => (
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="0.00"
-        className={`${FIELD_CLASS} pl-10`}
+        aria-invalid={Boolean(error)}
+        className={fieldClassName(`${FIELD_CLASS} pl-10`, error)}
       />
     </div>
+    {error ? (
+      <p className="text-[12px] text-rose-500 mt-1.5" role="alert">
+        {/required|valid|must be/i.test(error) ? error : `${error} is required`}
+      </p>
+    ) : null}
   </div>
 );
 
-const CompensationStep = ({ formData, updateField, onBack, onNext }) => (
+const CompensationStep = ({
+  formData,
+  fieldErrors = {},
+  updateField,
+  onBack,
+  onNext,
+}) => (
   <div className="space-y-6 animate-in fade-in-50 duration-200">
     <StepHeader
       title="Compensation details"
@@ -44,9 +65,12 @@ const CompensationStep = ({ formData, updateField, onBack, onNext }) => (
       </div>
 
       <MoneyField
+        id="nec1099-field-box1NonemployeeComp"
         label="Box 1. Nonemployee compensation"
         value={formData.box1NonemployeeComp}
         onChange={(v) => updateField("box1NonemployeeComp", v)}
+        error={fieldErrors.box1NonemployeeComp}
+        required
       />
 
       <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition">
