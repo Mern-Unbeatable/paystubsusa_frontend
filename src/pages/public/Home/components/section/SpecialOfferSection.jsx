@@ -36,7 +36,7 @@ const SpecialOfferSection = () => {
         <div className="offer-card-box relative overflow-hidden bg-primary rounded-[28px] p-8 sm:p-12 pt-12 sm:pt-14 shadow-sm border border-slate-100/80">
           {/* Top-left diagonal ribbon (sketch: corner “% save” badge) */}
           <div
-            className="pointer-events-none absolute -left-[3.25rem] top-6 z-20 w-[11.5rem] -rotate-45 bg-[#1d63ff] py-2 text-center shadow-[0_2px_8px_rgba(29,99,255,0.35)]"
+            className="pointer-events-none absolute -left-[3.25rem] top-6 z-20 w-[11.5rem] -rotate-45 bg-secondary py-2 text-center shadow-[0_2px_8px_rgba(29,99,255,0.35)]"
             aria-label="Save 35 percent"
           >
             <span className="block text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.16em] text-white">
@@ -48,27 +48,27 @@ const SpecialOfferSection = () => {
             {/* Left Content */}
             <div className="md:col-span-7 flex flex-col items-start">
               {/* Eyebrow badge */}
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-[#3d40ff] bg-[#3d40ff]/20 px-3 py-1 rounded-full mb-4">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-[#ffffff] bg-slate-400 px-3 py-1 rounded-full mb-4">
                 <Sparkles className="w-3 h-3" />
                 Special Offer
               </span>
               {/* Headline */}
 
-              <h3 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-slate-200 tracking-tight leading-tight">
+              <h3 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-slate-400 tracking-tight leading-tight">
                 Get More Paystubs & Save More.
               </h3>
 
               {/* Price Callout */}
               <div className="flex items-baseline gap-2">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-[#3d40ff] tracking-tight">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-[#f6f6fa] tracking-tight">
                     $24.99
                   </span>
                   <span className="text-slate-400 line-through text-lg font-semibold">
                     $38.37
                   </span>
                 </div>
-                <span className="text-slate-800 font-bold text-base sm:text-lg">
+                <span className="text-slate-200 font-bold text-base sm:text-lg">
                   for 3 Paystubs
                 </span>
               </div>
