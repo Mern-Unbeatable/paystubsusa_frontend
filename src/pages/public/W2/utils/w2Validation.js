@@ -1,4 +1,5 @@
 import { W2_FORM_STEPS } from "./w2Flow";
+import { formatW2Ein, formatW2Ssn } from "./w2OrderFormData";
 
 /** Required fields aligned with server `w2FormData` (enough to reach checkout). */
 const REQUIRED = [
@@ -22,12 +23,52 @@ const REQUIRED = [
 const isBlank = (value) =>
   value === undefined || value === null || String(value).trim() === "";
 
-/** All incomplete required fields (order matches form steps). */
+const SSN_FORMAT = /^\d{3}-\d{2}-\d{4}$/;
+const EIN_FORMAT = /^\d{2}-\d{7}$/;
+const BOX12_CODE = /^([A-Za-z]{1,2})?$/;
+
+/** All incomplete or invalid required fields (order matches form steps). */
 export function findIncompleteW2Fields(formData) {
-  return REQUIRED.filter((item) => isBlank(formData[item.key])).map((item) => ({
-    ...item,
-    field: item.key,
-  }));
+  const missing = REQUIRED.filter((item) => isBlank(formData[item.key])).map(
+    (item) => ({
+      ...item,
+      field: item.key,
+    }),
+  );
+
+  const formatted = [];
+  if (!isBlank(formData.ssn) && !SSN_FORMAT.test(formatW2Ssn(formData.ssn))) {
+    formatted.push({
+      key: "ssn",
+      field: "ssn",
+      label: "SSN",
+      message: "Enter a valid SSN (XXX-XX-XXXX)",
+      step: W2_FORM_STEPS.EMPLOYEE,
+    });
+  }
+  if (!isBlank(formData.ein) && !EIN_FORMAT.test(formatW2Ein(formData.ein))) {
+    formatted.push({
+      key: "ein",
+      field: "ein",
+      label: "EIN",
+      message: "Enter a valid EIN (XX-XXXXXXX)",
+      step: W2_FORM_STEPS.EMPLOYER,
+    });
+  }
+  if (
+    !isBlank(formData.box12Code) &&
+    !BOX12_CODE.test(String(formData.box12Code).trim())
+  ) {
+    formatted.push({
+      key: "box12Code",
+      field: "box12Code",
+      label: "Box 12 code",
+      message: "Box 12 code must be 1-2 letters",
+      step: W2_FORM_STEPS.WAGES,
+    });
+  }
+
+  return [...missing, ...formatted];
 }
 
 /** First incomplete required field, or null. */

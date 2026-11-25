@@ -1,5 +1,11 @@
 import React from "react";
 
+const BOX13_ITEMS = [
+  { label: "Statutory employee", field: "box13StatutoryEmployee" },
+  { label: "Retirement plan", field: "box13RetirementPlan" },
+  { label: "Third-party sick pay", field: "box13ThirdPartySickPay" },
+];
+
 const W2FormDocument = ({ formData }) => (
   <div className="p-3 text-[9px] leading-tight font-sans text-slate-900 select-none">
     {/* Top Row: 22222, Void, SSN, OMB */}
@@ -24,11 +30,9 @@ const W2FormDocument = ({ formData }) => (
       </div>
     </div>
 
-    {/* Middle Rows Grid — left slightly narrower so wage boxes get more width */}
-    <div className="grid grid-cols-12 border-b border-slate-400">
-      {/* Left Column (Boxes b, c, d, e, f) */}
+    {/* Upper middle: b–e | boxes 1–9 */}
+    <div className="grid grid-cols-12 border-b border-slate-400 items-stretch">
       <div className="col-span-5 border-r border-slate-400">
-        {/* Box b: EIN */}
         <div className="p-1 border-b border-slate-400 min-h-[28px]">
           <span className="text-[7.5px] text-slate-500 block">
             b. Employer identification number (EIN)
@@ -36,7 +40,6 @@ const W2FormDocument = ({ formData }) => (
           <span className="font-semibold">{formData.ein || "12-3456789"}</span>
         </div>
 
-        {/* Box c: Employer Name & Address */}
         <div className="p-1 border-b border-slate-400 min-h-[48px]">
           <span className="text-[7.5px] text-slate-500 block">
             c. Employer's name, address, and ZIP code
@@ -53,7 +56,6 @@ const W2FormDocument = ({ formData }) => (
           </p>
         </div>
 
-        {/* Box d: Control number */}
         <div className="p-1 border-b border-slate-400 min-h-[22px]">
           <span className="text-[7.5px] text-slate-500 block">
             d. Control number
@@ -61,8 +63,7 @@ const W2FormDocument = ({ formData }) => (
           <span className="text-[8px]">{formData.controlNumber || ""}</span>
         </div>
 
-        {/* Box e: Employee Name */}
-        <div className="p-1 border-b border-slate-400 min-h-[28px]">
+        <div className="p-1 min-h-[28px]">
           <span className="text-[7.5px] text-slate-500 block">
             e. Employee's first name, M.I., last name
           </span>
@@ -72,25 +73,9 @@ const W2FormDocument = ({ formData }) => (
             {formData.lastName || "Miller"}
           </p>
         </div>
-
-        {/* Box f: Employee Address */}
-        <div className="p-1 min-h-[36px]">
-          <span className="text-[7.5px] text-slate-500 block">
-            f. Employee's address and ZIP code
-          </span>
-          <p className="text-[8px]">
-            {formData.employeeAddress || "88 Pine Ave"}
-          </p>
-          <p className="text-[8px]">
-            {formData.employeeCity || "Oakland"},{" "}
-            {formData.employeeState || "CA"} {formData.employeeZip || "94607"}
-          </p>
-        </div>
       </div>
 
-      {/* Right Column (Numbered Boxes 1 to 14) */}
       <div className="col-span-7">
-        {/* Row 1 & 2 */}
         <div className="grid grid-cols-2 border-b border-slate-400">
           <div className="p-1 border-r border-slate-400 min-h-[26px]">
             <span className="text-[7px] text-slate-500 block">
@@ -110,7 +95,6 @@ const W2FormDocument = ({ formData }) => (
           </div>
         </div>
 
-        {/* Row 3 & 4 */}
         <div className="grid grid-cols-2 border-b border-slate-400">
           <div className="p-1 border-r border-slate-400 min-h-[26px]">
             <span className="text-[7px] text-slate-500 block">
@@ -130,7 +114,6 @@ const W2FormDocument = ({ formData }) => (
           </div>
         </div>
 
-        {/* Row 5 & 6 */}
         <div className="grid grid-cols-2 border-b border-slate-400">
           <div className="p-1 border-r border-slate-400 min-h-[26px]">
             <span className="text-[7px] text-slate-500 block">
@@ -150,7 +133,6 @@ const W2FormDocument = ({ formData }) => (
           </div>
         </div>
 
-        {/* Row 7 & 8 */}
         <div className="grid grid-cols-2 border-b border-slate-400 text-[7.5px] min-h-[26px]">
           <div className="p-1 border-r border-slate-400 flex flex-col">
             <span className="text-[7px] text-slate-500 block">
@@ -174,100 +156,95 @@ const W2FormDocument = ({ formData }) => (
           </div>
         </div>
 
-        {/* Box 9 — IRS retired (left blank on current W-2) */}
-        <div className="p-1 border-b border-slate-400 min-h-[18px] bg-slate-50/80">
+        <div className="px-1 py-px min-h-[12px] leading-none">
           <span className="text-[7px] text-slate-400">9.</span>
         </div>
+      </div>
+    </div>
 
-        {/* Row 10 & 11 */}
-        <div className="grid grid-cols-2 border-b border-slate-400 text-[7.5px] min-h-[26px]">
-          <div className="p-1 border-r border-slate-400 flex flex-col">
-            <span className="text-[7px] text-slate-500 block">
-              10. Dependent care
-            </span>
-            <span className="font-semibold block text-right mt-auto">
-              {formData.box10DependentCare
-                ? `$${formData.box10DependentCare}`
-                : ""}
-            </span>
-          </div>
-          <div className="p-1 flex flex-col">
-            <span className="text-[7px] text-slate-500 block">
-              11. Nonqualified plans
-            </span>
-            <span className="font-semibold block text-right mt-auto">
-              {formData.box11NonqualifiedPlans
-                ? `$${formData.box11NonqualifiedPlans}`
-                : ""}
-            </span>
-          </div>
+    {/* Box f | 10, 11, 12 (f height matches 10–12 stack; double divider) */}
+    <div className="grid grid-cols-12 border-b border-slate-400 items-stretch">
+      <div className="col-span-5 px-1 py-0.5 border-r border-slate-400 min-h-[60px]">
+        <span className="text-[7.5px] text-slate-500 block">
+          f. Employee's address and ZIP code
+        </span>
+        <p className="text-[8px] leading-snug">
+          {formData.employeeAddress || "88 Pine Ave"}
+        </p>
+        <p className="text-[8px] leading-snug">
+          {formData.employeeCity || "Oakland"},{" "}
+          {formData.employeeState || "CA"} {formData.employeeZip || "94607"}
+        </p>
+      </div>
+
+      <div className="col-span-7 flex flex-col text-[7.5px]">
+        <div className="px-1 py-0.5 border-b border-slate-400 flex flex-col justify-between flex-1 min-h-0">
+          <span className="text-[7px] text-slate-500 block leading-none">
+            10. Dependent care
+          </span>
+          <span className="font-semibold block text-right leading-none">
+            {formData.box10DependentCare
+              ? `$${formData.box10DependentCare}`
+              : ""}
+          </span>
         </div>
-
-        {/* Box 12 */}
-        <div className="p-1 border-b border-slate-400 flex items-center justify-between text-[7.5px]">
-          <span className="text-[7px] text-slate-500">
+        <div className="px-1 py-0.5 border-b border-slate-400 flex flex-col justify-between flex-1 min-h-0">
+          <span className="text-[7px] text-slate-500 block leading-none">
+            11. Nonqualified plans
+          </span>
+          <span className="font-semibold block text-right leading-none">
+            {formData.box11NonqualifiedPlans
+              ? `$${formData.box11NonqualifiedPlans}`
+              : ""}
+          </span>
+        </div>
+        <div className="px-1 py-0.5 flex flex-col justify-between flex-1 min-h-0">
+          <span className="text-[7px] text-slate-500 leading-none">
             12. {formData.box12Code || "DD"}
           </span>
-          <span className="font-semibold">
+          <span className="font-semibold block text-right leading-none">
             ${formData.box12Amount || "0.00"}
           </span>
         </div>
+      </div>
+    </div>
 
-        {/* Box 13 + 14 — matches IRS W-2: label above small checkbox */}
-        <div className="grid grid-cols-[1fr_auto] border-b-0 min-h-[36px]">
-          <div className="relative px-1 pt-0.5 pb-1 pr-1.5">
-            <span className="absolute left-1 top-0.5 text-[7px] text-slate-500 leading-none">
-              13.
-            </span>
-            <div className="grid grid-cols-3 gap-x-0.5 pl-3.5">
-              {[
-                {
-                  lines: ["Statutory", "employee"],
-                  checked: formData.box13StatutoryEmployee,
-                },
-                {
-                  lines: ["Retirement", "plan"],
-                  checked: formData.box13RetirementPlan,
-                },
-                {
-                  lines: ["Third-party", "sick pay"],
-                  checked: formData.box13ThirdPartySickPay,
-                },
-              ].map((item) => (
-                <div
-                  key={item.lines[0]}
-                  className="flex flex-col items-center gap-0.5 min-w-0"
-                >
-                  <span className="text-[6.5px] text-slate-600 text-center leading-[1.15] h-[15px]">
-                    {item.lines.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </span>
-                  <span
-                    className="inline-flex h-[7px] w-[7px] shrink-0 items-center justify-center border border-slate-600 text-[5px] leading-none text-slate-800"
-                    aria-hidden="true"
-                  >
-                    {item.checked ? "✓" : ""}
-                  </span>
-                </div>
-              ))}
+    {/* Full-width Box 13 + 14 — compact height, little space above/below content */}
+    <div className="grid grid-cols-[1fr_auto] border-b border-slate-400">
+      <div className="relative px-1 py-1 flex items-center border-r border-slate-400 min-h-[28px]">
+        <span className="absolute left-1 top-0.5 text-[7px] text-slate-500 leading-none">
+          13.
+        </span>
+        <div className="grid grid-cols-3 w-full gap-x-2 pl-4 pr-1">
+          {BOX13_ITEMS.map((item) => (
+            <div
+              key={item.field}
+              className="flex items-center justify-center gap-1 min-w-0"
+            >
+              <span
+                className="inline-flex h-2 w-2 shrink-0 items-center justify-center border border-slate-700 text-[6px] leading-none text-slate-900"
+                aria-hidden="true"
+              >
+                {formData[item.field] ? "✓" : ""}
+              </span>
+              <span className="text-[6.5px] text-slate-700 leading-none whitespace-nowrap">
+                {item.label}
+              </span>
             </div>
-          </div>
-          <div className="pl-1.5 pr-1 pt-0.5 border-l border-slate-400 min-w-[72px]">
-            <span className="text-[7px] text-slate-500 leading-none block">
-              14. Other
-            </span>
-            {(formData.box14Description || formData.box14Amount) && (
-              <p className="text-[7px] text-slate-800 leading-tight mt-0.5 break-words">
-                {formData.box14Description}
-                {formData.box14Description && formData.box14Amount ? " " : ""}
-                {formData.box14Amount ? `$${formData.box14Amount}` : ""}
-              </p>
-            )}
-          </div>
+          ))}
         </div>
+      </div>
+      <div className="px-1 py-1 min-w-[80px] min-h-[28px]">
+        <span className="text-[7px] text-slate-500 leading-none block">
+          14 – Other
+        </span>
+        {(formData.box14Description || formData.box14Amount) && (
+          <p className="text-[7px] text-slate-800 leading-tight mt-0.5 break-words">
+            {formData.box14Description}
+            {formData.box14Description && formData.box14Amount ? " " : ""}
+            {formData.box14Amount ? `$${formData.box14Amount}` : ""}
+          </p>
+        )}
       </div>
     </div>
 

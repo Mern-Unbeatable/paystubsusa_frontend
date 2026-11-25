@@ -207,8 +207,14 @@ const WageTaxStep = ({
           <input
             type="text"
             value={formData.box12Code}
-            onChange={(e) => updateField("box12Code", e.target.value)}
+            onChange={(e) =>
+              updateField(
+                "box12Code",
+                e.target.value.replace(/[^a-zA-Z]/g, "").toUpperCase().slice(0, 2),
+              )
+            }
             placeholder="e.g. DD"
+            maxLength={2}
             className={FIELD_CLASS}
           />
         </div>

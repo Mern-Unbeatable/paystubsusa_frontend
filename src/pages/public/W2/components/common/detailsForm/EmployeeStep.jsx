@@ -10,6 +10,7 @@ import {
   FieldError,
   fieldClassName,
 } from "../../../../Generator/components/common/detailsForm/fieldValidation";
+import { formatW2Ssn } from "../../../utils/w2OrderFormData";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
@@ -53,7 +54,10 @@ const EmployeeStep = ({
           <input
             type="text"
             value={formData.ssn}
-            onChange={(e) => updateField("ssn", e.target.value)}
+            onChange={(e) => updateField("ssn", formatW2Ssn(e.target.value))}
+            inputMode="numeric"
+            autoComplete="off"
+            maxLength={11}
             placeholder="e.g. 123-45-6789"
             aria-invalid={Boolean(fieldErrors.ssn)}
             className={fieldClassName(`${FIELD_CLASS} pl-10`, fieldErrors.ssn)}

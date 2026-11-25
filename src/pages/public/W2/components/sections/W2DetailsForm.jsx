@@ -22,7 +22,9 @@ const LOCAL_SAVE_TOAST_ID = "w2-form-local-save";
 const MISSING_FIELDS_TOAST_ID = "w2-form-missing-fields";
 
 const missingFieldsMessage = (missing) => {
-  if (missing.length === 1) return `${missing[0].label} is required.`;
+  if (missing.length === 1) {
+    return missing[0].message ?? `${missing[0].label} is required.`;
+  }
   const labels = missing.map((f) => f.label);
   if (labels.length <= 3) return `Please complete: ${labels.join(", ")}.`;
   return `Please complete ${labels.length} required fields (e.g. ${labels.slice(0, 3).join(", ")}).`;

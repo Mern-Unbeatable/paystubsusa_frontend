@@ -17,6 +17,7 @@ import {
   FieldError,
   fieldClassName,
 } from "../../../../Generator/components/common/detailsForm/fieldValidation";
+import { formatW2Ein } from "../../../utils/w2OrderFormData";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
@@ -79,7 +80,10 @@ const EmployerStep = ({
           <input
             type="text"
             value={formData.ein}
-            onChange={(e) => updateField("ein", e.target.value)}
+            onChange={(e) => updateField("ein", formatW2Ein(e.target.value))}
+            inputMode="numeric"
+            autoComplete="off"
+            maxLength={10}
             placeholder="e.g. 12-3456789"
             aria-invalid={Boolean(fieldErrors.ein)}
             className={fieldClassName(`${FIELD_CLASS} pl-10`, fieldErrors.ein)}
