@@ -126,17 +126,20 @@ const W2SuccessPanel = () => {
 
   return (
     <>
-      <PaymentSuccessSection
-        formData={formData}
-        order={summary}
-        processing={processing}
-        preparingDocument={!readyDocument && waitingForDocument}
-        documentLabel="W-2"
-        downloadLabel="Download W-2 PDF"
-        startOverLabel="Create Another W-2"
-        onDownload={handleDownload}
-        onStartOver={onStartOver}
-      />
+      <div className="w-full flex justify-center py-4 sm:py-8">
+        <PaymentSuccessSection
+          formData={formData}
+          order={summary}
+          processing={processing}
+          preparingDocument={!readyDocument && waitingForDocument}
+          documentLabel="W-2"
+          downloadLabel="Download W-2 PDF"
+          startOverLabel="Create Another W-2"
+          centered
+          onDownload={handleDownload}
+          onStartOver={onStartOver}
+        />
+      </div>
       <PrintableDocument>
         <Document formData={formData} />
       </PrintableDocument>

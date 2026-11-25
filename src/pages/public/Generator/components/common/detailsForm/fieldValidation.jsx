@@ -9,15 +9,21 @@ export function fieldClassName(base, hasError) {
 }
 
 export function FieldError({ errors, name }) {
-  const label = errors?.[name];
-  if (!label) return null;
+  const value = errors?.[name];
+  if (!value) return null;
+  // Accept full messages ("… is required" / "Enter a valid…") or plain labels.
+  const message = /required|valid|must be/i.test(value)
+    ? value
+    : `${value} is required`;
   return (
     <p className="text-[12px] text-rose-500 mt-1.5" role="alert">
-      {label} is required
+      {message}
     </p>
   );
 }
 
 export function toFieldErrorMap(missingFields) {
-  return Object.fromEntries(missingFields.map((f) => [f.key, f.label]));
+  return Object.fromEntries(
+    missingFields.map((f) => [f.key, f.message ?? `${f.label} is required`]),
+  );
 }

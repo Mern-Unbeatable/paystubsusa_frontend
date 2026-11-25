@@ -20,9 +20,11 @@ export const DIRECT_DEPOSIT_SAMPLE_FORM_DATA = {
   employeeZipCode: "78704",
   employeeId: "EMP-8821",
 
-  // Step 3: Deposit Details
-  depositDate: "10/24/2026",
-  payPeriod: "May 1 – May 15, 2025",
+  // Step 3: Deposit Details (ISO dates for native pickers)
+  depositDate: "2026-10-24",
+  payPeriodStart: "2025-05-01",
+  payPeriodEnd: "2025-05-15",
+  payPeriod: "05/01/2025 – 05/15/2025",
   paymentReference: "REF-99201",
   bankName: "Chase Bank",
   accountHolderName: "Employee Name",

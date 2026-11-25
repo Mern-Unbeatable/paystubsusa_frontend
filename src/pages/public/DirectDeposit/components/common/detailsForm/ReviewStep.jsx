@@ -8,6 +8,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { DD_FORM_STEPS } from "../../../utils/directDepositFlow";
+import {
+  formatDisplayDate,
+  formatPayPeriodRange,
+} from "../../../utils/directDepositDates";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
@@ -114,8 +118,19 @@ const ReviewStep = ({ formData, onEdit, onBack, onContinue }) => (
       icon={Landmark}
       onEdit={() => onEdit(DD_FORM_STEPS.DEPOSIT)}
     >
-      <ReviewRow label="Deposit Date" value={formData.depositDate} />
-      <ReviewRow label="Pay Period" value={formData.payPeriod} />
+      <ReviewRow
+        label="Deposit Date"
+        value={formatDisplayDate(formData.depositDate)}
+      />
+      <ReviewRow
+        label="Pay Period"
+        value={
+          formatPayPeriodRange(
+            formData.payPeriodStart,
+            formData.payPeriodEnd,
+          ) || formData.payPeriod
+        }
+      />
       <ReviewRow label="Payment Reference" value={formData.paymentReference} />
       <ReviewRow label="Bank Name" value={formData.bankName} />
       <ReviewRow label="Account Holder" value={formData.accountHolderName} />

@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { Lock } from "lucide-react";
 import DocumentLivePreview from "../../../shared/documentFlow/components/DocumentLivePreview";
 import DocumentOrderSummary from "../../../shared/documentFlow/components/DocumentOrderSummary";
 import { W2_FLOW, W2_FORM_STEPS } from "../../utils/w2Flow";
+import { findIncompleteW2Fields } from "../../utils/w2Validation";
 import {
   scrollW2FlowIntoView,
   useW2FormStep,
 } from "../../hooks/useW2FormStep";
+import { toFieldErrorMap } from "../../../Generator/components/common/detailsForm/fieldValidation";
 import W2Stepper from "../common/flow/W2Stepper";
 import StepRibbon from "../common/flow/StepRibbon";
 import EmployerStep from "../common/detailsForm/EmployerStep";
@@ -15,6 +18,25 @@ import WageTaxStep from "../common/detailsForm/WageTaxStep";
 import ReviewStep from "../common/detailsForm/ReviewStep";
 
 const FORM_STEP_COUNT = 4;
+const LOCAL_SAVE_TOAST_ID = "w2-form-local-save";
+const MISSING_FIELDS_TOAST_ID = "w2-form-missing-fields";
+
+const missingFieldsMessage = (missing) => {
+  if (missing.length === 1) {
+    return missing[0].message ?? `${missing[0].label} is required.`;
+  }
+  const labels = missing.map((f) => f.label);
+  if (labels.length <= 3) return `Please complete: ${labels.join(", ")}.`;
+  return `Please complete ${labels.length} required fields (e.g. ${labels.slice(0, 3).join(", ")}).`;
+};
+
+const scrollToField = (key) => {
+  requestAnimationFrame(() => {
+    document
+      .getElementById(`w2-field-${key}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+};
 
 /**
  * Create-page form: steps 1–4 driven by `?step=` on `/w-2/create`.
@@ -25,6 +47,8 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
   const { Document } = W2_FLOW;
   const showOrderSummary = currentStep === W2_FORM_STEPS.REVIEW;
   const skipScrollOnMount = useRef(true);
+  const prevStepRef = useRef(currentStep);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (skipScrollOnMount.current) {
@@ -34,7 +58,77 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
     scrollW2FlowIntoView();
   }, [currentStep]);
 
+  const markIncomplete = (missing) => {
+    setFieldErrors(toFieldErrorMap(missing));
+    toast.error(missingFieldsMessage(missing), {
+      id: MISSING_FIELDS_TOAST_ID,
+      duration: 5000,
+    });
+    setFormStep(missing[0].step);
+    setTimeout(() => scrollToField(missing[0].key), 120);
+  };
+
+  useEffect(() => {
+    const previousStep = prevStepRef.current;
+    prevStepRef.current = currentStep;
+
+    if (currentStep !== W2_FORM_STEPS.REVIEW) return;
+
+    const missing = findIncompleteW2Fields(formData);
+    if (missing.length > 0) {
+      markIncomplete(missing);
+      return;
+    }
+
+    setFieldErrors((prev) => (Object.keys(prev).length === 0 ? prev : {}));
+    // Toast only on wages → review (3 → 4). Back from checkout remounts review silently.
+    if (previousStep === W2_FORM_STEPS.WAGES) {
+      toast.success("Your W-2 information has been saved.", {
+        id: LOCAL_SAVE_TOAST_ID,
+        duration: 4000,
+      });
+    }
+  }, [currentStep, formData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const clearFieldError = (key) => {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
+
+  const handleUpdateField = (field, value) => {
+    clearFieldError(field);
+    updateField(field, value);
+  };
+
+  const ensureCompleteOrFocus = () => {
+    const missing = findIncompleteW2Fields(formData);
+    if (missing.length === 0) {
+      setFieldErrors({});
+      return true;
+    }
+    markIncomplete(missing);
+    return false;
+  };
+
+  const goToReview = () => {
+    if (!ensureCompleteOrFocus()) return;
+    setFormStep(W2_FORM_STEPS.REVIEW);
+  };
+
+  const handleContinueToCheckout = () => {
+    if (!ensureCompleteOrFocus()) return;
+    onContinueToCheckout();
+  };
+
   const handleStepperClick = (step) => {
+    if (step === W2_FORM_STEPS.REVIEW) {
+      goToReview();
+      return;
+    }
     if (step <= W2_FORM_STEPS.REVIEW) {
       setFormStep(step);
       return;
@@ -55,7 +149,8 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
           {currentStep === W2_FORM_STEPS.EMPLOYER && (
             <EmployerStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onNext={() => setFormStep(W2_FORM_STEPS.EMPLOYEE)}
             />
           )}
@@ -63,7 +158,8 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
           {currentStep === W2_FORM_STEPS.EMPLOYEE && (
             <EmployeeStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onBack={() => setFormStep(W2_FORM_STEPS.EMPLOYER)}
               onNext={() => setFormStep(W2_FORM_STEPS.WAGES)}
             />
@@ -72,9 +168,10 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
           {currentStep === W2_FORM_STEPS.WAGES && (
             <WageTaxStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onBack={() => setFormStep(W2_FORM_STEPS.EMPLOYEE)}
-              onNext={() => setFormStep(W2_FORM_STEPS.REVIEW)}
+              onNext={goToReview}
             />
           )}
 
@@ -83,7 +180,7 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
               formData={formData}
               onEdit={setFormStep}
               onBack={() => setFormStep(W2_FORM_STEPS.WAGES)}
-              onContinue={onContinueToCheckout}
+              onContinue={handleContinueToCheckout}
             />
           )}
         </div>
@@ -103,7 +200,7 @@ const W2DetailsForm = ({ form, onContinueToCheckout, onStepClick }) => {
             </div>
           )}
 
-          <DocumentLivePreview>
+          <DocumentLivePreview maxWidthClass="max-w-[540px]">
             <Document formData={formData} />
           </DocumentLivePreview>
 

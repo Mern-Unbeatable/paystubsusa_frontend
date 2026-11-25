@@ -189,8 +189,26 @@ const ReviewStep = ({ formData, onEdit, onBack, onContinue }) => (
         }
       />
       <ReviewRow
-        label="Box 13 – Statutory Employee"
+        label="Box 13 – Statutory employee"
         value={formData.box13StatutoryEmployee ? "Yes" : "No"}
+      />
+      <ReviewRow
+        label="Box 13 – Retirement plan"
+        value={formData.box13RetirementPlan ? "Yes" : "No"}
+      />
+      <ReviewRow
+        label="Box 13 – Third-party sick pay"
+        value={formData.box13ThirdPartySickPay ? "Yes" : "No"}
+      />
+      <ReviewRow
+        label="Box 14 – Other"
+        value={
+          formData.box14Description || formData.box14Amount
+            ? [formData.box14Description, formatMoney(formData.box14Amount)]
+                .filter(Boolean)
+                .join(" · ")
+            : ""
+        }
       />
     </ReviewCard>
 

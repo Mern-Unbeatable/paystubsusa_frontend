@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { Lock } from "lucide-react";
 import DocumentLivePreview from "../../../shared/documentFlow/components/DocumentLivePreview";
 import DocumentOrderSummary from "../../../shared/documentFlow/components/DocumentOrderSummary";
 import { DIRECT_DEPOSIT_FLOW, DD_FORM_STEPS } from "../../utils/directDepositFlow";
+import { findIncompleteDirectDepositFields } from "../../utils/directDepositValidation";
 import {
   scrollDirectDepositFlowIntoView,
   useDirectDepositFormStep,
 } from "../../hooks/useDirectDepositFormStep";
+import { toFieldErrorMap } from "../../../Generator/components/common/detailsForm/fieldValidation";
 import DirectDepositStepper from "../common/flow/DirectDepositStepper";
 import StepRibbon from "../common/flow/StepRibbon";
 import EmployerStep from "../common/detailsForm/EmployerStep";
@@ -15,7 +18,29 @@ import DepositStep from "../common/detailsForm/DepositStep";
 import ReviewStep from "../common/detailsForm/ReviewStep";
 
 const FORM_STEP_COUNT = 4;
+const LOCAL_SAVE_TOAST_ID = "dd-form-local-save";
+const MISSING_FIELDS_TOAST_ID = "dd-form-missing-fields";
 
+const missingFieldsMessage = (missing) => {
+  if (missing.length === 1) {
+    return missing[0].message ?? `${missing[0].label} is required.`;
+  }
+  const labels = missing.map((f) => f.label);
+  if (labels.length <= 3) return `Please complete: ${labels.join(", ")}.`;
+  return `Please complete ${labels.length} required fields (e.g. ${labels.slice(0, 3).join(", ")}).`;
+};
+
+const scrollToField = (key) => {
+  requestAnimationFrame(() => {
+    document
+      .getElementById(`dd-field-${key}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+};
+
+/**
+ * Create-page form: steps 1–4 driven by `?step=` on `/direct-deposit/create`.
+ */
 const DirectDepositDetailsForm = ({
   form,
   onContinueToCheckout,
@@ -26,6 +51,8 @@ const DirectDepositDetailsForm = ({
   const { Document } = DIRECT_DEPOSIT_FLOW;
   const showOrderSummary = currentStep === DD_FORM_STEPS.REVIEW;
   const skipScrollOnMount = useRef(true);
+  const prevStepRef = useRef(currentStep);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (skipScrollOnMount.current) {
@@ -35,7 +62,77 @@ const DirectDepositDetailsForm = ({
     scrollDirectDepositFlowIntoView();
   }, [currentStep]);
 
+  const markIncomplete = (missing) => {
+    setFieldErrors(toFieldErrorMap(missing));
+    toast.error(missingFieldsMessage(missing), {
+      id: MISSING_FIELDS_TOAST_ID,
+      duration: 5000,
+    });
+    setFormStep(missing[0].step);
+    setTimeout(() => scrollToField(missing[0].key), 120);
+  };
+
+  useEffect(() => {
+    const previousStep = prevStepRef.current;
+    prevStepRef.current = currentStep;
+
+    if (currentStep !== DD_FORM_STEPS.REVIEW) return;
+
+    const missing = findIncompleteDirectDepositFields(formData);
+    if (missing.length > 0) {
+      markIncomplete(missing);
+      return;
+    }
+
+    setFieldErrors((prev) => (Object.keys(prev).length === 0 ? prev : {}));
+    // Toast only on deposit → review (3 → 4). Back from checkout remounts silently.
+    if (previousStep === DD_FORM_STEPS.DEPOSIT) {
+      toast.success("Your direct deposit information has been saved.", {
+        id: LOCAL_SAVE_TOAST_ID,
+        duration: 4000,
+      });
+    }
+  }, [currentStep, formData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const clearFieldError = (key) => {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
+
+  const handleUpdateField = (field, value) => {
+    clearFieldError(field);
+    updateField(field, value);
+  };
+
+  const ensureCompleteOrFocus = () => {
+    const missing = findIncompleteDirectDepositFields(formData);
+    if (missing.length === 0) {
+      setFieldErrors({});
+      return true;
+    }
+    markIncomplete(missing);
+    return false;
+  };
+
+  const goToReview = () => {
+    if (!ensureCompleteOrFocus()) return;
+    setFormStep(DD_FORM_STEPS.REVIEW);
+  };
+
+  const handleContinueToCheckout = () => {
+    if (!ensureCompleteOrFocus()) return;
+    onContinueToCheckout();
+  };
+
   const handleStepperClick = (step) => {
+    if (step === DD_FORM_STEPS.REVIEW) {
+      goToReview();
+      return;
+    }
     if (step <= DD_FORM_STEPS.REVIEW) {
       setFormStep(step);
       return;
@@ -59,7 +156,8 @@ const DirectDepositDetailsForm = ({
           {currentStep === DD_FORM_STEPS.EMPLOYER && (
             <EmployerStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onNext={() => setFormStep(DD_FORM_STEPS.EMPLOYEE)}
             />
           )}
@@ -67,7 +165,8 @@ const DirectDepositDetailsForm = ({
           {currentStep === DD_FORM_STEPS.EMPLOYEE && (
             <EmployeeStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onBack={() => setFormStep(DD_FORM_STEPS.EMPLOYER)}
               onNext={() => setFormStep(DD_FORM_STEPS.DEPOSIT)}
             />
@@ -76,9 +175,10 @@ const DirectDepositDetailsForm = ({
           {currentStep === DD_FORM_STEPS.DEPOSIT && (
             <DepositStep
               formData={formData}
-              updateField={updateField}
+              fieldErrors={fieldErrors}
+              updateField={handleUpdateField}
               onBack={() => setFormStep(DD_FORM_STEPS.EMPLOYEE)}
-              onNext={() => setFormStep(DD_FORM_STEPS.REVIEW)}
+              onNext={goToReview}
             />
           )}
 
@@ -87,7 +187,7 @@ const DirectDepositDetailsForm = ({
               formData={formData}
               onEdit={setFormStep}
               onBack={() => setFormStep(DD_FORM_STEPS.DEPOSIT)}
-              onContinue={onContinueToCheckout}
+              onContinue={handleContinueToCheckout}
             />
           )}
         </div>

@@ -85,12 +85,8 @@ const FeaturesSection = () => {
             {/* Headline */}
             <h2 className="mb-5 text-3xl font-bold leading-[1.14] tracking-tight text-slate-900 sm:text-4xl lg:text-[42px] xl:text-[46px]">
               Everything You Need{" "}
-              <span className="relative whitespace-nowrap">
-                <span className="relative z-10">in One</span>
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-1 z-0 h-3 rounded-sm bg-secondary/15"
-                />
+              <span className=" whitespace-nowrap">
+                <span className=" text-secondary">in One</span>
               </span>{" "}
               Platform
             </h2>

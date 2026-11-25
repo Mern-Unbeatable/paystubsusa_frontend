@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { ChevronLeft } from "lucide-react";
 import OrderSummaryCard from "../common/order/OrderSummaryCard";
 import CheckoutSection from "./CheckoutSection";
 import CheckoutPaySection from "./CheckoutPaySection";
@@ -298,6 +299,20 @@ const PaystubCheckoutPanel = ({ template }) => {
               backLabel="Back to package"
               className=""
             />
+          )}
+          {/* Back under Pay Now / Unlimited card (email step already has its own). */}
+          {(isUnlimited || (showVerifiedUi && verifiedEmail)) && (
+            <div className="mt-5">
+              <button
+                type="button"
+                onClick={onBackToPackage}
+                disabled={isPreparingPayment}
+                aria-label="Back to package"
+                className="px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-medium text-[14px] hover:bg-slate-50 transition cursor-pointer inline-flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="w-4 h-4" /> Back
+              </button>
+            </div>
           )}
         </div>
 
