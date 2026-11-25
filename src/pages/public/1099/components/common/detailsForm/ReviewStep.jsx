@@ -125,23 +125,23 @@ const ReviewStep = ({ formData, onEdit, onBack, onContinue }) => (
       onEdit={() => onEdit(NEC1099_FORM_STEPS.COMPENSATION)}
     >
       <ReviewRow
-        label="Box 1 – Nonemployee compensation"
+        label="Box 1. Nonemployee compensation"
         value={formatMoney(formData.box1NonemployeeComp)}
         isMoney
       />
       <ReviewRow
-        label="Box 4 – Federal income tax"
-        value={formatMoney(formData.box4FederalTax)}
-        isMoney
+        label="Box 2. Direct sales $5,000+"
+        value={formData.box2DirectSales ? "Yes" : "No"}
       />
       <ReviewRow
-        label="Box 3 – Excess golden parachute"
+        label="Box 3. Excess golden parachute"
         value={formatMoney(formData.box3ExcessGoldenParachute)}
         isMoney
       />
       <ReviewRow
-        label="Box 2 – Direct sales $5,000+"
-        value={formData.box2DirectSales ? "Yes" : "No"}
+        label="Box 4. Federal income tax"
+        value={formatMoney(formData.box4FederalTax)}
+        isMoney
       />
     </ReviewCard>
 
@@ -150,18 +150,21 @@ const ReviewStep = ({ formData, onEdit, onBack, onContinue }) => (
       icon={MapPin}
       onEdit={() => onEdit(NEC1099_FORM_STEPS.COMPENSATION)}
     >
-      <ReviewRow label="State" value={formData.stateReportingState} />
       <ReviewRow
-        label="State / Payer’s state no."
-        value={formData.statePayerNo}
-      />
-      <ReviewRow
-        label="State tax withheld"
+        label="Box 5. State tax"
         value={formatMoney(formData.stateTaxWithheld)}
         isMoney
       />
       <ReviewRow
-        label="State income"
+        label="Box 6. State / Payer’s no."
+        value={
+          [formData.stateReportingState, formData.statePayerNo]
+            .filter(Boolean)
+            .join(" / ") || ""
+        }
+      />
+      <ReviewRow
+        label="Box 7. State income"
         value={formatMoney(formData.stateIncome)}
         isMoney
       />
