@@ -83,16 +83,13 @@ const FeaturesSection = () => {
             </div>
 
             {/* Headline */}
-            <h2 className="mb-5 text-3xl font-bold leading-[1.14] tracking-tight text-slate-900 sm:text-4xl lg:text-[42px] xl:text-[46px]">
+            <h2 className="mb-5 text-[1.75rem] font-bold leading-[1.18] tracking-tight text-slate-900 sm:text-4xl lg:text-[42px] xl:text-[46px]">
               Everything You Need{" "}
-              <span className=" whitespace-nowrap">
-                <span className=" text-secondary">in One</span>
-              </span>{" "}
-              Platform
+              <span className="text-secondary">in One</span> Platform
             </h2>
 
             {/* Description */}
-            <p className="mb-8 max-w-md text-base font-normal leading-relaxed text-slate-600 sm:text-[17px]">
+            <p className="mb-8 max-w-md text-[15px] font-normal leading-relaxed text-slate-600 sm:text-[17px]">
               Create essential employment and income documents with a
               straightforward online experience.
             </p>
@@ -100,7 +97,7 @@ const FeaturesSection = () => {
             {/* CTA */}
             <a
               href="#documents"
-              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm shadow-secondary/25 transition-all duration-200 hover:bg-[#008be0] hover:shadow-lg hover:shadow-secondary/30 active:scale-[0.98]"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm shadow-secondary/25 transition-all duration-200 hover:bg-[#008be0] hover:shadow-lg hover:shadow-secondary/30 active:scale-[0.98]"
             >
               <span>View All Documents</span>
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />

@@ -30,37 +30,37 @@ const SpecialOfferSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="">
+    <section
+      ref={sectionRef}
+      className="relative w-full py-8 sm:py-10 lg:py-12"
+    >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Prominent Elevated Offer Container */}
-        <div className="offer-card-box relative overflow-hidden bg-primary rounded-[28px] p-8 sm:p-12 pt-12 sm:pt-14 shadow-sm border border-slate-100/80">
-          {/* Top-left diagonal ribbon (sketch: corner “% save” badge) */}
+        <div className="offer-card-box relative overflow-hidden bg-primary rounded-2xl sm:rounded-[28px] p-5 pt-12 sm:p-12 sm:pt-14 shadow-sm border border-slate-100/80">
+          {/* Top-left diagonal ribbon */}
           <div
-            className="pointer-events-none absolute -left-[3.25rem] top-6 z-20 w-[11.5rem] -rotate-45 bg-secondary py-2 text-center shadow-[0_2px_8px_rgba(29,99,255,0.35)]"
+            className="pointer-events-none absolute -left-[3.5rem] top-5 sm:-left-[3.25rem] sm:top-6 z-20 w-[11rem] sm:w-[11.5rem] -rotate-45 bg-secondary py-1.5 sm:py-2 text-center shadow-[0_2px_8px_rgba(29,99,255,0.35)]"
             aria-label="Save 35 percent"
           >
-            <span className="block text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.16em] text-white">
+            <span className="block text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.16em] text-white">
               35% Save
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center">
             {/* Left Content */}
             <div className="md:col-span-7 flex flex-col items-start">
-              {/* Eyebrow badge */}
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-[#ffffff] bg-slate-400 px-3 py-1 rounded-full mb-4">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-[#ffffff] bg-slate-400 px-3 py-1 rounded-full mb-3 sm:mb-4">
                 <Sparkles className="w-3 h-3" />
                 Special Offer
               </span>
-              {/* Headline */}
 
-              <h3 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-slate-400 tracking-tight leading-tight">
+              <h3 className="text-[1.5rem] sm:text-3xl lg:text-[34px] font-bold text-slate-400 tracking-tight leading-tight">
                 Get More Paystubs & Save More.
               </h3>
 
-              {/* Price Callout */}
-              <div className="flex items-baseline gap-2">
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+              <div className="mt-2 sm:mt-3 flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-3 sm:gap-y-2">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="text-3xl sm:text-4xl font-extrabold text-[#f6f6fa] tracking-tight">
                     $24.99
                   </span>
@@ -73,24 +73,22 @@ const SpecialOfferSection = () => {
                 </span>
               </div>
 
-              {/* Additional Cost Note */}
-              <p className="text-slate-500 text-sm mt-1 mb-6 font-normal">
+              <p className="text-slate-500 text-sm mt-2 mb-4 sm:mb-6 font-normal">
                 Each additional paystub costs $7.99.
               </p>
 
-              {/* CTA Button */}
               <Link
                 to={PATHS.PUBLIC.paystubGenerator}
-                className="inline-flex items-center gap-2 bg-secondary hover:bg-[#008be0] active:scale-[0.98] text-white font-semibold text-[15px] px-6 py-3.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-secondary hover:bg-[#008be0] active:scale-[0.98] text-white font-semibold text-[15px] px-6 py-3.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
               >
                 <span>Get 3 Paystubs</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </div>
 
-            {/* Right: Stacked Paystub Document Cards Preview */}
-            <div className="md:col-span-5 flex items-center justify-center pt-4 md:pt-0">
-              <div className="relative w-72 h-60 flex items-center justify-center">
+            {/* Right: Stacked Paystub Document Cards Preview (desktop+) */}
+            <div className="hidden md:col-span-5 md:flex items-center justify-center">
+              <div className="relative w-full max-w-[18rem] h-60 flex items-center justify-center mx-auto">
                 {/* 3rd Card (backmost) — softest, most rotated */}
                 <div
                   className="absolute w-60 h-44 bg-gradient-to-br from-white/70 to-slate-50/60 border border-slate-200/50 rounded-2xl shadow-sm rotate-[7deg] translate-x-4 translate-y-4 pointer-events-none backdrop-blur-[2px]"
@@ -104,7 +102,7 @@ const SpecialOfferSection = () => {
                 />
 
                 {/* 1st Card (front active document) — polished hero card */}
-                <div className="group relative w-72 bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xl shadow-slate-200/40 text-[14px] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-slate-300/50">
+                <div className="group relative w-full max-w-[18rem] bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xl shadow-slate-200/40 text-[14px] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-slate-300/50">
                   {/* Status dot — live indicator */}
                   <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
