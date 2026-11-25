@@ -55,12 +55,37 @@ const REQUIRED = [
 const isBlank = (value) =>
   value === undefined || value === null || String(value).trim() === "";
 
-/** All incomplete required fields (order matches form steps). */
+/** Strip spaces/dashes — same normalize as server `bankAccountNumber`. */
+export function normalizeAccountNumber(value) {
+  return String(value || "").replace(/[\s-]/g, "");
+}
+
+const ACCOUNT_NUMBER = /^\d{4,17}$/;
+
+/** All incomplete or invalid required fields (order matches form steps). */
 export function findIncompleteDirectDepositFields(formData) {
-  return REQUIRED.filter((item) => isBlank(formData[item.key])).map((item) => ({
-    ...item,
-    field: item.key,
-  }));
+  const missing = REQUIRED.filter((item) => isBlank(formData[item.key])).map(
+    (item) => ({
+      ...item,
+      field: item.key,
+    }),
+  );
+
+  const formatted = [];
+  if (
+    !isBlank(formData.accountNumber) &&
+    !ACCOUNT_NUMBER.test(normalizeAccountNumber(formData.accountNumber))
+  ) {
+    formatted.push({
+      key: "accountNumber",
+      field: "accountNumber",
+      label: "Account number",
+      message: "Account number must be 4–17 digits",
+      step: DD_FORM_STEPS.DEPOSIT,
+    });
+  }
+
+  return [...missing, ...formatted];
 }
 
 /** First incomplete required field, or null. */

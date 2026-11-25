@@ -31,7 +31,7 @@ export const DIRECT_DEPOSIT_FLOW = {
   getPdfFileNameParts: (formData) => [
     "Direct-Deposit",
     formData.employeeName,
-    formData.depositDate,
+    formData.depositDate?.replace(/-/g, "") || formData.depositDate,
   ],
   Document: DirectDepositSlipDocument,
 };

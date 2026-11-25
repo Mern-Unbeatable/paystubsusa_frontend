@@ -17,6 +17,10 @@ import {
   FieldError,
   fieldClassName,
 } from "../../../../Generator/components/common/detailsForm/fieldValidation";
+import {
+  formatPayPeriodRange,
+  toDateInputValue,
+} from "../../../utils/directDepositDates";
 import StepHeader from "./StepHeader";
 import StepNav from "./StepNav";
 
@@ -33,7 +37,22 @@ const DepositStep = ({
   updateField,
   onBack,
   onNext,
-}) => (
+}) => {
+  const syncPayPeriod = (start, end) => {
+    updateField("payPeriod", formatPayPeriodRange(start, end));
+  };
+
+  const handlePayPeriodStart = (value) => {
+    updateField("payPeriodStart", value);
+    syncPayPeriod(value, formData.payPeriodEnd);
+  };
+
+  const handlePayPeriodEnd = (value) => {
+    updateField("payPeriodEnd", value);
+    syncPayPeriod(formData.payPeriodStart, value);
+  };
+
+  return (
   <div className="space-y-6 animate-in fade-in-50 duration-200">
     <StepHeader
       title="Deposit details"
@@ -63,10 +82,9 @@ const DepositStep = ({
             <RequiredMark />
           </label>
           <input
-            type="text"
-            value={formData.depositDate}
+            type="date"
+            value={toDateInputValue(formData.depositDate)}
             onChange={(e) => updateField("depositDate", e.target.value)}
-            placeholder="MM/DD/YYYY"
             aria-invalid={Boolean(fieldErrors.depositDate)}
             className={fieldClassName(FIELD_CLASS, fieldErrors.depositDate)}
           />
@@ -75,7 +93,7 @@ const DepositStep = ({
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label className="text-[13.5px] font-semibold text-slate-800">
-              Pay Period
+              Payment Reference Number
             </label>
             <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               Optional
@@ -83,9 +101,9 @@ const DepositStep = ({
           </div>
           <input
             type="text"
-            value={formData.payPeriod}
-            onChange={(e) => updateField("payPeriod", e.target.value)}
-            placeholder="e.g. May 1 – May 15, 2025"
+            value={formData.paymentReference}
+            onChange={(e) => updateField("paymentReference", e.target.value)}
+            placeholder="e.g. REF-99201"
             className={FIELD_CLASS}
           />
         </div>
@@ -94,19 +112,37 @@ const DepositStep = ({
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-[13.5px] font-semibold text-slate-800">
-            Payment Reference Number
+            Pay Period
           </label>
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
             Optional
           </span>
         </div>
-        <input
-          type="text"
-          value={formData.paymentReference}
-          onChange={(e) => updateField("paymentReference", e.target.value)}
-          placeholder="e.g. REF-99201"
-          className={FIELD_CLASS}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-[12px] font-medium text-slate-500 mb-1.5">
+              Start
+            </label>
+            <input
+              type="date"
+              value={toDateInputValue(formData.payPeriodStart)}
+              onChange={(e) => handlePayPeriodStart(e.target.value)}
+              className={FIELD_CLASS}
+            />
+          </div>
+          <div>
+            <label className="block text-[12px] font-medium text-slate-500 mb-1.5">
+              End
+            </label>
+            <input
+              type="date"
+              value={toDateInputValue(formData.payPeriodEnd)}
+              min={toDateInputValue(formData.payPeriodStart) || undefined}
+              onChange={(e) => handlePayPeriodEnd(e.target.value)}
+              className={FIELD_CLASS}
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -183,13 +219,26 @@ const DepositStep = ({
           </label>
           <input
             type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            maxLength={17}
             value={formData.accountNumber}
-            onChange={(e) => updateField("accountNumber", e.target.value)}
+            onChange={(e) =>
+              updateField(
+                "accountNumber",
+                e.target.value.replace(/\D/g, "").slice(0, 17),
+              )
+            }
             placeholder="4–17 digits"
             aria-invalid={Boolean(fieldErrors.accountNumber)}
             className={fieldClassName(FIELD_CLASS, fieldErrors.accountNumber)}
           />
           <FieldError errors={fieldErrors} name="accountNumber" />
+          {!fieldErrors.accountNumber && (
+            <p className="text-[12px] text-slate-400 mt-1.5">
+              Enter 4–17 digits only.
+            </p>
+          )}
         </div>
         <div className="sm:col-span-4" id="dd-field-depositAmount">
           <label className={BOX_LABEL_CLASS}>
@@ -243,6 +292,7 @@ const DepositStep = ({
 
     <StepNav onBack={onBack} onNext={onNext} />
   </div>
-);
+  );
+};
 
 export default DepositStep;
